@@ -7,6 +7,8 @@ const App = props => {
   return <h1>Hello, {name}</h1>;
 };
 
+import './styles.css';
+
 render(
   <App name="fernando" />,
   document.getElementById('root')

@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -11,11 +12,15 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: 'index.js'
   },
+  module: {
+    loaders: [
+      { test: /\.js$/, loader: 'babel' },
+      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
+      { test: /\.png$/, loader: 'url-loader?limit=10000' },
+      { test: /\.jpg$/, loader: 'url-loader?limit=10000' }
+    ]
+  },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/index.html',
-      inject: 'body'
-    }),
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
@@ -24,11 +29,11 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
-    })
-  ],
-  module: {
-    loaders: [
-      { test: /\.js$/, loader: 'babel' }
-    ]
-  }
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      inject: 'body'
+    }),
+    new ExtractTextPlugin('styles.css')
+  ]
 };
