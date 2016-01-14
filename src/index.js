@@ -1,15 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-
-import styles from './styles.css';
-
-const App = props => {
-  const { name } = props;
-
-  return <h1 className={styles.app}>Hello, {name}</h1>;
-};
+import App from './containers/App';
 
 render(
-  <App name="fernando" />,
+  <App />,
   document.getElementById('root')
 );
