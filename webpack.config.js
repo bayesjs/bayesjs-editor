@@ -14,7 +14,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel' },
+      { test: /\.js$/, loader: 'babel', include: path.join(__dirname, 'src') },
       { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules') },
       { test: /\.png$/, loader: 'url-loader?limit=10000' },
       { test: /\.jpg$/, loader: 'url-loader?limit=10000' }

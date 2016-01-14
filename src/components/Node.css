@@ -1,4 +1,5 @@
 .node {
+  position: absolute;
   background-color: #ff9;
   border: solid 2px #111;
   border-radius: 50%;

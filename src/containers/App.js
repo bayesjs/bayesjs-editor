@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import Node from '../components/Node';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import Board from './Board';
 
 class App extends Component {
   render() {
-    return <Node id="RAIN" />;
+    return <Board />;
   }
 }
 
-export default App;
+export default DragDropContext(HTML5Backend)(App);
