@@ -6,7 +6,14 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   entry: {
     app: path.join(__dirname, 'src/index.js'),
-    vendor: [ 'react', 'react-dom' ]
+    vendor: [
+      'react',
+      'react-dom',
+      'redux',
+      'react-redux',
+      'react-dnd',
+      'react-dnd-html5-backend'
+    ]
   },
   output: {
     path: path.join(__dirname, 'dist'),

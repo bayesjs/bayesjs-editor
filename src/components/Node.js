@@ -8,11 +8,19 @@ const nodeSource = {
   }
 };
 
-const collect = (connect, monitor) => ({
-  connectDragSource: connect.dragSource()
+const collect = (connector, monitor) => ({
+  connectDragSource: connector.dragSource()
 });
 
-class Node extends Component {
+@DragSource('node', nodeSource, collect)
+export default class Node extends Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    left: PropTypes.number.isRequired,
+    top: PropTypes.number.isRequired,
+    connectDragSource: PropTypes.func.isRequired
+  };
+
   render() {
     const { id, left, top, connectDragSource } = this.props;
 
@@ -26,12 +34,3 @@ class Node extends Component {
     );
   }
 }
-
-Node.propTypes = {
-  id: PropTypes.string.isRequired,
-  left: PropTypes.number.isRequired,
-  top: PropTypes.number.isRequired,
-  connectDragSource: PropTypes.func.isRequired
-};
-
-export default DragSource('node', nodeSource, collect)(Node);

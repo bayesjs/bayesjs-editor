@@ -1,46 +1,54 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { DropTarget } from 'react-dnd';
+import { moveNode } from '../actions/nodes';
 import Node from '../components/Node';
 import styles from './Board.css';
 
 const boardTarget = {
   drop(props, monitor, component) {
+    const { dispatch } = props;
+    const item = monitor.getItem();
     const delta = monitor.getDifferenceFromInitialOffset();
 
-    component.moveNode(delta.x, delta.y);
+    dispatch(moveNode(item.id, delta.x, delta.y));
   }
 };
 
-const collect = (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget()
+const collect = (connector, monitor) => ({
+  connectDropTarget: connector.dropTarget()
 });
 
-class Board extends Component {
-  constructor(props) {
-    super(props);
+const mapStateToProps = state => ({
+  nodes: state.nodes
+});
 
-    this.state = { left: 50, top: 50 };
-  }
-
-  moveNode(differenceLeft, differenceTop) {
-    const { left, top } = this.state;
-
-    this.setState({
-      left: Math.round(left + differenceLeft),
-      top: Math.round(top + differenceTop)
-    });
-  }
+@connect(mapStateToProps)
+@DropTarget('node', boardTarget, collect)
+export default class Board extends Component {
+  static propTypes = {
+    nodes: PropTypes.arrayOf(PropTypes.object),
+    connectDropTarget: PropTypes.func.isRequired
+  };
 
   render() {
-    const { connectDropTarget } = this.props;
-    const { left, top } = this.state;
+    const { connectDropTarget, nodes } = this.props;
 
     return connectDropTarget(
       <div className={styles.board}>
-        <Node left={left} top={top} id="RAIN" />
+        {nodes.map(this.renderNode)}
       </div>
     );
   }
-}
 
-export default DropTarget('node', boardTarget, collect)(Board);
+  renderNode(node) {
+    return (
+      <Node
+        key={node.id}
+        id={node.id}
+        left={node.left}
+        top={node.top}
+      />
+    );
+  }
+}
