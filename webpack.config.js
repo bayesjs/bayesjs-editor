@@ -10,9 +10,7 @@ module.exports = {
       'react',
       'react-dom',
       'redux',
-      'react-redux',
-      'react-dnd',
-      'react-dnd-html5-backend'
+      'react-redux'
     ]
   },
   output: {
@@ -29,6 +27,10 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+    /*
+    +-------------------------------+
+    |  UNCOMMENT IT FOR PROD BUILD  |
+    +-------------------------------+
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
@@ -37,6 +39,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
+    */
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       inject: 'body'

@@ -1,36 +1,32 @@
 import React, { Component, PropTypes } from 'react';
-import { DragSource } from 'react-dnd';
-import styles from './Node.css';
 
-const nodeSource = {
-  beginDrag(props) {
-    return { id: props.id };
-  }
-};
-
-const collect = (connector, monitor) => ({
-  connectDragSource: connector.dragSource()
-});
-
-@DragSource('node', nodeSource, collect)
 export default class Node extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     left: PropTypes.number.isRequired,
     top: PropTypes.number.isRequired,
-    connectDragSource: PropTypes.func.isRequired
+    onMouseDown: PropTypes.func.isRequired
   };
 
   render() {
-    const { id, left, top, connectDragSource } = this.props;
+    const { id, left, top, onMouseDown } = this.props;
 
-    return connectDragSource(
-      <div
-        className={styles.node}
-        style={{ left, top }}
+    return (
+      <g
+        style={{ cursor: 'move' }}
+        onMouseDown={e => onMouseDown(e)}
       >
-        {id}
-      </div>
+        <ellipse
+          cx={left} cy={top} rx="70" ry="40"
+          fill="#ffc" stroke="black"
+        />
+        <text
+          x={left} y={top}
+          textAnchor="middle" dy="5"
+        >
+          {id}
+        </text>
+      </g>
     );
   }
 }

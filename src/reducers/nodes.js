@@ -1,8 +1,9 @@
 import { MOVE_NODE } from '../actions/nodes';
 
 const initialState = [
-  { id: 'RAIN', left: 50, top: 50 },
-  { id: 'SPRINKLER', left: 200, top: 150 }
+  { id: 'RAIN', left: 350, top: 70, parents: [] },
+  { id: 'SPRINKLER', left: 100, top: 70, parents: [ 'RAIN' ] },
+  { id: 'GRASS_WET', left: 225, top: 220, parents: [ 'RAIN', 'SPRINKLER' ] }
 ];
 
 export default (state = initialState, action) => {

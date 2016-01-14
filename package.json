@@ -5,7 +5,8 @@
   "main": "src/server/index.js",
   "scripts": {
     "start": "node server.js",
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "eslint src --ext js"
   },
   "repository": {
     "type": "git",
@@ -26,8 +27,6 @@
   "homepage": "https://github.com/fhelwanger/bayesjs-editor#readme",
   "dependencies": {
     "react": "^0.14.6",
-    "react-dnd": "^2.0.2",
-    "react-dnd-html5-backend": "^2.0.2",
     "react-dom": "^0.14.6",
     "react-redux": "^4.0.6",
     "redux": "^3.0.5"
