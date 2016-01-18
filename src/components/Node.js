@@ -5,11 +5,20 @@ export default class Node extends Component {
     id: PropTypes.string.isRequired,
     left: PropTypes.number.isRequired,
     top: PropTypes.number.isRequired,
+    radiusX: PropTypes.number.isRequired,
+    radiusY: PropTypes.number.isRequired,
     onMouseDown: PropTypes.func.isRequired
   };
 
   render() {
-    const { id, left, top, onMouseDown } = this.props;
+    const {
+      id,
+      left,
+      top,
+      radiusX,
+      radiusY,
+      onMouseDown
+    } = this.props;
 
     return (
       <g
@@ -17,7 +26,8 @@ export default class Node extends Component {
         onMouseDown={e => onMouseDown(e)}
       >
         <ellipse
-          cx={left} cy={top} rx="70" ry="40"
+          cx={left} cy={top}
+          rx={radiusX} ry={radiusY}
           fill="#ffc" stroke="black"
         />
         <text
