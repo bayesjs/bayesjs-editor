@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class Node extends Component {
+class Node extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     left: PropTypes.number.isRequired,
@@ -40,3 +40,5 @@ export default class Node extends Component {
     );
   }
 }
+
+export default Node;

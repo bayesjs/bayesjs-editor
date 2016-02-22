@@ -5,21 +5,21 @@ import { moveNode } from '../actions/nodes';
 import Node from '../components/Node';
 import { getEllipseNearestPoint } from '../modules/geometry';
 
-const mapStateToProps = state => ({
-  nodes: state.nodes,
-  drag: state.drag
-});
-
 const nodeRadius = {
   x: 70,
   y: 40
 };
 
-@connect(
-  mapStateToProps,
-  { initDrag, updateDragPosition, endDrag, moveNode }
-)
-export default class Board extends Component {
+class Board extends Component {
+  static propTypes = {
+    nodes: PropTypes.array.isRequired,
+    drag: PropTypes.object.isRequired,
+    moveNode: PropTypes.func.isRequired,
+    initDrag: PropTypes.func.isRequired,
+    updateDragPosition: PropTypes.func.isRequired,
+    endDrag: PropTypes.func.isRequired
+  };
+
   handleNodeMouseDown(nodeId, e) {
     this.props.initDrag(nodeId, e.clientX, e.clientY);
   }
@@ -75,7 +75,8 @@ export default class Board extends Component {
           >
             <path d="M 0 0 L 10 5 L 0 10 z" />
           </marker>
-        ` }} />
+        ` }}
+        />
         {nodes.map(node => this.renderLines(node))}
         {nodes.map(node => this.renderNode(node))}
       </svg>
@@ -138,3 +139,13 @@ export default class Board extends Component {
     return this.props.nodes.find(n => n.id === nodeId);
   }
 }
+
+const mapStateToProps = state => ({
+  nodes: state.nodes,
+  drag: state.drag
+});
+
+export default connect(
+  mapStateToProps,
+  { initDrag, updateDragPosition, endDrag, moveNode }
+)(Board);
