@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { initDrag, updateDragPosition, endDrag } from '../actions/drag';
-import { moveNode } from '../actions/nodes';
+import { selectNode, moveNode } from '../actions/nodes';
 import Node from '../components/Node';
 import { getEllipseNearestPoint } from '../modules/geometry';
 
@@ -13,7 +13,9 @@ const nodeRadius = {
 class Board extends Component {
   static propTypes = {
     nodes: PropTypes.array.isRequired,
+    selectedNodeId: PropTypes.string,
     drag: PropTypes.object.isRequired,
+    selectNode: PropTypes.func.isRequired,
     moveNode: PropTypes.func.isRequired,
     initDrag: PropTypes.func.isRequired,
     updateDragPosition: PropTypes.func.isRequired,
@@ -21,6 +23,8 @@ class Board extends Component {
   };
 
   handleNodeMouseDown(nodeId, e) {
+    e.stopPropagation();
+    this.props.selectNode(nodeId);
     this.props.initDrag(nodeId, e.clientX, e.clientY);
   }
 
@@ -56,6 +60,7 @@ class Board extends Component {
         height="400"
         width="600"
         style={{ border: 'solid 1px black' }}
+        onMouseDown={() => this.props.selectNode(null)}
         onMouseMove={e => this.handleMouseMove(e)}
         onMouseUp={e => this.handleMouseUp(e)}
       >
@@ -85,6 +90,7 @@ class Board extends Component {
 
   renderNode(node) {
     const nodePosition = this.calculateNodePosition(node.id);
+    const { selectedNodeId } = this.props;
 
     return (
       <Node
@@ -94,6 +100,7 @@ class Board extends Component {
         top={nodePosition.top}
         radiusX={nodeRadius.x}
         radiusY={nodeRadius.y}
+        selected={node.id === selectedNodeId}
         onMouseDown={e => this.handleNodeMouseDown(node.id, e)}
       />
     );
@@ -141,11 +148,12 @@ class Board extends Component {
 }
 
 const mapStateToProps = state => ({
-  nodes: state.nodes,
+  nodes: state.nodes.list,
+  selectedNodeId: state.nodes.selectedNodeId,
   drag: state.drag
 });
 
 export default connect(
   mapStateToProps,
-  { initDrag, updateDragPosition, endDrag, moveNode }
+  { initDrag, updateDragPosition, endDrag, selectNode, moveNode }
 )(Board);

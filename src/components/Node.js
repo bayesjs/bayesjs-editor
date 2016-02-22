@@ -7,6 +7,7 @@ class Node extends Component {
     top: PropTypes.number.isRequired,
     radiusX: PropTypes.number.isRequired,
     radiusY: PropTypes.number.isRequired,
+    selected: PropTypes.bool,
     onMouseDown: PropTypes.func.isRequired
   };
 
@@ -17,6 +18,7 @@ class Node extends Component {
       top,
       radiusX,
       radiusY,
+      selected,
       onMouseDown
     } = this.props;
 
@@ -29,6 +31,7 @@ class Node extends Component {
           cx={left} cy={top}
           rx={radiusX} ry={radiusY}
           fill="#ffc" stroke="black"
+          strokeWidth={selected ? 3 : 1}
         />
         <text
           x={left} y={top}
