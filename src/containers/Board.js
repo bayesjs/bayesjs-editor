@@ -53,8 +53,8 @@ export default class Board extends Component {
 
     return (
       <svg
-        height="300"
-        width="500"
+        height="400"
+        width="600"
         style={{ border: 'solid 1px black' }}
         onMouseMove={e => this.handleMouseMove(e)}
         onMouseUp={e => this.handleMouseUp(e)}

@@ -2,7 +2,7 @@
 // http://stackoverflow.com/questions/18362533/converting-a-circle-to-ellipse-so-it-calculates-the-distance-of-a-point-from-an
 
 const halfPI = Math.PI / 2;
-const steps = 12;
+const steps = 15;
 
 // calc a point on the ellipse that is "near-ish" the target point
 // uses "brute force"
