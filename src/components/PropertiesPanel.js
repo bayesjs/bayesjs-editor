@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'relative',
     transition: 'width 0.15s',
-    backgroundColor: '#aad',
+    borderLeft: 'solid 1px #333',
   },
   propertiesPanelShown: {
     width: 280,

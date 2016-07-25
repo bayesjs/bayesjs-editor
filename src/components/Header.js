@@ -5,11 +5,12 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     alignItems: 'center',
-    borderBottom: 'solid 1px #333',
+    background: 'linear-gradient(to bottom, #555, #111)',
   },
   title: {
     margin: 0,
-    padding: '5px 10px',
+    color: '#fcfcfc',
+    padding: '5px 10px 10px',
   },
   menuButton: {
     height: 30,
