@@ -1,3 +1,7 @@
+html {
+  font-family: 'Source Sans Pro';
+}
+
 html, body, #root {
   height: 100%;
   width: 100%;
