@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 const Header = () => (
   <div className={css(styles.header)}>
     <h1 className={css(styles.title)}>Bayes Editor</h1>
-    <button className={css(styles.menuButton)}>
+    <button className={css(styles.menuButton)} type="button">
       <i className="fa fa-bars" />
     </button>
   </div>
