@@ -32,7 +32,7 @@ module.exports = {
       { test: /\.js$/, loader: 'babel', include: path.join(__dirname, 'src') },
       { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
       { test: /\.json$/, loader: 'json' },
-      { test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/, loader: 'url?limit=8192' },
+      { test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?v=.+)?$/, loader: 'url?limit=8192' },
     ],
   },
   plugins: [
