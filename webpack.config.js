@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
+const srcPath = path.join(__dirname, 'src');
+const distPath = path.join(__dirname, 'dist');
 
 const pluginsDev = [];
 const pluginsProd = [
@@ -20,16 +22,16 @@ const pluginsProd = [
 module.exports = {
   devtool: isProd ? false : 'eval-source-map',
   entry: {
-    app: [path.join(__dirname, 'src', 'index.js')],
+    app: [path.join(srcPath, 'index.js')],
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: distPath,
     filename: 'bundle.js',
     publicPath: '/',
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel', include: path.join(__dirname, 'src') },
+      { test: /\.js$/, loader: 'babel', include: srcPath },
       { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
       { test: /\.json$/, loader: 'json' },
       { test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?v=.+)?$/, loader: 'url?limit=8192' },
@@ -39,8 +41,9 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'index.html'),
+      template: path.join(srcPath, 'index.html'),
       inject: true,
+      favicon: path.join(srcPath, 'favicon.ico'),
     }),
   ].concat(isProd ? pluginsProd : pluginsDev),
 };
