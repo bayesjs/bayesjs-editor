@@ -4,6 +4,7 @@ import Button from './Button';
 
 const styles = StyleSheet.create({
   header: {
+    height: '50px',
     display: 'flex',
     alignItems: 'center',
     backgroundColor: '#333',
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
   title: {
     margin: 0,
     color: '#fcfcfc',
-    padding: '5px 10px 10px',
+    paddingLeft: '10px',
   },
   menuButton: {
     marginLeft: 'auto',

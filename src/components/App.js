@@ -8,13 +8,11 @@ const styles = StyleSheet.create({
   app: {
     fontFamily: 'Source Sans Pro',
     fontSize: '16px',
-    display: 'flex',
-    flexDirection: 'column',
     height: '100vh',
   },
   container: {
-    flex: 1,
     display: 'flex',
+    height: 'calc(100vh - 50px)',
   },
 });
 
