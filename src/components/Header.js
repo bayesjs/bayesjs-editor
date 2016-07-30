@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
+import Button from './Button';
 
 const styles = StyleSheet.create({
   header: {
     display: 'flex',
     alignItems: 'center',
-    background: '#333',
+    backgroundColor: '#333',
   },
   title: {
     margin: 0,
@@ -13,15 +14,14 @@ const styles = StyleSheet.create({
     padding: '5px 10px 10px',
   },
   menuButton: {
-    fontSize: '24px',
-    color: '#fcfcfc',
     marginLeft: 'auto',
     marginRight: '10px',
-    cursor: 'pointer',
+    fontSize: '24px',
+    color: '#fcfcfc',
     border: 'none',
-    background: 'transparent',
-    ':focus': {
-      outline: 0,
+    backgroundColor: 'transparent',
+    ':hover': {
+      backgroundColor: 'transparent',
     },
   },
 });
@@ -29,9 +29,13 @@ const styles = StyleSheet.create({
 const Header = () => (
   <div className={css(styles.header)}>
     <h1 className={css(styles.title)}>Bayes Editor</h1>
-    <button className={css(styles.menuButton)} type="button">
+    <Button
+      onClick={() => alert('menu')}
+      style={styles.menuButton}
+      title="Menu"
+    >
       <i className="fa fa-bars" />
-    </button>
+    </Button>
   </div>
 );
 
