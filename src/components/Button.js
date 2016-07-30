@@ -4,7 +4,7 @@ import { StyleSheet, css } from 'aphrodite';
 const styles = StyleSheet.create({
   button: {
     cursor: 'pointer',
-    fontSize: '18px',
+    fontSize: '1.2em',
     padding: '3px 10px',
     border: 'solid 1px #333',
     color: '#333',

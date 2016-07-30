@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   menuButton: {
     marginLeft: 'auto',
     marginRight: '10px',
-    fontSize: '24px',
+    fontSize: '1.6em',
     color: '#fcfcfc',
     border: 'none',
     backgroundColor: 'transparent',
