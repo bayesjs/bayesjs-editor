@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     alignItems: 'center',
-    background: 'linear-gradient(to bottom, #555, #111)',
+    background: '#333',
   },
   title: {
     margin: 0,
@@ -13,9 +13,16 @@ const styles = StyleSheet.create({
     padding: '5px 10px 10px',
   },
   menuButton: {
-    height: 30,
+    fontSize: '24px',
+    color: '#fcfcfc',
     marginLeft: 'auto',
     marginRight: '10px',
+    cursor: 'pointer',
+    border: 'none',
+    background: 'transparent',
+    ':focus': {
+      outline: 0,
+    },
   },
 });
 

@@ -7,6 +7,7 @@ import PropertiesPanel from './PropertiesPanel';
 const styles = StyleSheet.create({
   app: {
     fontFamily: 'Source Sans Pro',
+    fontSize: '16px',
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
