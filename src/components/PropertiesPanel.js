@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
+import Button from './Button';
 
 const styles = StyleSheet.create({
-  propertiesPanel: {
-    height: '100%',
+  panel: {
+    display: 'flex',
     position: 'relative',
-    transition: 'width 0.15s',
+    width: 50,
     borderLeft: 'solid 1px #333',
   },
-  propertiesPanelShown: {
-    width: 280,
+  panelShown: {
+    width: 300,
   },
-  propertiesPanelHidden: {
-    width: 0,
+  content: {
+    margin: '10px 50px 10px 10px',
+    overflow: 'auto',
+    flex: 1,
   },
   toggleButton: {
     position: 'absolute',
-    top: 5,
+    top: 10,
     right: 10,
+    height: 30,
+    whiteSpace: 'nowrap',
+    transform: 'translate(100%, 0%) rotate(90deg)',
+    transformOrigin: 'left top',
   },
 });
 
@@ -32,26 +39,14 @@ class PropertiesPanel extends Component {
 
   render() {
     return (
-      <div
-        className={css(styles.propertiesPanel,
-          this.state.showing ? (
-            styles.propertiesPanelShown
-          ) : (
-            styles.propertiesPanelHidden
-          )
-        )}
-      >
-        <button
-          className={css(styles.toggleButton)}
-          type="button"
-          onClick={this.handleToggleClick}
-        >
-          {this.state.showing ? (
-            <i className="fa fa-times" />
-          ) : (
-            <i className="fa fa-arrow-left" />
-          )}
-        </button>
+      <div className={css(styles.panel, this.state.showing && styles.panelShown)}>
+        <Button onClick={this.handleToggleClick} style={styles.toggleButton}>
+          <i className="fa fa-sliders" style={{ paddingRight: 10 }} />
+          Propriedades
+        </Button>
+        <div className={css(styles.content)}>
+          ...
+        </div>
       </div>
     );
   }
