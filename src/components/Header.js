@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   menuButton: {
+    padding: 0,
     marginLeft: 'auto',
     marginRight: 10,
     fontSize: '1.6em',
