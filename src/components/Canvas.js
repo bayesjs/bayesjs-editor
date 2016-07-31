@@ -1,33 +1,39 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
+import Node from './Node';
 
 const styles = StyleSheet.create({
-  container: {
+  scroll: {
     flex: 1,
     display: 'flex',
     background: '#ccc',
     overflow: 'auto',
-    padding: 10,
+  },
+  container: {
+    flexShrink: 0,
+    margin: 'auto',
   },
   canvas: {
-    margin: 'auto',
     border: 'solid 1px #333',
     backgroundColor: '#fcfcfc',
     boxShadow: '0px 0px 20px #333',
+    margin: 10,
   },
 });
 
 const Canvas = () => (
-  <div className={css(styles.container)}>
-    <svg
-      className={css(styles.canvas)}
-      height="400"
-      width="600"
-    >
-      <rect x="70" y="50" height="70" width="120" fill="#dd8" stroke="black" />
-      <rect x="270" y="80" height="70" width="120" fill="#dd8" stroke="black" />
-      <rect x="200" y="230" height="70" width="120" fill="#dd8" stroke="black" />
-    </svg>
+  <div className={css(styles.scroll)}>
+    <div className={css(styles.container)}>
+      <svg
+        className={css(styles.canvas)}
+        height="400"
+        width="600"
+      >
+        <Node x="70" y="50" />
+        <Node x="270" y="80" />
+        <Node x="200" y="230" />
+      </svg>
+    </div>
   </div>
 );
 
