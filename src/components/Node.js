@@ -25,6 +25,7 @@ const Node = props => (
       width="160"
       fill="#ff8"
       stroke="#333"
+      ref={props.rectRef}
     />
 
     <text x="5" y="15">{props.id}</text>
@@ -36,8 +37,9 @@ const Node = props => (
 
 Node.propTypes = {
   id: PropTypes.string.isRequired,
-  onMouseDown: PropTypes.func,
   states: PropTypes.arrayOf(PropTypes.string).isRequired,
+  rectRef: PropTypes.func,
+  onMouseDown: PropTypes.func,
   x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
