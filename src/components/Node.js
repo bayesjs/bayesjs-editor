@@ -4,6 +4,7 @@ import { StyleSheet, css } from 'aphrodite';
 const styles = StyleSheet.create({
   node: {
     cursor: 'move',
+    userSelect: 'none',
   },
 });
 
