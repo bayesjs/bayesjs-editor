@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { StyleSheet, css } from 'aphrodite';
+import { connect } from 'react-redux';
 import Node from './Node';
+import { changeNodePosition } from '../actions';
+import { getNodes } from '../selectors';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -21,39 +24,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const nodes = [
-  {
-    id: 'RAIN',
-    states: ['T', 'F'],
-    parents: [],
-    position: { x: 395, y: 80 },
-  },
-  {
-    id: 'SPRINKLER',
-    states: ['T', 'F'],
-    parents: ['RAIN'],
-    position: { x: 160, y: 90 },
-  },
-  {
-    id: 'GRASS_WET',
-    states: ['T', 'F'],
-    parents: ['RAIN', 'SPRINKLER'],
-    position: { x: 230, y: 235 },
-  },
-];
-
-let arrows = [];
-
 class Canvas extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      arrows: [],
+    };
+
     this.movingNode = null;
     this.rectRefs = {};
   }
 
   componentDidMount() {
     this.calculateArrows();
-    this.forceUpdate();
   }
 
   calculateArrows = () => {
@@ -110,19 +94,23 @@ class Canvas extends Component {
       return { p1, p2 };
     };
 
-    arrows = [];
+    const { nodes } = this.props;
+    const arrows = [];
 
     nodes.forEach(node => {
-      node.parents.forEach(parent => {
-        const points = getNearestPoints(nodes.find(x => x.id === parent), node);
+      node.parents.forEach(parentId => {
+        const parent = nodes.find(x => x.id === parentId);
+        const points = getNearestPoints(parent, node);
 
         arrows.push({
-          key: `${parent}-${node.id}`,
+          key: `${parentId}-${node.id}`,
           from: points.p1,
           to: points.p2,
         });
       });
     });
+
+    this.setState({ arrows });
   };
 
   handleNodeMouseDown = (node, e) => {
@@ -152,13 +140,9 @@ class Canvas extends Component {
     const newX = initialPosition.x + difX;
     const newY = initialPosition.y + difY;
 
-    nodes.find(x => x.id === id).position = {
-      x: newX,
-      y: newY,
-    };
+    this.props.dispatch(changeNodePosition(id, newX, newY));
 
     this.calculateArrows();
-    this.forceUpdate();
   };
 
   handleMouseUpOrLeave = () => {
@@ -244,8 +228,8 @@ class Canvas extends Component {
             width="800"
           >
             {this.renderDefs()}
-            {arrows.map(this.renderArrow)}
-            {nodes.map(this.renderNode)}
+            {this.state.arrows.map(this.renderArrow)}
+            {this.props.nodes.map(this.renderNode)}
           </svg>
         </div>
       </div>
@@ -253,4 +237,13 @@ class Canvas extends Component {
   }
 }
 
-export default Canvas;
+Canvas.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  nodes: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = state => ({
+  nodes: getNodes(state),
+});
+
+export default connect(mapStateToProps)(Canvas);
