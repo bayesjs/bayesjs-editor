@@ -3,7 +3,7 @@ import { StyleSheet, css } from 'aphrodite';
 import { connect } from 'react-redux';
 import Node from './Node';
 import { changeNodePosition } from '../actions';
-import { getNodes } from '../selectors';
+import { getNodes, getInferenceResults } from '../selectors';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -206,6 +206,7 @@ class Canvas extends Component {
       key={node.id}
       id={node.id}
       states={node.states}
+      results={this.props.inferenceResults[node.id]}
       rectRef={ref => {
         this.rectRefs[node.id] = ref;
       }}
@@ -240,10 +241,12 @@ class Canvas extends Component {
 Canvas.propTypes = {
   dispatch: PropTypes.func.isRequired,
   nodes: PropTypes.array.isRequired,
+  inferenceResults: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   nodes: getNodes(state),
+  inferenceResults: getInferenceResults(state),
 });
 
 export default connect(mapStateToProps)(Canvas);
