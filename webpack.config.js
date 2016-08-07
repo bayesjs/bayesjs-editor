@@ -19,6 +19,21 @@ const pluginsProd = [
   }),
 ];
 
+const globalCssFiles = /font-awesome|normalize\.css/;
+
+const getCssModulesParams = () => {
+  const options = [];
+
+  options.push('modules');
+  options.push('camelCase=dashes');
+
+  if (!isProd) {
+    options.push('localIdentName=[local]__[path][name]__[hash:base64:5]');
+  }
+
+  return `?${options.join('&')}`;
+};
+
 module.exports = {
   devtool: isProd ? false : 'eval-source-map',
   entry: {
@@ -31,10 +46,29 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel', include: srcPath },
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
-      { test: /\.json$/, loader: 'json' },
-      { test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?v=.+)?$/, loader: 'url?limit=8192' },
+      {
+        test: /\.js$/,
+        loader: 'babel',
+        include: srcPath,
+      },
+      {
+        test: /\.css$/,
+        include: globalCssFiles,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+      },
+      {
+        test: /\.css$/,
+        exclude: globalCssFiles,
+        loader: ExtractTextPlugin.extract('style-loader', `css-loader${getCssModulesParams()}`),
+      },
+      {
+        test: /\.json$/,
+        loader: 'json',
+      },
+      {
+        test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?v=.+)?$/,
+        loader: 'url?limit=8192',
+      },
     ],
   },
   plugins: [

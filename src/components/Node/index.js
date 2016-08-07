@@ -1,12 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, css } from 'aphrodite';
-
-const styles = StyleSheet.create({
-  node: {
-    cursor: 'move',
-    userSelect: 'none',
-  },
-});
+import styles from './styles.css';
 
 class Node extends Component {
   renderState = (state, index) => (
@@ -21,7 +14,7 @@ class Node extends Component {
   render() {
     return (
       <g
-        className={css(styles.node)}
+        className={styles.node}
         onMouseDown={this.props.onMouseDown}
         transform={`translate(${this.props.x} ${this.props.y})`}
       >

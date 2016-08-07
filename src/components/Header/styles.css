@@ -1,0 +1,26 @@
+.header {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background-color: #333;
+}
+
+.title {
+  margin: 0;
+  color: #fcfcfc;
+  padding-left: 10px;
+}
+
+.menu-button {
+  padding: 0;
+  margin-left: auto;
+  margin-right: 10px;
+  font-size: 1.6em;
+  color: #fcfcfc;
+  border: none;
+  background-color: transparent;
+}
+
+.menu-button:hover {
+  background-color: transparent;
+}

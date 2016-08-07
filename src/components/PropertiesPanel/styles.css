@@ -1,0 +1,30 @@
+.panel {
+  display: flex;
+  position: relative;
+  width: 50px;
+  border-left: solid 1px #333;
+}
+
+.panel-shown {
+  width: 300px;
+}
+
+.content {
+  margin: 10px 50px 10px 10px;
+  overflow: auto;
+  flex: 1;
+}
+
+.toggle-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 30px;
+  white-space: nowrap;
+  transform: translate(100%, 0%) rotate(90deg);
+  transform-origin: left top;
+}
+
+.toggle-button > i {
+  padding-right: 10px;
+}

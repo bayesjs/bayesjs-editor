@@ -1,28 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, css } from 'aphrodite';
 import { connect } from 'react-redux';
-import Node from './Node';
-import { changeNodePosition } from '../actions';
-import { getNodes, getInferenceResults } from '../selectors';
-
-const styles = StyleSheet.create({
-  scroll: {
-    flex: 1,
-    display: 'flex',
-    background: '#ccc',
-    overflow: 'auto',
-  },
-  container: {
-    flexShrink: 0,
-    margin: 'auto',
-  },
-  canvas: {
-    border: 'solid 1px #333',
-    backgroundColor: '#fcfcfc',
-    boxShadow: '0px 0px 20px #333',
-    margin: 10,
-  },
-});
+import { changeNodePosition } from '../../actions';
+import { getNodes, getInferenceResults } from '../../selectors';
+import Node from '../Node';
+import styles from './styles.css';
 
 class Canvas extends Component {
   constructor(props) {
@@ -218,10 +199,10 @@ class Canvas extends Component {
 
   render() {
     return (
-      <div className={css(styles.scroll)}>
-        <div className={css(styles.container)}>
+      <div className={styles.scroll}>
+        <div className={styles.container}>
           <svg
-            className={css(styles.canvas)}
+            className={styles.canvas}
             onMouseMove={this.handleMouseMove}
             onMouseUp={this.handleMouseUpOrLeave}
             onMouseLeave={this.handleMouseUpOrLeave}

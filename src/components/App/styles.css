@@ -1,0 +1,10 @@
+.app {
+  font-family: Source Sans Pro;
+  font-size: 16px;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  height: calc(100vh - 50px);
+}
