@@ -1,11 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
+const cssnext = require('postcss-cssnext');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 const srcPath = path.join(__dirname, 'src');
 const distPath = path.join(__dirname, 'dist');
+const nodeModulesPath = path.join(__dirname, 'node_modules');
 
 const pluginsDev = [];
 const pluginsProd = [
@@ -19,13 +21,12 @@ const pluginsProd = [
   }),
 ];
 
-const globalCssFiles = /font-awesome|normalize\.css/;
-
 const getCssModulesParams = () => {
   const options = [];
 
   options.push('modules');
   options.push('camelCase=dashes');
+  options.push('importLoaders=1');
 
   if (!isProd) {
     options.push('localIdentName=[local]__[path][name]__[hash:base64:5]');
@@ -53,13 +54,13 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: globalCssFiles,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+        include: nodeModulesPath,
+        loader: ExtractTextPlugin.extract('style', 'css'),
       },
       {
         test: /\.css$/,
-        exclude: globalCssFiles,
-        loader: ExtractTextPlugin.extract('style-loader', `css-loader${getCssModulesParams()}`),
+        exclude: nodeModulesPath,
+        loader: ExtractTextPlugin.extract('style', `css${getCssModulesParams()}!postcss`),
       },
       {
         test: /\.json$/,
@@ -80,4 +81,5 @@ module.exports = {
       favicon: path.join(srcPath, 'favicon.ico'),
     }),
   ].concat(isProd ? pluginsProd : pluginsDev),
+  postcss: () => [cssnext],
 };
