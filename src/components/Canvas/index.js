@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { changeNodePosition } from '../../actions';
+import { changeNetworkProperty, changeNodePosition } from '../../actions';
 import { getNetwork, getNodes, getInferenceResults } from '../../selectors';
 import Node from '../Node';
 import styles from './styles.css';
@@ -106,6 +106,12 @@ class Canvas extends Component {
         y: e.clientY,
       },
     };
+
+    this.props.dispatch(changeNetworkProperty('selectedNodes', [node.id]));
+  };
+
+  handleMouseDownCapture = () => {
+    this.props.dispatch(changeNetworkProperty('selectedNodes', []));
   };
 
   handleMouseMove = e => {
@@ -188,6 +194,7 @@ class Canvas extends Component {
       id={node.id}
       states={node.states}
       results={this.props.inferenceResults[node.id]}
+      selected={this.props.network.selectedNodes.some(x => x === node.id)}
       rectRef={ref => {
         this.rectRefs[node.id] = ref;
       }}
@@ -203,6 +210,7 @@ class Canvas extends Component {
         <div className={styles.container}>
           <svg
             className={styles.canvas}
+            onMouseDownCapture={this.handleMouseDownCapture}
             onMouseMove={this.handleMouseMove}
             onMouseUp={this.handleMouseUpOrLeave}
             onMouseLeave={this.handleMouseUpOrLeave}

@@ -23,6 +23,7 @@ class Node extends Component {
           width="160"
           fill="#ff8"
           stroke="#333"
+          strokeWidth={this.props.selected ? 3 : 1}
           ref={this.props.rectRef}
         />
 
@@ -39,6 +40,7 @@ Node.propTypes = {
   id: PropTypes.string.isRequired,
   states: PropTypes.arrayOf(PropTypes.string).isRequired,
   results: PropTypes.object.isRequired,
+  selected: PropTypes.bool.isRequired,
   rectRef: PropTypes.func,
   onMouseDown: PropTypes.func,
   x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,

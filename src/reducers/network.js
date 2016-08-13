@@ -4,6 +4,7 @@ const initialState = {
   name: 'Rede Bayesiana',
   height: 500,
   width: 800,
+  selectedNodes: [],
 };
 
 export default (state = initialState, action) => {
