@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { changeNodePosition } from '../../actions';
-import { getNodes, getInferenceResults } from '../../selectors';
+import { getNetwork, getNodes, getInferenceResults } from '../../selectors';
 import Node from '../Node';
 import styles from './styles.css';
 
@@ -206,8 +206,8 @@ class Canvas extends Component {
             onMouseMove={this.handleMouseMove}
             onMouseUp={this.handleMouseUpOrLeave}
             onMouseLeave={this.handleMouseUpOrLeave}
-            height="500"
-            width="800"
+            height={this.props.network.height}
+            width={this.props.network.width}
           >
             {this.renderDefs()}
             {this.state.arrows.map(this.renderArrow)}
@@ -221,11 +221,13 @@ class Canvas extends Component {
 
 Canvas.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  network: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   inferenceResults: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
+  network: getNetwork(state),
   nodes: getNodes(state),
   inferenceResults: getInferenceResults(state),
 });

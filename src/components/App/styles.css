@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .app {
   font-family: Source Sans Pro;
   font-size: 16px;

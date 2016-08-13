@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { addNode, infer } from 'bayesjs';
 
+export const getNetwork = state => state.network;
 export const getNodes = state => state.nodes;
 
 export const getInferenceResults = createSelector(

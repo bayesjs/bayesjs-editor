@@ -10,9 +10,24 @@
 }
 
 .content {
-  margin: 10px 50px 10px 10px;
+  margin: 10px 60px 10px 10px;
   overflow: auto;
   flex: 1;
+}
+
+.content h2 {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.content label {
+  display: block;
+}
+
+.content input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .toggle-button {
