@@ -8,7 +8,7 @@ const Header = () => (
     <Button
       title="Menu"
       className={styles.menuButton}
-      onClick={() => alert('menu')}
+      onClick={() => alert('¯\\_(ツ)_/¯')}
     >
       <i className="fa fa-bars" />
     </Button>
