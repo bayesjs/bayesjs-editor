@@ -4,6 +4,18 @@ import { addNode, infer } from 'bayesjs';
 export const getNetwork = state => state.network;
 export const getNodes = state => state.nodes;
 
+export const getSelectedNode = createSelector(
+  getNetwork,
+  getNodes,
+  (network, nodes) => {
+    if (network.selectedNodes.length !== 1) {
+      return null;
+    }
+
+    return nodes.find(x => x.id === network.selectedNodes[0]);
+  },
+);
+
 export const getInferenceResults = createSelector(
   getNodes,
   nodes => {

@@ -1,4 +1,4 @@
-import { CHANGE_NETWORK_PROPERTY } from '../actions';
+import { CHANGE_NETWORK_PROPERTY, CHANGE_NODE_ID } from '../actions';
 
 const initialState = {
   name: 'Rede Bayesiana',
@@ -13,6 +13,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         [action.payload.name]: action.payload.value,
+      };
+    case CHANGE_NODE_ID:
+      return {
+        ...state,
+        selectedNodes: state.selectedNodes.map(x =>
+          (x === action.payload.id ? action.payload.nextId : x)
+        ),
       };
     default:
       return state;

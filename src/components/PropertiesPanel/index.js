@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { changeNetworkProperty } from '../../actions';
-import { getNetwork } from '../../selectors';
+import { changeNetworkProperty, changeNodeId } from '../../actions';
+import { getNetwork, getSelectedNode } from '../../selectors';
 import classNames from 'classnames';
 import Button from '../Button';
 import styles from './styles.css';
@@ -15,13 +15,13 @@ class PropertiesPanel extends Component {
     this.setState({ showing: !this.state.showing });
   };
 
-  handleNameBlur = e => {
+  handleNetworkNameBlur = e => {
     const name = e.target.id;
     const value = e.target.value;
     this.props.dispatch(changeNetworkProperty(name, value));
   };
 
-  handleSizeBlur = e => {
+  handleNetworkSizeBlur = e => {
     const input = e.target;
     const name = input.id;
     const value = parseInt(input.value, 10);
@@ -33,17 +33,23 @@ class PropertiesPanel extends Component {
     }
   };
 
+  handleNodeNameBlur = e => {
+    const id = this.props.selectedNode.id;
+    const nextId = e.target.value;
+    this.props.dispatch(changeNodeId(id, nextId));
+  }
+
   renderNetworkProperties() {
     return (
       <div>
-        <h2>Rede Bayesiana</h2>
+        <h2>Propriedades da Rede</h2>
 
         <label htmlFor="name">Nome</label>
         <input
           id="name"
           type="text"
           defaultValue={this.props.network.name}
-          onBlur={this.handleNameBlur}
+          onBlur={this.handleNetworkNameBlur}
         />
 
         <label htmlFor="height">Altura</label>
@@ -51,7 +57,7 @@ class PropertiesPanel extends Component {
           id="height"
           type="text"
           defaultValue={this.props.network.height}
-          onBlur={this.handleSizeBlur}
+          onBlur={this.handleNetworkSizeBlur}
         />
 
         <label htmlFor="width">Largura</label>
@@ -59,7 +65,25 @@ class PropertiesPanel extends Component {
           id="width"
           type="text"
           defaultValue={this.props.network.width}
-          onBlur={this.handleSizeBlur}
+          onBlur={this.handleNetworkSizeBlur}
+        />
+      </div>
+    );
+  }
+
+  renderSelectedNodeProperties() {
+    const node = this.props.selectedNode;
+
+    return (
+      <div key={node.id}>
+        <h2>Propriedades da Variável</h2>
+
+        <label htmlFor="name">Nome</label>
+        <input
+          id="name"
+          type="text"
+          defaultValue={node.id}
+          onBlur={this.handleNodeNameBlur}
         />
       </div>
     );
@@ -80,7 +104,11 @@ class PropertiesPanel extends Component {
           <i className="fa fa-sliders" />Propriedades
         </Button>
         <div className={styles.content}>
-          {this.renderNetworkProperties()}
+          {this.props.selectedNode === null ? (
+            this.renderNetworkProperties()
+          ) : (
+            this.renderSelectedNodeProperties()
+          )}
         </div>
       </div>
     );
@@ -90,10 +118,12 @@ class PropertiesPanel extends Component {
 PropertiesPanel.propTypes = {
   dispatch: PropTypes.func.isRequired,
   network: PropTypes.object.isRequired,
+  selectedNode: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   network: getNetwork(state),
+  selectedNode: getSelectedNode(state),
 });
 
 export default connect(mapStateToProps)(PropertiesPanel);
