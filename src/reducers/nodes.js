@@ -7,6 +7,16 @@ const nodeReducer = (node, action) => {
       parents: node.parents.map(x =>
         (x === action.payload.id ? action.payload.nextId : x)
       ),
+      cpt: node.cpt.map(row => {
+        const when = {
+          ...row.when,
+          [action.payload.nextId]: row.when[action.payload.id],
+        };
+
+        delete when[action.payload.id];
+
+        return { ...row, when };
+      }),
     };
   }
 
