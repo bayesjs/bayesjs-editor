@@ -95,6 +95,8 @@ class Canvas extends Component {
   };
 
   handleNodeMouseDown = (node, e) => {
+    e.stopPropagation();
+
     this.movingNode = {
       id: node.id,
       initialPosition: {
@@ -110,8 +112,11 @@ class Canvas extends Component {
     this.props.dispatch(changeNetworkProperty('selectedNodes', [node.id]));
   };
 
-  handleMouseDownCapture = () => {
-    this.props.dispatch(changeNetworkProperty('selectedNodes', []));
+  handleMouseDown = () => {
+    // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
+    setTimeout(() => {
+      this.props.dispatch(changeNetworkProperty('selectedNodes', []));
+    }, 0);
   };
 
   handleMouseMove = e => {
@@ -210,7 +215,7 @@ class Canvas extends Component {
         <div className={styles.container}>
           <svg
             className={styles.canvas}
-            onMouseDownCapture={this.handleMouseDownCapture}
+            onMouseDown={this.handleMouseDown}
             onMouseMove={this.handleMouseMove}
             onMouseUp={this.handleMouseUpOrLeave}
             onMouseLeave={this.handleMouseUpOrLeave}
