@@ -28,7 +28,30 @@
 .content input {
   display: block;
   width: 100%;
-  margin-bottom: 10px;
+}
+
+.content button {
+  font-size: 1em;
+}
+
+.content ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.field-wrapper {
+  padding: 10px 0px;
+}
+
+.cpt {
+  border-collapse: separate;
+  border-spacing: 0px;
+  margin: 10px 0px;
+  width: 100%;
+}
+
+.cpt th {
+  text-align: left;
 }
 
 .toggle-button {
