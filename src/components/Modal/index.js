@@ -36,6 +36,7 @@ const Modal = ({
       <i
         onClick={onRequestClose}
         className={classNames(['fa', 'fa-times', styles.closeButton])}
+        title="Fechar"
       />
     </div>
 
