@@ -1,0 +1,14 @@
+.header {
+  background-color: #333;
+  color: #fcfcfc;
+  padding: 5px 10px;
+}
+
+.close-button {
+  float: right;
+  cursor: pointer;
+}
+
+.body {
+  padding: 5px 10px;
+}
