@@ -4,11 +4,13 @@ import { changeNetworkProperty, changeNodeId } from '../../actions';
 import { getNetwork, getSelectedNode } from '../../selectors';
 import classNames from 'classnames';
 import Button from '../Button';
+import EditStates from '../EditStates';
 import styles from './styles.css';
 
 class PropertiesPanel extends Component {
   state = {
     showing: true,
+    editingNodeStates: null,
   };
 
   handleToggleClick = () => {
@@ -165,7 +167,9 @@ class PropertiesPanel extends Component {
               <li key={state}>{state}</li>
             ))}
           </ul>
-          <Button onClick={() => alert('¯\\_(ツ)_/¯')}>Editar</Button>
+          <Button onClick={() => this.setState({ editingNodeStates: node })}>
+            Editar
+          </Button>
         </div>
 
         <div className={styles.fieldWrapper}>
@@ -175,9 +179,10 @@ class PropertiesPanel extends Component {
           ) : (
             this.renderCptWithParents(node.cpt)
           )}
-          <Button onClick={() => alert('¯\\_(ツ)_/¯')}>Editar</Button>
+          <Button onClick={() => alert('¯\\_(ツ)_/¯')}>
+            Editar
+          </Button>
         </div>
-
       </div>
     );
   }
@@ -196,6 +201,7 @@ class PropertiesPanel extends Component {
         >
           <i className="fa fa-sliders" />Propriedades
         </Button>
+
         <div className={styles.content}>
           {this.props.selectedNode === null ? (
             this.renderNetworkProperties()
@@ -203,6 +209,11 @@ class PropertiesPanel extends Component {
             this.renderSelectedNodeProperties()
           )}
         </div>
+
+        <EditStates
+          node={this.state.editingNodeStates}
+          onRequestClose={() => this.setState({ editingNodeStates: null })}
+        />
       </div>
     );
   }
