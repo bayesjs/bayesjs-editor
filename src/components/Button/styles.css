@@ -1,6 +1,6 @@
 .button {
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1em;
   padding: 3px 10px;
   border: solid 1px #333;
   color: #333;
@@ -14,4 +14,9 @@
 
 .button:focus {
   outline: 0;
+}
+
+.button.primary {
+  color: #fcfcfc;
+  background-color: #333;
 }
