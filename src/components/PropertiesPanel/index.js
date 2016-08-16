@@ -179,7 +179,7 @@ class PropertiesPanel extends Component {
           ) : (
             this.renderCptWithParents(node.cpt)
           )}
-          <Button onClick={() => alert('¯\\_(ツ)_/¯')}>
+          <Button onClick={() => console.log('¯\\_(ツ)_/¯')}>
             Editar
           </Button>
         </div>
