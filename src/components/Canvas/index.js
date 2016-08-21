@@ -245,4 +245,4 @@ const mapStateToProps = state => ({
   inferenceResults: getInferenceResults(state),
 });
 
-export default connect(mapStateToProps)(Canvas);
+export default connect(mapStateToProps, null, null, { withRef: true })(Canvas);

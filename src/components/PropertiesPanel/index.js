@@ -212,7 +212,10 @@ class PropertiesPanel extends Component {
 
         <EditStates
           node={this.state.editingNodeStates}
-          onRequestClose={() => this.setState({ editingNodeStates: null })}
+          onRequestClose={() => {
+            this.setState({ editingNodeStates: null });
+            this.props.onRequestRedraw();
+          }}
         />
       </div>
     );
@@ -223,6 +226,7 @@ PropertiesPanel.propTypes = {
   dispatch: PropTypes.func.isRequired,
   network: PropTypes.object.isRequired,
   selectedNode: PropTypes.object,
+  onRequestRedraw: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
