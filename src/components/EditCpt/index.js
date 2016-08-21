@@ -44,6 +44,31 @@ class EditCpt extends Component {
     }
   };
 
+  handleCptWithParentsBlur = (e, state, index) => {
+    const input = e.target;
+    const value = parseFloat(input.value.replace(',', '.'));
+
+    if (isNaN(value)) {
+      input.value = this.state.cpt[index].then[state];
+    } else {
+      const nextCpt = this.state.cpt.map((row, rowIndex) => {
+        if (rowIndex !== index) {
+          return row;
+        }
+
+        return {
+          ...row,
+          then: {
+            ...row.then,
+            [state]: value,
+          },
+        };
+      });
+
+      this.setState({ cpt: nextCpt });
+    }
+  };
+
   handleSaveWithoutParents = () => {
     const { cpt } = this.state;
     const states = Object.keys(cpt);
@@ -51,7 +76,7 @@ class EditCpt extends Component {
     const sum = states.reduce((acc, x) => acc + cpt[x], 0);
 
     if (sum !== 1) {
-      alert('A soma das probabilidades deve ser igual a 1.');
+      alert('A soma das probabilidades deve ser igual a 1');
       return;
     }
 
@@ -60,7 +85,20 @@ class EditCpt extends Component {
   };
 
   handleSaveWithParents = () => {
-    console.log('salvar');
+    const { cpt } = this.state;
+
+    for (let i = 0; i < cpt.length; i++) {
+      const states = Object.keys(cpt[i].then);
+      const sum = states.reduce((acc, x) => acc + cpt[i].then[x], 0);
+
+      if (sum !== 1) {
+        alert('A soma das probabilidades para cada uma das linhas deve ser igual a 1');
+        return;
+      }
+    }
+
+    this.props.dispatch(changeNodeCpt(this.props.node.id, cpt));
+    this.props.onRequestClose();
   };
 
   renderCptWithoutParents() {
@@ -93,8 +131,46 @@ class EditCpt extends Component {
   }
 
   renderCptWithParents() {
+    const { cpt } = this.state;
+    const parents = Object.keys(cpt[0].when);
+    const states = Object.keys(cpt[0].then);
+
+    const firstStateCellStyle = {
+      borderLeft: 'solid 3px black',
+    };
+
     return (
-      <h1>CPT</h1>
+      <table className={styles.cpt}>
+        <thead>
+          <tr>
+            {parents.map(parent => (
+              <th key={parent}>{parent}</th>
+            ))}
+            {states.map((state, stateIndex) => (
+              <th key={state} style={stateIndex === 0 ? firstStateCellStyle : null}>
+                {state}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {cpt.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {parents.map(parent => (
+                <td key={parent}>{row.when[parent]}</td>
+              ))}
+              {states.map((state, stateIndex) => (
+                <td key={state} style={stateIndex === 0 ? firstStateCellStyle : null}>
+                  <input
+                    defaultValue={row.then[state]}
+                    onBlur={e => this.handleCptWithParentsBlur(e, state, rowIndex)}
+                  />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     );
   }
 
