@@ -1,16 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import { changeNetworkProperty, changeNodeId } from '../../actions';
 import { getNetwork, getSelectedNode } from '../../selectors';
-import classNames from 'classnames';
-import Button from '../Button';
 import EditStates from '../EditStates';
+import EditCpt from '../EditCpt';
+import Button from '../Button';
 import styles from './styles.css';
 
 class PropertiesPanel extends Component {
   state = {
     showing: true,
     editingNodeStates: null,
+    editingNodeCpt: null,
   };
 
   handleToggleClick = () => {
@@ -179,7 +181,7 @@ class PropertiesPanel extends Component {
           ) : (
             this.renderCptWithParents(node.cpt)
           )}
-          <Button onClick={() => console.log('¯\\_(ツ)_/¯')}>
+          <Button onClick={() => this.setState({ editingNodeCpt: node })}>
             Editar
           </Button>
         </div>
@@ -216,6 +218,11 @@ class PropertiesPanel extends Component {
             this.setState({ editingNodeStates: null });
             this.props.onRequestRedraw();
           }}
+        />
+
+        <EditCpt
+          node={this.state.editingNodeCpt}
+          onRequestClose={() => this.setState({ editingNodeCpt: null })}
         />
       </div>
     );

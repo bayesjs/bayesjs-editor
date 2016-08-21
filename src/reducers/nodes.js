@@ -2,6 +2,7 @@ import {
   CHANGE_NODE_ID,
   CHANGE_NODE_POSITION,
   CHANGE_NODE_STATES,
+  CHANGE_NODE_CPT,
 } from '../actions';
 
 const arrayEqual = (arr1, arr2) => {
@@ -199,6 +200,11 @@ const nodeReducer = (node, action) => {
       };
     case CHANGE_NODE_STATES:
       return changeNodeStates(node, action.payload.states);
+    case CHANGE_NODE_CPT:
+      return {
+        ...node,
+        cpt: action.payload.cpt,
+      };
     default:
       return node;
   }
@@ -209,6 +215,7 @@ export default (state = [], action) => {
     case CHANGE_NODE_ID:
     case CHANGE_NODE_POSITION:
     case CHANGE_NODE_STATES:
+    case CHANGE_NODE_CPT:
       return state.map(node => nodeReducer(node, action));
     default:
       return state;

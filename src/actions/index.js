@@ -4,6 +4,7 @@ export const CHANGE_NETWORK_PROPERTY = 'CHANGE_NETWORK_PROPERTY';
 export const CHANGE_NODE_ID = 'CHANGE_NODE_ID';
 export const CHANGE_NODE_POSITION = 'CHANGE_NODE_POSITION';
 export const CHANGE_NODE_STATES = 'CHANGE_NODE_STATES';
+export const CHANGE_NODE_CPT = 'CHANGE_NODE_CPT';
 
 export const changeNetworkProperty = (name, value) => ({
   type: CHANGE_NETWORK_PROPERTY,
@@ -23,4 +24,9 @@ export const changeNodePosition = (id, x, y) => ({
 export const changeNodeStates = (id, states) => (dispatch, getState) => dispatch({
   type: CHANGE_NODE_STATES,
   payload: { id, states, nodes: getNodes(getState()) },
+});
+
+export const changeNodeCpt = (id, cpt) => ({
+  type: CHANGE_NODE_CPT,
+  payload: { id, cpt },
 });
