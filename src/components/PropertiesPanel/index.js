@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { changeNetworkProperty, changeNodeId } from '../../actions';
 import { getNetwork, getSelectedNode } from '../../selectors';
-import EditStates from '../EditStates';
-import EditCpt from '../EditCpt';
+import EditStatesModal from '../EditStatesModal';
+import EditCptModal from '../EditCptModal';
 import Button from '../Button';
 import styles from './styles.css';
 
@@ -212,7 +212,7 @@ class PropertiesPanel extends Component {
           )}
         </div>
 
-        <EditStates
+        <EditStatesModal
           node={this.state.editingNodeStates}
           onRequestClose={() => {
             this.setState({ editingNodeStates: null });
@@ -220,7 +220,7 @@ class PropertiesPanel extends Component {
           }}
         />
 
-        <EditCpt
+        <EditCptModal
           node={this.state.editingNodeCpt}
           onRequestClose={() => this.setState({ editingNodeCpt: null })}
         />

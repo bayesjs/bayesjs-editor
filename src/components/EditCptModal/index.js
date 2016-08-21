@@ -5,7 +5,7 @@ import Modal from '../Modal';
 import Button from '../Button';
 import styles from './styles.css';
 
-class EditCpt extends Component {
+class EditCptModal extends Component {
   state = {
     cpt: null,
   };
@@ -222,10 +222,10 @@ class EditCpt extends Component {
   }
 }
 
-EditCpt.propTypes = {
+EditCptModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
   node: PropTypes.object,
   onRequestClose: PropTypes.func.isRequired,
 };
 
-export default connect()(EditCpt);
+export default connect()(EditCptModal);

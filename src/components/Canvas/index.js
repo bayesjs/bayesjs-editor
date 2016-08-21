@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { persistState, changeNetworkProperty, changeNodePosition } from '../../actions';
 import { getNetwork, getNodes, getInferenceResults } from '../../selectors';
-import AddNode from '../AddNode';
+import AddNodeModal from '../AddNodeModal';
 import Node from '../Node';
 import styles from './styles.css';
 
@@ -243,7 +243,7 @@ class Canvas extends Component {
             {this.props.nodes.map(this.renderNode)}
           </svg>
 
-          <AddNode
+          <AddNodeModal
             position={this.state.newNodePosition}
             onRequestClose={() => this.setState({ newNodePosition: null })}
           />

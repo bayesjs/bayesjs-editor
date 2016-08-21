@@ -6,7 +6,7 @@ import Modal from '../Modal';
 import Button from '../Button';
 import styles from './styles.css';
 
-class EditStates extends Component {
+class EditStatesModal extends Component {
   state = {
     states: [],
   };
@@ -74,10 +74,10 @@ class EditStates extends Component {
   }
 }
 
-EditStates.propTypes = {
+EditStatesModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
   node: PropTypes.object,
   onRequestClose: PropTypes.func.isRequired,
 };
 
-export default connect()(EditStates);
+export default connect()(EditStatesModal);

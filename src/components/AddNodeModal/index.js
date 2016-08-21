@@ -11,7 +11,7 @@ const initialState = {
   states: ['T', 'F'],
 };
 
-class AddNode extends Component {
+class AddNodeModal extends Component {
   state = initialState;
 
   componentWillReceiveProps(nextProps) {
@@ -104,10 +104,10 @@ class AddNode extends Component {
   }
 }
 
-AddNode.propTypes = {
+AddNodeModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
   position: PropTypes.object,
   onRequestClose: PropTypes.func.isRequired,
 };
 
-export default connect()(AddNode);
+export default connect()(AddNodeModal);
