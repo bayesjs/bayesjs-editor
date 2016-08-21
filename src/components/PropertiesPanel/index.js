@@ -94,7 +94,7 @@ class PropertiesPanel extends Component {
         <tbody>
           <tr>
             {states.map(state => (
-              <td key={state}>{cpt[state]}</td>
+              <td key={state}>{cpt[state].toFixed(2)}</td>
             ))}
           </tr>
         </tbody>
@@ -133,7 +133,7 @@ class PropertiesPanel extends Component {
               ))}
               {states.map((state, stateIndex) => (
                 <td key={state} style={stateIndex === 0 ? firstStateCellStyle : null}>
-                  {row.then[state]}
+                  {row.then[state].toFixed(2)}
                 </td>
               ))}
             </tr>
