@@ -1,4 +1,5 @@
 import {
+  ADD_NODE,
   CHANGE_NODE_ID,
   CHANGE_NODE_POSITION,
   CHANGE_NODE_STATES,
@@ -210,8 +211,29 @@ const nodeReducer = (node, action) => {
   }
 };
 
+const newNode = ({ id, states, position }) => {
+  const cpt = {};
+
+  states.forEach(state => {
+    cpt[state] = 1 / states.length;
+  });
+
+  return ({
+    id,
+    states,
+    parents: [],
+    position,
+    cpt,
+  });
+};
+
 export default (state = [], action) => {
   switch (action.type) {
+    case ADD_NODE:
+      return [
+        ...state,
+        newNode(action.payload),
+      ];
     case CHANGE_NODE_ID:
     case CHANGE_NODE_POSITION:
     case CHANGE_NODE_STATES:

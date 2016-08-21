@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { persistState, changeNetworkProperty, changeNodePosition } from '../../actions';
 import { getNetwork, getNodes, getInferenceResults } from '../../selectors';
+import AddNode from '../AddNode';
 import Node from '../Node';
 import styles from './styles.css';
 
@@ -11,6 +12,7 @@ class Canvas extends Component {
 
     this.state = {
       arrows: [],
+      newNodePosition: null,
     };
 
     this.movingNode = null;
@@ -112,7 +114,18 @@ class Canvas extends Component {
     this.props.dispatch(changeNetworkProperty('selectedNodes', [node.id]));
   };
 
-  handleMouseDown = () => {
+  handleMouseDown = e => {
+    if (e.button === 2) {
+      const rect = this.canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Temporary, should show context menu
+      setTimeout(() => {
+        this.setState({ newNodePosition: { x, y } });
+      }, 1000);
+    }
+
     // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
     setTimeout(() => {
       this.props.dispatch(changeNetworkProperty('selectedNodes', []));
@@ -216,17 +229,24 @@ class Canvas extends Component {
         <div className={styles.container}>
           <svg
             className={styles.canvas}
+            onContextMenu={e => e.preventDefault()}
             onMouseDown={this.handleMouseDown}
             onMouseMove={this.handleMouseMove}
             onMouseUp={this.handleMouseUpOrLeave}
             onMouseLeave={this.handleMouseUpOrLeave}
             height={this.props.network.height}
             width={this.props.network.width}
+            ref={ref => (this.canvas = ref)}
           >
             {this.renderDefs()}
             {this.state.arrows.map(this.renderArrow)}
             {this.props.nodes.map(this.renderNode)}
           </svg>
+
+          <AddNode
+            position={this.state.newNodePosition}
+            onRequestClose={() => this.setState({ newNodePosition: null })}
+          />
         </div>
       </div>
     );

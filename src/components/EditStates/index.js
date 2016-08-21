@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { changeNodeStates } from '../../actions';
+import EditStatesList from '../EditStatesList';
 import Modal from '../Modal';
 import Button from '../Button';
 import styles from './styles.css';
@@ -13,36 +14,17 @@ class EditStates extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.node == null && nextProps.node != null) {
       this.setState({ states: [...nextProps.node.states] });
-      setTimeout(() => this.input.focus(), 0);
+      setTimeout(() => this.statesList.focusAddInput(), 0);
     }
   }
 
-  handleInputKeyDown = e => {
-    if (e.key === 'Enter') {
-      this.handleAddClick();
-    }
-  };
-
-  handleAddClick = () => {
-    const newState = this.input.value;
-
-    if (newState === '') {
-      return;
-    }
-
-    if (this.state.states.some(x => x === newState)) {
-      alert('Este estado já foi adicionado');
-      return;
-    }
-
+  handleAddState = newState => {
     this.setState({
       states: [...this.state.states, newState],
     });
-
-    this.input.value = '';
   };
 
-  handleRemoveClick = state => {
+  handleDeleteState = state => {
     this.setState({
       states: this.state.states.filter(x => x !== state),
     });
@@ -65,33 +47,12 @@ class EditStates extends Component {
     if (node != null) {
       children = (
         <div className={styles.container}>
-          <ul className={styles.stateList}>
-            {this.state.states.map(state => (
-              <li key={state}>
-                <span>{state}</span>
-                <Button
-                  onClick={() => this.handleRemoveClick(state)}
-                  title="Remover Estado"
-                >
-                  <i className="fa fa-trash" />
-                </Button>
-              </li>
-            ))}
-          </ul>
-
-          <div className={styles.addState}>
-            <input
-              type="text"
-              onKeyDown={this.handleInputKeyDown}
-              ref={ref => (this.input = ref)}
-            />
-            <Button
-              onClick={this.handleAddClick}
-              title="Adicionar Estado"
-            >
-              <i className="fa fa-plus" />
-            </Button>
-          </div>
+          <EditStatesList
+            states={this.state.states}
+            onAddState={this.handleAddState}
+            onDeleteState={this.handleDeleteState}
+            ref={ref => (this.statesList = ref)}
+          />
 
           <div className={styles.buttons}>
             <Button primary onClick={this.handleSaveClick}>Salvar</Button>

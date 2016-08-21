@@ -1,0 +1,20 @@
+.container {
+  width: 300px;
+}
+
+.fieldWrapper {
+  padding-bottom: 10px;
+}
+
+.fieldWrapper label {
+  display: block;
+}
+
+.fieldWrapper input {
+  display: block;
+  width: 100%;
+}
+
+.buttons button {
+  margin-right: 10px;
+}
