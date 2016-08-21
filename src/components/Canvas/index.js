@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { changeNetworkProperty, changeNodePosition } from '../../actions';
+import { persistState, changeNetworkProperty, changeNodePosition } from '../../actions';
 import { getNetwork, getNodes, getInferenceResults } from '../../selectors';
 import Node from '../Node';
 import styles from './styles.css';
@@ -139,6 +139,7 @@ class Canvas extends Component {
 
   handleMouseUpOrLeave = () => {
     this.movingNode = null;
+    this.props.dispatch(persistState());
   };
 
   renderDefs = () => (
