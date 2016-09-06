@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { persistState, changeNetworkProperty, changeNodePosition } from '../../actions';
 import { getNetwork, getNodes, getInferenceResults } from '../../selectors';
+import ContextMenu from '../ContextMenu';
 import AddNodeModal from '../AddNodeModal';
 import Node from '../Node';
 import styles from './styles.css';
@@ -115,21 +116,20 @@ class Canvas extends Component {
   };
 
   handleMouseDown = e => {
+    // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
+    setTimeout(() => {
+      this.props.dispatch(changeNetworkProperty('selectedNodes', []));
+    }, 0);
+
     if (e.button === 2) {
       const rect = this.canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      // Temporary, should show context menu
-      setTimeout(() => {
-        this.setState({ newNodePosition: { x, y } });
-      }, 1000);
-    }
+      this.contextMenuPosition = { x, y };
 
-    // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
-    setTimeout(() => {
-      this.props.dispatch(changeNetworkProperty('selectedNodes', []));
-    }, 0);
+      this.contextMenu.handleContainerMouseDown(e);
+    }
   };
 
   handleMouseMove = e => {
@@ -242,6 +242,17 @@ class Canvas extends Component {
             {this.state.arrows.map(this.renderArrow)}
             {this.props.nodes.map(this.renderNode)}
           </svg>
+
+          <ContextMenu
+            ref={ref => (this.contextMenu = ref)}
+            items={[
+              {
+                key: 'add-node',
+                text: 'Adicionar variável',
+                onClick: () => this.setState({ newNodePosition: this.contextMenuPosition }),
+              },
+            ]}
+          />
 
           <AddNodeModal
             position={this.state.newNodePosition}

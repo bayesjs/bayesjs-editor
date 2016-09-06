@@ -1,0 +1,26 @@
+.context-menu {
+  position: fixed;
+  border: solid 1px #cbcbcb;
+  box-shadow: 4px 4px 6px -3px #666;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  top: 0;
+  left: 0;
+}
+
+.context-menu-item {
+  user-select: none;
+  cursor: default;
+  padding: 5px 50px 5px 25px;
+  background-color: #fff;
+  white-space: nowrap;
+}
+
+.context-menu-item:hover {
+  background-color: #e5f3fb;
+}
+
+.context-menu-item-disabled {
+    color: #a5a1a1;
+}
