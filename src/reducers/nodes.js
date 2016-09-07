@@ -1,5 +1,6 @@
 import {
   ADD_NODE,
+  REMOVE_NODE,
   CHANGE_NODE_ID,
   CHANGE_NODE_POSITION,
   CHANGE_NODE_STATES,
@@ -166,9 +167,46 @@ const changeParentId = (node, previousId, nextId) => ({
   }),
 });
 
+const removeParent = (node, parentId, nodes) => {
+  const newParents = node.parents.filter(x => x !== parentId);
+
+  let cpt = [];
+
+  if (newParents.length === 0) {
+    cpt = node.cpt[0].then;
+  } else {
+    const parent = nodes.find(x => x.id === parentId);
+
+    cpt = node.cpt
+      .filter(x => x.when[parentId] === parent.states[0])
+      .map(x => {
+        const newRow = {
+          when: {},
+          then: x.then,
+        };
+
+        newParents.forEach(p => (newRow.when[p] = x.when[p]));
+
+        return newRow;
+      });
+  }
+
+  return {
+    ...node,
+    parents: newParents,
+    cpt,
+  };
+};
+
 const nodeReducer = (node, action) => {
   if (node.parents.some(x => x === action.payload.id)) {
-    if (action.type === CHANGE_NODE_ID) {
+    if (action.type === REMOVE_NODE) {
+      return removeParent(
+        node,
+        action.payload.id,
+        action.payload.nodes,
+      );
+    } else if (action.type === CHANGE_NODE_ID) {
       return changeParentId(
         node,
         action.payload.id,
@@ -234,6 +272,10 @@ export default (state = [], action) => {
         ...state,
         newNode(action.payload),
       ];
+    case REMOVE_NODE:
+      return state
+        .filter(node => node.id !== action.payload.id)
+        .map(node => nodeReducer(node, action));
     case CHANGE_NODE_ID:
     case CHANGE_NODE_POSITION:
     case CHANGE_NODE_STATES:

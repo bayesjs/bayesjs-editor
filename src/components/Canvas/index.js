@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { persistState, changeNetworkProperty, changeNodePosition } from '../../actions';
+import { persistState, removeNode, changeNetworkProperty, changeNodePosition } from '../../actions';
 import { getNetwork, getNodes, getInferenceResults } from '../../selectors';
 import ContextMenu from '../ContextMenu';
 import AddNodeModal from '../AddNodeModal';
@@ -13,11 +13,31 @@ class Canvas extends Component {
 
     this.state = {
       arrows: [],
+      contextMenuItems: [],
       newNodePosition: null,
     };
 
     this.movingNode = null;
     this.rectRefs = {};
+
+    this.canvasContextMenuItems = [
+      {
+        key: 'add-node',
+        text: 'Adicionar variável',
+        onClick: () => this.setState({ newNodePosition: this.contextMenuPosition }),
+      },
+    ];
+
+    this.nodeContextMenuItems = [
+      {
+        key: 'remove-node',
+        text: 'Remover variável',
+        onClick: () => {
+          this.props.dispatch(removeNode(this.contextMenuNode.id));
+          setTimeout(() => this.calculateArrows(), 0);
+        },
+      },
+    ];
   }
 
   componentDidMount() {
@@ -100,19 +120,25 @@ class Canvas extends Component {
   handleNodeMouseDown = (node, e) => {
     e.stopPropagation();
 
-    this.movingNode = {
-      id: node.id,
-      initialPosition: {
-        x: node.position.x,
-        y: node.position.y,
-      },
-      initialMousePosition: {
-        x: e.clientX,
-        y: e.clientY,
-      },
-    };
-
     this.props.dispatch(changeNetworkProperty('selectedNodes', [node.id]));
+
+    if (e.button === 0) {
+      this.movingNode = {
+        id: node.id,
+        initialPosition: {
+          x: node.position.x,
+          y: node.position.y,
+        },
+        initialMousePosition: {
+          x: e.clientX,
+          y: e.clientY,
+        },
+      };
+    } else if (e.button === 2) {
+      this.contextMenuNode = node;
+      this.setState({ contextMenuItems: this.nodeContextMenuItems });
+      this.contextMenu.handleContainerMouseDown(e);
+    }
   };
 
   handleMouseDown = e => {
@@ -127,13 +153,13 @@ class Canvas extends Component {
       const y = e.clientY - rect.top;
 
       this.contextMenuPosition = { x, y };
-
+      this.setState({ contextMenuItems: this.canvasContextMenuItems });
       this.contextMenu.handleContainerMouseDown(e);
     }
   };
 
   handleMouseMove = e => {
-    if (this.movingNode == null) {
+    if (this.movingNode === null) {
       return;
     }
 
@@ -151,8 +177,10 @@ class Canvas extends Component {
   };
 
   handleMouseUpOrLeave = () => {
-    this.movingNode = null;
-    this.props.dispatch(persistState());
+    if (this.movingNode !== null) {
+      this.movingNode = null;
+      this.props.dispatch(persistState());
+    }
   };
 
   renderDefs = () => (
@@ -245,13 +273,7 @@ class Canvas extends Component {
 
           <ContextMenu
             ref={ref => (this.contextMenu = ref)}
-            items={[
-              {
-                key: 'add-node',
-                text: 'Adicionar variável',
-                onClick: () => this.setState({ newNodePosition: this.contextMenuPosition }),
-              },
-            ]}
+            items={this.state.contextMenuItems}
           />
 
           <AddNodeModal
