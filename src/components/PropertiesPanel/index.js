@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { changeNetworkProperty, changeNodeId } from '../../actions';
-import { getNetwork, getSelectedNode } from '../../selectors';
+import { getNetwork, getNodes, getSelectedNode } from '../../selectors';
 import EditStatesModal from '../EditStatesModal';
 import EditCptModal from '../EditCptModal';
 import Button from '../Button';
@@ -42,9 +42,19 @@ class PropertiesPanel extends Component {
   };
 
   handleNodeNameBlur = e => {
+    const input = e.target;
     const id = this.props.selectedNode.id;
-    const nextId = e.target.value;
-    this.props.dispatch(changeNodeId(id, nextId));
+    const nextId = input.value;
+
+    const alreadyExits = this.props.nodes
+      .filter(x => x.id !== id)
+      .some(x => x.id === nextId);
+
+    if (nextId === '' || alreadyExits) {
+      input.value = id;
+    } else {
+      this.props.dispatch(changeNodeId(id, nextId));
+    }
   }
 
   renderNetworkProperties() {
@@ -236,12 +246,14 @@ class PropertiesPanel extends Component {
 PropertiesPanel.propTypes = {
   dispatch: PropTypes.func.isRequired,
   network: PropTypes.object.isRequired,
+  nodes: PropTypes.array.isRequired,
   selectedNode: PropTypes.object,
   onRequestRedraw: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   network: getNetwork(state),
+  nodes: getNodes(state),
   selectedNode: getSelectedNode(state),
 });
 

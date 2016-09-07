@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { addNode } from '../../actions';
+import { getNodes } from '../../selectors';
 import EditStatesList from '../EditStatesList';
 import Modal from '../Modal';
 import Button from '../Button';
@@ -42,6 +43,12 @@ class AddNodeModal extends Component {
 
     if (name === '') {
       alert('Preencha o nome da variável corretamente');
+      this.inputName.focus();
+      return;
+    }
+
+    if (this.props.nodes.some(x => x.id === name)) {
+      alert('Já existe uma variável com este nome');
       this.inputName.focus();
       return;
     }
@@ -106,8 +113,13 @@ class AddNodeModal extends Component {
 
 AddNodeModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  nodes: PropTypes.array.isRequired,
   position: PropTypes.object,
   onRequestClose: PropTypes.func.isRequired,
 };
 
-export default connect()(AddNodeModal);
+const mapStateToProps = state => ({
+  nodes: getNodes(state),
+});
+
+export default connect(mapStateToProps)(AddNodeModal);
