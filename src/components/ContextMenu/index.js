@@ -17,10 +17,14 @@ class ContextMenu extends Component {
     window.removeEventListener('mousedown', this.handleWindowMouseDown);
   }
 
+  hide = () => {
+    this.setState({ position: null });
+  };
+
   handleWindowMouseDown = () => {
     window.removeEventListener('mousedown', this.handleWindowMouseDown);
     this.setState({ position: null });
-  }
+  };
 
   handleContainerMouseDown = e => {
     // Only right clicks
@@ -49,12 +53,12 @@ class ContextMenu extends Component {
     });
 
     window.addEventListener('mousedown', this.handleWindowMouseDown);
-  }
+  };
 
   handleContextMenu = e => {
     e.preventDefault();
     e.stopPropagation();
-  }
+  };
 
   handleMenuItemMouseDown = (e, item) => {
     e.preventDefault();
@@ -64,7 +68,7 @@ class ContextMenu extends Component {
       this.handleWindowMouseDown();
       item.onClick();
     }
-  }
+  };
 
   render() {
     const { position } = this.state;

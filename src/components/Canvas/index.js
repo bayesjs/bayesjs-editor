@@ -142,6 +142,8 @@ class Canvas extends Component {
     this.props.dispatch(changeNetworkProperty('selectedNodes', [node.id]));
 
     if (e.button === 0) {
+      this.contextMenu.hide();
+
       if (this.nodeToAddChildrenTo !== null) {
         this.props.dispatch(addParent(node.id, this.nodeToAddChildrenTo.id));
         this.nodeToAddChildrenTo = null;
