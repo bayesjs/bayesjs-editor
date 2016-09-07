@@ -217,6 +217,11 @@ const hasCycles = (nodes, nodeToStartFrom, nodeToFindId) => {
 };
 
 const addParent = (node, parentId, nodes) => {
+  // Don't add the same node as a parent of itself
+  if (node.id === parentId) {
+    return node;
+  }
+
   // Don't add if already parent
   if (node.parents.some(x => x === parentId)) {
     return node;
