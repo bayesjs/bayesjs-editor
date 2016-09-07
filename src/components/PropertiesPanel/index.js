@@ -10,13 +10,17 @@ import styles from './styles.css';
 
 class PropertiesPanel extends Component {
   state = {
-    showing: true,
     editingNodeStates: null,
     editingNodeCpt: null,
   };
 
   handleToggleClick = () => {
-    this.setState({ showing: !this.state.showing });
+    const action = changeNetworkProperty(
+      'propertiesPanelVisible',
+      !this.props.network.propertiesPanelVisible
+    );
+
+    this.props.dispatch(action);
   };
 
   handleNetworkNameBlur = e => {
@@ -194,7 +198,7 @@ class PropertiesPanel extends Component {
       <div
         className={classNames({
           [styles.panel]: true,
-          [styles.panelShown]: this.state.showing,
+          [styles.panelShown]: this.props.network.propertiesPanelVisible,
         })}
       >
         <Button

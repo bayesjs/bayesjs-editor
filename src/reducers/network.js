@@ -9,6 +9,7 @@ const initialState = {
   height: 500,
   width: 800,
   selectedNodes: [],
+  propertiesPanelVisible: true,
 };
 
 export default (state = initialState, action) => {
