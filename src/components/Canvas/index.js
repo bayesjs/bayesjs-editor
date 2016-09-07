@@ -1,11 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { persistState, removeNode, changeNetworkProperty, changeNodePosition } from '../../actions';
-import { getNetwork, getNodes, getInferenceResults } from '../../selectors';
 import ContextMenu from '../ContextMenu';
 import AddNodeModal from '../AddNodeModal';
 import Node from '../Node';
 import styles from './styles.css';
+
+import {
+  persistState,
+  addParent,
+  removeNode,
+  changeNetworkProperty,
+  changeNodePosition,
+} from '../../actions';
+
+import {
+  getNetwork,
+  getNodes,
+  getInferenceResults,
+} from '../../selectors';
 
 class Canvas extends Component {
   constructor(props) {
@@ -15,10 +27,12 @@ class Canvas extends Component {
       arrows: [],
       contextMenuItems: [],
       newNodePosition: null,
+      addingNodeArrow: null,
     };
 
-    this.movingNode = null;
     this.rectRefs = {};
+    this.movingNode = null;
+    this.nodeToAddChildrenTo = null;
 
     this.canvasContextMenuItems = [
       {
@@ -29,6 +43,11 @@ class Canvas extends Component {
     ];
 
     this.nodeContextMenuItems = [
+      {
+        key: 'add-children',
+        text: 'Adicionar filho',
+        onClick: () => (this.nodeToAddChildrenTo = this.contextMenuNode),
+      },
       {
         key: 'remove-node',
         text: 'Remover variável',
@@ -123,6 +142,13 @@ class Canvas extends Component {
     this.props.dispatch(changeNetworkProperty('selectedNodes', [node.id]));
 
     if (e.button === 0) {
+      if (this.nodeToAddChildrenTo !== null) {
+        this.props.dispatch(addParent(node.id, this.nodeToAddChildrenTo.id));
+        this.nodeToAddChildrenTo = null;
+        this.setState({ addingNodeArrow: null });
+        setTimeout(() => this.calculateArrows(), 0);
+      }
+
       this.movingNode = {
         id: node.id,
         initialPosition: {
@@ -147,6 +173,11 @@ class Canvas extends Component {
       this.props.dispatch(changeNetworkProperty('selectedNodes', []));
     }, 0);
 
+    if (this.nodeToAddChildrenTo !== null) {
+      this.nodeToAddChildrenTo = null;
+      this.setState({ addingNodeArrow: null });
+    }
+
     if (e.button === 2) {
       const rect = this.canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -159,27 +190,56 @@ class Canvas extends Component {
   };
 
   handleMouseMove = e => {
-    if (this.movingNode === null) {
-      return;
+    if (this.movingNode !== null) {
+      const { id, initialPosition, initialMousePosition } = this.movingNode;
+
+      const difX = e.clientX - initialMousePosition.x;
+      const difY = e.clientY - initialMousePosition.y;
+
+      const newX = initialPosition.x + difX;
+      const newY = initialPosition.y + difY;
+
+      this.props.dispatch(changeNodePosition(id, newX, newY));
+
+      this.calculateArrows();
     }
 
-    const { id, initialPosition, initialMousePosition } = this.movingNode;
+    if (this.nodeToAddChildrenTo !== null) {
+      const canvasRect = this.canvas.getBoundingClientRect();
+      const nodeRect = this.rectRefs[this.nodeToAddChildrenTo.id].getBoundingClientRect();
 
-    const difX = e.clientX - initialMousePosition.x;
-    const difY = e.clientY - initialMousePosition.y;
+      const from = {
+        x: nodeRect.left + (nodeRect.width / 2) - canvasRect.left,
+        y: nodeRect.top + (nodeRect.height / 2) - canvasRect.top,
+      };
 
-    const newX = initialPosition.x + difX;
-    const newY = initialPosition.y + difY;
+      const to = {
+        x: e.clientX - canvasRect.left,
+        y: e.clientY - canvasRect.top,
+      };
 
-    this.props.dispatch(changeNodePosition(id, newX, newY));
-
-    this.calculateArrows();
+      this.setState({
+        addingNodeArrow: { from, to },
+      });
+    }
   };
 
-  handleMouseUpOrLeave = () => {
+  handleMouseUp = () => {
     if (this.movingNode !== null) {
       this.movingNode = null;
       this.props.dispatch(persistState());
+    }
+  };
+
+  handleMouseLeave = () => {
+    if (this.movingNode !== null) {
+      this.movingNode = null;
+      this.props.dispatch(persistState());
+    }
+
+    if (this.nodeToAddChildrenTo !== null) {
+      this.nodeToAddChildrenTo = null;
+      this.setState({ addingNodeArrow: null });
     }
   };
 
@@ -252,6 +312,23 @@ class Canvas extends Component {
   );
 
   render() {
+    let addingNodeArrow = null;
+
+    if (this.state.addingNodeArrow != null) {
+      const { from, to } = this.state.addingNodeArrow;
+
+      addingNodeArrow = (
+        <path
+          d={`M${from.x},${from.y} ${to.x},${to.y}`}
+          fill="none"
+          stroke="#333"
+          strokeWidth="2"
+          strokeDasharray="5,5"
+          markerEnd="url(#triangle)"
+        />
+      );
+    }
+
     return (
       <div className={styles.scroll}>
         <div className={styles.container}>
@@ -260,8 +337,8 @@ class Canvas extends Component {
             onContextMenu={e => e.preventDefault()}
             onMouseDown={this.handleMouseDown}
             onMouseMove={this.handleMouseMove}
-            onMouseUp={this.handleMouseUpOrLeave}
-            onMouseLeave={this.handleMouseUpOrLeave}
+            onMouseUp={this.handleMouseUp}
+            onMouseLeave={this.handleMouseLeave}
             height={this.props.network.height}
             width={this.props.network.width}
             ref={ref => (this.canvas = ref)}
@@ -269,6 +346,7 @@ class Canvas extends Component {
             {this.renderDefs()}
             {this.state.arrows.map(this.renderArrow)}
             {this.props.nodes.map(this.renderNode)}
+            {addingNodeArrow}
           </svg>
 
           <ContextMenu

@@ -1,5 +1,6 @@
 import {
   ADD_NODE,
+  ADD_PARENT,
   REMOVE_NODE,
   CHANGE_NODE_ID,
   CHANGE_NODE_POSITION,
@@ -169,14 +170,13 @@ const changeParentId = (node, previousId, nextId) => ({
 
 const removeParent = (node, parentId, nodes) => {
   const newParents = node.parents.filter(x => x !== parentId);
+  const parent = nodes.find(x => x.id === parentId);
 
-  let cpt = [];
+  let cpt = null;
 
   if (newParents.length === 0) {
     cpt = node.cpt[0].then;
   } else {
-    const parent = nodes.find(x => x.id === parentId);
-
     cpt = node.cpt
       .filter(x => x.when[parentId] === parent.states[0])
       .map(x => {
@@ -194,6 +194,64 @@ const removeParent = (node, parentId, nodes) => {
   return {
     ...node,
     parents: newParents,
+    cpt,
+  };
+};
+
+const hasCycles = (nodes, nodeToStartFrom, nodeToFindId) => {
+  for (let i = 0; i < nodeToStartFrom.parents.length; i++) {
+    const parentId = nodeToStartFrom.parents[i];
+
+    if (parentId === nodeToFindId) {
+      return true;
+    }
+
+    const parent = nodes.find(x => x.id === parentId);
+
+    if (hasCycles(nodes, parent, nodeToFindId)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const addParent = (node, parentId, nodes) => {
+  // Don't add if already parent
+  if (node.parents.some(x => x === parentId)) {
+    return node;
+  }
+
+  const parent = nodes.find(x => x.id === parentId);
+
+  // Don't add if adds cycles
+  if (hasCycles(nodes, parent, node.id)) {
+    return node;
+  }
+
+  let cpt = null;
+
+  if (node.parents.length === 0) {
+    cpt = parent.states.map(state => ({
+      when: { [parentId]: state },
+      then: { ...node.cpt },
+    }));
+  } else {
+    cpt = [];
+
+    parent.states.forEach(state => {
+      node.cpt.forEach(oldRow => {
+        cpt.push({
+          when: { ...oldRow.when, [parentId]: state },
+          then: { ...oldRow.then },
+        });
+      });
+    });
+  }
+
+  return {
+    ...node,
+    parents: [...node.parents, parentId],
     cpt,
   };
 };
@@ -227,6 +285,10 @@ const nodeReducer = (node, action) => {
   }
 
   switch (action.type) {
+    case ADD_PARENT:
+      return addParent(node, action.payload.parentId, action.payload.nodes);
+    case CHANGE_NODE_STATES:
+      return changeNodeStates(node, action.payload.states);
     case CHANGE_NODE_ID:
       return {
         ...node,
@@ -237,8 +299,6 @@ const nodeReducer = (node, action) => {
         ...node,
         position: { x: action.payload.x, y: action.payload.y },
       };
-    case CHANGE_NODE_STATES:
-      return changeNodeStates(node, action.payload.states);
     case CHANGE_NODE_CPT:
       return {
         ...node,
@@ -276,6 +336,7 @@ export default (state = [], action) => {
       return state
         .filter(node => node.id !== action.payload.id)
         .map(node => nodeReducer(node, action));
+    case ADD_PARENT:
     case CHANGE_NODE_ID:
     case CHANGE_NODE_POSITION:
     case CHANGE_NODE_STATES:
