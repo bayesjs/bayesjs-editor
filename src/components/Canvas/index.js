@@ -7,8 +7,9 @@ import styles from './styles.css';
 
 import {
   persistState,
-  addParent,
   removeNode,
+  addParent,
+  removeParent,
   changeNetworkProperty,
   changeNodePosition,
 } from '../../actions';
@@ -53,6 +54,18 @@ class Canvas extends Component {
         text: 'Remover variável',
         onClick: () => {
           this.props.dispatch(removeNode(this.contextMenuNode.id));
+          setTimeout(() => this.calculateArrows(), 0);
+        },
+      },
+    ];
+
+    this.arrowContextMenuItems = [
+      {
+        key: 'remove-link',
+        text: 'Remover ligação',
+        onClick: () => {
+          const { childId, parentId } = this.contextMenuArrow;
+          this.props.dispatch(removeParent(childId, parentId));
           setTimeout(() => this.calculateArrows(), 0);
         },
       },
@@ -129,11 +142,23 @@ class Canvas extends Component {
           key: `${parentId}-${node.id}`,
           from: points.p1,
           to: points.p2,
+          parentId,
+          childId: node.id,
         });
       });
     });
 
     this.setState({ arrows });
+  };
+
+  handleArrowMouseDown = (arrow, e) => {
+    if (e.button === 2) {
+      e.stopPropagation();
+
+      this.contextMenuArrow = arrow;
+      this.setState({ contextMenuItems: this.arrowContextMenuItems });
+      this.contextMenu.handleContainerMouseDown(e);
+    }
   };
 
   handleNodeMouseDown = (node, e) => {
@@ -285,15 +310,30 @@ class Canvas extends Component {
       return `M${from.x},${from.y} C${c1.x},${c1.y} ${c2.x},${c2.y} ${to.x},${to.y}`;
     };
 
+    const d = makeLine(arrow.from, arrow.to);
+    const style = { cursor: 'pointer' };
+    const onMouseDown = e => this.handleArrowMouseDown(arrow, e);
+
     return (
-      <path
-        key={arrow.key}
-        d={makeLine(arrow.from, arrow.to)}
-        fill="none"
-        stroke="#333"
-        strokeWidth="2"
-        markerEnd="url(#triangle)"
-      />
+      <g key={arrow.key}>
+        <path
+          d={d}
+          fill="none"
+          stroke="transparent"
+          strokeWidth="15"
+          style={style}
+          onMouseDown={onMouseDown}
+        />
+        <path
+          d={d}
+          fill="none"
+          stroke="#333"
+          strokeWidth="2"
+          markerEnd="url(#triangle)"
+          style={style}
+          onMouseDown={onMouseDown}
+        />
+      </g>
     );
   };
 
