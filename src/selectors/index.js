@@ -19,9 +19,23 @@ export const getSelectedNode = createSelector(
 export const getInferenceResults = createSelector(
   getNodes,
   nodes => {
-    const network = nodes.reduce(
-      (acc, x) => addNode(acc, x)
-    , {});
+    let network = {};
+
+    const remainingNodes = [...nodes];
+
+    while (remainingNodes.length > 0) {
+      const nodesToAdd = [];
+
+      for (let i = 0; i < remainingNodes.length; i++) {
+        if (remainingNodes[i].parents.every(p => network.hasOwnProperty(p))) {
+          nodesToAdd.push(remainingNodes.splice(i, 1)[0]);
+        }
+      }
+
+      nodesToAdd.forEach(nodeToAdd => {
+        network = addNode(network, nodeToAdd);
+      });
+    }
 
     const results = {};
 
