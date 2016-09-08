@@ -28,12 +28,12 @@ class Canvas extends Component {
       arrows: [],
       contextMenuItems: [],
       newNodePosition: null,
-      addingNodeArrow: null,
+      addingChildArrow: null,
     };
 
     this.rectRefs = {};
     this.movingNode = null;
-    this.nodeToAddChildrenTo = null;
+    this.nodeToAddChildTo = null;
 
     this.canvasContextMenuItems = [
       {
@@ -45,9 +45,9 @@ class Canvas extends Component {
 
     this.nodeContextMenuItems = [
       {
-        key: 'add-children',
+        key: 'add-child',
         text: 'Adicionar filho',
-        onClick: () => (this.nodeToAddChildrenTo = this.contextMenuNode),
+        onClick: () => (this.nodeToAddChildTo = this.contextMenuNode),
       },
       {
         key: 'remove-node',
@@ -169,10 +169,10 @@ class Canvas extends Component {
     if (e.button === 0) {
       this.contextMenu.hide();
 
-      if (this.nodeToAddChildrenTo !== null) {
-        this.props.dispatch(addParent(node.id, this.nodeToAddChildrenTo.id));
-        this.nodeToAddChildrenTo = null;
-        this.setState({ addingNodeArrow: null });
+      if (this.nodeToAddChildTo !== null) {
+        this.props.dispatch(addParent(node.id, this.nodeToAddChildTo.id));
+        this.nodeToAddChildTo = null;
+        this.setState({ addingChildArrow: null });
         setTimeout(() => this.calculateArrows(), 0);
       }
 
@@ -200,9 +200,9 @@ class Canvas extends Component {
       this.props.dispatch(changeNetworkProperty('selectedNodes', []));
     }, 0);
 
-    if (this.nodeToAddChildrenTo !== null) {
-      this.nodeToAddChildrenTo = null;
-      this.setState({ addingNodeArrow: null });
+    if (this.nodeToAddChildTo !== null) {
+      this.nodeToAddChildTo = null;
+      this.setState({ addingChildArrow: null });
     }
 
     if (e.button === 2) {
@@ -231,9 +231,9 @@ class Canvas extends Component {
       this.calculateArrows();
     }
 
-    if (this.nodeToAddChildrenTo !== null) {
+    if (this.nodeToAddChildTo !== null) {
       const canvasRect = this.canvas.getBoundingClientRect();
-      const nodeRect = this.rectRefs[this.nodeToAddChildrenTo.id].getBoundingClientRect();
+      const nodeRect = this.rectRefs[this.nodeToAddChildTo.id].getBoundingClientRect();
 
       const from = {
         x: nodeRect.left + (nodeRect.width / 2) - canvasRect.left,
@@ -246,7 +246,7 @@ class Canvas extends Component {
       };
 
       this.setState({
-        addingNodeArrow: { from, to },
+        addingChildArrow: { from, to },
       });
     }
   };
@@ -264,9 +264,9 @@ class Canvas extends Component {
       this.props.dispatch(persistState());
     }
 
-    if (this.nodeToAddChildrenTo !== null) {
-      this.nodeToAddChildrenTo = null;
-      this.setState({ addingNodeArrow: null });
+    if (this.nodeToAddChildTo !== null) {
+      this.nodeToAddChildTo = null;
+      this.setState({ addingChildArrow: null });
     }
   };
 
@@ -354,12 +354,12 @@ class Canvas extends Component {
   );
 
   render() {
-    let addingNodeArrow = null;
+    let addingChildArrow = null;
 
-    if (this.state.addingNodeArrow != null) {
-      const { from, to } = this.state.addingNodeArrow;
+    if (this.state.addingChildArrow != null) {
+      const { from, to } = this.state.addingChildArrow;
 
-      addingNodeArrow = (
+      addingChildArrow = (
         <path
           d={`M${from.x},${from.y} ${to.x},${to.y}`}
           fill="none"
@@ -388,7 +388,7 @@ class Canvas extends Component {
             {this.renderDefs()}
             {this.state.arrows.map(this.renderArrow)}
             {this.props.nodes.map(this.renderNode)}
-            {addingNodeArrow}
+            {addingChildArrow}
           </svg>
 
           <ContextMenu
