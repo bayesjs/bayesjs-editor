@@ -1,5 +1,6 @@
 import {
   NEW_NETWORK,
+  LOAD_NETWORK,
   ADD_NODE,
   REMOVE_NODE,
   ADD_PARENT,
@@ -338,6 +339,8 @@ export default (state = [], action) => {
   switch (action.type) {
     case NEW_NETWORK:
       return [];
+    case LOAD_NETWORK:
+      return action.payload.state.nodes;
     case ADD_NODE:
       return [
         ...state,

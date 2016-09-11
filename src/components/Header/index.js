@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { newNetwork } from '../../actions';
+import { newNetwork, loadNetwork } from '../../actions';
 import { getStateToSave } from '../../selectors';
-import { download } from '../../utils/download';
+import { openFile, saveFile } from '../../utils/file';
 import Button from '../Button';
 import styles from './styles.css';
 
@@ -35,9 +35,21 @@ class Header extends Component {
     }
   };
 
+  handleOpenNetworkClick = () => {
+    openFile('.json', json => {
+      try {
+        const state = JSON.parse(json);
+        this.props.dispatch(loadNetwork(state));
+        this.props.onRequestRedraw();
+      } catch (ex) {
+        alert('Arquivo inválido');
+      }
+    });
+  };
+
   handleSaveNetworkClick = () => {
     const json = JSON.stringify(this.props.stateToSave, null, 2);
-    download('network.json', json);
+    saveFile('network.json', json);
   };
 
   render() {
@@ -54,7 +66,7 @@ class Header extends Component {
         {this.state.menuVisible && (
           <ul className={styles.menu}>
             <li className={styles.menuItem} onClick={this.handleNewNetworkClick}>Nova Rede</li>
-            <li className={styles.menuItem}>Abrir Rede</li>
+            <li className={styles.menuItem} onClick={this.handleOpenNetworkClick}>Abrir Rede</li>
             <li className={styles.menuItem} onClick={this.handleSaveNetworkClick}>Salvar Rede</li>
           </ul>
         )}

@@ -2,6 +2,7 @@ import { getNodes } from '../selectors';
 
 export const PERSIST_STATE = 'PERSIST_STATE';
 export const NEW_NETWORK = 'NEW_NETWORK';
+export const LOAD_NETWORK = 'LOAD_NETWORK';
 export const CHANGE_NETWORK_PROPERTY = 'CHANGE_NETWORK_PROPERTY';
 export const ADD_NODE = 'ADD_NODE';
 export const REMOVE_NODE = 'REMOVE_NODE';
@@ -18,6 +19,15 @@ export const persistState = () => ({
 
 export const newNetwork = () => dispatch => {
   dispatch({ type: NEW_NETWORK });
+  dispatch(persistState());
+};
+
+export const loadNetwork = state => dispatch => {
+  dispatch({
+    type: LOAD_NETWORK,
+    payload: { state },
+  });
+
   dispatch(persistState());
 };
 
