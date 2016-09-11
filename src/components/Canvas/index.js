@@ -6,7 +6,6 @@ import Node from '../Node';
 import styles from './styles.css';
 
 import {
-  persistState,
   removeNode,
   addParent,
   removeParent,
@@ -29,6 +28,7 @@ class Canvas extends Component {
       contextMenuItems: [],
       newNodePosition: null,
       addingChildArrow: null,
+      movingNodePlaceholder: null,
     };
 
     this.rectRefs = {};
@@ -219,16 +219,19 @@ class Canvas extends Component {
   handleMouseMove = e => {
     if (this.movingNode !== null) {
       const { id, initialPosition, initialMousePosition } = this.movingNode;
+      const nodeRect = this.rectRefs[id].getBoundingClientRect();
 
       const difX = e.clientX - initialMousePosition.x;
       const difY = e.clientY - initialMousePosition.y;
 
-      const newX = initialPosition.x + difX;
-      const newY = initialPosition.y + difY;
+      const movingNodePlaceholder = {
+        x: initialPosition.x + difX,
+        y: initialPosition.y + difY,
+        height: nodeRect.height,
+        width: nodeRect.width,
+      };
 
-      this.props.dispatch(changeNodePosition(id, newX, newY));
-
-      this.calculateArrows();
+      this.setState({ movingNodePlaceholder });
     }
 
     if (this.nodeToAddChildTo !== null) {
@@ -251,17 +254,29 @@ class Canvas extends Component {
     }
   };
 
-  handleMouseUp = () => {
+  handleMouseUp = e => {
     if (this.movingNode !== null) {
+      const { id, initialPosition, initialMousePosition } = this.movingNode;
+
+      const difX = e.clientX - initialMousePosition.x;
+      const difY = e.clientY - initialMousePosition.y;
+
+      const newX = initialPosition.x + difX;
+      const newY = initialPosition.y + difY;
+
+      this.props.dispatch(changeNodePosition(id, newX, newY));
+
+      this.setState({ movingNodePlaceholder: null });
       this.movingNode = null;
-      this.props.dispatch(persistState());
+
+      setTimeout(() => this.calculateArrows(), 0);
     }
   };
 
   handleMouseLeave = () => {
     if (this.movingNode !== null) {
       this.movingNode = null;
-      this.props.dispatch(persistState());
+      this.setState({ movingNodePlaceholder: null });
     }
 
     if (this.nodeToAddChildTo !== null) {
@@ -355,8 +370,9 @@ class Canvas extends Component {
 
   render() {
     let addingChildArrow = null;
+    let movingNodePlaceholder = null;
 
-    if (this.state.addingChildArrow != null) {
+    if (this.state.addingChildArrow !== null) {
       const { from, to } = this.state.addingChildArrow;
 
       addingChildArrow = (
@@ -367,6 +383,23 @@ class Canvas extends Component {
           strokeWidth="2"
           strokeDasharray="5,5"
           markerEnd="url(#triangle)"
+        />
+      );
+    }
+
+    if (this.state.movingNodePlaceholder !== null) {
+      const { x, y, height, width } = this.state.movingNodePlaceholder;
+
+      movingNodePlaceholder = (
+        <rect
+          x={x}
+          y={y}
+          height={height}
+          width={width}
+          fill="none"
+          stroke="#333"
+          strokeWidth="2"
+          strokeDasharray="5,5"
         />
       );
     }
@@ -389,6 +422,7 @@ class Canvas extends Component {
             {this.state.arrows.map(this.renderArrow)}
             {this.props.nodes.map(this.renderNode)}
             {addingChildArrow}
+            {movingNodePlaceholder}
           </svg>
 
           <ContextMenu

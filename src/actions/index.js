@@ -13,7 +13,7 @@ export const CHANGE_NODE_POSITION = 'CHANGE_NODE_POSITION';
 export const CHANGE_NODE_STATES = 'CHANGE_NODE_STATES';
 export const CHANGE_NODE_CPT = 'CHANGE_NODE_CPT';
 
-export const persistState = () => ({
+const persistState = () => ({
   type: PERSIST_STATE,
 });
 
@@ -85,10 +85,14 @@ export const changeNodeId = (id, nextId) => dispatch => {
   dispatch(persistState());
 };
 
-export const changeNodePosition = (id, x, y) => ({
-  type: CHANGE_NODE_POSITION,
-  payload: { id, x, y },
-});
+export const changeNodePosition = (id, x, y) => dispatch => {
+  dispatch({
+    type: CHANGE_NODE_POSITION,
+    payload: { id, x, y },
+  });
+
+  dispatch(persistState());
+};
 
 export const changeNodeStates = (id, states) => (dispatch, getState) => {
   dispatch({
