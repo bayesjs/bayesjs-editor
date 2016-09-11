@@ -1,4 +1,5 @@
 import {
+  NEW_NETWORK,
   CHANGE_NETWORK_PROPERTY,
   REMOVE_NODE,
   CHANGE_NODE_ID,
@@ -14,6 +15,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case NEW_NETWORK:
+      return initialState;
     case CHANGE_NETWORK_PROPERTY:
       return {
         ...state,

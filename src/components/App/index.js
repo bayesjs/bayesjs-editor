@@ -14,7 +14,7 @@ class App extends Component {
   render() {
     return (
       <div className={styles.app}>
-        <Header />
+        <Header onRequestRedraw={this.handleRequestRedraw} />
         <div className={styles.container}>
           <Canvas ref={ref => (this.canvas = ref)} />
           <PropertiesPanel onRequestRedraw={this.handleRequestRedraw} />

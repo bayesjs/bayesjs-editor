@@ -1,4 +1,5 @@
 import {
+  NEW_NETWORK,
   ADD_NODE,
   REMOVE_NODE,
   ADD_PARENT,
@@ -335,6 +336,8 @@ const newNode = ({ id, states, position }) => {
 
 export default (state = [], action) => {
   switch (action.type) {
+    case NEW_NETWORK:
+      return [];
     case ADD_NODE:
       return [
         ...state,

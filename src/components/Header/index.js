@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { newNetwork } from '../../actions';
 import Button from '../Button';
 import styles from './styles.css';
 
@@ -24,6 +26,13 @@ class Header extends Component {
     this.setState({ menuVisible: !this.state.menuVisible });
   };
 
+  handleNewNetworkClick = () => {
+    if (confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
+      this.props.dispatch(newNetwork());
+      this.props.onRequestRedraw();
+    }
+  };
+
   render() {
     return (
       <div className={styles.header}>
@@ -37,7 +46,7 @@ class Header extends Component {
         </Button>
         {this.state.menuVisible && (
           <ul className={styles.menu}>
-            <li className={styles.menuItem}>Nova Rede</li>
+            <li className={styles.menuItem} onClick={this.handleNewNetworkClick}>Nova Rede</li>
             <li className={styles.menuItem}>Abrir Rede</li>
             <li className={styles.menuItem}>Salvar Rede</li>
           </ul>
@@ -47,4 +56,9 @@ class Header extends Component {
   }
 }
 
-export default Header;
+Header.propTypes = {
+  onRequestRedraw: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect()(Header);
