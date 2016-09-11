@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { newNetwork } from '../../actions';
+import { getStateToSave } from '../../selectors';
+import { download } from '../../utils/download';
 import Button from '../Button';
 import styles from './styles.css';
 
@@ -33,6 +35,11 @@ class Header extends Component {
     }
   };
 
+  handleSaveNetworkClick = () => {
+    const json = JSON.stringify(this.props.stateToSave, null, 2);
+    download('network.json', json);
+  };
+
   render() {
     return (
       <div className={styles.header}>
@@ -48,7 +55,7 @@ class Header extends Component {
           <ul className={styles.menu}>
             <li className={styles.menuItem} onClick={this.handleNewNetworkClick}>Nova Rede</li>
             <li className={styles.menuItem}>Abrir Rede</li>
-            <li className={styles.menuItem}>Salvar Rede</li>
+            <li className={styles.menuItem} onClick={this.handleSaveNetworkClick}>Salvar Rede</li>
           </ul>
         )}
       </div>
@@ -57,8 +64,13 @@ class Header extends Component {
 }
 
 Header.propTypes = {
+  stateToSave: PropTypes.object.isRequired,
   onRequestRedraw: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect()(Header);
+const mapStateToProps = state => ({
+  stateToSave: getStateToSave(state),
+});
+
+export default connect(mapStateToProps)(Header);

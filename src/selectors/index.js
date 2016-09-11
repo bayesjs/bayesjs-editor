@@ -4,6 +4,11 @@ import { addNode, infer } from 'bayesjs';
 export const getNetwork = state => state.network;
 export const getNodes = state => state.nodes;
 
+export const getStateToSave = state => ({
+  network: state.network,
+  nodes: state.nodes,
+});
+
 export const getSelectedNode = createSelector(
   getNetwork,
   getNodes,

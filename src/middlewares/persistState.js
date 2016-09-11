@@ -1,11 +1,13 @@
 import { PERSIST_STATE } from '../actions';
+import { getStateToSave } from '../selectors';
 
 export const persistState = store => next => action => {
   if (action.type !== PERSIST_STATE) {
     return next(action);
   }
 
-  const serializedState = JSON.stringify(store.getState());
+  const stateToSave = getStateToSave(store.getState());
+  const serializedState = JSON.stringify(stateToSave);
 
   localStorage.setItem('state', serializedState);
 
