@@ -2,14 +2,39 @@ import React, { Component, PropTypes } from 'react';
 import styles from './styles.css';
 
 class Node extends Component {
-  renderState = (state, index) => (
-    <text key={state} x="5" y={37 + (18 * index)}>
-      <tspan>{state}</tspan>
-      <tspan x="155" textAnchor="end">
-        {this.props.results[state].toFixed(2)}
-      </tspan>
-    </text>
-  );
+  renderState = (state, index) => {
+    const result = this.props.results[state];
+    const percent = 100 * result;
+    const barWidth = 70 * result;
+
+    return (
+      <g key={state}>
+        <text x="5" y={37 + (18 * index)}>
+          {state}
+        </text>
+        <rect
+          x="85"
+          y={24 + (18 * index)}
+          height="15"
+          width="70"
+          fill="transparent"
+          stroke="#333"
+          strokeWidth="1"
+        >
+          <title>{percent.toFixed(2)}%</title>
+        </rect>
+        <rect
+          x={155 - barWidth}
+          y={24 + (18 * index)}
+          height="15"
+          width={barWidth}
+          fill="#333"
+        >
+          <title>{percent.toFixed(2)}%</title>
+        </rect>
+      </g>
+    );
+  };
 
   render() {
     return (
@@ -19,7 +44,7 @@ class Node extends Component {
         transform={`translate(${this.props.x} ${this.props.y})`}
       >
         <rect
-          height={20 + (20 * this.props.states.length)}
+          height={25 + (18 * this.props.states.length)}
           width="160"
           fill="#ff8"
           stroke="#333"
