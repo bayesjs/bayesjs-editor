@@ -5,10 +5,18 @@ export const getNetwork = state => state.network;
 export const getNodes = state => state.nodes;
 export const getBeliefs = state => state.network.beliefs;
 
-export const getStateToSave = state => ({
-  network: state.network,
-  nodes: state.nodes,
-});
+export const getStateToSave = createSelector(
+  getNetwork,
+  getNodes,
+  (network, nodes) => ({
+    network: {
+      ...network,
+      selectedNodes: [],
+      beliefs: {},
+    },
+    nodes,
+  })
+);
 
 export const getSelectedNode = createSelector(
   getNetwork,
