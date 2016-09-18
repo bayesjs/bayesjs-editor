@@ -88,70 +88,6 @@ class PropertiesPanel extends Component {
     );
   }
 
-  renderCptWithoutParents(cpt) {
-    const states = Object.keys(cpt);
-
-    return (
-      <table className={styles.cpt}>
-        <thead>
-          <tr>
-            {states.map(state => (
-              <th key={state}>{state}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {states.map(state => (
-              <td key={state}>{cpt[state].toFixed(2)}</td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-    );
-  }
-
-  renderCptWithParents(cpt) {
-    const parents = Object.keys(cpt[0].when);
-    const states = Object.keys(cpt[0].then);
-
-    const firstStateCellStyle = {
-      borderLeft: 'solid 1px black',
-      paddingLeft: '10px',
-    };
-
-    return (
-      <table className={styles.cpt}>
-        <thead>
-          <tr>
-            {parents.map(parent => (
-              <th key={parent}>{parent}</th>
-            ))}
-            {states.map((state, stateIndex) => (
-              <th key={state} style={stateIndex === 0 ? firstStateCellStyle : null}>
-                {state}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {cpt.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {parents.map(parent => (
-                <td key={parent}>{row.when[parent]}</td>
-              ))}
-              {states.map((state, stateIndex) => (
-                <td key={state} style={stateIndex === 0 ? firstStateCellStyle : null}>
-                  {row.then[state].toFixed(2)}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
-
   renderSelectedNodeProperties() {
     const node = this.props.selectedNode;
 
@@ -170,26 +106,14 @@ class PropertiesPanel extends Component {
         </div>
 
         <div className={styles.fieldWrapper}>
-          <label>Estados</label>
-          <ul>
-            {node.states.map(state => (
-              <li key={state}>{state}</li>
-            ))}
-          </ul>
           <Button onClick={() => this.props.onEditNodeStates(node)}>
-            Editar
+            Editar estados
           </Button>
         </div>
 
         <div className={styles.fieldWrapper}>
-          <label>Tabela de Probabilidades</label>
-          {node.parents.length === 0 ? (
-            this.renderCptWithoutParents(node.cpt)
-          ) : (
-            this.renderCptWithParents(node.cpt)
-          )}
           <Button onClick={() => this.props.onEditNodeCpt(node)}>
-            Editar
+            Editar probabilidades
           </Button>
         </div>
       </div>

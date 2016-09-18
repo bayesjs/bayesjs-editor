@@ -56,7 +56,7 @@ class Canvas extends Component {
       },
       {
         key: 'edit-cpt',
-        text: 'Editar tabela de probabilidades',
+        text: 'Editar probabilidades',
         onClick: () => this.props.onEditNodeCpt(this.contextMenuNode),
       },
       {
