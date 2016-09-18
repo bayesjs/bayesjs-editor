@@ -11,6 +11,7 @@ import {
   removeParent,
   changeNetworkProperty,
   changeNodePosition,
+  setBelief,
 } from '../../actions';
 
 import {
@@ -204,6 +205,14 @@ class Canvas extends Component {
     }
   };
 
+  handleNodeStateDoubleClick = (node, state) => {
+    if (this.props.network.beliefs[node.id] === state) {
+      this.props.dispatch(setBelief(node.id, null));
+    } else {
+      this.props.dispatch(setBelief(node.id, state));
+    }
+  };
+
   handleMouseDown = e => {
     // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
     setTimeout(() => {
@@ -374,10 +383,12 @@ class Canvas extends Component {
       states={node.states}
       results={this.props.inferenceResults[node.id]}
       selected={this.props.network.selectedNodes.some(x => x === node.id)}
+      belief={this.props.network.beliefs[node.id]}
       rectRef={ref => {
         this.rectRefs[node.id] = ref;
       }}
       onMouseDown={e => this.handleNodeMouseDown(node, e)}
+      onStateDoubleClick={state => this.handleNodeStateDoubleClick(node, state)}
       x={node.position.x}
       y={node.position.y}
     />

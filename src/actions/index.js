@@ -12,6 +12,7 @@ export const CHANGE_NODE_ID = 'CHANGE_NODE_ID';
 export const CHANGE_NODE_POSITION = 'CHANGE_NODE_POSITION';
 export const CHANGE_NODE_STATES = 'CHANGE_NODE_STATES';
 export const CHANGE_NODE_CPT = 'CHANGE_NODE_CPT';
+export const SET_BELIEF = 'SET_BELIEF';
 
 const persistState = () => ({
   type: PERSIST_STATE,
@@ -107,6 +108,15 @@ export const changeNodeCpt = (id, cpt) => dispatch => {
   dispatch({
     type: CHANGE_NODE_CPT,
     payload: { id, cpt },
+  });
+
+  dispatch(persistState());
+};
+
+export const setBelief = (id, state) => dispatch => {
+  dispatch({
+    type: SET_BELIEF,
+    payload: { id, state },
   });
 
   dispatch(persistState());

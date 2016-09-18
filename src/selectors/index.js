@@ -3,6 +3,7 @@ import { addNode, infer } from 'bayesjs';
 
 export const getNetwork = state => state.network;
 export const getNodes = state => state.nodes;
+export const getBeliefs = state => state.network.beliefs;
 
 export const getStateToSave = state => ({
   network: state.network,
@@ -23,7 +24,8 @@ export const getSelectedNode = createSelector(
 
 export const getInferenceResults = createSelector(
   getNodes,
-  nodes => {
+  getBeliefs,
+  (nodes, beliefs) => {
     let network = {};
 
     const remainingNodes = [...nodes];
@@ -48,7 +50,7 @@ export const getInferenceResults = createSelector(
       results[node.id] = {};
 
       node.states.forEach(state => {
-        results[node.id][state] = infer(network, { [node.id]: state });
+        results[node.id][state] = infer(network, { [node.id]: state }, beliefs);
       });
     });
 

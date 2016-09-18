@@ -4,6 +4,7 @@ import {
   CHANGE_NETWORK_PROPERTY,
   REMOVE_NODE,
   CHANGE_NODE_ID,
+  SET_BELIEF,
 } from '../actions';
 
 const initialState = {
@@ -11,7 +12,23 @@ const initialState = {
   height: 500,
   width: 800,
   selectedNodes: [],
+  beliefs: {},
   propertiesPanelVisible: true,
+};
+
+const setBelief = (state, action) => {
+  const beliefs = { ...state.beliefs };
+
+  if (action.payload.state == null) {
+    delete beliefs[action.payload.id];
+  } else {
+    beliefs[action.payload.id] = action.payload.state;
+  }
+
+  return {
+    ...state,
+    beliefs,
+  };
 };
 
 export default (state = initialState, action) => {
@@ -37,6 +54,8 @@ export default (state = initialState, action) => {
           (x === action.payload.id ? action.payload.nextId : x)
         ),
       };
+    case SET_BELIEF:
+      return setBelief(state, action);
     default:
       return state;
   }
