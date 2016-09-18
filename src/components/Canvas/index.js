@@ -258,6 +258,11 @@ class Canvas extends Component {
         y: e.clientY - canvasRect.top,
       };
 
+      // Without it, sometimes the mouse is over the adding arrow
+      // It needs to be over the node to be added
+      to.x += from.x < to.x ? -3 : 3;
+      to.y += from.y < to.y ? -3 : 3;
+
       this.setState({
         addingChildArrow: { from, to },
       });
