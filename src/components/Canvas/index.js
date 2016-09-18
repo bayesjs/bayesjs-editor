@@ -50,6 +50,16 @@ class Canvas extends Component {
         onClick: () => (this.nodeToAddChildTo = this.contextMenuNode),
       },
       {
+        key: 'edit-states',
+        text: 'Editar estados',
+        onClick: () => this.props.onEditNodeStates(this.contextMenuNode),
+      },
+      {
+        key: 'edit-cpt',
+        text: 'Editar tabela de probabilidades',
+        onClick: () => this.props.onEditNodeCpt(this.contextMenuNode),
+      },
+      {
         key: 'remove-node',
         text: 'Remover variável',
         onClick: () => {
@@ -445,6 +455,8 @@ Canvas.propTypes = {
   network: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   inferenceResults: PropTypes.object.isRequired,
+  onEditNodeStates: PropTypes.func.isRequired,
+  onEditNodeCpt: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

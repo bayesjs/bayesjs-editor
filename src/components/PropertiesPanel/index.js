@@ -3,17 +3,10 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { changeNetworkProperty, changeNodeId } from '../../actions';
 import { getNetwork, getNodes, getSelectedNode } from '../../selectors';
-import EditStatesModal from '../EditStatesModal';
-import EditCptModal from '../EditCptModal';
 import Button from '../Button';
 import styles from './styles.css';
 
 class PropertiesPanel extends Component {
-  state = {
-    editingNodeStates: null,
-    editingNodeCpt: null,
-  };
-
   handleToggleClick = () => {
     const action = changeNetworkProperty(
       'propertiesPanelVisible',
@@ -183,7 +176,7 @@ class PropertiesPanel extends Component {
               <li key={state}>{state}</li>
             ))}
           </ul>
-          <Button onClick={() => this.setState({ editingNodeStates: node })}>
+          <Button onClick={() => this.props.onEditNodeStates(node)}>
             Editar
           </Button>
         </div>
@@ -195,7 +188,7 @@ class PropertiesPanel extends Component {
           ) : (
             this.renderCptWithParents(node.cpt)
           )}
-          <Button onClick={() => this.setState({ editingNodeCpt: node })}>
+          <Button onClick={() => this.props.onEditNodeCpt(node)}>
             Editar
           </Button>
         </div>
@@ -225,19 +218,6 @@ class PropertiesPanel extends Component {
             this.renderSelectedNodeProperties()
           )}
         </div>
-
-        <EditStatesModal
-          node={this.state.editingNodeStates}
-          onRequestClose={() => {
-            this.setState({ editingNodeStates: null });
-            this.props.onRequestRedraw();
-          }}
-        />
-
-        <EditCptModal
-          node={this.state.editingNodeCpt}
-          onRequestClose={() => this.setState({ editingNodeCpt: null })}
-        />
       </div>
     );
   }
@@ -248,7 +228,8 @@ PropertiesPanel.propTypes = {
   network: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   selectedNode: PropTypes.object,
-  onRequestRedraw: PropTypes.func.isRequired,
+  onEditNodeStates: PropTypes.func.isRequired,
+  onEditNodeCpt: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
