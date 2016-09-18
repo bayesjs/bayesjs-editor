@@ -3,6 +3,8 @@ import Button from '../Button';
 import styles from './styles.css';
 
 class EditStatesList extends Component {
+  getAddInputText = () => this.input.value;
+
   focusAddInput = () => {
     this.input.focus();
   };

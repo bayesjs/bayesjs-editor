@@ -31,12 +31,20 @@ class EditStatesModal extends Component {
   };
 
   handleSaveClick = () => {
-    if (this.state.states.length === 0) {
+    let states = this.state.states;
+
+    if (states.length === 0) {
       alert('Você deve informar pelo menos um estado');
       return;
     }
 
-    this.props.dispatch(changeNodeStates(this.props.node.id, this.state.states));
+    if (this.statesList.getAddInputText() !== '') {
+      if (confirm('O estado preenchido não foi adicionado na lista. Deseja adicionar?')) {
+        states = [...states, this.statesList.getAddInputText()];
+      }
+    }
+
+    this.props.dispatch(changeNodeStates(this.props.node.id, states));
     this.props.onRequestClose();
   };
 
