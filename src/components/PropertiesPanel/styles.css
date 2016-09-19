@@ -43,17 +43,6 @@
   padding: 10px 0px;
 }
 
-.cpt {
-  border-collapse: separate;
-  border-spacing: 0px;
-  margin: 10px 0px;
-  width: 100%;
-}
-
-.cpt th {
-  text-align: left;
-}
-
 .toggle-button {
   position: absolute;
   top: 10px;
