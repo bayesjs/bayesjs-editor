@@ -58,7 +58,11 @@ export const getInferenceResults = createSelector(
       results[node.id] = {};
 
       node.states.forEach(state => {
-        results[node.id][state] = infer(network, { [node.id]: state }, beliefs);
+        results[node.id][state] = infer(
+          network,
+          { [node.id]: state },
+          Object.keys(beliefs).length === 0 ? undefined : beliefs,
+        );
       });
     });
 
