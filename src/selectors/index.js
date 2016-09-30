@@ -9,6 +9,7 @@ export const getStateToSave = createSelector(
   getNetwork,
   getNodes,
   (network, nodes) => ({
+    version: 1,
     network: {
       ...network,
       selectedNodes: [],
