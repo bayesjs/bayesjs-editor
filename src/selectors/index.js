@@ -3,19 +3,22 @@ import { addNode, infer } from 'bayesjs';
 
 export const getNetwork = state => state.network;
 export const getNodes = state => state.nodes;
+export const getPositions = state => state.positions;
 export const getBeliefs = state => state.network.beliefs;
 
 export const getStateToSave = createSelector(
   getNetwork,
   getNodes,
-  (network, nodes) => ({
-    version: 1,
+  getPositions,
+  (network, nodes, positions) => ({
+    version: 2,
     network: {
       ...network,
       selectedNodes: [],
       beliefs: {},
     },
     nodes,
+    positions,
   })
 );
 
@@ -29,6 +32,15 @@ export const getSelectedNode = createSelector(
 
     return nodes.find(x => x.id === network.selectedNodes[0]);
   },
+);
+
+export const getNodesWithPositions = createSelector(
+  getNodes,
+  getPositions,
+  (nodes, positions) => nodes.map(node => ({
+    ...node,
+    position: positions[node.id],
+  })),
 );
 
 export const getInferenceResults = createSelector(

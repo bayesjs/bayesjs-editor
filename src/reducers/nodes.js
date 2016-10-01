@@ -6,7 +6,6 @@ import {
   ADD_PARENT,
   REMOVE_PARENT,
   CHANGE_NODE_ID,
-  CHANGE_NODE_POSITION,
   CHANGE_NODE_STATES,
   CHANGE_NODE_CPT,
 } from '../actions';
@@ -304,11 +303,6 @@ const nodeReducer = (node, action) => {
         ...node,
         id: action.payload.nextId,
       };
-    case CHANGE_NODE_POSITION:
-      return {
-        ...node,
-        position: { x: action.payload.x, y: action.payload.y },
-      };
     case CHANGE_NODE_CPT:
       return {
         ...node,
@@ -319,7 +313,7 @@ const nodeReducer = (node, action) => {
   }
 };
 
-const newNode = ({ id, states, position }) => {
+const newNode = ({ id, states }) => {
   const cpt = {};
 
   states.forEach(state => {
@@ -330,7 +324,6 @@ const newNode = ({ id, states, position }) => {
     id,
     states,
     parents: [],
-    position,
     cpt,
   });
 };
@@ -353,7 +346,6 @@ export default (state = [], action) => {
     case ADD_PARENT:
     case REMOVE_PARENT:
     case CHANGE_NODE_ID:
-    case CHANGE_NODE_POSITION:
     case CHANGE_NODE_STATES:
     case CHANGE_NODE_CPT:
       return state.map(node => nodeReducer(node, action));

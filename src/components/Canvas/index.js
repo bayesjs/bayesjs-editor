@@ -16,7 +16,7 @@ import {
 
 import {
   getNetwork,
-  getNodes,
+  getNodesWithPositions,
   getInferenceResults,
 } from '../../selectors';
 
@@ -477,7 +477,7 @@ Canvas.propTypes = {
 
 const mapStateToProps = state => ({
   network: getNetwork(state),
-  nodes: getNodes(state),
+  nodes: getNodesWithPositions(state),
   inferenceResults: getInferenceResults(state),
 });
 

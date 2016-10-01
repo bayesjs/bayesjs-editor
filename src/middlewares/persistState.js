@@ -20,7 +20,7 @@ export const loadState = () => {
   if (serializedState != null) {
     const state = JSON.parse(serializedState);
 
-    if (state.version !== 1) {
+    if (state.version !== 2) {
       return undefined;
     }
 
