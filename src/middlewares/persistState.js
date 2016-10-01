@@ -24,6 +24,8 @@ export const loadState = () => {
       return undefined;
     }
 
+    delete state.version;
+
     return state;
   }
 
