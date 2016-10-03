@@ -26,11 +26,9 @@ export default (state = {}, action) => {
       }
     case CHANGE_NODE_ID:
       {
-        const newState = {
-          ...state,
-          [action.payload.nextId]: state[action.payload.id],
-        };
+        const newState = { ...state };
         delete newState[action.payload.id];
+        newState[action.payload.nextId] = state[action.payload.id];
         return newState;
       }
     case CHANGE_NODE_POSITION:

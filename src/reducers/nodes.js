@@ -159,12 +159,10 @@ const changeParentId = (node, previousId, nextId) => ({
     (x === previousId ? nextId : x)
   ),
   cpt: node.cpt.map(row => {
-    const when = {
-      ...row.when,
-      [nextId]: row.when[previousId],
-    };
+    const when = { ...row.when };
 
     delete when[previousId];
+    when[nextId] = row.when[previousId];
 
     return { ...row, when };
   }),
