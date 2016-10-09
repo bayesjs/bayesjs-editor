@@ -26,6 +26,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "bayesjs": "^0.3.0",
     "classnames": "^2.2.5",
     "font-awesome": "^4.6.3",
     "normalize.css": "^4.2.0",
