@@ -1,5 +1,5 @@
 .container {
-  width: 500px;
+  width: calc(100vw - 200px);
 }
 
 .cpt-container {
