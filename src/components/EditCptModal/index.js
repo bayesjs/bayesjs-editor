@@ -182,11 +182,13 @@ class EditCptModal extends Component {
     if (node != null) {
       children = (
         <div className={styles.container}>
-          {node.parents.length === 0 ? (
-            this.renderCptWithoutParents()
-          ) : (
-            this.renderCptWithParents()
-          )}
+          <div className={styles.cptContainer}>
+            {node.parents.length === 0 ? (
+              this.renderCptWithoutParents()
+            ) : (
+              this.renderCptWithParents()
+            )}
+          </div>
 
           <div className={styles.buttons}>
             <Button

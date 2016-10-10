@@ -2,8 +2,13 @@
   width: 500px;
 }
 
-.cpt {
+.cpt-container {
   margin: 10px 0px;
+  max-height: calc(100vh - 200px);
+  overflow: auto;
+}
+
+.cpt {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0px;

@@ -17,9 +17,20 @@ class Node extends Component {
 
     return (
       <g key={state}>
-        <text x="5" y={37 + (18 * index)}>
-          {state}
-        </text>
+        <foreignObject x="5" y={21 + (18 * index)} height="15" width="75">
+          <p
+            title={state}
+            style={{
+              margin: 0,
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {state}
+          </p>
+        </foreignObject>
+
         <rect
           x={155 - barWidth}
           y={24 + (18 * index)}

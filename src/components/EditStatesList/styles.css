@@ -13,7 +13,12 @@
 }
 
 .state-list li span {
+  display: inline-block;
   line-height: 30px;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .state-list li button {

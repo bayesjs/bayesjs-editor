@@ -39,7 +39,7 @@ class EditStatesList extends Component {
         <ul className={styles.stateList}>
           {states.map(state => (
             <li key={state}>
-              <span>{state}</span>
+              <span title={state}>{state}</span>
               <Button
                 onClick={() => onDeleteState(state)}
                 title="Remover Estado"
