@@ -141,6 +141,47 @@ class Canvas extends Component {
       return { p1, p2 };
     };
 
+    const pointCountArray = [];
+
+    const getPointCount = point => {
+      let pointCount = pointCountArray
+        .find(x => x.point.x === point.x && x.point.y === point.y);
+
+      if (pointCount !== undefined) {
+        pointCount.count++;
+      } else {
+        pointCount = {
+          point,
+          count: 1,
+        };
+
+        pointCountArray.push(pointCount);
+      }
+
+      return pointCount.count;
+    };
+
+    const getPointAdjustment = count => {
+      let adjustment = count - 1;
+
+      if (adjustment % 2 === 1) {
+        adjustment *= -1;
+        adjustment -= 1;
+      }
+
+      adjustment /= 2;
+
+      return adjustment * 12;
+    };
+
+    const adjustPoint = (point, adjustment) => {
+      if (point.type === 'top' || point.type === 'bottom') {
+        point.x += adjustment;
+      } else {
+        point.y += adjustment;
+      }
+    };
+
     const { nodes } = this.props;
     const arrows = [];
 
@@ -148,6 +189,12 @@ class Canvas extends Component {
       node.parents.forEach(parentId => {
         const parent = nodes.find(x => x.id === parentId);
         const points = getNearestPoints(parent, node);
+
+        const p1Adjustment = getPointAdjustment(getPointCount(points.p1));
+        const p2Adjustment = getPointAdjustment(getPointCount(points.p2));
+
+        adjustPoint(points.p1, p1Adjustment);
+        adjustPoint(points.p2, p2Adjustment);
 
         arrows.push({
           key: `${parentId}-${node.id}`,
