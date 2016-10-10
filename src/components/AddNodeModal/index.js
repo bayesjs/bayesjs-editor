@@ -9,7 +9,7 @@ import styles from './styles.css';
 
 const initialState = {
   name: '',
-  states: ['T', 'F'],
+  states: ['Sim', 'Não'],
 };
 
 class AddNodeModal extends Component {
