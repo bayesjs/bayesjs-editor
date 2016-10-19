@@ -773,7 +773,7 @@ batch@0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.5.3.tgz#3f3414f380321743bfc1042f9a83ff1d5824d464"
 
-bayesjs@0.3.3:
+bayesjs@^0.3.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/bayesjs/-/bayesjs-0.3.3.tgz#a94558c3ec361ad875b501de1cb87a5d8c83eb83"
   dependencies:

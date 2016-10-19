@@ -81,6 +81,8 @@ class AddNodeModal extends Component {
             />
           </div>
 
+          <span>Estados</span>
+
           <EditStatesList
             states={this.state.states}
             onAddState={this.handleAddState}
