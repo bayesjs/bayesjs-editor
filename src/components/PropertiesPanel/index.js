@@ -131,8 +131,13 @@ class PropertiesPanel extends Component {
         <Button
           className={styles.toggleButton}
           onClick={this.handleToggleClick}
+          title={this.props.network.propertiesPanelVisible ? 'Recolher' : 'Expandir'}
         >
-          <i className="fa fa-sliders" />Propriedades
+          {this.props.network.propertiesPanelVisible ? (
+            <i className="fa fa-arrow-right" />
+          ) : (
+            <i className="fa fa-arrow-left" />
+          )}
         </Button>
 
         <div className={styles.content}>

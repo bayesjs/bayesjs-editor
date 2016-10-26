@@ -1,7 +1,7 @@
 .panel {
   display: flex;
   position: relative;
-  width: 50px;
+  width: 60px;
   border-left: solid 1px #333;
 }
 
@@ -48,11 +48,4 @@
   top: 10px;
   right: 10px;
   height: 30px;
-  white-space: nowrap;
-  transform: translate(100%, 0%) rotate(90deg);
-  transform-origin: left top;
-}
-
-.toggle-button > i {
-  padding-right: 10px;
 }
