@@ -47,7 +47,7 @@ class Canvas extends Component {
     this.nodeContextMenuItems = [
       {
         key: 'add-child',
-        text: 'Adicionar filho',
+        text: 'Adicionar ligação',
         onClick: () => (this.nodeToAddChildTo = this.contextMenuNode),
       },
       {
