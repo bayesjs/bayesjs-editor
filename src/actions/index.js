@@ -6,6 +6,8 @@ export const LOAD_NETWORK = 'LOAD_NETWORK';
 export const CHANGE_NETWORK_PROPERTY = 'CHANGE_NETWORK_PROPERTY';
 export const ADD_NODE = 'ADD_NODE';
 export const REMOVE_NODE = 'REMOVE_NODE';
+export const ADD_SUPER_NODE = 'ADD_SUPER_NODE';
+export const REMOVE_SUPER_NODE = 'REMOVE_SUPER_NODE';
 export const ADD_PARENT = 'ADD_PARENT';
 export const REMOVE_PARENT = 'REMOVE_PARENT';
 export const CHANGE_NODE_ID = 'CHANGE_NODE_ID';
@@ -14,12 +16,20 @@ export const CHANGE_NODE_STATES = 'CHANGE_NODE_STATES';
 export const CHANGE_NODE_CPT = 'CHANGE_NODE_CPT';
 export const SET_BELIEF = 'SET_BELIEF';
 
+export const NETWORK_KINDS = {
+  BN: 'BN',
+  MSBN: 'MSBN',
+};
+
 const persistState = () => ({
   type: PERSIST_STATE,
 });
 
-export const newNetwork = () => dispatch => {
-  dispatch({ type: NEW_NETWORK });
+export const newNetwork = (kind: string = NETWORK_KINDS.BN) => dispatch => {
+  dispatch({ 
+    type: NEW_NETWORK,
+    kind
+  });
   dispatch(persistState());
 };
 
@@ -117,6 +127,16 @@ export const setBelief = (id, state) => dispatch => {
   dispatch({
     type: SET_BELIEF,
     payload: { id, state },
+  });
+
+  dispatch(persistState());
+};
+
+export const addSuperNode = (state, position) => (dispatch) => {
+  const id = state.network.id || state.network.name;
+  dispatch({
+    type: ADD_SUPER_NODE,
+    payload: { id, state, position }
   });
 
   dispatch(persistState());

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../Header';
 import Canvas from '../Canvas';
 import PropertiesPanel from '../PropertiesPanel';
@@ -6,18 +7,43 @@ import EditStatesModal from '../EditStatesModal';
 import EditCptModal from '../EditCptModal';
 import styles from './styles.css';
 
+import {
+  getNetworkKind,
+} from '../../selectors';
+
+import {
+  NETWORK_KINDS,
+} from '../../actions';
+
 class App extends Component {
   state = {
-    key: 1,
-    editingNodeStates: null,
-    editingNodeCpt: null,
+    key: 1
+  };
+
+  getCanvas = () => {
+    return this.canvas.getWrappedInstance();
   };
 
   handleRequestRedraw = () => {
     setTimeout(() => {
-      this.canvas.getWrappedInstance().calculateArrows();
+      this.getCanvas().calculateArrows();
       this.setState({ key: this.state.key + 1 });
     }, 0);
+  };
+
+  getPanel = () => {
+    if (this.props.networkKind == NETWORK_KINDS.MSBN) {
+      
+    }
+
+    return (
+      <PropertiesPanel
+        key={this.state.key}
+        onEditNodeStates={node => this.getCanvas().onEditNodeStates(node)}
+        onEditNodeCpt={node => this.getCanvas().onEditNodeCpt(node)}
+        onStartConnection={subnetwork => this.getCanvas().onStartConnection(subnetwork)}
+      />
+    );
   };
 
   render() {
@@ -28,31 +54,17 @@ class App extends Component {
         <div className={styles.container}>
           <Canvas
             ref={ref => (this.canvas = ref)}
-            onEditNodeStates={node => this.setState({ editingNodeStates: node })}
-            onEditNodeCpt={node => this.setState({ editingNodeCpt: node })}
           />
-          <PropertiesPanel
-            key={this.state.key}
-            onEditNodeStates={node => this.setState({ editingNodeStates: node })}
-            onEditNodeCpt={node => this.setState({ editingNodeCpt: node })}
-          />
+
+          {this.getPanel()}
         </div>
-
-        <EditStatesModal
-          node={this.state.editingNodeStates}
-          onRequestClose={() => {
-            this.setState({ editingNodeStates: null });
-            this.handleRequestRedraw();
-          }}
-        />
-
-        <EditCptModal
-          node={this.state.editingNodeCpt}
-          onRequestClose={() => this.setState({ editingNodeCpt: null })}
-        />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  networkKind: getNetworkKind(state),
+});
+
+export default connect(mapStateToProps)(App);

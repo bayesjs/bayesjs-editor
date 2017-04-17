@@ -1,10 +1,15 @@
 import { createSelector } from 'reselect';
 import { addNode, infer } from 'bayesjs';
 
+import { NETWORK_KINDS } from '../actions';
+
 export const getNetwork = state => state.network;
-export const getNodes = state => state.nodes;
-export const getPositions = state => state.positions;
+export const getNodes = state => state.network.nodes || state.nodes || [];
+export const getPositions = state => state.network.positions || state.positions || [];
 export const getBeliefs = state => state.network.beliefs;
+export const getSubnetworks = state => state.network.subnetworks || [];
+export const getNetworkKind = state => state.network.kind || NETWORK_KINDS.BN;
+export const getPanelVisibility = state => state.network.propertiesPanelVisible;
 
 export const getStateToSave = createSelector(
   getNetwork,
@@ -34,12 +39,33 @@ export const getSelectedNode = createSelector(
   },
 );
 
+export const getSelectedSubnetwork = createSelector(
+  getNetwork,
+  getSubnetworks,
+  (network, subnetworks) => {
+    if (network.selectedNodes.length !== 1) {
+      return null;
+    }
+
+    return subnetworks.find(sub => sub.id === network.selectedNodes[0]);
+  },
+);
+
 export const getNodesWithPositions = createSelector(
   getNodes,
   getPositions,
   (nodes, positions) => nodes.map(node => ({
     ...node,
     position: positions[node.id],
+  })),
+);
+
+export const getSubnetworksWithPosition = createSelector(
+  getSubnetworks,
+  getPositions,
+  (subnetworks, positions) => subnetworks.map(subnetwork => ({
+    ...subnetwork,
+    position: positions[subnetwork.id || subnetwork.name],
   })),
 );
 

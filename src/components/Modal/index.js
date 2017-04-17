@@ -30,6 +30,7 @@ const Modal = ({
     isOpen={isOpen}
     onRequestClose={onRequestClose}
     style={style}
+    contentLabel={title}
   >
     <div className={styles.header}>
       {title}

@@ -73,7 +73,7 @@ class EditCptModal extends Component {
     const { cpt } = this.state;
     const states = Object.keys(cpt);
 
-    const sum = states.reduce((acc, x) => acc + cpt[x], 0);
+    const sum = states.reduce((acc, x) => acc + (cpt[x] * 10), 0) / 10;
 
     if (sum !== 1) {
       alert('A soma das probabilidades deve ser igual a 1');

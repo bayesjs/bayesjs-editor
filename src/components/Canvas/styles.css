@@ -9,10 +9,3 @@
   flex-shrink: 0;
   margin: auto;
 }
-
-.canvas {
-  border: solid 1px #333;
-  background-color: #fcfcfc;
-  box-shadow: 0px 0px 20px #333;
-  margin: 10px;
-}

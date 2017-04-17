@@ -5,6 +5,7 @@ import {
   REMOVE_NODE,
   CHANGE_NODE_ID,
   CHANGE_NODE_POSITION,
+  ADD_SUPER_NODE,
 } from '../actions';
 
 export default (state = {}, action) => {
@@ -14,6 +15,7 @@ export default (state = {}, action) => {
     case LOAD_NETWORK:
       return action.payload.state.positions;
     case ADD_NODE:
+    case ADD_SUPER_NODE:
       return {
         ...state,
         [action.payload.id]: action.payload.position,

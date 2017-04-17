@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { newNetwork, loadNetwork } from '../../actions';
+import { newNetwork, loadNetwork, newMSBNNetwork, NETWORK_KINDS } from '../../actions';
 import { getStateToSave } from '../../selectors';
 import { openFile, saveFile } from '../../utils/file';
 import Button from '../Button';
@@ -28,14 +28,24 @@ class Header extends Component {
     this.setState({ menuVisible: !this.state.menuVisible });
   };
 
-  handleNewNetworkClick = () => {
+  handleNewNetworkClick = (e) => {
+    e.preventDefault();
     if (confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
       this.props.dispatch(newNetwork());
       this.props.onRequestRedraw();
     }
   };
 
-  handleOpenNetworkClick = () => {
+  handleNewMSBNNetworkClick = (e) => {
+    e.preventDefault();
+    if (confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
+      this.props.dispatch(newNetwork(NETWORK_KINDS.MSBN));
+      this.props.onRequestRedraw();
+    }
+  }
+
+  handleOpenNetworkClick = (e) => {
+    e.preventDefault();
     openFile('.json', json => {
       try {
         const state = JSON.parse(json);
@@ -47,10 +57,44 @@ class Header extends Component {
     });
   };
 
-  handleSaveNetworkClick = () => {
-    const json = JSON.stringify(this.props.stateToSave, null, 2);
-    saveFile('network.json', json);
+  getNetworkName = () => {
+    let { name } = this.props.stateToSave.network;
+
+    if (name) {
+      name = name.toLowerCase();
+      name = name.replace(/[ ]/g, '_');
+
+      return name || 'network';// In case the name is blank
+    }
+    return 'network';
   };
+
+  handleSaveNetworkClick = (e) => {
+    e.preventDefault();
+    const json = JSON.stringify(this.props.stateToSave, null, 2);
+    saveFile(`${this.getNetworkName()}.json`, json);
+  };
+
+  hasMSBNNetwork = () => {
+    return true;
+  }
+
+  renderLiNetworkTypes = () => {
+    return (
+      <ul className={styles.subMenu}>
+        {this.createLi('BN', this.handleNewNetworkClick)}
+        {this.hasMSBNNetwork() ? this.createLi('MSBN', this.handleNewMSBNNetworkClick) : null}
+      </ul>
+    );
+  }
+
+  createLi = (name, handleOnClick) => {
+    return (
+      <li>
+        <a href="" onClick={handleOnClick}>{name}</a>
+      </li>
+    );
+  }
 
   render() {
     return (
@@ -65,9 +109,16 @@ class Header extends Component {
         </Button>
         {this.state.menuVisible && (
           <ul className={styles.menu}>
-            <li className={styles.menuItem} onClick={this.handleNewNetworkClick}>Nova Rede</li>
-            <li className={styles.menuItem} onClick={this.handleOpenNetworkClick}>Abrir Rede</li>
-            <li className={styles.menuItem} onClick={this.handleSaveNetworkClick}>Salvar Rede</li>
+            <li>
+              <a href="">Nova Rede</a>
+              {this.renderLiNetworkTypes()}
+            </li>
+            <li>
+              <a href="" onClick={this.handleOpenNetworkClick}>Abrir Rede</a>
+            </li>
+            <li>
+              <a href="" onClick={this.handleSaveNetworkClick}>Salvar Rede</a>
+            </li>
           </ul>
         )}
       </div>

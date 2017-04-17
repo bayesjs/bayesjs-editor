@@ -17,6 +17,10 @@ class ContextMenu extends Component {
     window.removeEventListener('mousedown', this.handleWindowMouseDown);
   }
 
+  setContextItem = (item) => {
+    this.contextItem = item;
+  }
+
   hide = () => {
     this.setState({ position: null });
   };
@@ -26,7 +30,7 @@ class ContextMenu extends Component {
     this.setState({ position: null });
   };
 
-  handleContainerMouseDown = e => {
+  handleContainerMouseDown = (e, context) => {
     // Only right clicks
     if (e.button !== 2) {
       return;
@@ -66,7 +70,7 @@ class ContextMenu extends Component {
 
     if (!item.disabled) {
       this.handleWindowMouseDown();
-      item.onClick();
+      item.onClick(this.contextItem);
     }
   };
 
