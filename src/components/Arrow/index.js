@@ -5,6 +5,7 @@ const Arrow = ({
   to,
   onMouseDown,
   markEnd,
+  title,
 }) => {
   const makeControlPoint = (point, n = 50) => {
     const control = { ...point };
@@ -41,7 +42,9 @@ const Arrow = ({
         strokeWidth="15"
         style={style}
         onMouseDown={onMouseDown}
-      />
+      >
+        {title}
+      </path>
       <path
         d={d}
         fill="none"
@@ -50,7 +53,9 @@ const Arrow = ({
         markerEnd={markEnd ? "url(#triangle)" : null}
         style={style}
         onMouseDown={onMouseDown}
-      />
+      >
+        {title}
+      </path>
     </g>
   )
 };

@@ -1,10 +1,13 @@
+import { combineReducers } from 'redux';
 import nodesRed from './nodes';
 import positionsRed from './positions';
 import subnetworkRed from './subnetwork';
+import linkagesRed from './linkages';
 
 const ReducerNode = nodesRed;
 const ReducerPosition = positionsRed;
 const ReducerSubNetwork = subnetworkRed;
+const ReducerLinkages = linkagesRed;
 
 import {
   NEW_NETWORK,
@@ -44,16 +47,18 @@ const setBelief = (state, action) => {
   };
 };
 
-const completeReducer = (initialState, action) => (finalState) => {
-  const nodes = ReducerNode(initialState.nodes, action);
-  const positions = ReducerPosition(initialState.positions, action);
-  const subnetworks = ReducerSubNetwork(initialState.subnetworks, action);
+const completeReducer = (state, action) => (finalState) => {
+  const nodes = ReducerNode(state.nodes, action);
+  const positions = ReducerPosition(state.positions, action);
+  const subnetworks = ReducerSubNetwork(state.subnetworks, action);
+  const linkages = ReducerLinkages(state.linkages, action);
   
   return {
     ...finalState,
     nodes,
     positions,
     subnetworks,
+    linkages,
   };
 }
 

@@ -9,11 +9,13 @@ const NodeGeneric = ({
   selected,
   onMouseDown,
   rectRef,
+  onDoubleClick,
   children
 }) => (
   <g
     className={styles.node}
     onMouseDown={onMouseDown}
+    onDoubleClick={onDoubleClick}
     transform={`translate(${x} ${y})`}
   >
     <rect

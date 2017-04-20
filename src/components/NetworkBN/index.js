@@ -2,10 +2,10 @@ import React, { PropTypes, Component } from "react";
 import { connect } from 'react-redux';
 import Network, { ContextMenuType } from "../Network";
 import Node from '../Node';
+import Arrow from '../Arrow';
 import AddNodeModal from '../AddNodeModal';
 import EditStatesModal from '../EditStatesModal';
 import EditCptModal from '../EditCptModal';
-import Arrow from '../Arrow';
 
 import {
   getNetwork,
@@ -103,16 +103,14 @@ class NetworkBN extends Component {
     this.setState({ editingNodeCpt });
   };
 
-  renderArrow = (arrow, handleArrowMouseDown) => {
-    const onMouseDown = e => handleArrowMouseDown(arrow, e);
-    
+  renderArrow = (arrow, props) => {
     return (
       <Arrow 
         key={arrow.key} 
-        onMouseDown={onMouseDown}
         from={arrow.from}
         to={arrow.to}
         markEnd={true}
+        {...props}
       />
     );
   };
@@ -127,13 +125,10 @@ class NetworkBN extends Component {
       belief={this.props.network.beliefs[node.id]}
       x={node.position.x}
       y={node.position.y}
+      onStateDoubleClick={(state) => this.onSetBelief(node, state)}
       {...props}
     />
   );
-
-  changeNetworkProperty = (name, value) => {
-    this.props.dispatch(changeNetworkProperty(name, value));
-  };
 
   onSelectNodes = (nodes) => {
     this.props.dispatch(
@@ -169,7 +164,7 @@ class NetworkBN extends Component {
     }
   };
 
-  onCreateNode = (position, onRequestClose) => {
+  requestCreateNode = (position, onRequestClose) => {
     return (
       <AddNodeModal
         position={position}
@@ -206,22 +201,39 @@ class NetworkBN extends Component {
     }
   };
 
+  getArrows = () => {
+    const { nodes } = this.props;
+    let arrows = [];
+
+    nodes.forEach(node => {
+      node.parents.forEach(parentId => {
+        const parent = nodes.find(x => x.id === parentId);
+        
+        arrows.push({ 
+          from: parent,
+          to: node,
+        });
+      });
+    });
+
+    return arrows;
+  };
+
   render() {
     return (
       <div>
         <Network
           network={this.props.network}
           nodes={this.props.nodes}
+          arrows={this.getArrows}
           renderNode={this.renderNode}
           renderArrow={this.renderArrow}
-          changeNetworkProperty={this.changeNetworkProperty}
           onAddConnection={this.onAddConnection}
           onCancelConnection={this.onCancelConnection}
           onSelectNodes={this.onSelectNodes}
           changeNodePosition={this.changeNodePosition}
           getContextItems={this.getContextItems}
-          onCreateNode={this.onCreateNode}
-          onSetBelief={this.onSetBelief}
+          requestCreateNode={this.requestCreateNode}
           ref={ref => (this.net = ref)}
           />
 
@@ -249,10 +261,17 @@ NetworkBN.propTypes = {
   inferenceResults: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  network: getNetwork(state),
-  nodes: getNodesWithPositions(state),
-  inferenceResults: getInferenceResults(state),
-});
+const mapStateToProps = (s, ownProps) => {
+  let state = s;
+  if (ownProps.network) {
+    state = ownProps;
+  }
+  
+  return {
+    network: getNetwork(state),
+    nodes: getNodesWithPositions(state),
+    inferenceResults: getInferenceResults(state),
+  };
+};
 
 export default connect(mapStateToProps, null, null, { withRef: true })(NetworkBN);

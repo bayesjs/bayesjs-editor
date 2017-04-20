@@ -15,6 +15,8 @@ export const CHANGE_NODE_POSITION = 'CHANGE_NODE_POSITION';
 export const CHANGE_NODE_STATES = 'CHANGE_NODE_STATES';
 export const CHANGE_NODE_CPT = 'CHANGE_NODE_CPT';
 export const SET_BELIEF = 'SET_BELIEF';
+export const ADD_LINKAGE = 'ADD_LINKAGE';
+export const REMOVE_LINKAGE = 'REMOVE_LINKAGE';
 
 export const NETWORK_KINDS = {
   BN: 'BN',
@@ -137,6 +139,33 @@ export const addSuperNode = (state, position) => (dispatch) => {
   dispatch({
     type: ADD_SUPER_NODE,
     payload: { id, state, position }
+  });
+
+  dispatch(persistState());
+};
+
+export const removeSuperNode = (id) => (dispatch) => {
+  dispatch({
+    type: REMOVE_SUPER_NODE,
+    payload: { id }
+  });
+
+  dispatch(persistState());
+};
+
+export const addLinkage = (linkage) => (dispatch) => {
+  dispatch({
+    type: ADD_LINKAGE,
+    payload: { linkage }
+  });
+
+  dispatch(persistState());
+};
+
+export const removeLinkage = (index) => (dispatch) => {
+  dispatch({
+    type: REMOVE_LINKAGE,
+    payload: { index }
   });
 
   dispatch(persistState());

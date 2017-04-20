@@ -5,8 +5,8 @@ import { openFile, saveFile } from '../../utils/file';
 import SuperNode from '../SuperNode';
 import AddNodeModal from '../AddNodeModal';
 import Arrow from '../Arrow';
-import NetworkBN from '../NetworkBN';
-import ModalNetwork from '../ModalNetwork';
+import SubNetwork from '../SubNetwork';
+import Modal from '../Modal';
 import { v4 } from 'uuid';
 
 import {
@@ -15,12 +15,18 @@ import {
   getInferenceResults,
   getSubnetworks,
   getSubnetworksWithPosition,
+  getLinkages,
 } from '../../selectors';
+
+import { combNodesAndBeliefs, combNodesAndPositions } from '../../selectors/combiners';
 
 import {
   addSuperNode,
   changeNetworkProperty,
   changeNodePosition,
+  addLinkage,
+  removeLinkage,
+  removeSuperNode,
 } from '../../actions';
 
 class NetworkMSBN extends Component {
@@ -29,7 +35,10 @@ class NetworkMSBN extends Component {
 
     this.state = {
       connectNetwork: null,
+      firstNodeToConnect: null,
     };
+
+    this.onDoubleClickNode = this.onStartConnection;
 
     this.canvasContextMenuItems = [
       {
@@ -48,17 +57,36 @@ class NetworkMSBN extends Component {
         onClick: (contextMenuNode) => {
           this.onStartConnection(contextMenuNode);
         },
+      },
+      {
+        key: 'remove-super-node',
+        text: 'Remover rede',
+        onClick: (contextNode) => {
+          const { dispatch } = this.props;
+          const { id } = contextNode;
+          const linkageIndexes = this.getLinkagesIndexes(id);
+
+          dispatch(removeSuperNode(id));
+
+          for (let index of linkageIndexes) {
+            dispatch(removeLinkage(index));
+          }
+          
+          setTimeout(this.calculateArrows.bind(this), 0);
+        }
       }
     ];
 
     this.arrowContextMenuItems = [
       {
-        key: 'remove-link',
+        key: 'remove-linkage',
         text: 'Remover ligação',
         onClick: (contextMenuArrow) => {
-          // const { childId, parentId } = contextMenuArrow;
-          // this.props.dispatch(removeParent(childId, parentId));
-          // setTimeout(() => this.calculateArrows(), 0);
+          const { dispatch } = this.props;
+          const { index } = contextMenuArrow;
+
+          dispatch(removeLinkage(index));
+          setTimeout(this.calculateArrows.bind(this), 0);
         },
       },
     ];
@@ -72,16 +100,31 @@ class NetworkMSBN extends Component {
     window.removeEventListener('keyup', this.handleKeyup);
   }
 
-  renderArrow = (arrow, handleArrowMouseDown) => {
-    const onMouseDown = e => handleArrowMouseDown(arrow, e);
+  getLinkagesIndexes = (netId) => {
+    const { linkages } = this.props;
     
+    return linkages.reduce((p, [l1, l2], index) => {
+      if (l1.networkId == netId || l2.networkId == netId) {
+        p.push(index);
+      }
+      return p;
+    }, []);
+  };
+
+  getArrowTitle = (arrow) => {
+    
+  };
+
+  renderArrow = (arrow, props) => {
+    const title = this.getArrowTitle(arrow.arrow);
+
     return (
       <Arrow 
         key={arrow.key} 
-        onMouseDown={onMouseDown}
         from={arrow.from}
         to={arrow.to}
-        markEnd={true}
+        markEnd={false}
+        {...props}
       />
     );
   };
@@ -129,20 +172,18 @@ class NetworkMSBN extends Component {
     this.setState({ connectNetwork });
   };
 
-  onAddConnection = (idFrom, idTo) => {
-    
+  onAddConnection = (idTo, idFrom) => {
+    if (idFrom != idTo) {
+      const { subnetworks } = this.props;
+
+      this.setState({
+        connectNetwork: subnetworks.find(s => s.id == idTo)
+      });
+    }
   };
 
   onCancelConnection = () => {
-    
-  };
-
-  onSetBelief = (node, state) => {
-    if (this.props.network.beliefs[node.id] === state) {
-      this.props.dispatch(setBelief(node.id, null));
-    } else {
-      this.props.dispatch(setBelief(node.id, state));
-    }
+    this.cancelConnection();
   };
 
   existsSubnetwork = (subnetwork) => {
@@ -152,7 +193,7 @@ class NetworkMSBN extends Component {
     return subnetworks.some((net) => net.id == id || net.name == name);
   };
 
-  onCreateNode = (position, onRequestClose) => {
+  requestCreateNode = (position, onRequestClose) => {
     openFile('.json', json => {
       // try {
         let state = JSON.parse(json);
@@ -177,7 +218,7 @@ class NetworkMSBN extends Component {
 
   changeNodePosition = (id, newX, newY) => {
     this.props.dispatch(changeNodePosition(id, newX, newY));
-    setTimeout(this.net.renderArrows, 0);
+    setTimeout(this.calculateArrows.bind(this), 0);
   };
 
   calculateArrows = () => {
@@ -204,43 +245,137 @@ class NetworkMSBN extends Component {
     }
   };
 
-  rendetNetwork = () => {
-    if (this.state.connectNetwork) {
-      const { nodes } = this.state.connectNetwork;
+  creatNodeWithParent = (subnetwork, node) => {
+    const { id, name } = subnetwork;
+    return {
+      ...node,
+      network: {
+        id,
+        name
+      }
+    };
+  }
+
+  onSelectSubNodeConnection = (subnetwork) => (node) => {
+    const { firstNodeToConnect } = this.state;
+    
+    //Selected first node, that will be connected with another one
+    if (firstNodeToConnect === null) {
+      // if (confirm(`Deseja ligar ${node.id}?`)) {
+        this.setState({ 
+          connectNetwork: null,
+          firstNodeToConnect: this.creatNodeWithParent(subnetwork, node)
+        });
+
+        this.net.startConnection(subnetwork);
+      // }
+    } else {
+      const n = this.creatNodeWithParent(subnetwork, node);
+      const linkage = this.createLinakege(firstNodeToConnect, n);
+
+      this.setState({ 
+        connectNetwork: null,
+        firstNodeToConnect: null,
+      });
+
+      this.props.dispatch(addLinkage(linkage));
+      setTimeout(this.calculateArrows.bind(this), 0);
+    }
+  };
+
+  createLinakege = (node1, node2) => {
+    const create = ({ id, network }) => ({
+      networkId: network.id,
+      nodeId: id,
+    });
+
+    return [
+      create(node1),
+      create(node2),
+    ];
+  };
+
+  cancelConnection = () => {
+    this.setState({
+      connectNetwork: null
+    });
+  };
+
+  renderSubNetwork = () => {
+    const subnetwork = this.state.connectNetwork;
+
+    if (subnetwork) {
+      const { nodes, positions, beliefs } = subnetwork;
+      const inferenceResults = combNodesAndBeliefs(nodes, beliefs);
+      const nodesAndPositions = combNodesAndPositions(nodes, positions);
+      
+      if (this.state.firstNodeToConnect) {
+        const { network } = this.state.firstNodeToConnect;
+        
+        if (network.id == subnetwork.id) {
+          this.cancelConnection();
+
+          return null;
+        }
+      }
 
       return (
-        <ModalNetwork>
-          <NetworkBN 
-            network={this.state.connectNetwork}
-            nodes={nodes}
-            state={this.state.connectNetwork}
+        <Modal
+          title={`Subrede ${subnetwork.name}`}
+          onRequestClose={this.cancelConnection}
+          isOpen={subnetwork !== null}>
+          
+          <SubNetwork 
+            network={subnetwork}
+            nodes={nodesAndPositions}
+            state={subnetwork}
+            inferenceResults={inferenceResults}
+            onDoubleClickNode={this.onSelectSubNodeConnection(subnetwork)}
           />
-        </ModalNetwork>
+
+        </Modal>
       );
     }
 
-    return (
-      <Network
-        network={this.props.network}
-        nodes={this.props.nodes}
-        renderNode={this.renderNode}
-        renderArrow={this.renderArrow}
-        changeNetworkProperty={this.changeNetworkProperty}
-        onAddConnection={this.onAddConnection}
-        onCancelConnection={this.onCancelConnection}
-        onSelectNodes={this.onSelectNodes}
-        changeNodePosition={this.changeNodePosition}
-        getContextItems={this.getContextItems}
-        onCreateNode={this.onCreateNode}
-        onSetBelief={this.onSetBelief}
-        ref={ref => (this.net = ref)}
-        />
-    );
+    return null;
+  };
+
+  getArrows = () => {
+    //preciso agrupar
+    const { linkages, nodes } = this.props;
+    const get = (({ networkId, nodeId }) => {
+      return nodes.find(n => n.id == networkId);
+    });
+
+    return linkages.map(([a, b]) => {
+      return {
+        from: get(a),
+        to: get(b),
+      };
+    });
   };
 
   render() {
     return (
-      <div>{this.rendetNetwork()}</div>
+      <div>
+        <Network
+          network={this.props.network}
+          nodes={this.props.nodes}
+          arrows={this.getArrows}
+          renderNode={this.renderNode}
+          renderArrow={this.renderArrow}
+          onAddConnection={this.onAddConnection}
+          onCancelConnection={this.onCancelConnection}
+          onSelectNodes={this.onSelectNodes}
+          changeNodePosition={this.changeNodePosition}
+          getContextItems={this.getContextItems}
+          requestCreateNode={this.requestCreateNode}
+          onDoubleClickNode={this.onDoubleClickNode}
+          ref={ref => (this.net = ref)}
+          />
+
+          {this.renderSubNetwork()}
+      </div>
     );
   }
 }
@@ -250,6 +385,7 @@ NetworkMSBN.propTypes = {
   network: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   subnetworks: PropTypes.array.isRequired,
+  linkages: PropTypes.array.isRequired,
   inferenceResults: PropTypes.object.isRequired,
 };
 
@@ -258,6 +394,7 @@ const mapStateToProps = (state, ownProps) => ({
   nodes: getSubnetworksWithPosition(state),
   inferenceResults: getInferenceResults(state),
   subnetworks: getSubnetworks(state),
+  linkages: getLinkages(state),
 });
 
 export default connect(mapStateToProps, null, null, { withRef: true })(NetworkMSBN);

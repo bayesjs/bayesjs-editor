@@ -127,7 +127,14 @@ class NetworkBNGeneric extends Component {
     }
   };
 
+  helper = () => {
+
+  }
+
   render() {
+    const {} = this.props;
+    const { helper } = this;
+
     return (
       <div>
         <Network
@@ -150,11 +157,10 @@ class NetworkBNGeneric extends Component {
   }
 }
 
-NetworkBN.propTypes = {
+NetworkBNGeneric.propTypes = {
   dispatch: PropTypes.func.isRequired,
   network: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
-  inferenceResults: PropTypes.object.isRequired,
 };
 
 export default NetworkBNGeneric;

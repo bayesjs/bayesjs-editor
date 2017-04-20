@@ -17,9 +17,9 @@ class ContextMenu extends Component {
     window.removeEventListener('mousedown', this.handleWindowMouseDown);
   }
 
-  setContextItem = (item) => {
-    this.contextItem = item;
-  }
+  // setContextItem = (item) => {
+  //   this.contextItem = item;
+  // }
 
   hide = () => {
     this.setState({ position: null });
@@ -30,7 +30,8 @@ class ContextMenu extends Component {
     this.setState({ position: null });
   };
 
-  handleContainerMouseDown = (e, context) => {
+  handleContainerMouseDown = (e, contextItem) => {
+    this.contextItem = contextItem;
     // Only right clicks
     if (e.button !== 2) {
       return;
@@ -69,8 +70,10 @@ class ContextMenu extends Component {
     e.stopPropagation();
 
     if (!item.disabled) {
+      const { contextItem } = this;
+
       this.handleWindowMouseDown();
-      item.onClick(this.contextItem);
+      item.onClick(contextItem);
     }
   };
 
@@ -94,7 +97,7 @@ class ContextMenu extends Component {
           ref={ref => (this.menuRef = ref)}
           onContextMenu={this.handleContextMenu}
         >
-          {this.props.items.map(item => (
+          {this.props.items.map((item) => (
             <li
               key={item.key}
               className={classNames({

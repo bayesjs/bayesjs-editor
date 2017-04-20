@@ -30,7 +30,6 @@ const SuperNode = (props) => {
 SuperNode.propTypes = {
   id: PropTypes.string.isRequired,
   onMouseDown: PropTypes.func.isRequired,
-  onStateDoubleClick: PropTypes.func.isRequired,
   x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   nodes: PropTypes.array.isRequired,

@@ -1,6 +1,7 @@
 import {
   NEW_NETWORK,
   ADD_SUPER_NODE,
+  REMOVE_SUPER_NODE,
 } from '../actions';
 
 const formatNetwork = (state) => {
@@ -26,6 +27,9 @@ export default (state = [], action) => {
         ...state,
         formatNetwork(action.payload.state)
       ];
+    case REMOVE_SUPER_NODE:
+      return state
+        .filter(n => n.id != action.payload.id)
     default: 
       return state;
   }

@@ -9,15 +9,6 @@ export const ContextMenuType = {
   ARROW: 'CONTEXT_MENU_ARROW',
   CANVAS: 'CONTEXT_MENU_CANVAS'
 };
-// import {
-//   removeNode,
-//   addParent,
-//   removeParent,
-//   changeNetworkProperty,
-//   changeNodePosition,
-//   setBelief,
-//   addSuperNode,
-// } from '../../actions';
 
 import {
   getNetwork,
@@ -40,8 +31,8 @@ class Network extends Component {
     };
 
     this.rectRefs = {};
-    this.contextMenu = this.props.contextMenu;
     this.movingNode = null;
+    this.canChangeNodePostion = typeof this.props.changeNodePosition === 'function';
   }
 
   componentDidMount() {
@@ -53,7 +44,7 @@ class Network extends Component {
   };
 
   createNode = (newNodePosition) => {
-    const newNode = this.props.onCreateNode(newNodePosition, () => this.setState({ newNode: null }));
+    const newNode = this.props.requestCreateNode(newNodePosition, () => this.setState({ newNode: null }));
     
     if (newNode) {
       this.setState({ newNode });
@@ -157,27 +148,25 @@ class Network extends Component {
       }
     };
 
-    const arrows = [];
+    const arrows = this.props.arrows().map((arrow, index) => {
+      const { from, to } = arrow;
+      const points = getNearestPoints(from, to);
 
-    nodes.forEach(node => {
-      (node.parents || []).forEach(parentId => {
-        const parent = nodes.find(x => x.id === parentId);
-        const points = getNearestPoints(parent, node);
+      const p1Adjustment = getPointAdjustment(getPointCount(points.p1));
+      const p2Adjustment = getPointAdjustment(getPointCount(points.p2));
 
-        const p1Adjustment = getPointAdjustment(getPointCount(points.p1));
-        const p2Adjustment = getPointAdjustment(getPointCount(points.p2));
+      adjustPoint(points.p1, p1Adjustment);
+      adjustPoint(points.p2, p2Adjustment);
 
-        adjustPoint(points.p1, p1Adjustment);
-        adjustPoint(points.p2, p2Adjustment);
-
-        arrows.push({
-          key: `${parentId}-${node.id}`,
-          from: points.p1,
-          to: points.p2,
-          parentId,
-          childId: node.id,
-        });
-      });
+      return {
+        key: `${from.id}-${to.id}`,
+        from: points.p1,
+        to: points.p2,
+        parentId: from.id,
+        childId: to.id,
+        arrow,
+        index,
+      };
     });
 
     this.setState({ arrows });
@@ -190,21 +179,24 @@ class Network extends Component {
 
       this.contextMenuArrow = arrow;
       this.setState({ contextMenuItems: this.props.getContextItems(ContextMenuType.ARROW) });
-      this.contextMenu.handleContainerMouseDown(e);
-      this.contextMenu.setContextItem(arrow);
+      this.contextMenu.handleContainerMouseDown(e, arrow);
     }
   };
 
   handleNodeMouseDown = (node, e) => {
     e.stopPropagation();
+    const { onClickNode, onSelectNodes, onAddConnection, getContextItems } = this.props;
 
-    this.props.onSelectNodes([node.id]);
+    onSelectNodes([node.id]);
+    if (typeof onClickNode === 'function') {
+      onClickNode(node, e);
+    }
 
     if (e.button === 0) {
       this.contextMenu.hide();
 
       if (this.state.nodeToAddChildTo !== null) {
-        this.props.onAddConnection(node.id, this.state.nodeToAddChildTo.id);
+        onAddConnection(node.id, this.state.nodeToAddChildTo.id);
         this.setState({ addingChildArrow: null, nodeToAddChildTo: null });
         setTimeout(() => this.calculateArrows(), 0);
       }
@@ -222,9 +214,8 @@ class Network extends Component {
       };
     } else if (e.button === 2) {
       this.contextMenuNode = node;
-      this.setState({ contextMenuItems: this.props.getContextItems(ContextMenuType.NODE) });
-      this.contextMenu.handleContainerMouseDown(e);
-      this.contextMenu.setContextItem(node);
+      this.setState({ contextMenuItems: getContextItems(ContextMenuType.NODE) });
+      this.contextMenu.handleContainerMouseDown(e, node);
     }
   };
 
@@ -246,13 +237,12 @@ class Network extends Component {
       
       this.contextMenuPosition = { x, y };
       this.setState({ contextMenuItems: this.props.getContextItems(ContextMenuType.CANVAS) });
-      this.contextMenu.handleContainerMouseDown(e);
-      this.contextMenu.setContextItem(this.contextMenuPosition);
+      this.contextMenu.handleContainerMouseDown(e, this.contextMenuPosition);
     }
   };
 
   handleMouseMove = e => {
-    if (this.movingNode !== null) {
+    if (this.canChangeNodePostion && this.movingNode !== null) {
       const { id, initialPosition, initialMousePosition } = this.movingNode;
       const nodeRect = this.rectRefs[id].getBoundingClientRect();
 
@@ -297,6 +287,7 @@ class Network extends Component {
   handleMouseUp = e => {
     if (this.movingNode !== null) {
       const { id, initialPosition, initialMousePosition } = this.movingNode;
+      const { changeNodePosition } = this.props;
 
       const difX = e.clientX - initialMousePosition.x;
       const difY = e.clientY - initialMousePosition.y;
@@ -304,12 +295,16 @@ class Network extends Component {
       const newX = initialPosition.x + difX;
       const newY = initialPosition.y + difY;
 
-      this.props.changeNodePosition(id, newX, newY);
+      if (this.canChangeNodePostion) {
+        changeNodePosition(id, newX, newY);
+
+        setTimeout(() => this.calculateArrows(), 0);
+      } else {
+        console.warn('changeNodePosition not defined in the props of Network');
+      }
 
       this.setState({ movingNodePlaceholder: null });
       this.movingNode = null;
-
-      setTimeout(() => this.calculateArrows(), 0);
     }
   };
 
@@ -341,19 +336,25 @@ class Network extends Component {
     </defs>
   );
 
-  handleNodeStateDoubleClick = (node, state) => {
-    this.props.onSetBelief(node, state);
-  };
-
   renderArrows = () => {
-    const arrows = this.calculateArrows(this.props.nodes);
-    const arrowsRendered = arrows.map(a => this.props.renderArrow(a, this.handleArrowMouseDown));
+    const { onClickArrow, nodes, renderArrow } = this.props;
+    const arrows = this.calculateArrows(nodes);
+    const arrowsRendered = arrows.map((a) => {
+      const onMouseDown = e => this.handleArrowMouseDown(a, e);
+      const onClick = (e) => {
+        if (typeof onClickArrow === 'function') {
+          onClickArrow(a, e);
+        }
+      };
+
+      return renderArrow(a, { onMouseDown, onClick })
+    });
 
     this.setState({ arrowsRendered });
   };
 
   renderNodes = () => {
-    const { nodes, renderNode } = this.props;
+    const { nodes, renderNode, onDoubleClickNode } = this.props;
     const setRef = (nodeId) => (nodeRef) => {
       this.rectRefs[nodeId] = nodeRef;
     };
@@ -362,9 +363,13 @@ class Network extends Component {
     return nodes.map((node) => {
       const rectRef = setRef(node.id);
       const onMouseDown = (e) => this.handleNodeMouseDown(node, e);
-      const onStateDoubleClick = (state) => this.handleNodeStateDoubleClick(node, state);
+      const onDoubleClick = (e) => {
+        if (typeof onDoubleClickNode === 'function') {
+          onDoubleClickNode(node, e);
+        }
+      };
 
-      return renderNode(node, { rectRef, onMouseDown, onStateDoubleClick });
+      return renderNode(node, { rectRef, onMouseDown, onDoubleClick });
     });
   };
 
@@ -436,17 +441,23 @@ class Network extends Component {
   }
 }
 
+/// optional props
+// onClickNode,
+// onDoubleClickNode,
+// onClickArrow,
+// onSelectNodes,
+// changeNodePosition,
+
 Network.propTypes = {
   network: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
+  arrows: PropTypes.func.isRequired,
   renderArrow: PropTypes.func.isRequired,
   renderNode: PropTypes.func.isRequired,
+  requestCreateNode: PropTypes.func.isRequired,
   onAddConnection: PropTypes.func.isRequired,
   onCancelConnection: PropTypes.func.isRequired,
   onSelectNodes: PropTypes.func.isRequired,
-  changeNodePosition: PropTypes.func.isRequired,
-  onCreateNode: PropTypes.func.isRequired,
-  onSetBelief: PropTypes.func.isRequired,
   getContextItems: PropTypes.func.isRequired,
 };
 
