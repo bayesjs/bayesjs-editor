@@ -33,6 +33,7 @@ class Network extends Component {
     this.rectRefs = {};
     this.movingNode = null;
     this.canChangeNodePostion = typeof this.props.changeNodePosition === 'function';
+    this.onMouseMoveProps = typeof this.props.onMouseMove === 'function' ? this.props.onMouseMove : () => {};
   }
 
   componentDidMount() {
@@ -242,6 +243,8 @@ class Network extends Component {
   };
 
   handleMouseMove = e => {
+    this.onMouseMoveProps(e);
+
     if (this.canChangeNodePostion && this.movingNode !== null) {
       const { id, initialPosition, initialMousePosition } = this.movingNode;
       const nodeRect = this.rectRefs[id].getBoundingClientRect();
@@ -436,6 +439,7 @@ class Network extends Component {
             />
         
         {this.state.newNode}
+        {this.props.children}
       </div>
     );
   }
@@ -459,6 +463,7 @@ Network.propTypes = {
   onCancelConnection: PropTypes.func.isRequired,
   onSelectNodes: PropTypes.func.isRequired,
   getContextItems: PropTypes.func.isRequired,
+  onMouseMove: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

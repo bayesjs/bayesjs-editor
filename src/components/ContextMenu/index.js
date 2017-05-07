@@ -77,6 +77,21 @@ class ContextMenu extends Component {
     }
   };
 
+  getItens = (item) => {
+    const { items } = this.props;
+    
+    return items.filter(({ visible }) => {
+      if (visible !== undefined) {
+        if (typeof visible === 'boolean') {
+          return visible;
+        } else if (typeof visible === 'function') {
+          return visible(this.contextItem);
+        }
+      }
+      return true;
+    })
+  }
+
   render() {
     const { position } = this.state;
 
@@ -97,7 +112,7 @@ class ContextMenu extends Component {
           ref={ref => (this.menuRef = ref)}
           onContextMenu={this.handleContextMenu}
         >
-          {this.props.items.map((item) => (
+          {this.getItens().map((item) => (
             <li
               key={item.key}
               className={classNames({

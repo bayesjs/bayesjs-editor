@@ -125,10 +125,10 @@ export const changeNodeCpt = (id, cpt) => dispatch => {
   dispatch(persistState());
 };
 
-export const setBelief = (id, state) => dispatch => {
+export const setBelief = (nodeId, state, subnetworkId) => dispatch => {
   dispatch({
     type: SET_BELIEF,
-    payload: { id, state },
+    payload: { nodeId, state, subnetworkId },
   });
 
   dispatch(persistState());
@@ -162,10 +162,10 @@ export const addLinkage = (linkage) => (dispatch) => {
   dispatch(persistState());
 };
 
-export const removeLinkage = (index) => (dispatch) => {
+export const removeLinkage = (id) => (dispatch) => {
   dispatch({
     type: REMOVE_LINKAGE,
-    payload: { index }
+    payload: { id }
   });
 
   dispatch(persistState());

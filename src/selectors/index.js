@@ -2,7 +2,16 @@ import { createSelector } from 'reselect';
 import { addNode, infer } from 'bayesjs';
 
 import { NETWORK_KINDS } from '../actions';
-import { combNodesAndBeliefs, combNodesAndPositions } from './combiners';
+import { 
+  combNodesAndBeliefs, 
+  combNodesAndPositions ,
+  combLinkagesBySubnetwork,
+  combLinkagesByTwoSubnetwork,
+  combSubnetworksById,
+  combNetworkMSBN,
+  combNodesAndBeliefsMSBN,
+  combAllLinkagesBySubnetwork,
+} from './combiners';
 
 export const getNetwork = state => state.network;
 export const getNodes = state => state.network.nodes || state.nodes || [];
@@ -17,12 +26,17 @@ export const getStateToSave = createSelector(
   getNetwork,
   getNodes,
   getPositions,
-  (network, nodes, positions) => ({
+  getSubnetworks,
+  (network, nodes, positions, subnetworks) => ({
     version: 2,
     network: {
       ...network,
       selectedNodes: [],
       beliefs: {},
+      subnetworks: subnetworks.map((sub) => ({
+        ...sub,
+        beliefs: {},
+      })),
     },
     nodes,
     positions,
@@ -69,4 +83,39 @@ export const getInferenceResults = createSelector(
   getNodes,
   getBeliefs,
   combNodesAndBeliefs
+);
+
+export const getNetworkMSBN = createSelector(
+  getSubnetworks,
+  getLinkages,
+  combNetworkMSBN,
+);
+
+export const getInferenceResultsMSBN = createSelector(
+  getNetworkMSBN,
+  getBeliefs,
+  combNodesAndBeliefsMSBN
+);
+
+export const getLinkagesBySubnetwork = createSelector(
+  getLinkages,
+  getSubnetworks,
+  combLinkagesBySubnetwork
+);
+
+export const getAllLinkagesBySubnetworkWithoutId = createSelector(
+  getLinkages,
+  getSubnetworks,
+  combAllLinkagesBySubnetwork
+);
+
+
+export const getLinkagesByTwoSubnetwork = createSelector(
+  getLinkages,
+  combLinkagesByTwoSubnetwork
+);
+
+export const getSubnetworksById = createSelector(
+  getSubnetworks,
+  combSubnetworksById
 );

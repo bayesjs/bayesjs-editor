@@ -3,6 +3,7 @@ import nodesRed from './nodes';
 import positionsRed from './positions';
 import subnetworkRed from './subnetwork';
 import linkagesRed from './linkages';
+import { v4 } from 'uuid';
 
 const ReducerNode = nodesRed;
 const ReducerPosition = positionsRed;
@@ -20,6 +21,7 @@ import {
 } from '../actions';
 
 const initialState = {
+  id: '',
   name: 'Rede Bayesiana',
   height: 500,
   width: 800,
@@ -32,13 +34,30 @@ const initialState = {
   subnetworks: []
 };
 
+const changeBelife = (beliefs, state, id) => {
+  if (state == null) {
+    delete beliefs[id];
+  } else {
+    beliefs[id] = state;
+  }
+
+  return beliefs;
+};
+
 const setBelief = (state, action) => {
   const beliefs = { ...state.beliefs };
+  const { nodeId, subnetworkId } = action.payload;
+  
+  if (subnetworkId) {
+    const beliefsSubnet = beliefs[subnetworkId] || {};
+    const subnetwork = state.subnetworks
+      .find(s => s.id == subnetworkId);
+    
+    beliefs[subnetworkId] = changeBelife(beliefsSubnet, action.payload.state, nodeId);
+    subnetwork.beliefs = changeBelife(subnetwork.beliefs, action.payload.state, nodeId)
 
-  if (action.payload.state == null) {
-    delete beliefs[action.payload.id];
   } else {
-    beliefs[action.payload.id] = action.payload.state;
+    changeBelife(beliefs, action.payload.state, nodeId);
   }
 
   return {
@@ -64,19 +83,21 @@ const completeReducer = (state, action) => (finalState) => {
 
 export default (state = initialState, action) => {
   const completer = completeReducer(state, action);
-
+  
   switch (action.type) {
     case NEW_NETWORK:
       const { kind } = action;
 
       return completer({
         ...initialState,
+        id: v4(),
         kind
       });
     case LOAD_NETWORK:
       let { network, nodes, positions } = action.payload.state
 
       if (network.kind === undefined) network.kind = NETWORK_KINDS.BN;
+      if (network.id === undefined) network.id = v4();
 
       if (nodes && positions) {
         return {

@@ -2,7 +2,8 @@
   "presets": [
     "es2015",
     "es2016",
-    "react"
+    "react",
+    "flow"
   ],
   "plugins": [
     "syntax-trailing-function-commas",

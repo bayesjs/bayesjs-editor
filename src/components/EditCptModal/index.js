@@ -134,7 +134,7 @@ class EditCptModal extends Component {
     const { cpt } = this.state;
     const parents = Object.keys(cpt[0].when);
     const states = Object.keys(cpt[0].then);
-
+    
     const firstStateCellStyle = {
       borderLeft: 'solid 3px black',
     };

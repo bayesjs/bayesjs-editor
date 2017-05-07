@@ -76,6 +76,14 @@ class Canvas extends Component {
     this.net.getWrappedInstance().onStartConnection(node);
   };
 
+  onViewSubnetwork = (node) => {
+    this.net.getWrappedInstance().onViewSubnetwork(node);
+  };
+
+  onViewLinkages = (node) => {
+    this.net.getWrappedInstance().onViewLinkages(node);
+  };
+
   renderNetwork = () => {
     if (this.props.networkKind === NETWORK_KINDS.MSBN) {
       return (

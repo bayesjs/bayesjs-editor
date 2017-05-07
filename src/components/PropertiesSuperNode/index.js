@@ -18,6 +18,18 @@ class PropertiesSuperNode extends Component {
         <h3>{subnetwork.name}</h3>
 
         <div className={styles.fieldWrapper}>
+          <Button onClick={() => this.props.onViewSubnetwork(subnetwork)}>
+            Visualizar Rede
+          </Button>
+        </div>
+
+        <div className={styles.fieldWrapper}>
+          <Button onClick={() => this.props.onViewLinkages(subnetwork)}>
+            Visualizar Ligações
+          </Button>
+        </div>
+
+        <div className={styles.fieldWrapper}>
           <Button onClick={() => this.props.onStartConnection(subnetwork)}>
             Adicionar Ligação
           </Button>
@@ -30,6 +42,8 @@ class PropertiesSuperNode extends Component {
 PropertiesSuperNode.propTypes = {
   subnetwork: PropTypes.object.isRequired,
   onStartConnection: PropTypes.func.isRequired,
+  onViewSubnetwork: PropTypes.func.isRequired,
+  onViewLinkages: PropTypes.func.isRequired,
 };
 
 export default PropertiesSuperNode;

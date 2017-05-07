@@ -10,6 +10,8 @@ const NodeGeneric = ({
   onMouseDown,
   rectRef,
   onDoubleClick,
+  stroke,
+  title,
   children
 }) => (
   <g
@@ -22,7 +24,7 @@ const NodeGeneric = ({
       height={25 + (sumHeight || 0)}
       width="160"
       fill="#ff8"
-      stroke="#333"
+      stroke={stroke ? stroke : "#333"}
       strokeWidth={selected ? 3 : 1}
       ref={rectRef}
     />

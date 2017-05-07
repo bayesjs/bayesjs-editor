@@ -6,22 +6,21 @@ import {
   REMOVE_LINKAGE,
 } from '../actions';
 
-export default (state = [], action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case NEW_NETWORK:
-      return [];
+      return {};
     case ADD_LINKAGE:
-      return [
+      return {
         ...state,
-        action.payload.linkage,
-      ];
+        [Date.now()]: action.payload.linkage
+      }
     case REMOVE_LINKAGE:
-      const { index } = action.payload;
+      const { id } = action.payload;
+      const newState = { ...state };
+      delete newState[id];
 
-      return [
-        ...state.slice(0, index),
-        ...state.slice(index + 1)
-      ];
+      return newState;
     default: 
       return state;
   }

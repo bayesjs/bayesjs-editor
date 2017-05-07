@@ -1,0 +1,17 @@
+.buttons button {
+  margin-right: 10px;
+}
+
+.table {
+  margin: 0 5px 10px 0;
+}
+
+.table th, 
+.table td {
+   border: 1px solid black;
+   padding: 5px 10px;
+}
+
+.message {
+  margin: 5px 0 10px 0;
+}

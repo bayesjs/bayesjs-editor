@@ -16,7 +16,16 @@ class PropertiesPanel extends Component {
   }
 
   renderContent = () => {
-    const { selectedNode, networkKind, onEditNodeStates, onEditNodeCpt, onStartConnection, selectedSubnetwork } = this.props;
+    const { 
+      selectedNode, 
+      networkKind, 
+      onEditNodeStates, 
+      onEditNodeCpt, 
+      onStartConnection, 
+      selectedSubnetwork,
+      onViewSubnetwork,
+      onViewLinkages,
+    } = this.props;
 
     if (selectedNode) {
       return (
@@ -31,6 +40,8 @@ class PropertiesPanel extends Component {
           <PropertiesSuperNode 
             subnetwork={selectedSubnetwork}
             onStartConnection={onStartConnection}
+            onViewSubnetwork={onViewSubnetwork}
+            onViewLinkages={onViewLinkages}
           />
         );
     }
@@ -54,6 +65,9 @@ PropertiesPanel.propTypes = {
   networkKind: PropTypes.string.isRequired,
   onEditNodeStates: PropTypes.func.isRequired,
   onEditNodeCpt: PropTypes.func.isRequired,
+  onStartConnection: PropTypes.func.isRequired,
+  onViewSubnetwork: PropTypes.func.isRequired,
+  onViewLinkages: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
