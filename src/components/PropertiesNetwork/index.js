@@ -27,6 +27,15 @@ class PropertiesNetwork extends Component {
     }
   };
 
+  // <div className={styles.fieldWrapper}>
+  //         <label htmlFor="descricao">Descrição</label>
+  //         <textarea
+  //           id="descricao"
+  //           defaultValue={network.description}
+  //           onBlur={this.handleNetworkNameBlur}
+  //         />
+  //       </div>
+
   render() {
     const { network } = this.props;
 
@@ -43,6 +52,8 @@ class PropertiesNetwork extends Component {
             onBlur={this.handleNetworkNameBlur}
           />
         </div>
+
+        
 
         <div className={styles.fieldWrapper}>
           <label htmlFor="height">Altura</label>

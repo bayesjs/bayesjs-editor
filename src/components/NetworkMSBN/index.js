@@ -23,6 +23,7 @@ import {
   getSubnetworksById,
   getInferenceResultsMSBN,
   getAllLinkagesBySubnetworkWithoutId,
+  getSubnetworksColorById,
 } from '../../selectors';
 
 import { combNodesAndBeliefs, combNodesAndPositions } from '../../selectors/combiners';
@@ -207,6 +208,7 @@ class NetworkMSBN extends Component {
         y={node.position.y}
         nodes={node.nodes}
         sumHeight={18}
+        stroke={node.color}
         {...props}
       />
     );
@@ -226,9 +228,9 @@ class NetworkMSBN extends Component {
     const key = e.keyCode || e.which;
     const { network } = this.props;
 
-    if (key === 8 && network.selectedNodes.length > 0) {
+    if (key === 8 && network.selectedNodes.length > 0 && document.activeElement.tagName === "BODY") {
       network.selectedNodes.map((nodeId) => {
-        this.props.dispatch(removeNode(nodeId));
+        this.props.dispatch(removeSuperNode(nodeId));
       });
       setTimeout(() => this.calculateArrows(), 0);
     }
@@ -343,12 +345,13 @@ class NetworkMSBN extends Component {
   };
 
   creatNodeWithParent = (subnetwork, node) => {
-    const { id, name } = subnetwork;
+    const { id, name, color } = subnetwork;
     return {
       ...node,
       network: {
         id,
-        name
+        name,
+        color,
       }
     };
   };
@@ -364,6 +367,30 @@ class NetworkMSBN extends Component {
     return true;
   };
 
+  checkParents = (node1, node2) => {
+    if (node1.parents.length == 0 && node2.parents.length == 0) return true;
+    const parents1 = node1.parents.sort();
+    const parents2 = node2.parents.sort();
+
+    if (parents1.length == parents2.length) {
+      for (let i = 0; i < parents1.length; i++) {
+        if (parents1[i] != parents2[i]) return false;
+      }
+
+    } else if (parents1.length > parents2.length) {
+      for (let parent of parents2) {
+        if (parents1.indexOf(parent) === -1) return false;
+      }
+
+    } else if (parents1.length < parents2.length) {
+      for (let parent of parents1) {
+        if (parents2.indexOf(parent) === -1) return false;
+      }
+    }
+
+    return true;
+  };
+
   onClickSubnetworkNode = (subnetwork) => (node) => {
     if (this.connecting === false) return;
     const { firstNodeToConnect } = this.state;
@@ -372,8 +399,11 @@ class NetworkMSBN extends Component {
       const n = this.creatNodeWithParent(subnetwork, node);
       const linkage = this.createLinkage(firstNodeToConnect, n);
       const cycles = this.checkCycles(linkage);
-
-      if (!this.validCpt(firstNodeToConnect, n)) {
+      
+      if (!this.checkParents(firstNodeToConnect, n)) {
+        alert('P(A | B, C, D, E)  P(A | B, C)');
+        
+      } else if (!this.validCpt(firstNodeToConnect, n)) {
         alert('Número de estados entre os nodos é diferente. Ambos devem contar com os mesmos estados.');
 
       } else if (cycles) {
@@ -463,6 +493,7 @@ class NetworkMSBN extends Component {
     const { nodes, id } = subnetwork;
     const links = this.props.linkagesByNode[id];
     const names = this.props.subnetworksById;
+    const colors = this.props.subnetworksColorById;
     let result = [];
       
     const linkedNodes = nodes.forEach((n) => {
@@ -473,13 +504,15 @@ class NetworkMSBN extends Component {
           connections.push({
             nodeId: l2.nodeId,
             networkId: l2.networkId, 
-            networName: names[l2.networkId],
+            color: colors[l2.networkId],
+            networkName: names[l2.networkId],
           });
         } else if (l2.networkId == id && l2.nodeId == n.id) {
           connections.push({
             nodeId: l1.nodeId,
             networkId: l1.networkId, 
-            networName: names[l1.networkId],
+            color: colors[l1.networkId], 
+            networkName: names[l1.networkId],
           });
         }
       });
@@ -496,13 +529,13 @@ class NetworkMSBN extends Component {
   };
 
   renderSubNetwork = (subnetwork, onRequestClose, onClickNode, onDoubleClickNode = null, connecting = false, connectingNode = null) => {
-    const { nodes, positions, beliefs, name, id } = subnetwork;
+    const { nodes, positions, beliefs, name, id, color } = subnetwork;
     const inferenceResults = combNodesAndBeliefs(nodes, beliefs);
     const nodesAndPositions = combNodesAndPositions(nodes, positions);
     const linkedNodes = this.getLinkedNodesFromSubnetwork(subnetwork);
     const { inferenceResultsMSBN } = this.props;
     const subBeliefs = inferenceResultsMSBN[id];
-
+    
     return (
       <Modal
         title={`Subrede ${name}`}
@@ -519,6 +552,7 @@ class NetworkMSBN extends Component {
           connecting={connecting}
           connectingNode={connectingNode}
           onSetBelief={this.onSetBelief}
+          networkColor={color}
         />
 
       </Modal>
@@ -672,6 +706,7 @@ NetworkMSBN.propTypes = {
   linkagesByNode: PropTypes.object.isRequired,
   linkagesByTwoNode: PropTypes.array.isRequired,
   subnetworksById: PropTypes.object.isRequired,
+  subnetworksColorById: PropTypes.object.isRequired,
   allLinkagesBySubnetworkWithoutId: PropTypes.object.isRequired,
 };
 
@@ -684,6 +719,7 @@ const mapStateToProps = (state, ownProps) => ({
   linkagesByNode: getLinkagesBySubnetwork(state),
   linkagesByTwoNode: getLinkagesByTwoSubnetwork(state),
   subnetworksById: getSubnetworksById(state),
+  subnetworksColorById: getSubnetworksColorById(state),
   inferenceResultsMSBN: getInferenceResultsMSBN(state),
   allLinkagesBySubnetworkWithoutId: getAllLinkagesBySubnetworkWithoutId(state),
 });

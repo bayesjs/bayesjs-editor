@@ -3,10 +3,11 @@ import NodeGeneric from '../NodeGeneric';
 import NodeState from '../NodeState';
 
 const Node = (props) => {
-  const { id, states } = props;
+  const { id, states, children, sumHeight } = props;
+  
   const propsGeneric = {
     ...props,
-    sumHeight: 18 * states.length
+    sumHeight: (18 * states.length) + (sumHeight || 0)
   };
   
   const renderState = (state, index) => {
@@ -28,6 +29,7 @@ const Node = (props) => {
       {...propsGeneric}
     >
       {props.states.map(renderState)}
+      {children}
     </NodeGeneric>
   );
 };
@@ -42,6 +44,7 @@ Node.propTypes = {
   rectRef: PropTypes.func,
   onMouseDown: PropTypes.func.isRequired,
   onStateDoubleClick: PropTypes.func.isRequired,
+  sumHeight: PropTypes.number,
   x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };

@@ -88,11 +88,11 @@ class NetworkBN extends Component {
   }
 
   componentDidMount() {
-    // window.addEventListener('keyup', this.handleKeyup);
+    window.addEventListener('keyup', this.handleKeyup);
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('keyup', this.handleKeyup);
+    window.removeEventListener('keyup', this.handleKeyup);
   }
 
   onEditNodeStates = (editingNodeStates) => {
@@ -136,17 +136,17 @@ class NetworkBN extends Component {
     );
   };
 
-  // handleKeyup = (e) => {
-  //   const key = e.keyCode || e.which;
-  //   const { network } = this.props;
-  //   console.log(key);
-  //   // if (key === 8 && network.selectedNodes.length > 0) {
-  //   //   network.selectedNodes.map((nodeId) => {
-  //   //     this.props.dispatch(removeNode(nodeId));
-  //   //   });
-  //   //   setTimeout(() => this.calculateArrows(), 0);
-  //   // }
-  // }
+  handleKeyup = (e) => {
+    const key = e.keyCode || e.which;
+    const { network } = this.props;
+    
+    if (key === 8 && network.selectedNodes.length > 0 && document.activeElement.tagName === "BODY") {
+      network.selectedNodes.map((nodeId) => {
+        this.props.dispatch(removeNode(nodeId));
+      });
+      setTimeout(() => this.calculateArrows(), 0);
+    }
+  }
 
   onAddConnection = (idFrom, idTo) => {
     this.props.dispatch(addParent(idFrom, idTo));

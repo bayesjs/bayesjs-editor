@@ -6,6 +6,7 @@ import PropertiesPanel from '../PropertiesPanel';
 import EditStatesModal from '../EditStatesModal';
 import EditCptModal from '../EditCptModal';
 import styles from './styles.css';
+import { ActionCreators } from 'redux-undo';
 
 import {
   getNetworkKind,
@@ -13,6 +14,8 @@ import {
 
 import {
   NETWORK_KINDS,
+  undo,
+  redo,
 } from '../../actions';
 
 class App extends Component {
@@ -22,6 +25,28 @@ class App extends Component {
 
   getCanvas = () => {
     return this.canvas.getWrappedInstance();
+  };
+
+  componentDidMount() {
+    window.addEventListener('keyup', this.keyupHandler);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.keyupHandler);
+  }
+
+  keyupHandler = (e) => {
+    const key = e.keyCode || e.which;
+    
+    if (e.ctrlKey) {
+      if (key === 90) {
+        console.log('UNDO');
+        // this.props.dispatch(ActionCreators.undo());
+      } else if (key === 89) {
+        console.log('REDO');
+        // this.props.dispatch(ActionCreators.redo());
+      }
+    }
   };
 
   handleRequestRedraw = () => {

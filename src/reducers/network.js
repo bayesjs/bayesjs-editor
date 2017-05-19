@@ -17,7 +17,9 @@ import {
   REMOVE_NODE,
   CHANGE_NODE_ID,
   SET_BELIEF,
-  NETWORK_KINDS
+  NETWORK_KINDS,
+  UNDO,
+  REDO,
 } from '../actions';
 
 const initialState = {

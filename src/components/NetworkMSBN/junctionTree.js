@@ -387,9 +387,14 @@ const buildCliqueGraph = triangulatedGraph => {
   };
 };
 
-export const buildTriangulatedGraph = moralGraph => {
+export const buildTriangulatedGraph = (moralGraph, lastNodes = []) => {
   const triangulatedGraph = moralGraph.clone();
   const clonedGraph = triangulatedGraph.clone();
+  const get = (obj) => {
+    const v = obj.neighbors.length;
+    
+    return v + (lastNodes.indexOf(obj.node) === -1 ? 0 : 100)
+  };
 
   const nodesToRemove = clonedGraph.getNodes()
     .map(node => {
@@ -399,7 +404,7 @@ export const buildTriangulatedGraph = moralGraph => {
       };
     })
     .sort((a, b) => {
-      return a.neighbors.length - b.neighbors.length;
+      return get(a) - get(b);
     });
 
   while (nodesToRemove.length > 0) {
@@ -415,8 +420,9 @@ export const buildTriangulatedGraph = moralGraph => {
         }
 
         if (!clonedGraph.areConnected(neighborA, neighborB)) {
-          clonedGraph.addEdge(neighborA, neighborB);
-          triangulatedGraph.addEdge(neighborA, neighborB);
+          // debugger
+          clonedGraph.addEdge(neighborA, neighborB, false, true);
+          triangulatedGraph.addEdge(neighborA, neighborB, false, true);
         }
       }
     }
@@ -443,7 +449,7 @@ export const buildMoralGraph = network => {
     for (let i = 0; i < node.parents.length; i++) {
       for (let j = i + 1; j < node.parents.length; j++) {
         if (!moralGraph.areConnected(node.parents[i], node.parents[j])) {
-          moralGraph.addEdge(node.parents[i], node.parents[j]);
+          moralGraph.addEdge(node.parents[i], node.parents[j], true);
         }
       }
     }
@@ -455,6 +461,8 @@ export const buildMoralGraph = network => {
 const createGraph = () => {
   const nodes = [];
   const edges = [];
+  const moralEdges = [];
+  const triangEdges = [];
 
   const addNode = node => {
     nodes.push(node);
@@ -483,9 +491,19 @@ const createGraph = () => {
     return nodes.some(x => x === node);
   };
 
-  const addEdge = (nodeA, nodeB) => {
+  const addEdge = (nodeA, nodeB, moralEdge = false, triang = false) => {
     edges.push([ nodeA, nodeB ]);
+
+    if (moralEdge) {
+      moralEdges.push([ nodeA, nodeB ]);
+    }
+    if (triang) {
+      triangEdges.push([ nodeA, nodeB ]);
+    }
   };
+
+  const getMoralEdges = () => moralEdges;
+  const getTriangEdges = () => triangEdges;
 
   const removeEdge = (nodeA, nodeB) => {
     for (let i = edges.length - 1; i >= 0; i--) {
@@ -543,6 +561,8 @@ const createGraph = () => {
     removeEdge,
     areConnected,
     getNeighborsOf,
+    getMoralEdges,
+    getTriangEdges,
     clone,
     print: () => {
       console.log('nodes');

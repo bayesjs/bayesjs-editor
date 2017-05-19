@@ -1,6 +1,8 @@
 import { v4 } from "uuid";
 import { buildMoralGraph, buildTriangulatedGraph } from "./junctionTree";
 
+const weakMap = new WeakMap();
+
 /* DEFAULT */
 export interface INode {
     id: string,
@@ -171,6 +173,7 @@ export const createSuperNodes = (nodes: INodeWithNetwork[], linkages: [ILinkageI
   };
 
   const mergeCpts = (superCpts: INodeCptWithWhenNetwork[][], parents: ILinkageItem[], states : string[]): INodeCptWithWhenNetwork[] => {
+    if (superCpts.length === 0) return  superCpts;
     const get = (current: INodeCptWithWhenNetwork[], index: number = 1): INodeCptWithWhenNetwork[] => {
       let result: INodeCptWithWhenNetwork[] = [];
       
@@ -248,6 +251,7 @@ export const createSuperNodes = (nodes: INodeWithNetwork[], linkages: [ILinkageI
   for (let node of superNodes) {
     const allParents: ILinkageItem[][] = [];
     const allCpt: INodeCptWithWhenNetwork[][] = [];
+    let cptObj = null;
 
     for (const original of node.originals) {
       const { networkId } = original;
@@ -278,12 +282,19 @@ export const createSuperNodes = (nodes: INodeWithNetwork[], linkages: [ILinkageI
               }
             })
           );
+        } else if (cptObj == null) {
+          cptObj = original.cpt;
         }
       }
     }
 
     node.parents = mergeParents(allParents);
-    node.cpt = mergeCpts(allCpt, node.parents, node.states);
+    if (allCpt.length) {
+      node.cpt = mergeCpts(allCpt, node.parents, node.states);
+      
+    } else {
+      node.cpt = cptObj;
+    }
   }
 
   return superNodes;
@@ -412,15 +423,18 @@ export const mergeCpts = (cpts: INodeCptWithWhenNetwork[] | ICptObjectWithNetwor
 
   } else {
     const keys = Object.keys(cpts);
-    let result: INodeCptObject = {};
-    
-    for (let key of keys) {
-      const value = cpts[key];
+    if (typeof cpts[keys[0]] === "object") {
+      let result: INodeCptObject = {};
+      
+      for (let key of keys) {
+        const value = cpts[key];
 
-      result[key] = value.value;
+        result[key] = value.value;
+      }
+
+      return result;
     }
-
-    return result;
+    return cpts;
   }
 };
 
@@ -548,12 +562,13 @@ export const mergeNetworks = (subnetworks: INetwork[], linkages: [ILinkageItem, 
   }, {});
 
   let newSubnetworks = subnetworks.map(s => originalSubnetworkToNew(s, identifiers));
-  
-  return {
+  const result = {
     network,
     subnetworks: newSubnetworks,
     identifiers
   };
+  // weakMap.set({ subnetworks, linkages }, result);
+  return result;
 };
 
 export const originalSubnetworkToNew = (subnetwork: INetwork, identifiers: IIdentifiers): { [id: string]: INode } => {
@@ -606,20 +621,101 @@ export const originalSubnetworkToNew = (subnetwork: INetwork, identifiers: IIden
   return newNet;
 };
 
-export const addNodeByLinkageInSubnetwork = (subnetwork: INetwork, linkages: [ILinkageItem, ILinkageItem][], allSubnetworks: INetwork[]) => {
-  const { nodes, id, name } = subnetwork;
-  const nodeIds = Object.keys(nodes);
-
-  for (let linkage of linkages) {
-    let [ l1, l2 ] = linkage;
-
-    if (l1.networkId == id && nodeIds.indexOf(l1.nodeId) !== -1) {
-
-    } else if (l2.networkId == id && nodeIds.indexOf(l2.nodeId) !== -1) {
-      
+export const linkagesByNetwork = (linkages: [ILinkageItem, ILinkageItem][]) => {
+  let result: { [id: string]: string[] } = {};
+  const add = (networkId: string, nodeId: string) => {
+    const itens = result[networkId] || [];
+    
+    if (itens.indexOf(nodeId) === -1) {
+      itens.push(nodeId);
+      result[networkId] = itens;
     }
+  };
+
+  for (let [l1, l2] of linkages) {
+    add(l1.networkId, l1.nodeId);
+    add(l2.networkId, l2.nodeId);
   }
 
+  return result;
+};
+
+const intersection = (listA, listB) => {
+  let a = new Set(listA);
+  let b = new Set(listB);
+  let intersection = new Set([...a].filter(x => b.has(x)));
+
+  return [...intersection];
+}
+
+export const junctionTreeInSubnetwork = (subnetworks: INetwork[], linkages: [ILinkageItem, ILinkageItem][]) => {
+  
+  return null;
+  const allLinkages = createMissingLinkages(linkages);
+  const linksBySub = linkagesByNetwork(allLinkages);
+  const moralGraphs = subnetworks.map((sub) => buildMoralGraph(sub.nodes));
+  const triangGraphs = moralGraphs.map((moral, i) => {
+    const nodesLinkeds = linksBySub[subnetworks[i].id];
+    
+    return buildTriangulatedGraph(moral, nodesLinkeds);
+  });
+  
+  // const findLink = (networkId: string, nodeId: string) => {
+  //   for (let [ l1, l2 ] of allLinkages) {
+  //     if (l1.networkId == networkId && l1.nodeId == nodeId) return l2;
+  //     if (l2.networkId == networkId && l2.nodeId == nodeId) return l1;
+  //   }
+  // };
+  const isLink = (networkId: string, nodeId: string) => {
+    for (let [ l1, l2 ] of allLinkages) {
+      if (l1.networkId == networkId && l1.nodeId == nodeId) return true;
+      if (l2.networkId == networkId && l2.nodeId == nodeId) return true;
+    }
+    return false;
+  };
+
+  for (let i = 0; i < triangGraphs.length; i++) {
+    let subnetwork = subnetworks[i];
+    let graph = triangGraphs[i];
+    let moralEdges = moralGraphs[i].getMoralEdges();
+    let triangEdges = graph.getTriangEdges();
+    let links = linksBySub[subnetwork.id];
+    console.log(triangEdges);
+    for (let [nodeId1, nodeId2] of moralEdges) {
+      if (links.indexOf(nodeId1) !== -1 && links.indexOf(nodeId2) !== -1) {
+        //passar para as outras
+        console.log('Passar (moral)', subnetwork.id, nodeId1, nodeId2);
+      }
+    }
+
+    for (let [nodeId1, nodeId2] of triangEdges) {
+      let isLink1 = isLink(subnetwork.id, nodeId1);
+      let isLink2 = isLink(subnetwork.id, nodeId2);
+
+      // console.log('Passar (moral)', subnetwork.id, nodeId1, nodeId2);
+
+      if (isLink1 && isLink2) {
+        console.log('Passar (triang)', subnetwork.id, nodeId1, nodeId2);
+      } else if (isLink1 || isLink2) {
+        let bb = graph.getNeighborsOf(nodeId1);
+        let aa = graph.getNeighborsOf(nodeId2);
+        let cc = intersection(aa, bb).filter(x => x != nodeId1 || x != nodeId2);
+        console.log(cc, nodeId1, nodeId2);
+        debugger
+
+//         let a = new Set([1,2,3]);
+// let b = new Set([4,3,2]);
+// let intersection = new Set(
+//     [...a].filter(x => b.has(x)));
+
+        // console.log('Passar (triang)', subnetwork.id, nodeId1, nodeId2);
+      } else if (isLink2) {
+        // console.log('Passar (triang)', subnetwork.id, nodeId1, nodeId2);
+      }
+    }
+    
+  }
+  
 };
 
 /**

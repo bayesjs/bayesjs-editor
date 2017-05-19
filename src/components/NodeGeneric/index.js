@@ -12,6 +12,7 @@ const NodeGeneric = ({
   onDoubleClick,
   stroke,
   title,
+  canMove,
   children
 }) => (
   <g
@@ -19,17 +20,33 @@ const NodeGeneric = ({
     onMouseDown={onMouseDown}
     onDoubleClick={onDoubleClick}
     transform={`translate(${x} ${y})`}
+    style={{
+      cursor: (canMove ? 'nove': 'pointer'),
+    }}
   >
     <rect
       height={25 + (sumHeight || 0)}
       width="160"
-      fill="#ff8"
+      fill={"#ff8"}
       stroke={stroke ? stroke : "#333"}
       strokeWidth={selected ? 3 : 1}
       ref={rectRef}
     />
 
-    <text x="5" y="15">{id}</text>
+    <foreignObject x="5" y="0" height="15" width="150">
+      <p
+        title={id}
+        style={{
+          margin: 0,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+        }}
+      >
+        {id}
+      </p>
+    </foreignObject>
+    
     <path d="M0,20 h160" stroke="#333" />
 
     {children}

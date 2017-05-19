@@ -20,7 +20,20 @@ export const loadState = () => {
   if (serializedState != null) {
     const state = JSON.parse(serializedState);
 
-    if (state.version !== 2) {
+    if (state.version === 2) {
+      // let { network, nodes, positions } = state
+
+      // if (network.kind === undefined) network.kind = NETWORK_KINDS.BN;
+      // if (network.id === undefined) network.id = v4();
+
+      // if (nodes && positions) {
+      //   return {
+      //     ...network,
+      //     nodes,
+      //     positions
+      //   };
+      // }
+    } else if (state.version < 2) {
       return undefined;
     }
 

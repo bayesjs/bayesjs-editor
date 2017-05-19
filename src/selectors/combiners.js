@@ -1,5 +1,7 @@
 import { addNode, infer } from 'bayesjs';
-import { mergeNetworks, createKey, keyToNetworkAndNode, createMissingLinkages } from '../components/NetworkMSBN/helpers';
+import { mergeNetworks, createKey, keyToNetworkAndNode, createMissingLinkages, junctionTreeInSubnetwork } from '../components/NetworkMSBN/helpers';
+
+const weakMap = new WeakMap();
 
 export const combNodesAndPositions = (nodes, positions) => nodes.map(node => ({
   ...node,
@@ -34,16 +36,18 @@ export const combNodesAndBeliefs = (nodes, beliefs, subnetworks = null) => {
       results[node.id][state] = infer(
         network,
         { [node.id]: state },
-        Object.keys(beliefs).length === 0 ? undefined : beliefs,
-        subnetworks,
+        Object.keys(beliefs).length === 0 ? undefined : beliefs, 0
       );
     });
   });
-
+  
   return results;
 };
 
 export const combNetworkMSBN = (subnetworks, linkages) => {
+  let cacheSubnetworks = weakMap.get(subnetworks);
+  let cacheLinks = weakMap.get(linkages);
+
   const links = Object.keys(linkages).map(id => linkages[id]);
   const networks = subnetworks.map(({ id, name, nodes }) => {
     const dictNodes = nodes.reduce((p, node) => {
@@ -57,7 +61,11 @@ export const combNetworkMSBN = (subnetworks, linkages) => {
       nodes: dictNodes
     };
   });
-  
+  // junctionTreeInSubnetwork(networks, links);
+
+  weakMap.set(linkages, links);
+  weakMap.set(subnetworks, networks);
+
   return mergeNetworks(networks, links);
 };
 
@@ -77,7 +85,13 @@ export const combNodesAndBeliefsMSBN = (mergedNetworks, beliefs) => {
   };
 
   for (let nodeId of Object.keys(network)) {
-    nodes.push(network[nodeId]);
+    const t = network[nodeId];
+    const aa = identifiers.newToOriginal[nodeId].map(({ networkId }) => networkId);
+    // debugger
+    nodes.push({
+      ...t,
+      network: aa
+    });
   }
 
   for (let networkId of Object.keys(beliefs)) {
@@ -92,12 +106,14 @@ export const combNodesAndBeliefsMSBN = (mergedNetworks, beliefs) => {
   }
 
   try {
-    console.log('nodes', JSON.stringify(nodes));
-    // console.log(JSON.stringify('network', network));
-    console.log('newBeliefs' ,JSON.stringify(newBeliefs));
-    console.log('subnetworks' ,JSON.stringify(subnetworks));
-    const inferResults = combNodesAndBeliefs(nodes, newBeliefs, subnetworks);
     
+    // console.log('nodes', JSON.stringify(nodes));
+    // console.log(JSON.stringify('network', network));
+    // console.log('newBeliefs' ,JSON.stringify(newBeliefs));
+    // console.log('subnetworks' ,JSON.stringify(subnetworks));
+    // console.log(JSON.stringify(nodes));
+    const inferResults = combNodesAndBeliefs(nodes, newBeliefs, subnetworks);
+    // console.log('inferResults', JSON.stringify(inferResults));
     for (let newNetworkId of Object.keys(inferResults)) {
       const result = inferResults[newNetworkId];
       const networks = identifiers.newToOriginal[newNetworkId];
@@ -232,6 +248,13 @@ export const combLinkagesByTwoSubnetwork = (linkages) => {
 export const combSubnetworksById = (subnetworks) => {
   return subnetworks.reduce((p, { id, name }) => {
     p[id] = name;
+    return p;
+  }, {});
+};
+
+export const combSubnetworksColorById = (subnetworks) => {
+  return subnetworks.reduce((p, { id, color }) => {
+    p[id] = color;
     return p;
   }, {});
 };

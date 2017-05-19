@@ -11,6 +11,7 @@ import {
   combNetworkMSBN,
   combNodesAndBeliefsMSBN,
   combAllLinkagesBySubnetwork,
+  combSubnetworksColorById,
 } from './combiners';
 
 export const getNetwork = state => state.network;
@@ -118,4 +119,9 @@ export const getLinkagesByTwoSubnetwork = createSelector(
 export const getSubnetworksById = createSelector(
   getSubnetworks,
   combSubnetworksById
+);
+
+export const getSubnetworksColorById = createSelector(
+  getSubnetworks,
+  combSubnetworksColorById
 );

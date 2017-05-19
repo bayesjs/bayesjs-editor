@@ -5,11 +5,16 @@ export const openFile = (accept, cb) => {
   element.setAttribute('accept', accept);
 
   element.addEventListener('change', e => {
+    console.log('change');
     const file = e.target.files[0];
     const reader = new FileReader();
 
     reader.onloadend = () => {
       cb(reader.result);
+    };
+
+    reader.onerror = (e) => {
+      console.warn('Error on open file :', e);
     };
 
     reader.readAsText(file);

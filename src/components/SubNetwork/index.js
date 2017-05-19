@@ -107,22 +107,25 @@ class SubNetwork extends Component {
   }
 
   renderNode = (node, props) => {
-    const { connectingNode, network, inferenceResults } = this.props;
+    const { connectingNode, network, inferenceResults, networkColor } = this.props;
     const key = `${network.name}-${node.id}`;
 
     if (connectingNode == node) {
-      const title = connectingNode.network.name;
+      const { network } = connectingNode;
+      const { name, color } = network;
       
       return (
         <NodeGeneric
           key={`${key}-view`}
           x="5"
           y="5"
-          id={title}
+          id={name}
           selected={true}
           sumHeight={17}
+          stroke={color}
           onMouseDown={() => {}}
           rectRef={(ref) => (this.connectingNodeRef = ref)}
+          canMove={true}
         >
           <foreignObject x="5" y="21" height="15" width="150">
             <p
@@ -142,8 +145,27 @@ class SubNetwork extends Component {
     }
 
     const link = this.getLinkedFromNode(node);
-    const stroke = link ? 'red' : undefined;
+    // const stroke = link ? 'red' : networkColor;
     node.link = link;
+    let child = null;
+    let sumHeight = 0;
+
+    if (link) {
+      //(18 * states.length) + 25
+      const circles = link.connections.map(({ networkName, color }, i) => (
+        <circle key={i} cx={15 + (25 * i)} cy={(18 * node.states.length) + 45} r="8" fill={color}>
+          <title>{`Rede: ${networkName}`}</title>
+        </circle>
+      ))
+      
+      child = (
+        <g>
+          <path d={`M0,${(18 * node.states.length) + 30} h160`} stroke="#333" />
+          {circles}
+        </g>
+      );
+      sumHeight = 35;
+    }
 
     return (
       <Node
@@ -156,9 +178,13 @@ class SubNetwork extends Component {
         x={node.position.x}
         y={node.position.y}
         onStateDoubleClick={this.onSetBelief(node)}
-        stroke={stroke}
+        stroke={networkColor}
+        sumHeight={sumHeight}
+        canMove={false}
         {...props}
-      />
+      >
+        {child}
+      </Node>
     );
   };
 
@@ -259,6 +285,7 @@ SubNetwork.propTypes = {
   connectingNode: PropTypes.object,
   onSetBelief: PropTypes.func,
   inferenceResults: PropTypes.object,
+  networkColor: PropTypes.string,
 };
 
 export default SubNetwork;
