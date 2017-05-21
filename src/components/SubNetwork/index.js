@@ -18,7 +18,7 @@ class SubNetwork extends Component {
     this.nodeContextMenuItems = [
       {
         key: 'connect-node',
-        text: 'Ligar',
+        text: 'Unir',
         visible: connecting,
         onClick: (contextMenuNode) => {
           onDoubleClickNode(contextMenuNode);
@@ -26,7 +26,7 @@ class SubNetwork extends Component {
       },
       {
         key: 'linkages-node',
-        text: 'Ver Ligações',
+        text: 'Ver Uniões',
         visible: ({ link }) => link,
         onClick: (contextMenuNode) => {
           // onDoubleClickNode(contextMenuNode);
@@ -126,6 +126,7 @@ class SubNetwork extends Component {
           onMouseDown={() => {}}
           rectRef={(ref) => (this.connectingNodeRef = ref)}
           canMove={true}
+          opacity={'0.3'}
         >
           <foreignObject x="5" y="21" height="15" width="150">
             <p
@@ -153,13 +154,14 @@ class SubNetwork extends Component {
     if (link) {
       //(18 * states.length) + 25
       const circles = link.connections.map(({ networkName, color }, i) => (
-        <circle key={i} cx={15 + (25 * i)} cy={(18 * node.states.length) + 45} r="8" fill={color}>
+        <circle key={i} cx={75 + (20 * i)} cy={(18 * node.states.length) + 45} r="8" fill={color}>
           <title>{`Rede: ${networkName}`}</title>
         </circle>
       ))
       
       child = (
         <g>
+          <text x="5" y={(18 * node.states.length) + 50} >Uniões:</text>
           <path d={`M0,${(18 * node.states.length) + 30} h160`} stroke="#333" />
           {circles}
         </g>
@@ -181,6 +183,7 @@ class SubNetwork extends Component {
         stroke={networkColor}
         sumHeight={sumHeight}
         canMove={false}
+        opacity={'0.3'}
         {...props}
       >
         {child}
@@ -231,10 +234,13 @@ class SubNetwork extends Component {
   render() {
     // console.log('inferenceResults', this.props.inferenceResults);
     const empty = () => {};
+    const modalWidth = window.innerWidth * 0.8;
+    const modalHeight = window.innerHeight * 0.8;
+    const bigger = (a, b) => a > b ? a : b;
     const newNetwork = {
       ...this.props.network,
-      height: window.innerHeight * 0.8,
-      width: window.innerWidth * 0.8,
+      height: bigger(modalHeight, this.props.network.height + 30) - 20,
+      width: bigger(modalWidth, this.props.network.width + 30) - 20,
     };
     let addingChildArrow = null;
 
@@ -254,7 +260,10 @@ class SubNetwork extends Component {
     }
     
     return (
-      <div>
+      <div style={{
+        width: modalWidth,
+        height: modalHeight,
+      }}>
         <Network 
           network={newNetwork}
           nodes={this.getNodes()}

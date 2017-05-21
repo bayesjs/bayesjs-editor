@@ -46,12 +46,14 @@ class Header extends Component {
 
   handleOpenNetworkClick = (e) => {
     e.preventDefault();
-    openFile('.json', json => {
+    openFile('.json', (json) => {
       try {
         const state = JSON.parse(json);
+        
         this.props.dispatch(loadNetwork(state));
         this.props.onRequestRedraw();
       } catch (ex) {
+        console.warn(ex);
         alert('Arquivo inválido');
       }
     });
@@ -62,6 +64,7 @@ class Header extends Component {
 
     if (name) {
       name = name.toLowerCase();
+      name = name.replace(/[.]/g, '');
       name = name.replace(/[ ]/g, '_');
 
       return name || 'network';// In case the name is blank

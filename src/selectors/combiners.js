@@ -9,6 +9,7 @@ export const combNodesAndPositions = (nodes, positions) => nodes.map(node => ({
 }));
 
 export const combNodesAndBeliefs = (nodes, beliefs, subnetworks = null) => {
+  console.time("INFER");
   let network = {};
 
   const remainingNodes = [...nodes];
@@ -40,11 +41,12 @@ export const combNodesAndBeliefs = (nodes, beliefs, subnetworks = null) => {
       );
     });
   });
+  console.timeEnd("INFER");
   
   return results;
 };
 
-export const combNetworkMSBN = (subnetworks, linkages) => {
+const combNetworkMSBN = (subnetworks, linkages) => {
   let cacheSubnetworks = weakMap.get(subnetworks);
   let cacheLinks = weakMap.get(linkages);
 
@@ -69,9 +71,24 @@ export const combNetworkMSBN = (subnetworks, linkages) => {
   return mergeNetworks(networks, links);
 };
 
-export const combNodesAndBeliefsMSBN = (mergedNetworks, beliefs) => {
-  const { network, subnetworks, identifiers } = mergedNetworks;
+export const combNodesAndBeliefsMSBN = (networks, linkages, beliefs) => {
+  console.time("MERGE");
+  let cachedMerge = weakMap.get(networks);
   
+  if (cachedMerge === undefined) {
+    cachedMerge = combNetworkMSBN(networks, linkages);
+  }
+  const { network, subnetworks, identifiers } = cachedMerge;
+  weakMap.set(networks, cachedMerge);
+  console.timeEnd("MERGE");
+  // console.log(network);
+
+  // const ttttt = Object.keys(network)
+  //   .map(nodeId => network[nodeId])
+  //   .map(({ id, parents }) => ({ id, parents }))
+  //   // .reduce(() => , {})
+
+  // console.log(JSON.stringify(network, null, 2));
   let newBeliefs = {};
   let nodes = [];
   let result = {};
@@ -106,14 +123,8 @@ export const combNodesAndBeliefsMSBN = (mergedNetworks, beliefs) => {
   }
 
   try {
-    
-    // console.log('nodes', JSON.stringify(nodes));
-    // console.log(JSON.stringify('network', network));
-    // console.log('newBeliefs' ,JSON.stringify(newBeliefs));
-    // console.log('subnetworks' ,JSON.stringify(subnetworks));
-    // console.log(JSON.stringify(nodes));
     const inferResults = combNodesAndBeliefs(nodes, newBeliefs, subnetworks);
-    // console.log('inferResults', JSON.stringify(inferResults));
+    
     for (let newNetworkId of Object.keys(inferResults)) {
       const result = inferResults[newNetworkId];
       const networks = identifiers.newToOriginal[newNetworkId];
@@ -132,14 +143,6 @@ export const combNodesAndBeliefsMSBN = (mergedNetworks, beliefs) => {
     return {};
   }
 };
-
-
-// export const combNodesAndBeliefsMSBN = (subnetworks, linkages, beliefs) => {
-//   const { network, identifiers } = combNetworkMSBN(subnetworks, linkages);
-//   console.log(mergeNetworks);
-
-//   // console.log('combNodesAndBeliefsMSBN', mergedNetwork, beliefs);
-// };
 
 export const combLinkagesBySubnetwork = (linkages, nodes) => {
   const ids = Object.keys(linkages);

@@ -11,6 +11,7 @@ export const REMOVE_SUPER_NODE = 'REMOVE_SUPER_NODE';
 export const ADD_PARENT = 'ADD_PARENT';
 export const REMOVE_PARENT = 'REMOVE_PARENT';
 export const CHANGE_NODE_ID = 'CHANGE_NODE_ID';
+export const CHANGE_NODE_DESCRIPTION = 'CHANGE_NODE_DESCRIPTION';
 export const CHANGE_NODE_POSITION = 'CHANGE_NODE_POSITION';
 export const CHANGE_NODE_STATES = 'CHANGE_NODE_STATES';
 export const CHANGE_NODE_CPT = 'CHANGE_NODE_CPT';
@@ -93,6 +94,15 @@ export const changeNodeId = (id, nextId) => dispatch => {
   dispatch({
     type: CHANGE_NODE_ID,
     payload: { id, nextId },
+  });
+
+  dispatch(persistState());
+};
+
+export const changeNodeDescription = (id, description) => dispatch => {
+  dispatch({
+    type: CHANGE_NODE_DESCRIPTION,
+    payload: { id, description },
   });
 
   dispatch(persistState());

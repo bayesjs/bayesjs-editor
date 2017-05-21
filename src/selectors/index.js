@@ -93,7 +93,8 @@ export const getNetworkMSBN = createSelector(
 );
 
 export const getInferenceResultsMSBN = createSelector(
-  getNetworkMSBN,
+  getSubnetworks,
+  getLinkages,
   getBeliefs,
   combNodesAndBeliefsMSBN
 );

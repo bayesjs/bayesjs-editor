@@ -50,9 +50,11 @@ class EditStatesModal extends Component {
 
   render() {
     const { node, onRequestClose } = this.props;
+    let nodeId = '';
     let children = null;
 
     if (node != null) {
+      nodeId = node.id;
       children = (
         <div className={styles.container}>
           <EditStatesList
@@ -72,7 +74,7 @@ class EditStatesModal extends Component {
 
     return (
       <Modal
-        title="Editar Estados"
+        title={`Editar Estados (${nodeId})`}
         isOpen={node != null}
         onRequestClose={onRequestClose}
       >

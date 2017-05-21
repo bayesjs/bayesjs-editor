@@ -13,6 +13,7 @@ const NodeGeneric = ({
   stroke,
   title,
   canMove,
+  opacity,
   children
 }) => (
   <g
@@ -27,8 +28,9 @@ const NodeGeneric = ({
     <rect
       height={25 + (sumHeight || 0)}
       width="160"
-      fill={"#ff8"}
-      stroke={stroke ? stroke : "#333"}
+      fill={stroke || "#ff8"}
+      fillOpacity={opacity || "1"}
+      stroke={"#333"}
       strokeWidth={selected ? 3 : 1}
       ref={rectRef}
     />

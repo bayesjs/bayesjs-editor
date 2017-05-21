@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { changeNodeId } from '../../actions';
+import { changeNodeId, changeNodeDescription } from '../../actions';
 import { getNodes } from '../../selectors';
 import Button from '../Button';
 import styles from './styles.css';
@@ -11,19 +11,28 @@ class PropertiesNode extends Component {
     const { node } = props;
     
     this.state = {
-      inputText: node.id
+      inputText: node.id,
+      nodeDescription: node.description || '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const inputText = nextProps.node.id;
+    const { id, description } = nextProps.node;
 
-    this.setState({ inputText })
+    this.setState({ 
+      inputText: id,
+      nodeDescription: description || '',
+     })
   }
 
   handleOnChange = (e) => {
-    const inputText = e.target.value;
-    this.setState({ inputText });
+    const { value, id } = e.target;
+
+    if (id === "description") {
+      this.setState({ nodeDescription: value });
+    } else if (id === "id") {
+      this.setState({ inputText: value });
+    }
   };
 
   handleNodeNameBlur = (e) => {
@@ -43,9 +52,25 @@ class PropertiesNode extends Component {
     }
   };
 
+  handleNodeDescripionBlur = (e) => {
+    const { node, dispatch } = this.props;
+    const { value } = e.target;
+    const { id } = node;
+
+    dispatch(changeNodeDescription(id, value));
+  };
+
+  handleKeyUpDescription = (e) => {
+    const key = e.keyCode || e.which;
+
+    if (key === 13) {
+      this.handleNodeDescripionBlur(e);
+    }
+  };
+
   render() {
     const { node } = this.props;
-
+    
     return (
       <div>
         <h2>Propriedades da Variável</h2>
@@ -58,6 +83,16 @@ class PropertiesNode extends Component {
             value={this.state.inputText}
             onChange={this.handleOnChange}
             onBlur={this.handleNodeNameBlur}
+          />
+        </div>
+
+        <div className={styles.fieldWrapper}>
+          <label htmlFor="description">Descrição</label>
+          <textarea
+            id="description"
+            value={this.state.nodeDescription}
+            onChange={this.handleOnChange}
+            onBlur={this.handleNodeDescripionBlur}
           />
         </div>
 

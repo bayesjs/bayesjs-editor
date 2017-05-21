@@ -53,6 +53,8 @@ class NetworkMSBN extends Component {
 
     this.onViewSubnetwork = this.onOpenSubnetwork.bind(this);
     this.onViewLinkages = this.onViewSubnetworkLinkages.bind(this);
+    this.onRemoveNode = this.onRemoveNode.bind(this);
+    this.handleKeyup = this.handleKeyup.bind(this);
     this.connecting = false;
 
     this.canvasContextMenuItems = [
@@ -73,13 +75,13 @@ class NetworkMSBN extends Component {
       },
       {
         key: 'open-super-node-linkages',
-        text: 'Visualizar ligações',
+        text: 'Visualizar uniões',
         visible: ({ id }) => this.props.linkagesByNode[id].length > 0,
         onClick: this.onViewSubnetworkLinkages.bind(this),
       },
       {
         key: 'add-connection',
-        text: 'Adicionar ligação',
+        text: 'Adicionar união',
         onClick: (contextMenuNode) => {
           this.onStartConnection(contextMenuNode);
         },
@@ -87,14 +89,14 @@ class NetworkMSBN extends Component {
       {
         key: 'remove-super-node',
         text: 'Remover rede',
-        onClick: this.onRemoveNode.bind(this),
+        onClick: this.onRemoveNode,
       }
     ];
 
     this.arrowContextMenuItems = [
       {
         key: 'open-arrow-linkages',
-        text: 'Visualizar ligações',
+        text: 'Visualizar uniões',
         // visible: ({ arrow }) => arrow.info.linkagesIds.length > 1,
         onClick: ({ arrow }) => {
           const links = arrow.info.linkagesIds;
@@ -109,7 +111,7 @@ class NetworkMSBN extends Component {
       },
       {
         key: 'remove-linkage',
-        text: 'Remover ligações',
+        text: 'Remover uniões',
         onClick: this.onRemoveArrow.bind(this),
       },
     ];
@@ -141,12 +143,12 @@ class NetworkMSBN extends Component {
     const { dispatch } = this.props;
     const { id, linkageInfo } = node;
     const linkageIds = linkageInfo.map(x => x.id);
-
-    dispatch(removeSuperNode(id));
-
+    
     for (const id of linkageIds) {
       dispatch(removeLinkage(id));
     }
+
+    dispatch(removeSuperNode(id));
     
     setTimeout(this.calculateArrows.bind(this), 0);
   };
@@ -164,7 +166,7 @@ class NetworkMSBN extends Component {
 
   getArrowTitle = ({ info }) => {
     const size = info.linkages.length;
-    const word = size == 1 ? 'ligação' : 'ligações';
+    const word = size == 1 ? 'união' : 'uniões';
     const reduceFunc = (p, [l1, l2], i) => {
       const message = `\n\n${l1.nodeId} - ${l2.nodeId}`;
       p += message;
@@ -209,6 +211,7 @@ class NetworkMSBN extends Component {
         nodes={node.nodes}
         sumHeight={18}
         stroke={node.color}
+        opacity={'0.3'}
         {...props}
       />
     );
@@ -226,13 +229,14 @@ class NetworkMSBN extends Component {
 
   handleKeyup = (e) => {
     const key = e.keyCode || e.which;
-    const { network } = this.props;
-
+    const { network, nodes } = this.props;
+    
     if (key === 8 && network.selectedNodes.length > 0 && document.activeElement.tagName === "BODY") {
       network.selectedNodes.map((nodeId) => {
-        this.props.dispatch(removeSuperNode(nodeId));
-      });
-      setTimeout(() => this.calculateArrows(), 0);
+        const node = nodes.find(({ id }) => id == nodeId);
+        
+        this.onRemoveNode(node);
+      }); 
     }
   }
 
@@ -372,6 +376,7 @@ class NetworkMSBN extends Component {
     const parents1 = node1.parents.sort();
     const parents2 = node2.parents.sort();
 
+    // if (parents1.length > 0 && parents2.length > 0) return false;
     if (parents1.length == parents2.length) {
       for (let i = 0; i < parents1.length; i++) {
         if (parents1[i] != parents2[i]) return false;
@@ -401,13 +406,13 @@ class NetworkMSBN extends Component {
       const cycles = this.checkCycles(linkage);
       
       if (!this.checkParents(firstNodeToConnect, n)) {
-        alert('P(A | B, C, D, E)  P(A | B, C)');
+        alert('Não é possível unir dois nodos que possuem coneções.');
         
       } else if (!this.validCpt(firstNodeToConnect, n)) {
         alert('Número de estados entre os nodos é diferente. Ambos devem contar com os mesmos estados.');
 
       } else if (cycles) {
-        alert('Essa ligação irá resultar em uma rede ciclica, ou seja, uma rede circular. Sua ação não será completada.');
+        alert('Essa união irá resultar em uma rede ciclica, ou seja, uma rede circular. Sua ação não será completada.');
         
       } else {
         this.props.dispatch(addLinkage(linkage));
@@ -454,7 +459,7 @@ class NetworkMSBN extends Component {
       const cycles = this.checkCycles(linkage);
 
       if (cycles) {
-        alert('Essa ligação irá resultar em uma rede ciclica, ou seja, uma rede circular. Sua ação não será completada.');
+        alert('Essa união irá resultar em uma rede ciclica, ou seja, uma rede circular. Sua ação não será completada.');
         
       } else {
         this.props.dispatch(addLinkage(linkage));
@@ -530,7 +535,6 @@ class NetworkMSBN extends Component {
 
   renderSubNetwork = (subnetwork, onRequestClose, onClickNode, onDoubleClickNode = null, connecting = false, connectingNode = null) => {
     const { nodes, positions, beliefs, name, id, color } = subnetwork;
-    const inferenceResults = combNodesAndBeliefs(nodes, beliefs);
     const nodesAndPositions = combNodesAndPositions(nodes, positions);
     const linkedNodes = this.getLinkedNodesFromSubnetwork(subnetwork);
     const { inferenceResultsMSBN } = this.props;

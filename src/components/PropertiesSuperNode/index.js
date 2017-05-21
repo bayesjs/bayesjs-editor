@@ -10,12 +10,25 @@ class PropertiesSuperNode extends Component {
     super(props);
   }
 
+  getDrescription = (subnetwork) => {
+    const { description } = subnetwork;
+    
+    if (description) {
+      return (
+        <h4>{subnetwork.description}</h4>
+      );
+    }
+    return null;
+  }
+
   render() {
     const { subnetwork } = this.props;
+
     return (
       <div>
         <h2>Propriedades da Rede</h2>
         <h3>{subnetwork.name}</h3>
+        {this.getDrescription(subnetwork)}
 
         <div className={styles.fieldWrapper}>
           <Button onClick={() => this.props.onViewSubnetwork(subnetwork)}>
@@ -25,13 +38,13 @@ class PropertiesSuperNode extends Component {
 
         <div className={styles.fieldWrapper}>
           <Button onClick={() => this.props.onViewLinkages(subnetwork)}>
-            Visualizar Ligações
+            Visualizar Uniões
           </Button>
         </div>
 
         <div className={styles.fieldWrapper}>
           <Button onClick={() => this.props.onStartConnection(subnetwork)}>
-            Adicionar Ligação
+            Adicionar União
           </Button>
         </div>
       </div>

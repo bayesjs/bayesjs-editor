@@ -9,12 +9,20 @@ class PropertiesNetwork extends Component {
     super(props);
   }
 
-  handleNetworkNameBlur = e => {
-    const name = e.target.id;
-    const value = e.target.value;
-    this.props.dispatch(changeNetworkProperty(name, value));
+  handleNetworkPropertyBlur = (e) => {
+    const { id, value } = e.target;
+
+    this.props.dispatch(changeNetworkProperty(id, value));
   };
-  
+
+  handleKeyUp = (e) => {
+    const key = e.keyCode || e.which;
+
+    if (key === 13) {
+      this.handleNetworkPropertyBlur(e);
+    }
+  };
+
   handleNetworkSizeBlur = e => {
     const input = e.target;
     const name = input.id;
@@ -27,14 +35,13 @@ class PropertiesNetwork extends Component {
     }
   };
 
-  // <div className={styles.fieldWrapper}>
-  //         <label htmlFor="descricao">Descrição</label>
-  //         <textarea
-  //           id="descricao"
-  //           defaultValue={network.description}
-  //           onBlur={this.handleNetworkNameBlur}
-  //         />
-  //       </div>
+  handleNetworkSizeBlurKeyup = (e) => {
+    const key = e.keyCode || e.which;
+
+    if (key === 13) {
+      this.handleNetworkSizeBlur(e);
+    }
+  };
 
   render() {
     const { network } = this.props;
@@ -49,11 +56,19 @@ class PropertiesNetwork extends Component {
             id="name"
             type="text"
             defaultValue={network.name}
-            onBlur={this.handleNetworkNameBlur}
+            onBlur={this.handleNetworkPropertyBlur}
+            onKeyUp={this.handleKeyUp}
           />
         </div>
 
-        
+        <div className={styles.fieldWrapper}>
+          <label htmlFor="description">Descrição</label>
+          <textarea
+            id="description"
+            defaultValue={network.description || ''}
+            onBlur={this.handleNetworkPropertyBlur}
+          />
+        </div>
 
         <div className={styles.fieldWrapper}>
           <label htmlFor="height">Altura</label>
@@ -62,6 +77,7 @@ class PropertiesNetwork extends Component {
             type="text"
             defaultValue={network.height}
             onBlur={this.handleNetworkSizeBlur}
+            onKeyUp={this.handleNetworkSizeBlurKeyup}
           />
         </div>
 
@@ -72,6 +88,7 @@ class PropertiesNetwork extends Component {
             type="text"
             defaultValue={network.width}
             onBlur={this.handleNetworkSizeBlur}
+            onKeyUp={this.handleNetworkSizeBlurKeyup}
           />
         </div>
       </div>

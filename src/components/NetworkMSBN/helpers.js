@@ -174,56 +174,59 @@ export const createSuperNodes = (nodes: INodeWithNetwork[], linkages: [ILinkageI
 
   const mergeCpts = (superCpts: INodeCptWithWhenNetwork[][], parents: ILinkageItem[], states : string[]): INodeCptWithWhenNetwork[] => {
     if (superCpts.length === 0) return  superCpts;
-    const get = (current: INodeCptWithWhenNetwork[], index: number = 1): INodeCptWithWhenNetwork[] => {
-      let result: INodeCptWithWhenNetwork[] = [];
+    return superCpts.reduce((array, obj) => [ ...array, ...obj ]);
+    // console.log(superCpts, parents);
+    // const get = (current: INodeCptWithWhenNetwork[], index: number = 1): INodeCptWithWhenNetwork[] => {
+    //   let result: INodeCptWithWhenNetwork[] = [];
       
-      if (superCpts[index] === undefined) return current;
+    //   if (superCpts[index] === undefined) return current;
 
-      for (let cpt of superCpts[index]) {
-        let { when, then } = cpt;
+    //   for (let cpt of superCpts[index]) {
+    //     let { when, then } = cpt;
       
-        for (let i = 0; i < current.length; i++) {
-          let cCpt = current[i];
-          let newThen: INodeCptThen = {};
+    //     for (let i = 0; i < current.length; i++) {
+    //       let cCpt = current[i];
+    //       let newThen: INodeCptThen = {};
 
-          for (let state of states) {
-            newThen[state] = then[state] + cCpt.then[state]; 
-          }
+    //       for (let state of states) {
+    //         newThen[state] = then[state] + cCpt.then[state]; 
+    //       }
           
-          result.push({
-            when: {
-              ...when,
-              ...cCpt.when,
-            },
-            then: newThen,
-          });
-        }
-      }
+    //       result.push({
+    //         when: {
+    //           ...when,
+    //           ...cCpt.when,
+    //         },
+    //         then: newThen,
+    //       });
+    //     }
+    //   }
 
-      if (superCpts.length > (index + 1)) {
-        result = get(result, index + 1);
-      }
+    //   if (superCpts.length > (index + 1)) {
+    //     result = get(result, index + 1);
+    //   }
 
-      return result;
-    }
-    let temp = get(superCpts[0]);
+    //   return result;
+    // }
+    // let temp = get(superCpts[0]);
     
-    let temp2 = temp.map(({ when, then }) => { 
-      let newThen: INodeCptThen = {};
-      for (let state of states) {
-        newThen[state] = then[state] / superCpts.length; 
-      }
-      return {
-        when, 
-        then: newThen, 
-      };
-    });
+    // let temp2 = temp.map(({ when, then }) => { 
+    //   let newThen: INodeCptThen = {};
+    //   for (let state of states) {
+    //     newThen[state] = then[state] / superCpts.length; 
+    //   }
+    //   return {
+    //     when, 
+    //     then: newThen, 
+    //   };
+    // });
     
-    return temp2;
+    // return temp2;
   };
 
   for (let linkage of linkagesClone) {
     const [l1, l2] = linkage;
+    
     let sNode = find(l1);
     
     if (sNode === undefined) {
@@ -231,20 +234,27 @@ export const createSuperNodes = (nodes: INodeWithNetwork[], linkages: [ILinkageI
 
       if (sNode === undefined) {
         const temp = findNode(l1);
+        const temp2 = findNode(l2);
+        // if (temp === undefined || temp2 === undefined) continue
+        
         //Criar supernode com os dois links
         superNodes.push({
           id: createNodeId(l1.nodeId),
-          originals: [temp, findNode(l2)],
+          originals: [temp, temp2],
           parents: [],
           states: temp.states
         });
       } else {
         //Add l1 no supernoda
-        sNode.originals.push(findNode(l1));
+        const temp = findNode(l1);
+        
+        sNode.originals.push(temp);
       }
     } else if (find(l2) === undefined) {
       //Add l2 no supernoda
-      sNode.originals.push(findNode(l2));
+      const temp = findNode(l2);
+      
+      sNode.originals.push(temp);
     }
   }
 
@@ -291,6 +301,7 @@ export const createSuperNodes = (nodes: INodeWithNetwork[], linkages: [ILinkageI
     node.parents = mergeParents(allParents);
     if (allCpt.length) {
       node.cpt = mergeCpts(allCpt, node.parents, node.states);
+      // console.log(node.id, node.cpt);
       
     } else {
       node.cpt = cptObj;
@@ -394,10 +405,58 @@ export const createIdentifier = (nodes: ISuperNode[]): IIdentifiers => {
   };
 };
 
+export const checkDuplicatesCpts = (cpts: INodeCpt[]): INodeCpt[] => {
+  const result: INode[] = [];
+  const ignoreIndexes = [];
+
+  for (let i = 0; i < cpts.length; i++) {
+    if (ignoreIndexes.indexOf(i) > -1) continue;
+    const cpt1 = cpts[i];
+    const whenKeys1 = Object.keys(cpt1.when);
+    const duplicates = [];
+
+    for (let j = i + 1; j < cpts.length; j++) {
+      const cpt2 = cpts[j];
+      const whenKeys2 = Object.keys(cpt2.when);
+      const sameWhens = whenKeys1.length == whenKeys2.length && 
+        whenKeys1.every(wk => cpt1.when[wk] === cpt2.when[wk]);
+      
+      if (sameWhens) {
+        duplicates.push(cpt2);
+        ignoreIndexes.push(j);
+      }
+    }
+    
+    if (duplicates.length > 0) {
+      const all = [ ...duplicates, cpt1 ];
+      const thenKeys = Object.keys(cpt1.then);;
+      let then = all[0].then;
+
+      for (let i = 1; i < all.length; i++) {
+        const nThen = all[i].then;
+
+        if (nThen[thenKeys[0]] != 0.5) {
+          then = nThen;
+          break;
+        }
+      }
+
+      result.push({
+        when: cpt1.when,
+        then,
+      });
+
+    } else {
+      result.push(cpt1);
+    } 
+  }
+
+  return result;
+};
+
 export const mergeCpts = (cpts: INodeCptWithWhenNetwork[] | ICptObjectWithNetwork, identifiers:  { [id: string]: string }): (INodeCpt[] | INodeCptObject) => {
   if (Array.isArray(cpts)) {
-    
-    let newCpts: INodeCpt[] = [];
+    const newCpts: INodeCpt[] = [];
 
     for (let cpt of cpts) {
       if (cpt.when && cpt.then) {
@@ -407,9 +466,9 @@ export const mergeCpts = (cpts: INodeCptWithWhenNetwork[] | ICptObjectWithNetwor
         for (let whenKey of whenKeys) {
           const whenItem = cpt.when[whenKey];
           const key = createKey(whenItem.networkId, whenKey)
-          
+          const whenId = identifiers[key];
           // newWhen[identifiers[key]] = cpt.when[whenKey];
-          newWhen[identifiers[key]] = whenItem.value;
+          newWhen[whenId] = whenItem.value;
         }
 
         newCpts.push({
@@ -419,7 +478,7 @@ export const mergeCpts = (cpts: INodeCptWithWhenNetwork[] | ICptObjectWithNetwor
       }
     }
 
-    return newCpts;
+    return checkDuplicatesCpts(newCpts);
 
   } else {
     const keys = Object.keys(cpts);
@@ -434,11 +493,14 @@ export const mergeCpts = (cpts: INodeCptWithWhenNetwork[] | ICptObjectWithNetwor
 
       return result;
     }
+    
     return cpts;
   }
 };
 
 export const createMissingLinkages = (linkages: [ILinkageItem, ILinkageItem][]): [ILinkageItem, ILinkageItem][] => {
+  const cacheLinkages = weakMap.get(linkages);
+  if (cacheLinkages) return cacheLinkages;
   let newLinkages:[ILinkageItem, ILinkageItem][] = [];
   //validar
   
@@ -498,10 +560,12 @@ export const createMissingLinkages = (linkages: [ILinkageItem, ILinkageItem][]):
     }
   }
 
-  return [
+  const result = [
     ...linkages,
     ...newLinkages
   ];
+  weakMap.set(linkages, result);
+  return result;
 };
 
 export const mergeNetworks = (subnetworks: INetwork[], linkages: [ILinkageItem, ILinkageItem][]): IMergeNetworks => {
@@ -542,6 +606,11 @@ export const mergeNetworks = (subnetworks: INetwork[], linkages: [ILinkageItem, 
       newParents.push(parentName);
     }
     
+    // if (node.id.indexOf('C') != -1) {
+      // console.log(node.id);
+      // console.log(JSON.stringify(mergeCpts(node.cpt, identifierOriginalToNew)));
+    // }
+
     finalNodes.push({
       id: node.id,
       cpt: mergeCpts(node.cpt, identifierOriginalToNew),

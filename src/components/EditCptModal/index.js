@@ -44,6 +44,23 @@ class EditCptModal extends Component {
     }
   };
 
+  handleCptKeyup = (e) => {
+    const key = e.keyCode || e.which;
+    const { node } = this.props;
+
+    if (key === 13) {
+      document.activeElement.blur();
+
+      setTimeout(() => {
+        if (node.parents.length === 0) {
+          this.handleSaveWithoutParents();
+        } else {
+          this.handleSaveWithParents();
+        }
+      }, 1);
+    }
+  }
+
   handleCptWithParentsBlur = (e, state, index) => {
     const input = e.target;
     const value = parseFloat(input.value.replace(',', '.'));
@@ -74,7 +91,7 @@ class EditCptModal extends Component {
     const states = Object.keys(cpt);
 
     const sum = states.reduce((acc, x) => acc + (cpt[x] * 10), 0) / 10;
-
+  
     if (sum !== 1) {
       alert('A soma das probabilidades deve ser igual a 1');
       return;
@@ -89,9 +106,9 @@ class EditCptModal extends Component {
 
     for (let i = 0; i < cpt.length; i++) {
       const states = Object.keys(cpt[i].then);
-      const sum = states.reduce((acc, x) => acc + cpt[i].then[x], 0);
-
-      if (sum !== 1) {
+      const sum = states.reduce((acc, x) => acc + (cpt[i].then[x] * 10), 0);
+      
+      if ((sum / 10) !== 1) {
         alert('A soma das probabilidades para cada uma das linhas deve ser igual a 1');
         return;
       }
@@ -119,8 +136,11 @@ class EditCptModal extends Component {
             {states.map(state => (
               <td key={state}>
                 <input
+                  type="number"
+                  step="0.01"
                   defaultValue={cpt[state]}
                   onBlur={e => this.handleCptWithoutParentsBlur(e, state)}
+                  onKeyUp={this.handleCptKeyup}
                 />
               </td>
             ))}
@@ -162,8 +182,11 @@ class EditCptModal extends Component {
               {states.map((state, stateIndex) => (
                 <td key={state} style={stateIndex === 0 ? firstStateCellStyle : null}>
                   <input
+                    type="number"
+                    step="0.01"
                     defaultValue={row.then[state]}
                     onBlur={e => this.handleCptWithParentsBlur(e, state, rowIndex)}
+                    onKeyUp={this.handleCptKeyup}
                   />
                 </td>
               ))}
@@ -176,10 +199,11 @@ class EditCptModal extends Component {
 
   render() {
     const { node, onRequestClose } = this.props;
-
+    let nodeId = '';
     let children = null;
 
     if (node != null) {
+      nodeId = node.id;
       children = (
         <div className={styles.container}>
           <div className={styles.cptContainer}>
@@ -214,7 +238,7 @@ class EditCptModal extends Component {
 
     return (
       <Modal
-        title="Editar Tabela de Probabilidades"
+        title={`Editar Tabela de Probabilidades (${nodeId})`}
         isOpen={node != null}
         onRequestClose={onRequestClose}
       >

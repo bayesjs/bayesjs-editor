@@ -43,7 +43,7 @@ const NodeState = ({
         fill={fillColor}
       />
       
-      <text x="105" y={35 + (18 * index)} height="15" fontSize="12px" stroke="red">{`${percent.toFixed(2)} %`}</text>
+      <text x="100" y={35 + (18 * index)} height="15" fontSize="12px" stroke="red">{`${percent.toFixed(2)} %`}</text>
       <rect
         x="85"
         y={24 + (18 * index)}

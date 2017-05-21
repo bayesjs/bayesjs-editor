@@ -149,7 +149,7 @@ class LinkagesModal extends Component {
 
     return (
       <Modal
-        title="Editar Ligações"
+        title="Editar Uniões"
         isOpen={true}
         onRequestClose={this.onRequestClose(true)}
       >

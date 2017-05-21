@@ -1,11 +1,12 @@
 {
   "name": "bayesjs-editor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An editor for Bayesian Networks.",
   "keywords": [
     "bayes",
     "bayesian",
-    "network"
+    "network",
+    "msbn"
   ],
   "main": "server.js",
   "author": "fhelwanger",

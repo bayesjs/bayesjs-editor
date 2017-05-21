@@ -45,7 +45,7 @@ class NetworkBN extends Component {
     this.nodeContextMenuItems = [
       {
         key: 'add-child',
-        text: 'Adicionar ligação',
+        text: 'Adicionar união',
         onClick: (contextMenuNode) => {
           this.net.startConnection(contextMenuNode);
         },
@@ -77,7 +77,7 @@ class NetworkBN extends Component {
     this.arrowContextMenuItems = [
       {
         key: 'remove-link',
-        text: 'Remover ligação',
+        text: 'Remover união',
         onClick: (contextMenuArrow) => {
           const { childId, parentId } = contextMenuArrow;
           this.props.dispatch(removeParent(childId, parentId));
