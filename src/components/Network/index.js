@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import styles from './styles.css';
 import ContextMenu from '../ContextMenu';
 import AddNodeModal from '../AddNodeModal';
+import Arrows from '../Arrows';
+import { v4 } from 'uuid';
 
 export const ContextMenuType = {
   NODE: 'CONTEXT_MENU_NODE',
@@ -22,7 +24,6 @@ class Network extends Component {
 
     this.state = {
       arrows: [],
-      arrowsRendered: null,
       addingChildArrow: null,
       contextMenuItems: [],
       movingNodePlaceholder: null,
@@ -53,32 +54,32 @@ class Network extends Component {
   };
 
   calculateArrows = (nodes = this.props.nodes) => {
-    if (Object.entries(this.rectRefs).length == 0) return [];
+    if (Object.keys(this.rectRefs).length == 0) return [];
     
-    const getNodeLinksPositions = node => {
+    const getNodeLinksPositions = (node) => {
       const { height, width } = this.rectRefs[node.id].getBoundingClientRect();
 
       const top = {
-        x: node.position.x + width / 2,
+        x: (node.position.x + width / 2),
         y: node.position.y,
         type: 'top',
       };
 
       const right = {
         x: node.position.x + width,
-        y: node.position.y + height / 2,
+        y: (node.position.y + height / 2),
         type: 'right',
       };
 
       const bottom = {
-        x: node.position.x + width / 2,
+        x: (node.position.x + width / 2),
         y: node.position.y + height,
         type: 'bottom',
       };
 
       const left = {
         x: node.position.x,
-        y: node.position.y + height / 2,
+        y: (node.position.y + height / 2),
         type: 'left',
       };
 
@@ -89,13 +90,21 @@ class Network extends Component {
       Math.sqrt((Math.abs(p2.x - p1.x) ** 2) + (Math.abs(p2.y - p1.y) ** 2))
     );
 
+    const corretion = (p, value) => {
+      if (['top', 'bottom'].indexOf(p.type) !== -1) {
+        p.x += value;
+      } else {
+        p.y += value;
+      }
+    }
+
     const getNearestPoints = (node1, node2) => {
       const ps1 = getNodeLinksPositions(node1);
       const ps2 = getNodeLinksPositions(node2);
 
       let p1 = ps1[0];
       let p2 = ps2[0];
-
+      
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
           if (getDistance(p1, p2) > getDistance(ps1[i], ps2[j])) {
@@ -104,6 +113,9 @@ class Network extends Component {
           }
         }
       }
+      
+      // corretion(p1, -10);
+      // corretion(p2, 10);
 
       return { p1, p2 };
     };
@@ -152,12 +164,14 @@ class Network extends Component {
     const arrows = this.props.arrows().map((arrow, index) => {
       const { from, to } = arrow;
       const points = getNearestPoints(from, to);
+      // const pointsFrom = map.get(from.id) || [];
+      // const seila = map.get(from.id) || [];
+      
+      // const p1Adjustment = getPointAdjustment(getPointCount(points.p1));
+      // const p2Adjustment = getPointAdjustment(getPointCount(points.p2));
 
-      const p1Adjustment = getPointAdjustment(getPointCount(points.p1));
-      const p2Adjustment = getPointAdjustment(getPointCount(points.p2));
-
-      adjustPoint(points.p1, p1Adjustment);
-      adjustPoint(points.p2, p2Adjustment);
+      // adjustPoint(points.p1, p1Adjustment);
+      // adjustPoint(points.p2, p2Adjustment);
 
       return {
         key: `${from.id}-${to.id}`,
@@ -170,7 +184,6 @@ class Network extends Component {
       };
     });
 
-    this.setState({ arrows });
     return arrows;
   };
 
@@ -262,9 +275,13 @@ class Network extends Component {
       this.setState({ movingNodePlaceholder });
     }
 
-    if (this.state.nodeToAddChildTo !== null) {
+    this.handleNodeToAddChildTo(this.state.nodeToAddChildTo, e);
+  };
+
+  handleNodeToAddChildTo = (nodeToAddChildTo, e) => {
+    if (nodeToAddChildTo !== null) {
       const canvasRect = this.canvas.getBoundingClientRect();
-      const nodeRect = this.rectRefs[this.state.nodeToAddChildTo.id].getBoundingClientRect();
+      const nodeRect = this.rectRefs[nodeToAddChildTo.id].getBoundingClientRect();
 
       const from = {
         x: nodeRect.left + (nodeRect.width / 2) - canvasRect.left,
@@ -285,7 +302,7 @@ class Network extends Component {
         addingChildArrow: { from, to },
       });
     }
-  };
+  } 
 
   handleMouseUp = e => {
     if (this.movingNode !== null) {
@@ -336,24 +353,38 @@ class Network extends Component {
       >
         <path d="M0,0 L10,5 L0,10" fill="#333" />
       </marker>
+
+      <marker
+        id="triangle-hover"
+        viewBox="0 0 10 10"
+        markerWidth="6"
+        markerHeight="6"
+        refX="8"
+        refY="5"
+        orient="auto"
+      >
+        <path d="M0,0 L10,5 L0,10" fill="#9f9ff6" />
+      </marker>
     </defs>
   );
-
+  
   renderArrows = () => {
     const { onClickArrow, nodes, renderArrow } = this.props;
-    const arrows = this.calculateArrows(nodes);
-    const arrowsRendered = arrows.map((a) => {
+    const arrowsCalc = this.calculateArrows(nodes);
+    const clickIsFunc = onClickArrow === 'function';
+    const arrows = arrowsCalc.map((a) => {
       const onMouseDown = e => this.handleArrowMouseDown(a, e);
+      const uuid = v4();
       const onClick = (e) => {
-        if (typeof onClickArrow === 'function') {
+        if (clickIsFunc) {
           onClickArrow(a, e);
         }
       };
-
-      return renderArrow(a, { onMouseDown, onClick })
+      
+      return renderArrow(a, { onMouseDown, onClick });
     });
 
-    this.setState({ arrowsRendered });
+    this.setState({ arrows });
   };
 
   renderNodes = () => {
@@ -425,12 +456,21 @@ class Network extends Component {
           width={this.props.network.width}
           ref={ref => (this.canvas = ref)}
         >
-          {this.renderDefs()}
-          {this.state.arrowsRendered}
-          {this.renderNodes()}
-          {addingChildArrow}
-          {movingNodePlaceholder}
-          {this.props.children}
+          <g>  
+            <Arrows arrows={this.state.arrows}/>
+          </g>
+          <g>
+            {this.renderNodes()}
+          </g>
+          <g>
+            {addingChildArrow}
+          </g>
+          <g>
+            {movingNodePlaceholder}
+          </g>
+          <g>
+            {this.props.children}
+          </g>
         </svg>
 
         <ContextMenu

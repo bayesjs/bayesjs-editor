@@ -102,14 +102,14 @@ export default (state = initialState, action) => {
       if (network.id === undefined) network.id = v4();
 
       if (nodes && positions) {
-        return {
+        network = {
           ...network,
           nodes,
           positions
         };
       }
       
-      return network;
+      return completer(network);
     case CHANGE_NETWORK_PROPERTY:
       return completer({
         ...state,

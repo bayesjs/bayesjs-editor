@@ -3,17 +3,21 @@ import { mergeNetworks, createKey, keyToNetworkAndNode, createMissingLinkages, j
 
 const weakMap = new WeakMap();
 
-export const combNodesAndPositions = (nodes, positions) => nodes.map(node => ({
-  ...node,
-  position: positions[node.id],
-}));
+export const combNodesAndPositions = (nodes, positions) => nodes.map(node => {
+  const r = {
+    ...node,
+    position: positions[node.id],
+  };
+  // debugger
+  return r; 
+});
 
-export const combNodesAndBeliefs = (nodes, beliefs, subnetworks = null) => {
+export const combNodesAndBeliefs = (nodes, beliefs, infereceEnabled = true) => {
   console.time("INFER");
   let network = {};
-
   const remainingNodes = [...nodes];
-  
+  const results = {};
+
   while (remainingNodes.length > 0) {
     const nodesToAdd = [];
 
@@ -28,19 +32,28 @@ export const combNodesAndBeliefs = (nodes, beliefs, subnetworks = null) => {
     });
   }
   
-  const results = {};
-
-  nodes.forEach(node => {
-    results[node.id] = {};
-
-    node.states.forEach(state => {
-      results[node.id][state] = infer(
-        network,
-        { [node.id]: state },
-        Object.keys(beliefs).length === 0 ? undefined : beliefs, 0
-      );
+  if (!infereceEnabled) {//desativar inferencia
+    nodes.forEach(node => {
+      results[node.id] = {};
+      
+      node.states.forEach(state => {
+        results[node.id][state] = 0;
+      });
     });
-  });
+
+  } else {
+    nodes.forEach(node => {
+      results[node.id] = {};
+
+      node.states.forEach(state => {
+        results[node.id][state] = infer(
+          network,
+          { [node.id]: state },
+          Object.keys(beliefs).length === 0 ? undefined : beliefs
+        );
+      });
+    });
+  }
   console.timeEnd("INFER");
   
   return results;
@@ -63,7 +76,6 @@ const combNetworkMSBN = (subnetworks, linkages) => {
       nodes: dictNodes
     };
   });
-  // junctionTreeInSubnetwork(networks, links);
 
   weakMap.set(linkages, links);
   weakMap.set(subnetworks, networks);
@@ -71,24 +83,22 @@ const combNetworkMSBN = (subnetworks, linkages) => {
   return mergeNetworks(networks, links);
 };
 
-export const combNodesAndBeliefsMSBN = (networks, linkages, beliefs) => {
+export const combNodesAndBeliefsMSBN = (networks, linkages, beliefs, infereceEnabled) => {
   console.time("MERGE");
-  let cachedMerge = weakMap.get(networks);
+  let cachedNetworks = weakMap.get(networks);
+  let cachedLinkages = weakMap.get(linkages);
+  let cachedMerge;
   
-  if (cachedMerge === undefined) {
+  if (cachedNetworks === undefined || cachedLinkages === undefined) {
     cachedMerge = combNetworkMSBN(networks, linkages);
+  } else {
+    cachedMerge = cachedNetworks;
   }
   const { network, subnetworks, identifiers } = cachedMerge;
   weakMap.set(networks, cachedMerge);
+  weakMap.set(linkages, cachedMerge);
   console.timeEnd("MERGE");
-  // console.log(network);
-
-  // const ttttt = Object.keys(network)
-  //   .map(nodeId => network[nodeId])
-  //   .map(({ id, parents }) => ({ id, parents }))
-  //   // .reduce(() => , {})
-
-  // console.log(JSON.stringify(network, null, 2));
+  
   let newBeliefs = {};
   let nodes = [];
   let result = {};
@@ -123,7 +133,7 @@ export const combNodesAndBeliefsMSBN = (networks, linkages, beliefs) => {
   }
 
   try {
-    const inferResults = combNodesAndBeliefs(nodes, newBeliefs, subnetworks);
+    const inferResults = combNodesAndBeliefs(nodes, newBeliefs, infereceEnabled);
     
     for (let newNetworkId of Object.keys(inferResults)) {
       const result = inferResults[newNetworkId];
@@ -145,6 +155,7 @@ export const combNodesAndBeliefsMSBN = (networks, linkages, beliefs) => {
 };
 
 export const combLinkagesBySubnetwork = (linkages, nodes) => {
+  // debugger
   const ids = Object.keys(linkages);
   let groups = {};
 

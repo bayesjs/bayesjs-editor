@@ -30,7 +30,7 @@ class PropertiesNode extends Component {
 
     if (id === "description") {
       this.setState({ nodeDescription: value });
-    } else if (id === "id") {
+    } else if (id === "name") {
       this.setState({ inputText: value });
     }
   };

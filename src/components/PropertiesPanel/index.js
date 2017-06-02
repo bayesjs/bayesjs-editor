@@ -53,7 +53,7 @@ class PropertiesPanel extends Component {
 
   render() {
     return (
-      <GenericPanel>
+      <GenericPanel classNames={styles.genericPanel}>
         {this.renderContent()}
       </GenericPanel>
     );

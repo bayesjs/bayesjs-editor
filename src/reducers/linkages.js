@@ -21,6 +21,9 @@ export default (state = {}, action) => {
       delete newState[id];
 
       return newState;
+    case LOAD_NETWORK:
+      const { linkages } = action.payload.state.network;
+      return linkages || {};
     default: 
       return state;
   }

@@ -1,10 +1,13 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { getInferenceEnabled } from '../../selectors';
 
 const NodeState = ({
   belief,
   results,
   state,
   onStateDoubleClick,
+  inferenceEnabled,
   index,
 }) => {
   let result;
@@ -17,7 +20,7 @@ const NodeState = ({
 
   const percent = 100 * result;
   const barWidth = 70 * result;
-  const fillColor = belief != null ? '#EE4040' : '#4040EE';
+  const fillColor = belief != null ? '#EE4040' : '#9f9ff6';
 
   return (
     <g>
@@ -43,7 +46,16 @@ const NodeState = ({
         fill={fillColor}
       />
       
-      <text x="100" y={35 + (18 * index)} height="15" fontSize="12px" stroke="red">{`${percent.toFixed(2)} %`}</text>
+      <text x={result >= 0.1 ? (result === 1 ? 97 : 100) : 103} 
+        y={36 + (18 * index)} 
+        height="15" 
+        fontSize="14px" 
+        alignmentBaseline="rigth"
+        stroke="black"
+        strokeWidth="1.1"
+        >
+          {`${percent.toFixed(2)} %`}
+        </text>
       <rect
         x="85"
         y={24 + (18 * index)}
@@ -55,7 +67,7 @@ const NodeState = ({
         onDoubleClick={() => onStateDoubleClick(state)}
       >
         <title>{percent.toFixed(2)}%</title>
-      </rect>
+      </rect>    
     </g>
   )
 };
@@ -68,4 +80,9 @@ NodeState.prototype = {
   index: PropTypes.number.isRequired,
 }
 
-export default NodeState;
+const mapStateToProps = (state, ownProps) => ({
+  inferenceEnabled: getInferenceEnabled(state),
+});
+
+export default connect(mapStateToProps)(NodeState);
+// export default NodeState;

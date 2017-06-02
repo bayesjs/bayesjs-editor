@@ -22,6 +22,7 @@ export const getSubnetworks = state => state.network.subnetworks || [];
 export const getNetworkKind = state => state.network.kind || NETWORK_KINDS.BN;
 export const getPanelVisibility = state => state.network.propertiesPanelVisible;
 export const getLinkages = state => state.network.linkages;
+export const getInferenceEnabled = state => state.network.inferenceEnabled === undefined ? true : state.network.inferenceEnabled;
 
 export const getStateToSave = createSelector(
   getNetwork,
@@ -83,6 +84,7 @@ export const getSubnetworksWithPosition = createSelector(
 export const getInferenceResults = createSelector(
   getNodes,
   getBeliefs,
+  getInferenceEnabled,
   combNodesAndBeliefs
 );
 
@@ -96,6 +98,7 @@ export const getInferenceResultsMSBN = createSelector(
   getSubnetworks,
   getLinkages,
   getBeliefs,
+  getInferenceEnabled,
   combNodesAndBeliefsMSBN
 );
 

@@ -26,7 +26,7 @@ import {
   getSubnetworksColorById,
 } from '../../selectors';
 
-import { combNodesAndBeliefs, combNodesAndPositions } from '../../selectors/combiners';
+import { combNodesAndPositions } from '../../selectors/combiners';
 
 import {
   addSuperNode,
@@ -89,6 +89,7 @@ class NetworkMSBN extends Component {
       {
         key: 'remove-super-node',
         text: 'Remover rede',
+        style: { color: '#C62828' },
         onClick: this.onRemoveNode,
       }
     ];
@@ -112,6 +113,7 @@ class NetworkMSBN extends Component {
       {
         key: 'remove-linkage',
         text: 'Remover uniões',
+        style: { color: '#C62828' },
         onClick: this.onRemoveArrow.bind(this),
       },
     ];
@@ -295,7 +297,7 @@ class NetworkMSBN extends Component {
       // try {
         let state = JSON.parse(json);
         
-        if (state.network.id === undefined) {
+        if (!state.network.id) {
           state.network.id = v4();
         }
 

@@ -65,6 +65,9 @@ export default (state = [], action) => {
       return state
         .filter(n => n.id != action.payload.id)
 
+    case LOAD_NETWORK:
+      const { subnetworks } = action.payload.state.network;
+      return subnetworks || [];
     default: 
       return state;
   }

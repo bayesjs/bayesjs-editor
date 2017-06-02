@@ -18,12 +18,11 @@ export const openFile = (accept, cb) => {
     };
 
     reader.readAsText(file);
-    document.body.removeChild(element);
   });
 
   document.body.appendChild(element);
   element.click();
-  
+  document.body.removeChild(element);
 };
 
 export const saveFile = (filename, text) => {

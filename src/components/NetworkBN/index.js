@@ -45,7 +45,7 @@ class NetworkBN extends Component {
     this.nodeContextMenuItems = [
       {
         key: 'add-child',
-        text: 'Adicionar união',
+        text: 'Adicionar ligação',
         onClick: (contextMenuNode) => {
           this.net.startConnection(contextMenuNode);
         },
@@ -67,6 +67,7 @@ class NetworkBN extends Component {
       {
         key: 'remove-node',
         text: 'Remover variável',
+        style: { color: '#C62828' },
         onClick: (contextMenuNode) => {
           this.props.dispatch(removeNode(contextMenuNode.id));
           setTimeout(() => this.calculateArrows(), 0);
@@ -77,7 +78,8 @@ class NetworkBN extends Component {
     this.arrowContextMenuItems = [
       {
         key: 'remove-link',
-        text: 'Remover união',
+        text: 'Remover ligação',
+        style: { color: '#C62828' },
         onClick: (contextMenuArrow) => {
           const { childId, parentId } = contextMenuArrow;
           this.props.dispatch(removeParent(childId, parentId));

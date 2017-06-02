@@ -1,3 +1,7 @@
+.generic-panel {
+  overflow: auto;
+}
+
 .panel {
   display: flex;
   position: relative;

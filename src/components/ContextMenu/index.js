@@ -81,15 +81,15 @@ class ContextMenu extends Component {
     const { items } = this.props;
     
     return items.filter(({ visible }) => {
-      if (visible !== undefined) {
-        if (typeof visible === 'boolean') {
-          return visible;
-        } else if (typeof visible === 'function') {
-          return visible(this.contextItem);
+        if (visible !== undefined) {
+          if (typeof visible === 'boolean') {
+            return visible;
+          } else if (typeof visible === 'function') {
+            return visible(this.contextItem);
+          }
         }
-      }
-      return true;
-    })
+        return true;
+      });
   }
 
   render() {
@@ -115,6 +115,7 @@ class ContextMenu extends Component {
           {this.getItens().map((item) => (
             <li
               key={item.key}
+              style={item.style || {}}
               className={classNames({
                 [styles.contextMenuItem]: true,
                 [styles.contextMenuItemDisabled]: item.disabled,

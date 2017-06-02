@@ -4,6 +4,7 @@ import { newNetwork, loadNetwork, newMSBNNetwork, NETWORK_KINDS } from '../../ac
 import { getStateToSave } from '../../selectors';
 import { openFile, saveFile } from '../../utils/file';
 import Button from '../Button';
+import { v4 } from 'uuid';
 import styles from './styles.css';
 
 class Header extends Component {
@@ -60,21 +61,38 @@ class Header extends Component {
   };
 
   getNetworkName = () => {
-    let { name } = this.props.stateToSave.network;
+    const { name } = this.props.stateToSave.network;
 
     if (name) {
-      name = name.toLowerCase();
-      name = name.replace(/[.]/g, '');
-      name = name.replace(/[ ]/g, '_');
+      let newName = name.trim();
+      newName = newName.toLowerCase();
+      newName = newName.replace(/[.]/g, '');
+      newName = newName.replace(/[ ]/g, '_');
 
-      return name || 'network';// In case the name is blank
+      return newName || 'network';// In case the name is blank
     }
     return 'network';
   };
 
+  stateToSave = () => {
+    const { stateToSave } = this.props;
+    const state = {
+      ...stateToSave,
+      network: {
+        ...stateToSave.network
+      }
+    };
+
+    if (!state.network.id) {
+      state.network.id = v4();
+    }
+
+    return state;
+  }
+
   handleSaveNetworkClick = (e) => {
     e.preventDefault();
-    const json = JSON.stringify(this.props.stateToSave, null, 2);
+    const json = JSON.stringify(this.stateToSave(), null, 2);
     saveFile(`${this.getNetworkName()}.json`, json);
   };
 
@@ -85,16 +103,16 @@ class Header extends Component {
   renderLiNetworkTypes = () => {
     return (
       <ul className={styles.subMenu}>
-        {this.createLi('BN', this.handleNewNetworkClick)}
-        {this.hasMSBNNetwork() ? this.createLi('MSBN', this.handleNewMSBNNetworkClick) : null}
+        {this.createLi('BN', this.handleNewNetworkClick, 'Rede Bayesiana')}
+        {this.hasMSBNNetwork() ? this.createLi('MSBN', this.handleNewMSBNNetworkClick, 'Rede Bayesiana Multi-seccionada') : null}
       </ul>
     );
   }
 
-  createLi = (name, handleOnClick) => {
+  createLi = (name, handleOnClick, title = '') => {
     return (
       <li>
-        <a href="" onClick={handleOnClick}>{name}</a>
+        <a href="" onClick={handleOnClick} title={title}>{name}</a>
       </li>
     );
   }
@@ -113,7 +131,7 @@ class Header extends Component {
         {this.state.menuVisible && (
           <ul className={styles.menu}>
             <li>
-              <a href="">Nova Rede</a>
+              <a href="" onClick={this.handleNewNetworkClick}>Nova Rede</a>
               {this.renderLiNetworkTypes()}
             </li>
             <li>
