@@ -39,9 +39,7 @@ export const getStateToSave = createSelector(
         ...sub,
         beliefs: {},
       })),
-    },
-    nodes,
-    positions,
+    }
   })
 );
 

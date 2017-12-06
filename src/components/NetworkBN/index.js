@@ -142,7 +142,7 @@ class NetworkBN extends Component {
     const key = e.keyCode || e.which;
     const { network } = this.props;
     
-    if (key === 8 && network.selectedNodes.length > 0 && document.activeElement.tagName === "BODY") {
+    if ([8, 46].indexOf(key) !== -1 && network.selectedNodes.length > 0 && document.activeElement.tagName === "BODY") {
       network.selectedNodes.map((nodeId) => {
         this.props.dispatch(removeNode(nodeId));
       });
