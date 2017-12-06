@@ -28,7 +28,7 @@
     "flow": "flow"
   },
   "dependencies": {
-    "bayesjs": "^0.3.3",
+    "bayesjs": "^0.4.0-beta.5",
     "classnames": "^2.2.5",
     "font-awesome": "^4.6.3",
     "normalize.css": "^4.2.0",
