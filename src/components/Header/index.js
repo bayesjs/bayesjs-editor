@@ -5,6 +5,7 @@ import { getStateToSave } from '../../selectors';
 import { openFile, saveFile } from '../../utils/file';
 import Button from '../Button';
 import { v4 } from 'uuid';
+import fileDownload from 'react-file-download';
 import styles from './styles.css';
 
 class Header extends Component {
@@ -80,7 +81,9 @@ class Header extends Component {
       ...stateToSave,
       network: {
         ...stateToSave.network
-      }
+      },
+      nodes: stateToSave.network.nodes || [],
+      positions: stateToSave.network.positions || {}
     };
 
     if (!state.network.id) {
