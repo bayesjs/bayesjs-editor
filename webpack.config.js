@@ -9,17 +9,6 @@ const srcPath = path.join(__dirname, 'src');
 const distPath = path.join(__dirname, 'dist');
 const nodeModulesPath = path.join(__dirname, 'node_modules');
 
-const pluginsDev = [];
-const pluginsProd = [
-  new webpack.optimize.DedupePlugin(),
-  new webpack.optimize.OccurenceOrderPlugin(),
-  new webpack.optimize.UglifyJsPlugin({
-    compressor: { warnings: false },
-  }),
-  new webpack.DefinePlugin({
-    'process.env.NODE_ENV': '"production"',
-  }),
-];
 
 const getCssModulesParams = () => {
   const options = [];
@@ -36,7 +25,7 @@ const getCssModulesParams = () => {
 };
 
 module.exports = {
-  devtool: isProd ? false : 'eval-source-map',
+  devtool: 'eval-source-map',
   entry: {
     app: [path.join(srcPath, 'index.js')],
   },
@@ -49,37 +38,50 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: srcPath,
       },
       {
         test: /\.css$/,
-        include: nodeModulesPath,
-        loader: ExtractTextPlugin.extract('style', 'css'),
-      },
-      {
-        test: /\.css$/,
-        exclude: nodeModulesPath,
-        loader: ExtractTextPlugin.extract('style', `css${getCssModulesParams()}!postcss`),
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            { 
+              loader: 'css-loader', 
+              options: { 
+                importLoaders: 1,
+                modules: true,
+                camelCase: 'dashes'
+              }
+            },
+            'postcss-loader'
+          ]
+        })
       },
       {
         test: /\.json$/,
-        loader: 'json',
+        loader: 'json-loader',
       },
       {
         test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?v=.+)?$/,
-        loader: 'url?limit=8192',
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192
+            }
+          }
+        ]
       },
     ],
   },
   plugins: [
-    new webpack.NoErrorsPlugin(),
-    new ExtractTextPlugin('styles.css'),
+    // new webpack.NoErrorsPlugin(),
+    new ExtractTextPlugin('[name].css'),
     new HtmlWebpackPlugin({
       template: path.join(srcPath, 'index.html'),
       inject: true,
       favicon: path.join(srcPath, 'favicon.ico'),
     }),
-  ].concat(isProd ? pluginsProd : pluginsDev),
-  postcss: () => [cssnext],
+  ]
 };
