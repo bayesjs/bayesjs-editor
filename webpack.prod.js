@@ -5,11 +5,7 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   plugins: [
-    new UglifyJSPlugin({
-      compress: {
-        warnings: false,
-      }
-    }),
+    new UglifyJSPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"',
     }),
