@@ -72,7 +72,7 @@ const NodeState = ({
   )
 };
 
-NodeState.prototype = {
+NodeState.propTypes = {
   children: PropTypes.object.isRequired,
   results: PropTypes.object.isRequired,
   state: PropTypes.string.isRequired,

@@ -55,7 +55,7 @@ const NodeGeneric = ({
   </g>
 );
 
-NodeGeneric.prototype = {
+NodeGeneric.propTypes = {
   id: PropTypes.string.isRequired,
   x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
