@@ -8,12 +8,11 @@ const srcPath = path.join(__dirname, 'src');
 
 module.exports = {
   entry: {
-    app: [path.join(srcPath, 'index.js')],
+    app: path.join(srcPath, 'index.js'),
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '',
+    filename: "[name].js"
   },
   module: {
     loaders: [

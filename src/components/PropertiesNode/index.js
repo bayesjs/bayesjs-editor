@@ -22,7 +22,7 @@ class PropertiesNode extends Component {
     this.setState({ 
       inputText: id,
       nodeDescription: description || '',
-     })
+    })
   }
 
   handleOnChange = (e) => {
