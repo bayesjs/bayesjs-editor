@@ -1,7 +1,7 @@
 import { PERSIST_STATE } from '../actions';
 import { getStateToSave } from '../selectors';
 
-export const persistState = store => next => action => {
+export const persistState = store => next => (action) => {
   if (action.type !== PERSIST_STATE) {
     return next(action);
   }

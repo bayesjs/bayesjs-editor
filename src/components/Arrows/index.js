@@ -38,29 +38,29 @@ class Arrows extends Component {
     </defs>
   );
 
-  bringArrowToFront = (uuid) => () => {
+  bringArrowToFront = uuid => () => {
     const { arrowsRendered } = this.state;
     const sorted = arrowsRendered.sort((a, b) => {
       if (a.key === uuid) return 1;
       else if (b.key === uuid) return -1;
       return 0;
     });
-    
-    this.setState({ 
-      arrowsRendered: sorted
+
+    this.setState({
+      arrowsRendered: sorted,
     });
   };
-  
-  onMouseOver = (index) => (e) => {
+
+  onMouseOver = index => (e) => {
     this.setState({
       indexFocus: index,
-    })
+    });
   };
 
-  onMouseLeave = (index) => (e) => {
+  onMouseLeave = index => (e) => {
     this.setState({
       indexFocus: null,
-    })
+    });
   };
 
   getStrokeOpacity = (index, indexFocus) => {
@@ -73,10 +73,10 @@ class Arrows extends Component {
 
   getArrow = (arrow, index, indexFocus) => {
     const value = this.getStrokeOpacity(index, indexFocus);
-    
+
     return React.cloneElement(
-      arrow, 
-      { markEndStyle: value === 1 ? 'url(#triangle)' : 'url(#triangle-opacity)' }
+      arrow,
+      { markEndStyle: value === 1 ? 'url(#triangle)' : 'url(#triangle-opacity)' },
     );
   }
 
@@ -88,15 +88,16 @@ class Arrows extends Component {
       <g>
         {this.renderDefs()}
         {arrows.map((arrow, i) => (
-          <g key={i}
+          <g
+            key={i}
             onMouseOver={this.onMouseOver(i)}
             onMouseLeave={this.onMouseLeave(i)}
             strokeOpacity={this.getStrokeOpacity(i, indexFocus)}
             style={{
-              transition: 'stroke-opacity 0.2s'
+              transition: 'stroke-opacity 0.2s',
             }}
-            >
-              {this.getArrow(arrow, i, indexFocus)}
+          >
+            {this.getArrow(arrow, i, indexFocus)}
           </g>
         ))}
       </g>

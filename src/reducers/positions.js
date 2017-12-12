@@ -21,30 +21,30 @@ export default (state = {}, action) => {
         [action.payload.id]: action.payload.position,
       };
     case REMOVE_NODE:
-      {
-        const newState = { ...state };
-        delete newState[action.payload.id];
-        return newState;
-      }
+    {
+      const newState = { ...state };
+      delete newState[action.payload.id];
+      return newState;
+    }
     case CHANGE_NODE_ID:
-      {
-        const newState = { ...state };
-        delete newState[action.payload.id];
-        newState[action.payload.nextId] = state[action.payload.id];
-        return newState;
-      }
+    {
+      const newState = { ...state };
+      delete newState[action.payload.id];
+      newState[action.payload.nextId] = state[action.payload.id];
+      return newState;
+    }
     case CHANGE_NODE_POSITION:
-      {
-        const newPosition = {
-          x: action.payload.x,
-          y: action.payload.y,
-        };
+    {
+      const newPosition = {
+        x: action.payload.x,
+        y: action.payload.y,
+      };
 
-        return {
-          ...state,
-          [action.payload.id]: newPosition,
-        };
-      }
+      return {
+        ...state,
+        [action.payload.id]: newPosition,
+      };
+    }
     default:
       return state;
   }

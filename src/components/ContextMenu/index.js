@@ -60,7 +60,7 @@ class ContextMenu extends Component {
     window.addEventListener('mousedown', this.handleWindowMouseDown);
   };
 
-  handleContextMenu = e => {
+  handleContextMenu = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
@@ -79,17 +79,17 @@ class ContextMenu extends Component {
 
   getItens = (item) => {
     const { items } = this.props;
-    
+
     return items.filter(({ visible }) => {
-        if (visible !== undefined) {
-          if (typeof visible === 'boolean') {
-            return visible;
-          } else if (typeof visible === 'function') {
-            return visible(this.contextItem);
-          }
+      if (visible !== undefined) {
+        if (typeof visible === 'boolean') {
+          return visible;
+        } else if (typeof visible === 'function') {
+          return visible(this.contextItem);
         }
-        return true;
-      });
+      }
+      return true;
+    });
   }
 
   render() {
@@ -104,28 +104,31 @@ class ContextMenu extends Component {
       top: position.y,
     };
 
+    this.menuRef = (
+      <ul
+        className={styles.contextMenu}
+        style={style}
+        onContextMenu={this.handleContextMenu}
+      >
+        {this.getItens().map(item => (
+          <li
+            key={item.key}
+            style={item.style || {}}
+            className={classNames({
+              [styles.contextMenuItem]: true,
+              [styles.contextMenuItemDisabled]: item.disabled,
+            })}
+            onMouseDown={e => this.handleMenuItemMouseDown(e, item)}
+          >
+            {item.text}
+          </li>
+        ))}
+      </ul>
+    );
+
     return (
       <RenderIntoBody>
-        <ul
-          className={styles.contextMenu}
-          style={style}
-          ref={ref => (this.menuRef = ref)}
-          onContextMenu={this.handleContextMenu}
-        >
-          {this.getItens().map((item) => (
-            <li
-              key={item.key}
-              style={item.style || {}}
-              className={classNames({
-                [styles.contextMenuItem]: true,
-                [styles.contextMenuItemDisabled]: item.disabled,
-              })}
-              onMouseDown={e => this.handleMenuItemMouseDown(e, item)}
-            >
-              {item.text}
-            </li>
-          ))}
-        </ul>
+        {this.menuRef}
       </RenderIntoBody>
     );
   }

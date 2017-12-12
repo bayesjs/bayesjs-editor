@@ -29,7 +29,7 @@ class PropertiesNetwork extends Component {
     }
   };
 
-  handleNetworkSizeBlur = e => {
+  handleNetworkSizeBlur = (e) => {
     const input = e.target;
     const name = input.id;
     const value = parseInt(input.value, 10);
@@ -54,9 +54,8 @@ class PropertiesNetwork extends Component {
 
     if (networkKind === NETWORK_KINDS.MSBN) {
       return 'Rede Bayesiana Multi-Seccionada';
-    } else {
-      return 'Rede Bayesiana';
     }
+    return 'Rede Bayesiana';
   };
 
   render() {
@@ -110,13 +109,13 @@ class PropertiesNetwork extends Component {
         </div>
 
         <div className={styles.checkbox}>
-          <label> 
+          <label>
             <input
               id="inferenceEnabled"
               type="checkbox"
               checked={network.inferenceEnabled === undefined ? true : network.inferenceEnabled}
               onChange={this.onChangeCheck}
-          />
+            />
             Ativar Inferência
           </label>
         </div>
@@ -125,8 +124,8 @@ class PropertiesNetwork extends Component {
   }
 }
 
-{/*<div className={styles.checkbox}>
-          <label> 
+{ /* <div className={styles.checkbox}>
+          <label>
             <input
               id="showPercent"
               type="checkbox"
@@ -135,7 +134,7 @@ class PropertiesNetwork extends Component {
           />
           Mostar Percentual
           </label>
-        </div>*/}
+        </div> */ }
 
 const mapStateToProps = state => ({
   network: getNetwork(state),

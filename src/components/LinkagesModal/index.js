@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import {  } from '../../actions';
+import { } from '../../actions';
 import Modal from '../Modal';
 import Button from '../Button';
 import styles from './styles.css';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 
 class LinkagesModal extends Component {
   constructor(props) {
@@ -23,10 +24,10 @@ class LinkagesModal extends Component {
     this.setState({
       deletedLinkages: [
         ...deletedLinkages,
-        id
+        id,
       ],
-      linkagesList: linkagesList.filter((_, i) => i != index)
-    })
+      linkagesList: linkagesList.filter((_, i) => i != index),
+    });
   };
 
   getTableRow = ({ id, linkage: [l1, l2] }, i) => {
@@ -45,7 +46,7 @@ class LinkagesModal extends Component {
             onClick={this.onDeleteLinkage(id, i)}
             title="Remover Link"
           >
-            <i className="fa fa-trash" />
+            <i className={`${fontAwesome.fa} ${fontAwesome.faTrash}`} />
           </Button>
         </td>
       </tr>
@@ -69,7 +70,7 @@ class LinkagesModal extends Component {
             <th>Node 1</th>
             <th>Rede 2</th>
             <th>Node 2</th>
-            <th></th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -81,8 +82,8 @@ class LinkagesModal extends Component {
 
   generateCountDict = (linkages) => {
     const ids = Object.keys(linkages);
-    const count = (obj, id) => obj[id] ? ++obj[id] : 1;
-    
+    const count = (obj, id) => (obj[id] ? ++obj[id] : 1);
+
     return ids.reduce((p, id) => {
       const [l1, l2] = linkages[id];
 
@@ -92,8 +93,8 @@ class LinkagesModal extends Component {
     }, {});
   };
 
-  sort = (names) => (linkage1, linkage2) => {
-    const netName = (link, i = 0) => names[link.linkage[i].networkId]
+  sort = names => (linkage1, linkage2) => {
+    const netName = (link, i = 0) => names[link.linkage[i].networkId];
     const node = (link, i = 0) => link.linkage[i].nodeId;
     const netA1 = netName(linkage1);
     const netA2 = netName(linkage2);
@@ -103,16 +104,16 @@ class LinkagesModal extends Component {
     const nodeA2 = node(linkage2);
     const nodeB1 = node(linkage1, 1);
     const nodeB2 = node(linkage2, 1);
-    
+
     if (netA1 > netA2) return 1;
     else if (netA1 < netA2) return -1;
     else if (netB1 > netB2) return 1;
     else if (netB1 < netB2) return -1;
     else if (nodeA1 < nodeA2) return -1;
-    else if (nodeA1 > nodeA2) return 1
+    else if (nodeA1 > nodeA2) return 1;
     else if (nodeB1 < nodeB2) return -1;
-    else if (nodeB1 > nodeB2) return 1
-    
+    else if (nodeB1 > nodeB2) return 1;
+
     return 0;
   }
 
@@ -126,7 +127,7 @@ class LinkagesModal extends Component {
       }
       return linkage;
     };
-    
+
     return ids.reduce((p, id) => {
       p.push({
         id,
@@ -136,7 +137,7 @@ class LinkagesModal extends Component {
     }, []);
   };
 
-  onRequestClose = (canceled) => () => {
+  onRequestClose = canceled => () => {
     const { onRequestClose } = this.props;
     const { deletedLinkages } = this.state;
 
@@ -150,7 +151,7 @@ class LinkagesModal extends Component {
     return (
       <Modal
         title="Editar Uniões"
-        isOpen={true}
+        isOpen
         onRequestClose={this.onRequestClose(true)}
       >
         <div>

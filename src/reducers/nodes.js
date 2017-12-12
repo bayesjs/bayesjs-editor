@@ -41,7 +41,7 @@ const buildWhens = (nodes, whens, acc = {}) => {
 
   const node = nodes[0];
 
-  node.states.forEach(state => {
+  node.states.forEach((state) => {
     buildWhens(nodes.slice(1), whens, {
       ...acc,
       [node.id]: state,
@@ -61,11 +61,11 @@ const changeParentStates = (node, parentId, nextParentStates, nodes) => {
 
   buildWhens(parents, whens);
 
-  const newCpt = whens.map(when => {
+  const newCpt = whens.map((when) => {
     const newWhenKeys = Object.keys(when)
       .sort((a, b) => a.localeCompare(b));
 
-    const oldRow = node.cpt.find(row => {
+    const oldRow = node.cpt.find((row) => {
       const oldWhenKeys = Object.keys(row.when)
         .sort((a, b) => a.localeCompare(b));
 
@@ -110,25 +110,23 @@ const changeCptStates = (cpt, nextStates) => {
   const previousStates = Object.keys(newCpt);
 
   const newStates = nextStates.filter(x =>
-    !previousStates.some(y => y === x)
-  );
+    !previousStates.some(y => y === x));
 
   const deletedStates = previousStates.filter(x =>
-    !nextStates.some(y => y === x)
-  );
+    !nextStates.some(y => y === x));
 
-  newStates.forEach(newState => {
+  newStates.forEach((newState) => {
     newCpt[newState] = 0;
   });
 
   let removedProbabilities = 0;
 
-  deletedStates.forEach(deletedState => {
+  deletedStates.forEach((deletedState) => {
     removedProbabilities += newCpt[deletedState];
     delete newCpt[deletedState];
   });
 
-  nextStates.forEach(state => {
+  nextStates.forEach((state) => {
     newCpt[state] += removedProbabilities / nextStates.length;
   });
 
@@ -157,9 +155,8 @@ const changeNodeStates = (node, nextStates) => {
 const changeParentId = (node, previousId, nextId) => ({
   ...node,
   parents: node.parents.map(x =>
-    (x === previousId ? nextId : x)
-  ),
-  cpt: node.cpt.map(row => {
+    (x === previousId ? nextId : x)),
+  cpt: node.cpt.map((row) => {
     const when = { ...row.when };
 
     delete when[previousId];
@@ -215,8 +212,8 @@ const addParent = (node, parentId, nodes) => {
   } else {
     cpt = [];
 
-    parent.states.forEach(state => {
-      node.cpt.forEach(oldRow => {
+    parent.states.forEach((state) => {
+      node.cpt.forEach((oldRow) => {
         cpt.push({
           when: { ...oldRow.when, [parentId]: state },
           then: { ...oldRow.then },
@@ -243,7 +240,7 @@ const removeParent = (node, parentId, nodes) => {
   } else {
     cpt = node.cpt
       .filter(x => x.when[parentId] === parent.states[0])
-      .map(x => {
+      .map((x) => {
         const newRow = {
           when: {},
           then: x.then,
@@ -320,7 +317,7 @@ const nodeReducer = (node, action) => {
 const newNode = ({ id, states }) => {
   const cpt = {};
 
-  states.forEach(state => {
+  states.forEach((state) => {
     cpt[state] = 1 / states.length;
   });
 

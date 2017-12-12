@@ -6,7 +6,7 @@ export const openFile = (accept, cb) => {
   element.setAttribute('type', 'file');
   element.setAttribute('accept', accept);
 
-  element.addEventListener('change', e => {
+  element.addEventListener('change', (e) => {
     console.log('change');
     const file = e.target.files[0];
     const reader = new FileReader();

@@ -12,7 +12,7 @@ class PropertiesSuperNode extends Component {
 
   getDrescription = (subnetwork) => {
     const { description } = subnetwork;
-    
+
     if (description) {
       return (
         <h4>{subnetwork.description}</h4>

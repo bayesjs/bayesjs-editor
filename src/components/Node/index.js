@@ -3,24 +3,26 @@ import NodeGeneric from '../NodeGeneric';
 import NodeState from '../NodeState';
 
 const Node = (props) => {
-  const { id, states, children, sumHeight } = props;
-  
+  const {
+    id, states, children, sumHeight,
+  } = props;
+
   const propsGeneric = {
     ...props,
-    sumHeight: (18 * states.length) + (sumHeight || 0)
+    sumHeight: (18 * states.length) + (sumHeight || 0),
   };
-  
+
   const renderState = (state, index) => {
     const tempProps = {
       ...props,
       state,
-      index
+      index,
     };
     return (
-      <NodeState 
+      <NodeState
         key={`${id}-${state}-${index}`}
         {...tempProps}
-        />
+      />
     );
   };
 

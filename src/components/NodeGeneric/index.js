@@ -3,7 +3,7 @@ import styles from './styles.css';
 
 const NodeGeneric = ({
   id,
-  x, 
+  x,
   y,
   sumHeight,
   selected,
@@ -14,7 +14,7 @@ const NodeGeneric = ({
   title,
   canMove,
   opacity,
-  children
+  children,
 }) => (
   <g
     className={styles.node}
@@ -22,15 +22,15 @@ const NodeGeneric = ({
     onDoubleClick={onDoubleClick}
     transform={`translate(${x} ${y})`}
     style={{
-      cursor: (canMove ? 'nove': 'pointer'),
+      cursor: (canMove ? 'nove' : 'pointer'),
     }}
   >
     <rect
       height={25 + (sumHeight || 0)}
       width="160"
-      fill={stroke || "#ff8"}
-      fillOpacity={opacity || "1"}
-      stroke={"#333"}
+      fill={stroke || '#ff8'}
+      fillOpacity={opacity || '1'}
+      stroke="#333"
       strokeWidth={selected ? 3 : 1}
       ref={rectRef}
     />
@@ -48,20 +48,20 @@ const NodeGeneric = ({
         {id}
       </p>
     </foreignObject>
-    
+
     <path d="M0,20 h160" stroke="#333" />
 
     {children}
   </g>
 );
 
-NodeGeneric.prototype = {
+NodeGeneric.propTypes = {
   id: PropTypes.string.isRequired,
   x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   selected: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   rectRef: PropTypes.func.isRequired,
-}
+};
 
 export default NodeGeneric;

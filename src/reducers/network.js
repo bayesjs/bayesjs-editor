@@ -33,7 +33,7 @@ const initialState = {
   kind: NETWORK_KINDS.BN,
   nodes: [],
   positions: [],
-  subnetworks: []
+  subnetworks: [],
 };
 
 const changeBelife = (beliefs, state, id) => {
@@ -49,15 +49,14 @@ const changeBelife = (beliefs, state, id) => {
 const setBelief = (state, action) => {
   const beliefs = { ...state.beliefs };
   const { nodeId, subnetworkId } = action.payload;
-  
+
   if (subnetworkId) {
     const beliefsSubnet = beliefs[subnetworkId] || {};
     const subnetwork = state.subnetworks
       .find(s => s.id == subnetworkId);
-    
-    beliefs[subnetworkId] = changeBelife(beliefsSubnet, action.payload.state, nodeId);
-    subnetwork.beliefs = changeBelife(subnetwork.beliefs, action.payload.state, nodeId)
 
+    beliefs[subnetworkId] = changeBelife(beliefsSubnet, action.payload.state, nodeId);
+    subnetwork.beliefs = changeBelife(subnetwork.beliefs, action.payload.state, nodeId);
   } else {
     changeBelife(beliefs, action.payload.state, nodeId);
   }
@@ -73,7 +72,7 @@ const completeReducer = (state, action) => (finalState) => {
   const positions = ReducerPosition(state.positions, action);
   const subnetworks = ReducerSubNetwork(state.subnetworks, action);
   const linkages = ReducerLinkages(state.linkages, action);
-  
+
   return {
     ...finalState,
     nodes,
@@ -81,11 +80,11 @@ const completeReducer = (state, action) => (finalState) => {
     subnetworks,
     linkages,
   };
-}
+};
 
 export default (state = initialState, action) => {
   const completer = completeReducer(state, action);
-  
+
   switch (action.type) {
     case NEW_NETWORK:
       const { kind } = action;
@@ -93,10 +92,10 @@ export default (state = initialState, action) => {
       return completer({
         ...initialState,
         id: v4(),
-        kind
+        kind,
       });
     case LOAD_NETWORK:
-      let { network, nodes, positions } = action.payload.state
+      let { network, nodes, positions } = action.payload.state;
 
       if (network.kind === undefined) network.kind = NETWORK_KINDS.BN;
       if (network.id === undefined) network.id = v4();
@@ -105,10 +104,10 @@ export default (state = initialState, action) => {
         network = {
           ...network,
           nodes,
-          positions
+          positions,
         };
       }
-      
+
       return completer(network);
     case CHANGE_NETWORK_PROPERTY:
       return completer({
@@ -124,12 +123,11 @@ export default (state = initialState, action) => {
       return completer({
         ...state,
         selectedNodes: state.selectedNodes.map(x =>
-          (x === action.payload.id ? action.payload.nextId : x)
-        ),
+          (x === action.payload.id ? action.payload.nextId : x)),
       });
     case SET_BELIEF:
       return completer({
-        ...setBelief(state, action)
+        ...setBelief(state, action),
       });
     default:
       return completer({

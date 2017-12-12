@@ -4,8 +4,8 @@ import AddNodeModal from '../AddNodeModal';
 import Node from '../Node';
 import styles from './styles.css';
 import { openFile } from '../../utils/file';
-import NetworkBN from "../NetworkBN";
-import NetworkMSBN from "../NetworkMSBN";
+import NetworkBN from '../NetworkBN';
+import NetworkMSBN from '../NetworkMSBN';
 
 import {
   removeNode,
@@ -15,7 +15,7 @@ import {
   changeNodePosition,
   setBelief,
   addSuperNode,
-  NETWORK_KINDS
+  NETWORK_KINDS,
 } from '../../actions';
 
 import {
@@ -31,13 +31,12 @@ class Canvas extends Component {
       contextMenuItems: [],
       newNodePosition: null,
       addingChildArrow: null,
-      movingNodePlaceholder: null
+      movingNodePlaceholder: null,
     };
 
     this.rectRefs = {};
     this.movingNode = null;
     this.nodeToAddChildTo = null;
-
   }
 
   componentDidMount() {
@@ -87,18 +86,18 @@ class Canvas extends Component {
   renderNetwork = () => {
     if (this.props.networkKind === NETWORK_KINDS.MSBN) {
       return (
-        <NetworkMSBN 
+        <NetworkMSBN
           ref={ref => (this.net = ref)}
-          />
+        />
       );
     }
 
     return (
-      <NetworkBN 
+      <NetworkBN
         ref={ref => (this.net = ref)}
         onEditNodeStates={this.props.onEditNodeStates}
         onEditNodeCpt={this.props.onEditNodeCpt}
-        />
+      />
     );
   };
 
@@ -122,7 +121,9 @@ class Canvas extends Component {
     }
 
     if (this.state.movingNodePlaceholder !== null) {
-      const { x, y, height, width } = this.state.movingNodePlaceholder;
+      const {
+        x, y, height, width,
+      } = this.state.movingNodePlaceholder;
 
       movingNodePlaceholder = (
         <rect

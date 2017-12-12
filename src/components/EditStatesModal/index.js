@@ -18,13 +18,13 @@ class EditStatesModal extends Component {
     }
   }
 
-  handleAddState = newState => {
+  handleAddState = (newState) => {
     this.setState({
       states: [...this.state.states, newState],
     });
   };
 
-  handleDeleteState = state => {
+  handleDeleteState = (state) => {
     this.setState({
       states: this.state.states.filter(x => x !== state),
     });

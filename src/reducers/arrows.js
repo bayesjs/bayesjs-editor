@@ -14,11 +14,11 @@ export default (state = [], action) => {
     case ADD_ARROW:
       return [
         ...state,
-        action.arrow
+        action.arrow,
       ];
     case REMOVE_ARROW:
       return [
-        ...state
+        ...state,
       ];
     default:
       return state;

@@ -7,6 +7,7 @@ import Button from '../Button';
 import { v4 } from 'uuid';
 import fileDownload from 'react-file-download';
 import styles from './styles.css';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 
 class Header extends Component {
   state = {
@@ -25,7 +26,7 @@ class Header extends Component {
     this.setState({ menuVisible: false });
   };
 
-  handleToggleMenu = e => {
+  handleToggleMenu = (e) => {
     e.stopPropagation();
     this.setState({ menuVisible: !this.state.menuVisible });
   };
@@ -51,7 +52,7 @@ class Header extends Component {
     openFile('.json', (json) => {
       try {
         const state = JSON.parse(json);
-        
+
         this.props.dispatch(loadNetwork(state));
         this.props.onRequestRedraw();
       } catch (ex) {
@@ -99,26 +100,20 @@ class Header extends Component {
     saveFile(`${this.getNetworkName()}.json`, json);
   };
 
-  hasMSBNNetwork = () => {
-    return true;
-  }
+  hasMSBNNetwork = () => true
 
-  renderLiNetworkTypes = () => {
-    return (
-      <ul className={styles.subMenu}>
-        {this.createLi('BN', this.handleNewNetworkClick, 'Rede Bayesiana')}
-        {this.hasMSBNNetwork() ? this.createLi('MSBN', this.handleNewMSBNNetworkClick, 'Rede Bayesiana Multi-seccionada') : null}
-      </ul>
-    );
-  }
+  renderLiNetworkTypes = () => (
+    <ul className={styles.subMenu}>
+      {this.createLi('BN', this.handleNewNetworkClick, 'Rede Bayesiana')}
+      {this.hasMSBNNetwork() ? this.createLi('MSBN', this.handleNewMSBNNetworkClick, 'Rede Bayesiana Multi-seccionada') : null}
+    </ul>
+  )
 
-  createLi = (name, handleOnClick, title = '') => {
-    return (
-      <li>
-        <a href="" onClick={handleOnClick} title={title}>{name}</a>
-      </li>
-    );
-  }
+  createLi = (name, handleOnClick, title = '') => (
+    <li>
+      <a href="" onClick={handleOnClick} title={title}>{name}</a>
+    </li>
+  )
 
   render() {
     return (
@@ -129,7 +124,7 @@ class Header extends Component {
           className={styles.menuButton}
           onClick={this.handleToggleMenu}
         >
-          <i className="fa fa-bars" />
+          <i className={`${fontAwesome.fa} ${fontAwesome.faBars}`} />
         </Button>
         {this.state.menuVisible && (
           <ul className={styles.menu}>

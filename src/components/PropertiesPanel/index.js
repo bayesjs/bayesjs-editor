@@ -16,12 +16,12 @@ class PropertiesPanel extends Component {
   }
 
   renderContent = () => {
-    const { 
-      selectedNode, 
-      networkKind, 
-      onEditNodeStates, 
-      onEditNodeCpt, 
-      onStartConnection, 
+    const {
+      selectedNode,
+      networkKind,
+      onEditNodeStates,
+      onEditNodeCpt,
+      onStartConnection,
       selectedSubnetwork,
       onViewSubnetwork,
       onViewLinkages,
@@ -37,19 +37,19 @@ class PropertiesPanel extends Component {
       );
     } else if (selectedSubnetwork) {
       return (
-          <PropertiesSuperNode 
-            subnetwork={selectedSubnetwork}
-            onStartConnection={onStartConnection}
-            onViewSubnetwork={onViewSubnetwork}
-            onViewLinkages={onViewLinkages}
-          />
-        );
+        <PropertiesSuperNode
+          subnetwork={selectedSubnetwork}
+          onStartConnection={onStartConnection}
+          onViewSubnetwork={onViewSubnetwork}
+          onViewLinkages={onViewLinkages}
+        />
+      );
     }
 
     return (
       <PropertiesNetwork />
     );
-  }; 
+  };
 
   render() {
     return (

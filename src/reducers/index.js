@@ -6,7 +6,7 @@ import arrows from './arrows';
 import undoable from 'redux-undo';
 
 const rootReducer = combineReducers({
-  network: network,
+  network,
   nodes: (state = []) => [],
   positions: (state = []) => [],
 });

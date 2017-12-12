@@ -31,11 +31,13 @@ class Arrow extends Component {
   }
 
   render() {
-    const { from, to, onMouseDown, markEnd, title, markEndStyle } = this.props;
+    const {
+      from, to, onMouseDown, markEnd, title, markEndStyle,
+    } = this.props;
     const style = { cursor: 'pointer' };
     const d = this.makeLine(from, to);
     const empty = () => {};
-    
+
     return (
       <g>
         <path
@@ -70,6 +72,6 @@ Arrow.propTypes = {
   onMouseDown: PropTypes.func.isRequired,
   markEnd: PropTypes.bool.isRequired,
   markEndStyle: PropTypes.string,
-}
+};
 
 export default Arrow;
