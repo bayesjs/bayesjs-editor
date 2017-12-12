@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Button from '../Button';
 import styles from './styles.css';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 
 class EditStatesList extends Component {
   getAddInputText = () => this.input.value;
@@ -44,7 +45,7 @@ class EditStatesList extends Component {
                 onClick={() => onDeleteState(state)}
                 title="Remover Estado"
               >
-                <i className="fa fa-trash" />
+                <i className={`${fontAwesome.fa} ${fontAwesome.faTrash}`} />
               </Button>
             </li>
           ))}
@@ -60,7 +61,7 @@ class EditStatesList extends Component {
             onClick={this.handleAddClick}
             title="Adicionar Estado"
           >
-            <i className="fa fa-plus" />
+            <i className={`${fontAwesome.fa} ${fontAwesome.faPlus}`} />
           </Button>
         </div>
       </div>

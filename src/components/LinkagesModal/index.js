@@ -3,6 +3,7 @@ import {  } from '../../actions';
 import Modal from '../Modal';
 import Button from '../Button';
 import styles from './styles.css';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 
 class LinkagesModal extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class LinkagesModal extends Component {
             onClick={this.onDeleteLinkage(id, i)}
             title="Remover Link"
           >
-            <i className="fa fa-trash" />
+            <i className={`${fontAwesome.fa} ${fontAwesome.faTrash}`} />
           </Button>
         </td>
       </tr>

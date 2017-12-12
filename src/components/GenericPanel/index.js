@@ -4,7 +4,9 @@ import classNames from 'classnames';
 import { changeNetworkProperty } from '../../actions';
 import { getPanelVisibility } from '../../selectors';
 import Button from '../Button';
+
 import styles from './styles.css';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 
 class GenericPanel extends Component {
   constructor(props) {
@@ -12,10 +14,10 @@ class GenericPanel extends Component {
   }
 
   getArrow = (visible) => {
-    const arrowDirection = visible ? 'right' : 'left';
+    const arrowDirection = visible ? fontAwesome.faArrowRight : fontAwesome.faArrowLeft;
 
     return (
-      <i className={`fa fa-arrow-${arrowDirection}`} />
+      <i className={`${fontAwesome.fa} ${arrowDirection}`} />
     );
   };
 

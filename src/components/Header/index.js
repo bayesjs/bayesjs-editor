@@ -6,6 +6,7 @@ import { openFile, saveFile } from '../../utils/file';
 import Button from '../Button';
 import { v4 } from 'uuid';
 import styles from './styles.css';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 
 class Header extends Component {
   state = {
@@ -126,7 +127,7 @@ class Header extends Component {
           className={styles.menuButton}
           onClick={this.handleToggleMenu}
         >
-          <i className="fa fa-bars" />
+          <i className={`${fontAwesome.fa} ${fontAwesome.faBars}`} />
         </Button>
         {this.state.menuVisible && (
           <ul className={styles.menu}>
