@@ -104,28 +104,31 @@ class ContextMenu extends Component {
       top: position.y,
     };
 
+    this.menuRef = (
+      <ul
+        className={styles.contextMenu}
+        style={style}
+        onContextMenu={this.handleContextMenu}
+      >
+        {this.getItens().map((item) => (
+          <li
+            key={item.key}
+            style={item.style || {}}
+            className={classNames({
+              [styles.contextMenuItem]: true,
+              [styles.contextMenuItemDisabled]: item.disabled,
+            })}
+            onMouseDown={e => this.handleMenuItemMouseDown(e, item)}
+          >
+            {item.text}
+          </li>
+        ))}
+      </ul>
+    );
+
     return (
       <RenderIntoBody>
-        <ul
-          className={styles.contextMenu}
-          style={style}
-          ref={ref => (this.menuRef = ref)}
-          onContextMenu={this.handleContextMenu}
-        >
-          {this.getItens().map((item) => (
-            <li
-              key={item.key}
-              style={item.style || {}}
-              className={classNames({
-                [styles.contextMenuItem]: true,
-                [styles.contextMenuItemDisabled]: item.disabled,
-              })}
-              onMouseDown={e => this.handleMenuItemMouseDown(e, item)}
-            >
-              {item.text}
-            </li>
-          ))}
-        </ul>
+        {this.menuRef}
       </RenderIntoBody>
     );
   }
