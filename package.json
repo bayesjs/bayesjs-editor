@@ -25,7 +25,8 @@
     "build:prod": "webpack --config webpack.prod.js",
     "clean": "rimraf dist",
     "deploy": "npm run clean && npm run build:prod && gh-pages -d dist",
-    "lint": "eslint .",
+    "lint": "eslint \"src/**/*.js\"",
+    "lint:fix": "eslint --fix \"src/**/*.js\"",
     "test": "jest",
     "flow": "flow"
   },
