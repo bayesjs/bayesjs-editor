@@ -1,6 +1,6 @@
-import React, { PropTypes, Component } from "react";
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import Network, { ContextMenuType } from "../Network";
+import Network, { ContextMenuType } from '../Network';
 import Node from '../Node';
 import AddNodeModal from '../AddNodeModal';
 import EditStatesModal from '../EditStatesModal';
@@ -12,7 +12,7 @@ class NetworkBNGeneric extends Component {
     super(props);
 
     this.state = {
-      key: 1
+      key: 1,
     };
   }
 
@@ -26,14 +26,14 @@ class NetworkBNGeneric extends Component {
 
   renderArrow = (arrow, handleArrowMouseDown) => {
     const onMouseDown = e => handleArrowMouseDown(arrow, e);
-    
+
     return (
-      <Arrow 
-        key={arrow.key} 
+      <Arrow
+        key={arrow.key}
         onMouseDown={onMouseDown}
         from={arrow.from}
         to={arrow.to}
-        markEnd={true}
+        markEnd
       />
     );
   };
@@ -57,9 +57,7 @@ class NetworkBNGeneric extends Component {
   };
 
   onSelectNodes = (nodes) => {
-    this.props.dispatch(
-      changeNetworkProperty('selectedNodes', nodes)
-    );
+    this.props.dispatch(changeNetworkProperty('selectedNodes', nodes));
   };
 
   handleKeyup = (e) => {
@@ -79,7 +77,7 @@ class NetworkBNGeneric extends Component {
   };
 
   onCancelConnection = () => {
-    
+
   };
 
   onSetBelief = (node, state) => {
@@ -90,13 +88,12 @@ class NetworkBNGeneric extends Component {
     }
   };
 
-  onCreateNode = (position, onRequestClose) => {
-    return (
-      <AddNodeModal
-        position={position}
-        onRequestClose={onRequestClose} />
-    );
-  };
+  onCreateNode = (position, onRequestClose) => (
+    <AddNodeModal
+      position={position}
+      onRequestClose={onRequestClose}
+    />
+  );
 
   changeNodePosition = (id, newX, newY) => {
     this.props.dispatch(changeNodePosition(id, newX, newY));
@@ -151,7 +148,7 @@ class NetworkBNGeneric extends Component {
           onCreateNode={this.onCreateNode}
           onSetBelief={this.onSetBelief}
           ref={ref => (this.net = ref)}
-          />
+        />
       </div>
     );
   }

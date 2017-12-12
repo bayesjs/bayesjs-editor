@@ -25,7 +25,7 @@ export function infer(network, nodes, given) {
   return result;
 }
 
-const buildCliques = network => {
+const buildCliques = (network) => {
   const moralGraph = buildMoralGraph(network);
   // console.log('MORAL GRAPH');
   // moralGraph.print();
@@ -74,11 +74,9 @@ const globalPropagation = (network, junctionTree, cliques, sepSets) => {
     marked = [];
   };
 
-  const isMarked = id => {
-    return marked.some(x => x === id);
-  };
+  const isMarked = id => marked.some(x => x === id);
 
-  const mark = id => {
+  const mark = (id) => {
     marked.push(id);
   };
 
@@ -93,9 +91,7 @@ const globalPropagation = (network, junctionTree, cliques, sepSets) => {
     }
 
     if (parentId !== null) {
-      const sepSet = sepSets.find(x => {
-        return (x.ca === parentId && x.cb === id) || (x.ca === id && x.cb === parentId);
-      }).sharedNodes;
+      const sepSet = sepSets.find(x => (x.ca === parentId && x.cb === id) || (x.ca === id && x.cb === parentId)).sharedNodes;
 
       const potentials = cliques.find(x => x.id === id).potentials;
 
@@ -104,9 +100,7 @@ const globalPropagation = (network, junctionTree, cliques, sepSets) => {
 
       for (const row of message) {
         row.then = potentials
-          .filter(potential => {
-            return Object.keys(row.when).every(x => row.when[x] === potential.when[x]);
-          })
+          .filter(potential => Object.keys(row.when).every(x => row.when[x] === potential.when[x]))
           .map(x => x.then)
           .reduce((acc, x) => acc + x);
       }
@@ -117,17 +111,15 @@ const globalPropagation = (network, junctionTree, cliques, sepSets) => {
 
       for (const row of message) {
         parent.potentials
-          .filter(potential => {
-            return Object.keys(row.when).every(x => row.when[x] === potential.when[x]);
-          })
-          .forEach(potential => {
+          .filter(potential => Object.keys(row.when).every(x => row.when[x] === potential.when[x]))
+          .forEach((potential) => {
             potential.then *= row.then;
           });
       }
     }
   };
 
-  const distributeEvidence = id => {
+  const distributeEvidence = (id) => {
     mark(id);
 
     const clique = cliques.find(x => x.id === id);
@@ -139,18 +131,14 @@ const globalPropagation = (network, junctionTree, cliques, sepSets) => {
       .filter(x => !isMarked(x));
 
     for (const neighborId of neighbors) {
-      const sepSet = sepSets.find(x => {
-        return (x.ca === neighborId && x.cb === id) || (x.ca === id && x.cb === neighborId);
-      }).sharedNodes;
+      const sepSet = sepSets.find(x => (x.ca === neighborId && x.cb === id) || (x.ca === id && x.cb === neighborId)).sharedNodes;
 
       const message = buildCombinations(network, sepSet)
         .map(x => ({ when: x, then: 0 }));
 
       for (const row of message) {
         row.then = potentials
-          .filter(potential => {
-            return Object.keys(row.when).every(x => row.when[x] === potential.when[x]);
-          })
+          .filter(potential => Object.keys(row.when).every(x => row.when[x] === potential.when[x]))
           .map(x => x.then)
           .reduce((acc, x) => acc + x);
       }
@@ -159,10 +147,8 @@ const globalPropagation = (network, junctionTree, cliques, sepSets) => {
 
       for (const row of message) {
         neighbor.potentials
-          .filter(potential => {
-            return Object.keys(row.when).every(x => row.when[x] === potential.when[x]);
-          })
-          .forEach(potential => {
+          .filter(potential => Object.keys(row.when).every(x => row.when[x] === potential.when[x]))
+          .forEach((potential) => {
             potential.then *= row.then;
           });
       }
@@ -222,7 +208,7 @@ const initializePotentials = (cliques, network) => {
 
       clique.potentials.push({
         when: combination,
-        then: value
+        then: value,
       });
     }
 
@@ -239,13 +225,13 @@ const buildCombinations = (network, nodesToCombine) => {
       return;
     }
 
-    const [ nodeId, ...rest ] = nodes;
+    const [nodeId, ...rest] = nodes;
     const states = network[nodeId].states;
 
     for (const state of states) {
       makeCombinations(rest, {
         ...acc,
-        [nodeId]: state
+        [nodeId]: state,
       });
     }
   };
@@ -326,14 +312,14 @@ const buildJunctionTree = (cliqueGraph, cliques, sepSets) => {
   return junctionTree;
 };
 
-const buildCliqueGraph = triangulatedGraph => {
+const buildCliqueGraph = (triangulatedGraph) => {
   const cliqueGraph = createGraph();
 
   const cliques = [];
   const nodes = triangulatedGraph.getNodes();
 
   for (let i = 0; i < nodes.length; i++) {
-    const clique = [ nodes[i] ];
+    const clique = [nodes[i]];
 
     for (let j = 0; j < nodes.length; j++) {
       if (i === j) {
@@ -350,7 +336,7 @@ const buildCliqueGraph = triangulatedGraph => {
     if (!cliques.some(x => isEqual(x.clique, clique))) {
       cliques.push({
         id: cliques.length.toString(),
-        clique
+        clique,
       });
     }
   }
@@ -383,7 +369,7 @@ const buildCliqueGraph = triangulatedGraph => {
   return {
     cliqueGraph,
     cliques,
-    sepSets
+    sepSets,
   };
 };
 
@@ -392,20 +378,16 @@ export const buildTriangulatedGraph = (moralGraph, lastNodes = []) => {
   const clonedGraph = triangulatedGraph.clone();
   const get = (obj) => {
     const v = obj.neighbors.length;
-    
-    return v + (lastNodes.indexOf(obj.node) === -1 ? 0 : 100)
+
+    return v + (lastNodes.indexOf(obj.node) === -1 ? 0 : 100);
   };
 
   const nodesToRemove = clonedGraph.getNodes()
-    .map(node => {
-      return {
-        node,
-        neighbors: clonedGraph.getNeighborsOf(node)
-      };
-    })
-    .sort((a, b) => {
-      return get(a) - get(b);
-    });
+    .map(node => ({
+      node,
+      neighbors: clonedGraph.getNeighborsOf(node),
+    }))
+    .sort((a, b) => get(a) - get(b));
 
   while (nodesToRemove.length > 0) {
     const nodeToRemove = nodesToRemove.shift();
@@ -433,7 +415,7 @@ export const buildTriangulatedGraph = (moralGraph, lastNodes = []) => {
   return triangulatedGraph;
 };
 
-export const buildMoralGraph = network => {
+export const buildMoralGraph = (network) => {
   const nodes = Object.keys(network).map(id => network[id]);
   const moralGraph = createGraph();
 
@@ -464,11 +446,11 @@ const createGraph = () => {
   const moralEdges = [];
   const triangEdges = [];
 
-  const addNode = node => {
+  const addNode = (node) => {
     nodes.push(node);
   };
 
-  const removeNode = node => {
+  const removeNode = (node) => {
     for (let i = edges.length - 1; i >= 0; i--) {
       if (edges[i][0] === node || edges[i][1] === node) {
         edges.splice(i, 1);
@@ -483,22 +465,18 @@ const createGraph = () => {
     }
   };
 
-  const getNodes = () => {
-    return nodes;
-  };
+  const getNodes = () => nodes;
 
-  const containsNode = node => {
-    return nodes.some(x => x === node);
-  };
+  const containsNode = node => nodes.some(x => x === node);
 
   const addEdge = (nodeA, nodeB, moralEdge = false, triang = false) => {
-    edges.push([ nodeA, nodeB ]);
+    edges.push([nodeA, nodeB]);
 
     if (moralEdge) {
-      moralEdges.push([ nodeA, nodeB ]);
+      moralEdges.push([nodeA, nodeB]);
     }
     if (triang) {
-      triangEdges.push([ nodeA, nodeB ]);
+      triangEdges.push([nodeA, nodeB]);
     }
   };
 
@@ -517,14 +495,10 @@ const createGraph = () => {
     }
   };
 
-  const areConnected = (nodeA, nodeB) => {
-    return edges.some(edge => {
-      return (edge[0] === nodeA && edge[1] === nodeB) ||
-             (edge[0] === nodeB && edge[1] === nodeA);
-    });
-  };
+  const areConnected = (nodeA, nodeB) => edges.some(edge => (edge[0] === nodeA && edge[1] === nodeB) ||
+             (edge[0] === nodeB && edge[1] === nodeA));
 
-  const getNeighborsOf = node => {
+  const getNeighborsOf = (node) => {
     const neighbors = [];
 
     for (const edge of edges) {
@@ -569,6 +543,6 @@ const createGraph = () => {
       console.dir(nodes);
       console.log('edges');
       console.dir(edges);
-    }
+    },
   };
 };

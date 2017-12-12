@@ -9,7 +9,7 @@ class PropertiesNode extends Component {
   constructor(props) {
     super(props);
     const { node } = props;
-    
+
     this.state = {
       inputText: node.id,
       nodeDescription: node.description || '',
@@ -19,18 +19,18 @@ class PropertiesNode extends Component {
   componentWillReceiveProps(nextProps) {
     const { id, description } = nextProps.node;
 
-    this.setState({ 
+    this.setState({
       inputText: id,
       nodeDescription: description || '',
-    })
+    });
   }
 
   handleOnChange = (e) => {
     const { value, id } = e.target;
 
-    if (id === "description") {
+    if (id === 'description') {
       this.setState({ nodeDescription: value });
-    } else if (id === "name") {
+    } else if (id === 'name') {
       this.setState({ inputText: value });
     }
   };
@@ -70,7 +70,7 @@ class PropertiesNode extends Component {
 
   render() {
     const { node } = this.props;
-    
+
     return (
       <div>
         <h2>Propriedades da Variável</h2>

@@ -88,7 +88,7 @@ class EditCptModal extends Component {
     const { cpt } = this.state;
     const states = Object.keys(cpt);
     const sum = float.round(states.reduce((acc, x) => acc + cpt[x], 0), 2);
-    
+
     if (sum !== 1) {
       alert('A soma das probabilidades deve ser igual a 1');
       return;
@@ -104,7 +104,7 @@ class EditCptModal extends Component {
     for (let i = 0; i < cpt.length; i++) {
       const states = Object.keys(cpt[i].then);
       const sum = float.round(states.reduce((acc, x) => acc + cpt[i].then[x], 0), 2);
-      
+
       if (sum !== 1) {
         alert('A soma das probabilidades para cada uma das linhas deve ser igual a 1');
         return;
@@ -130,8 +130,8 @@ class EditCptModal extends Component {
   getRestFromValue = (valueFloat) => {
     const isInt = Number.isInteger(valueFloat);
     const precicion = isInt ? 0 : `${valueFloat}`.split('.')[1].length;
-    
-    return float.round((1 - valueFloat), precicion)
+
+    return float.round((1 - valueFloat), precicion);
   };
 
   onChangeWithParents = (currentState, value, valueFloat, twoStates, states, cptIndex) => {
@@ -139,7 +139,7 @@ class EditCptModal extends Component {
     const cpt = cpts[cptIndex];
     const then = cpt.then;
     then[currentState] = valueFloat;
-    
+
     if (twoStates) {
       const state = states.find(state => state !== currentState);
 
@@ -147,16 +147,16 @@ class EditCptModal extends Component {
     }
 
     this.setState({
-      cpt: cpts
+      cpt: cpts,
     });
   };
 
   onChangeWithoutParents = (currentState, value, valueFloat, twoStates, states) => {
-    const newCpt = { 
+    const newCpt = {
       ...this.state.cpt,
-      [currentState]: valueFloat
+      [currentState]: valueFloat,
     };
-    
+
     if (twoStates) {
       const state = states.find(state => state !== currentState);
 
@@ -164,7 +164,7 @@ class EditCptModal extends Component {
     }
 
     this.setState({
-      cpt: newCpt
+      cpt: newCpt,
     });
   };
 
@@ -197,7 +197,7 @@ class EditCptModal extends Component {
     const { cpt } = this.state;
     const parents = Object.keys(cpt[0].when);
     const states = Object.keys(cpt[0].then);
-    
+
     const firstStateCellStyle = {
       borderLeft: 'solid 3px black',
     };
@@ -237,8 +237,8 @@ class EditCptModal extends Component {
   sumCptThen = (cpt) => {
     const keys = Object.keys(cpt);
     const sum = keys
-      .map((key) => cpt[key])
-      .reduce((acc, v) => acc + v)
+      .map(key => cpt[key])
+      .reduce((acc, v) => acc + v);
 
     return float.round(sum, 2);
   }
@@ -251,7 +251,7 @@ class EditCptModal extends Component {
     const firstStateCellStyle = {
       borderLeft: `solid ${hasParents ? 3 : 1}px black`,
     };
-    
+
     if (!hasParents) {
       return (
         <tbody>
@@ -282,11 +282,11 @@ class EditCptModal extends Component {
             {states.map((state, stateIndex) => (
               <td key={state} style={stateIndex === 0 ? firstStateCellStyle : null}>
                 <InputCpt
-                    id={state}
-                    value={row.then[state]}
-                    onChange={this.onChange(states, rowIndex)}
-                    onBlur={e => this.handleCptWithParentsBlur(e, state)}
-                    onKeyUp={this.handleCptKeyup}
+                  id={state}
+                  value={row.then[state]}
+                  onChange={this.onChange(states, rowIndex)}
+                  onBlur={e => this.handleCptWithParentsBlur(e, state)}
+                  onKeyUp={this.handleCptKeyup}
                 />
               </td>
             ))}
@@ -294,9 +294,9 @@ class EditCptModal extends Component {
         ))}
       </tbody>
     );
-    {/*<td key={`${rowIndex}-result`}>
+    { /* <td key={`${rowIndex}-result`}>
       {this.sumCptThen(row.then)}
-    </td>*/}
+    </td> */ }
   };
 
   numberOfProbabilities = (hasParents) => {
@@ -312,7 +312,7 @@ class EditCptModal extends Component {
     if (node != null) {
       const hasParents = node.parents.length > 0;
       nProb = this.numberOfProbabilities(hasParents);
-      
+
       nodeId = node.id;
       children = (
         <div className={styles.container}>

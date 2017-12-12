@@ -1,9 +1,9 @@
-import React, { PropTypes, Component } from "react";
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import Network, { ContextMenuType } from "../Network";
-import Arrow from "../Arrow";
-import Node from "../Node";
-import NodeGeneric from "../NodeGeneric";
+import Network, { ContextMenuType } from '../Network';
+import Arrow from '../Arrow';
+import Node from '../Node';
+import NodeGeneric from '../NodeGeneric';
 
 class SubNetwork extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class SubNetwork extends Component {
       selectedNodeId: null,
       addingChildArrow: null,
     };
-    
+
     this.nodeContextMenuItems = [
       {
         key: 'connect-node',
@@ -32,11 +32,11 @@ class SubNetwork extends Component {
           // onDoubleClickNode(contextMenuNode);
           alert('Nao implementado');
         },
-      }
+      },
     ];
   }
-  
-  handleMouseMove = e => {
+
+  handleMouseMove = (e) => {
     if (this.props.connectingNode) {
       const canvasRect = this.networkRef.canvas.getBoundingClientRect();
       const nodeRect = this.connectingNodeRef.getBoundingClientRect();
@@ -72,17 +72,15 @@ class SubNetwork extends Component {
     this.setState({ selectedNodeId });
   };
 
-  renderArrow = (arrow, props) => {
-    return (
-      <Arrow 
-        key={arrow.key} 
-        from={arrow.from}
-        to={arrow.to}
-        markEnd={true}
-        {...props}
-      />
-    );
-  };
+  renderArrow = (arrow, props) => (
+    <Arrow
+      key={arrow.key}
+      from={arrow.from}
+      to={arrow.to}
+      markEnd
+      {...props}
+    />
+  );
 
   getLinkedFromNode = ({ id }) => {
     const linkedNodes = this.props.linkedNodes || [];
@@ -90,15 +88,13 @@ class SubNetwork extends Component {
     return linkedNodes.find(({ nodeId }) => nodeId == id);
   };
 
-  getLinkTitle = ({ connections }) => {
-    return connections.reduce((p, c) => {
-      const message = `${c.networkName} - ${c.nodeId}`;
-      p += message;
-      return p;
-    }, '');
-  };
+  getLinkTitle = ({ connections }) => connections.reduce((p, c) => {
+    const message = `${c.networkName} - ${c.nodeId}`;
+    p += message;
+    return p;
+  }, '');
 
-  onSetBelief = (node) => (state) => {
+  onSetBelief = node => (state) => {
     const { connecting, onSetBelief, network } = this.props;
 
     if (!connecting && onSetBelief) {
@@ -107,26 +103,28 @@ class SubNetwork extends Component {
   }
 
   renderNode = (node, props) => {
-    const { connectingNode, network, inferenceResults, networkColor } = this.props;
+    const {
+      connectingNode, network, inferenceResults, networkColor,
+    } = this.props;
     const key = `${network.name}-${node.id}`;
 
     if (connectingNode == node) {
       const { network } = connectingNode;
       const { name, color } = network;
-      
+
       return (
         <NodeGeneric
           key={`${key}-view`}
           x="5"
           y="5"
           id={name}
-          selected={true}
+          selected
           sumHeight={17}
           stroke={color}
           onMouseDown={() => {}}
-          rectRef={(ref) => (this.connectingNodeRef = ref)}
-          canMove={true}
-          opacity={'0.3'}
+          rectRef={ref => (this.connectingNodeRef = ref)}
+          canMove
+          opacity="0.3"
         >
           <foreignObject x="5" y="21" height="15" width="150">
             <p
@@ -152,13 +150,13 @@ class SubNetwork extends Component {
     let sumHeight = 0;
 
     if (link) {
-      //(18 * states.length) + 25
+      // (18 * states.length) + 25
       const circles = link.connections.map(({ networkName, color }, i) => (
         <circle key={i} cx={75 + (20 * i)} cy={(18 * node.states.length) + 45} r="8" fill={color}>
           <title>{`Rede: ${networkName}`}</title>
         </circle>
-      ))
-      
+      ));
+
       child = (
         <g>
           <text x="5" y={(18 * node.states.length) + 50} >Uniões:</text>
@@ -183,7 +181,7 @@ class SubNetwork extends Component {
         stroke={networkColor}
         sumHeight={sumHeight}
         canMove={false}
-        opacity={'0.3'}
+        opacity="0.3"
         {...props}
       >
         {child}
@@ -193,13 +191,13 @@ class SubNetwork extends Component {
 
   getArrows = () => {
     const { nodes } = this.props;
-    let arrows = [];
+    const arrows = [];
 
-    nodes.forEach(node => {
-      node.parents.forEach(parentId => {
+    nodes.forEach((node) => {
+      node.parents.forEach((parentId) => {
         const parent = nodes.find(x => x.id === parentId);
-        
-        arrows.push({ 
+
+        arrows.push({
           from: parent,
           to: node,
         });
@@ -224,7 +222,7 @@ class SubNetwork extends Component {
     if (connectingNode) {
       return [
         ...nodes,
-        connectingNode
+        connectingNode,
       ];
     }
 
@@ -236,7 +234,7 @@ class SubNetwork extends Component {
     const empty = () => {};
     const modalWidth = window.innerWidth * 0.8;
     const modalHeight = window.innerHeight * 0.8;
-    const bigger = (a, b) => a > b ? a : b;
+    const bigger = (a, b) => (a > b ? a : b);
     const newNetwork = {
       ...this.props.network,
       height: bigger(modalHeight, this.props.network.height + 30) - 20,
@@ -258,13 +256,14 @@ class SubNetwork extends Component {
         />
       );
     }
-    
+
     return (
       <div style={{
         width: modalWidth,
         height: modalHeight,
-      }}>
-        <Network 
+      }}
+      >
+        <Network
           network={newNetwork}
           nodes={this.getNodes()}
           arrows={this.getArrows}
@@ -280,12 +279,12 @@ class SubNetwork extends Component {
           onMouseMove={this.handleMouseMove}
           ref={ref => (this.networkRef = ref)}
         >
-         {addingChildArrow}
+          {addingChildArrow}
         </Network>
       </div>
     );
   }
-};
+}
 
 SubNetwork.propTypes = {
   network: PropTypes.object.isRequired,

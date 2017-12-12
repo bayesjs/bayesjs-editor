@@ -25,7 +25,7 @@ class Header extends Component {
     this.setState({ menuVisible: false });
   };
 
-  handleToggleMenu = e => {
+  handleToggleMenu = (e) => {
     e.stopPropagation();
     this.setState({ menuVisible: !this.state.menuVisible });
   };
@@ -51,7 +51,7 @@ class Header extends Component {
     openFile('.json', (json) => {
       try {
         const state = JSON.parse(json);
-        
+
         this.props.dispatch(loadNetwork(state));
         this.props.onRequestRedraw();
       } catch (ex) {
@@ -80,8 +80,8 @@ class Header extends Component {
     const state = {
       ...stateToSave,
       network: {
-        ...stateToSave.network
-      }
+        ...stateToSave.network,
+      },
     };
 
     if (!state.network.id) {
@@ -97,26 +97,20 @@ class Header extends Component {
     saveFile(`${this.getNetworkName()}.json`, json);
   };
 
-  hasMSBNNetwork = () => {
-    return true;
-  }
+  hasMSBNNetwork = () => true
 
-  renderLiNetworkTypes = () => {
-    return (
-      <ul className={styles.subMenu}>
-        {this.createLi('BN', this.handleNewNetworkClick, 'Rede Bayesiana')}
-        {this.hasMSBNNetwork() ? this.createLi('MSBN', this.handleNewMSBNNetworkClick, 'Rede Bayesiana Multi-seccionada') : null}
-      </ul>
-    );
-  }
+  renderLiNetworkTypes = () => (
+    <ul className={styles.subMenu}>
+      {this.createLi('BN', this.handleNewNetworkClick, 'Rede Bayesiana')}
+      {this.hasMSBNNetwork() ? this.createLi('MSBN', this.handleNewMSBNNetworkClick, 'Rede Bayesiana Multi-seccionada') : null}
+    </ul>
+  )
 
-  createLi = (name, handleOnClick, title = '') => {
-    return (
-      <li>
-        <a href="" onClick={handleOnClick} title={title}>{name}</a>
-      </li>
-    );
-  }
+  createLi = (name, handleOnClick, title = '') => (
+    <li>
+      <a href="" onClick={handleOnClick} title={title}>{name}</a>
+    </li>
+  )
 
   render() {
     return (

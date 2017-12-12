@@ -2,9 +2,9 @@ import { createSelector } from 'reselect';
 import { addNode, infer } from 'bayesjs';
 
 import { NETWORK_KINDS } from '../actions';
-import { 
-  combNodesAndBeliefs, 
-  combNodesAndPositions ,
+import {
+  combNodesAndBeliefs,
+  combNodesAndPositions,
   combLinkagesBySubnetwork,
   combLinkagesByTwoSubnetwork,
   combSubnetworksById,
@@ -22,7 +22,7 @@ export const getSubnetworks = state => state.network.subnetworks || [];
 export const getNetworkKind = state => state.network.kind || NETWORK_KINDS.BN;
 export const getPanelVisibility = state => state.network.propertiesPanelVisible;
 export const getLinkages = state => state.network.linkages;
-export const getInferenceEnabled = state => state.network.inferenceEnabled === undefined ? true : state.network.inferenceEnabled;
+export const getInferenceEnabled = state => (state.network.inferenceEnabled === undefined ? true : state.network.inferenceEnabled);
 
 export const getStateToSave = createSelector(
   getNetwork,
@@ -35,14 +35,14 @@ export const getStateToSave = createSelector(
       ...network,
       selectedNodes: [],
       beliefs: {},
-      subnetworks: subnetworks.map((sub) => ({
+      subnetworks: subnetworks.map(sub => ({
         ...sub,
         beliefs: {},
       })),
     },
     nodes,
     positions,
-  })
+  }),
 );
 
 export const getSelectedNode = createSelector(
@@ -72,20 +72,20 @@ export const getSelectedSubnetwork = createSelector(
 export const getNodesWithPositions = createSelector(
   getNodes,
   getPositions,
-  combNodesAndPositions
+  combNodesAndPositions,
 );
 
 export const getSubnetworksWithPosition = createSelector(
   getSubnetworks,
   getPositions,
-  combNodesAndPositions
+  combNodesAndPositions,
 );
 
 export const getInferenceResults = createSelector(
   getNodes,
   getBeliefs,
   getInferenceEnabled,
-  combNodesAndBeliefs
+  combNodesAndBeliefs,
 );
 
 export const getNetworkMSBN = createSelector(
@@ -99,33 +99,33 @@ export const getInferenceResultsMSBN = createSelector(
   getLinkages,
   getBeliefs,
   getInferenceEnabled,
-  combNodesAndBeliefsMSBN
+  combNodesAndBeliefsMSBN,
 );
 
 export const getLinkagesBySubnetwork = createSelector(
   getLinkages,
   getSubnetworks,
-  combLinkagesBySubnetwork
+  combLinkagesBySubnetwork,
 );
 
 export const getAllLinkagesBySubnetworkWithoutId = createSelector(
   getLinkages,
   getSubnetworks,
-  combAllLinkagesBySubnetwork
+  combAllLinkagesBySubnetwork,
 );
 
 
 export const getLinkagesByTwoSubnetwork = createSelector(
   getLinkages,
-  combLinkagesByTwoSubnetwork
+  combLinkagesByTwoSubnetwork,
 );
 
 export const getSubnetworksById = createSelector(
   getSubnetworks,
-  combSubnetworksById
+  combSubnetworksById,
 );
 
 export const getSubnetworksColorById = createSelector(
   getSubnetworks,
-  combSubnetworksColorById
+  combSubnetworksColorById,
 );

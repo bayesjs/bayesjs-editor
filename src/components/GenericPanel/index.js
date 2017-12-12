@@ -24,7 +24,7 @@ class GenericPanel extends Component {
   handleToggleClick = (visible, dispatch) => () => {
     const action = changeNetworkProperty(
       'propertiesPanelVisible',
-      !visible
+      !visible,
     );
 
     dispatch(action);
@@ -37,7 +37,7 @@ class GenericPanel extends Component {
       <div
         className={classNames({
           [styles.panel]: true,
-          [styles.panelShown]: visible
+          [styles.panelShown]: visible,
         })}
       >
         <Button

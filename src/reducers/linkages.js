@@ -13,8 +13,8 @@ export default (state = {}, action) => {
     case ADD_LINKAGE:
       return {
         ...state,
-        [Date.now()]: action.payload.linkage
-      }
+        [Date.now()]: action.payload.linkage,
+      };
     case REMOVE_LINKAGE:
       const { id } = action.payload;
       const newState = { ...state };
@@ -24,7 +24,7 @@ export default (state = {}, action) => {
     case LOAD_NETWORK:
       const { linkages } = action.payload.state.network;
       return linkages || {};
-    default: 
+    default:
       return state;
   }
-}
+};

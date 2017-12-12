@@ -10,7 +10,7 @@ class EditStatesList extends Component {
     this.input.focus();
   };
 
-  handleInputKeyDown = e => {
+  handleInputKeyDown = (e) => {
     if (e.key === 'Enter') {
       this.handleAddClick();
     }

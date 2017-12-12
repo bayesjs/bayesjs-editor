@@ -9,7 +9,7 @@ import { v4 } from 'uuid';
 export const ContextMenuType = {
   NODE: 'CONTEXT_MENU_NODE',
   ARROW: 'CONTEXT_MENU_ARROW',
-  CANVAS: 'CONTEXT_MENU_CANVAS'
+  CANVAS: 'CONTEXT_MENU_CANVAS',
 };
 
 import {
@@ -28,7 +28,7 @@ class Network extends Component {
       contextMenuItems: [],
       movingNodePlaceholder: null,
       nodeToAddChildTo: null,
-      newNode: null
+      newNode: null,
     };
 
     this.rectRefs = {};
@@ -47,7 +47,7 @@ class Network extends Component {
 
   createNode = (newNodePosition) => {
     const newNode = this.props.requestCreateNode(newNodePosition, () => this.setState({ newNode: null }));
-    
+
     if (newNode) {
       this.setState({ newNode });
     }
@@ -55,7 +55,7 @@ class Network extends Component {
 
   calculateArrows = (nodes = this.props.nodes) => {
     if (Object.keys(this.rectRefs).length == 0) return [];
-    
+
     const getNodeLinksPositions = (node) => {
       const { height, width } = this.rectRefs[node.id].getBoundingClientRect();
 
@@ -96,7 +96,7 @@ class Network extends Component {
       } else {
         p.y += value;
       }
-    }
+    };
 
     const getNearestPoints = (node1, node2) => {
       const ps1 = getNodeLinksPositions(node1);
@@ -104,7 +104,7 @@ class Network extends Component {
 
       let p1 = ps1[0];
       let p2 = ps2[0];
-      
+
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
           if (getDistance(p1, p2) > getDistance(ps1[i], ps2[j])) {
@@ -113,7 +113,7 @@ class Network extends Component {
           }
         }
       }
-      
+
       // corretion(p1, -10);
       // corretion(p2, 10);
 
@@ -122,7 +122,7 @@ class Network extends Component {
 
     const pointCountArray = [];
 
-    const getPointCount = point => {
+    const getPointCount = (point) => {
       let pointCount = pointCountArray
         .find(x => x.point.x === point.x && x.point.y === point.y);
 
@@ -140,7 +140,7 @@ class Network extends Component {
       return pointCount.count;
     };
 
-    const getPointAdjustment = count => {
+    const getPointAdjustment = (count) => {
       let adjustment = count - 1;
 
       if (adjustment % 2 === 1) {
@@ -166,7 +166,7 @@ class Network extends Component {
       const points = getNearestPoints(from, to);
       // const pointsFrom = map.get(from.id) || [];
       // const seila = map.get(from.id) || [];
-      
+
       // const p1Adjustment = getPointAdjustment(getPointCount(points.p1));
       // const p2Adjustment = getPointAdjustment(getPointCount(points.p2));
 
@@ -199,7 +199,9 @@ class Network extends Component {
 
   handleNodeMouseDown = (node, e) => {
     e.stopPropagation();
-    const { onClickNode, onSelectNodes, onAddConnection, getContextItems } = this.props;
+    const {
+      onClickNode, onSelectNodes, onAddConnection, getContextItems,
+    } = this.props;
 
     onSelectNodes([node.id]);
     if (typeof onClickNode === 'function') {
@@ -233,7 +235,7 @@ class Network extends Component {
     }
   };
 
-  handleMouseDown = e => {
+  handleMouseDown = (e) => {
     // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
     setTimeout(() => {
       this.props.onSelectNodes([]);
@@ -248,14 +250,14 @@ class Network extends Component {
       const rect = this.canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
+
       this.contextMenuPosition = { x, y };
       this.setState({ contextMenuItems: this.props.getContextItems(ContextMenuType.CANVAS) });
       this.contextMenu.handleContainerMouseDown(e, this.contextMenuPosition);
     }
   };
 
-  handleMouseMove = e => {
+  handleMouseMove = (e) => {
     this.onMouseMoveProps(e);
 
     if (this.canChangeNodePostion && this.movingNode !== null) {
@@ -302,9 +304,9 @@ class Network extends Component {
         addingChildArrow: { from, to },
       });
     }
-  } 
+  }
 
-  handleMouseUp = e => {
+  handleMouseUp = (e) => {
     if (this.movingNode !== null) {
       const { id, initialPosition, initialMousePosition } = this.movingNode;
       const { changeNodePosition } = this.props;
@@ -367,7 +369,7 @@ class Network extends Component {
       </marker>
     </defs>
   );
-  
+
   renderArrows = () => {
     const { onClickArrow, nodes, renderArrow } = this.props;
     const arrowsCalc = this.calculateArrows(nodes);
@@ -380,7 +382,7 @@ class Network extends Component {
           onClickArrow(a, e);
         }
       };
-      
+
       return renderArrow(a, { onMouseDown, onClick });
     });
 
@@ -389,14 +391,14 @@ class Network extends Component {
 
   renderNodes = () => {
     const { nodes, renderNode, onDoubleClickNode } = this.props;
-    const setRef = (nodeId) => (nodeRef) => {
+    const setRef = nodeId => (nodeRef) => {
       this.rectRefs[nodeId] = nodeRef;
     };
     this.rectRefs = {};
 
     return nodes.map((node) => {
       const rectRef = setRef(node.id);
-      const onMouseDown = (e) => this.handleNodeMouseDown(node, e);
+      const onMouseDown = e => this.handleNodeMouseDown(node, e);
       const onDoubleClick = (e) => {
         if (typeof onDoubleClickNode === 'function') {
           onDoubleClickNode(node, e);
@@ -427,7 +429,9 @@ class Network extends Component {
     }
 
     if (this.state.movingNodePlaceholder !== null) {
-      const { x, y, height, width } = this.state.movingNodePlaceholder;
+      const {
+        x, y, height, width,
+      } = this.state.movingNodePlaceholder;
 
       movingNodePlaceholder = (
         <rect
@@ -444,7 +448,7 @@ class Network extends Component {
     }
 
     return (
-      <div> 
+      <div>
         <svg
           className={styles.canvas}
           onContextMenu={e => e.preventDefault()}
@@ -456,8 +460,8 @@ class Network extends Component {
           width={this.props.network.width}
           ref={ref => (this.canvas = ref)}
         >
-          <g>  
-            <Arrows arrows={this.state.arrows}/>
+          <g>
+            <Arrows arrows={this.state.arrows} />
           </g>
           <g>
             {this.renderNodes()}
@@ -474,10 +478,10 @@ class Network extends Component {
         </svg>
 
         <ContextMenu
-            ref={ref => (this.contextMenu = ref)}
-            items={this.state.contextMenuItems}
-            />
-        
+          ref={ref => (this.contextMenu = ref)}
+          items={this.state.contextMenuItems}
+        />
+
         {this.state.newNode}
         {this.props.children}
       </div>
@@ -485,7 +489,7 @@ class Network extends Component {
   }
 }
 
-/// optional props
+// / optional props
 // onClickNode,
 // onDoubleClickNode,
 // onClickArrow,

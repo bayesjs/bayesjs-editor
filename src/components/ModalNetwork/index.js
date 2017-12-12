@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from "react";
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
 
@@ -7,7 +7,7 @@ class ModalNetwork extends Component {
     super(props);
 
     this.state = {
-      visible: true
+      visible: true,
     };
   }
 
@@ -18,13 +18,14 @@ class ModalNetwork extends Component {
       <ReactModal
         isOpen={visible}
         onRequestClose={() => this.setState({ visible: !visible })}
-        contentLabel={'Teste'}>
-        
+        contentLabel="Teste"
+      >
+
         {this.props.children}
 
       </ReactModal>
     );
   }
-};
+}
 
 export default ModalNetwork;

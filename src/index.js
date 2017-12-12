@@ -11,7 +11,7 @@ import 'font-awesome/css/font-awesome.css';
 
 const preloadedState = loadState();
 const store = configureStore(preloadedState);
-const root = document.getElementById('root')
+const root = document.getElementById('root');
 
 Modal.setAppElement(root);
 
@@ -19,5 +19,5 @@ render(
   <Provider store={store}>
     <App />
   </Provider>,
-  root
+  root,
 );

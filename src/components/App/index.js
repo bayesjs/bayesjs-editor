@@ -20,12 +20,10 @@ import {
 
 class App extends Component {
   state = {
-    key: 1
+    key: 1,
   };
 
-  getCanvas = () => {
-    return this.canvas.getWrappedInstance();
-  };
+  getCanvas = () => this.canvas.getWrappedInstance();
 
   componentDidMount() {
     window.addEventListener('keyup', this.keyupHandler);
@@ -37,7 +35,7 @@ class App extends Component {
 
   keyupHandler = (e) => {
     const key = e.keyCode || e.which;
-    
+
     if (e.ctrlKey) {
       if (key === 90) {
         console.log('UNDO');
@@ -56,18 +54,16 @@ class App extends Component {
     }, 0);
   };
 
-  getPanel = () => {
-    return (
-      <PropertiesPanel
-        key={this.state.key}
-        onEditNodeStates={node => this.getCanvas().onEditNodeStates(node)}
-        onEditNodeCpt={node => this.getCanvas().onEditNodeCpt(node)}
-        onStartConnection={subnetwork => this.getCanvas().onStartConnection(subnetwork)}
-        onViewSubnetwork={subnetwork => this.getCanvas().onViewSubnetwork(subnetwork)}
-        onViewLinkages={subnetwork => this.getCanvas().onViewLinkages(subnetwork)}
-      />
-    );
-  };
+  getPanel = () => (
+    <PropertiesPanel
+      key={this.state.key}
+      onEditNodeStates={node => this.getCanvas().onEditNodeStates(node)}
+      onEditNodeCpt={node => this.getCanvas().onEditNodeCpt(node)}
+      onStartConnection={subnetwork => this.getCanvas().onStartConnection(subnetwork)}
+      onViewSubnetwork={subnetwork => this.getCanvas().onViewSubnetwork(subnetwork)}
+      onViewLinkages={subnetwork => this.getCanvas().onViewLinkages(subnetwork)}
+    />
+  );
 
   render() {
     return (

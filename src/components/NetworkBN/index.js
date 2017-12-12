@@ -1,6 +1,6 @@
-import React, { PropTypes, Component } from "react";
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import Network, { ContextMenuType } from "../Network";
+import Network, { ContextMenuType } from '../Network';
 import Node from '../Node';
 import Arrow from '../Arrow';
 import AddNodeModal from '../AddNodeModal';
@@ -39,9 +39,9 @@ class NetworkBN extends Component {
         onClick: (contextMenuPosition) => {
           this.net.createNode(contextMenuPosition);
         },
-      }
+      },
     ];
-    
+
     this.nodeContextMenuItems = [
       {
         key: 'add-child',
@@ -105,17 +105,15 @@ class NetworkBN extends Component {
     this.setState({ editingNodeCpt });
   };
 
-  renderArrow = (arrow, props) => {
-    return (
-      <Arrow 
-        key={arrow.key} 
-        from={arrow.from}
-        to={arrow.to}
-        markEnd={true}
-        {...props}
-      />
-    );
-  };
+  renderArrow = (arrow, props) => (
+    <Arrow
+      key={arrow.key}
+      from={arrow.from}
+      to={arrow.to}
+      markEnd
+      {...props}
+    />
+  );
 
   renderNode = (node, props) => (
     <Node
@@ -127,22 +125,20 @@ class NetworkBN extends Component {
       belief={this.props.network.beliefs[node.id]}
       x={node.position.x}
       y={node.position.y}
-      onStateDoubleClick={(state) => this.onSetBelief(node, state)}
+      onStateDoubleClick={state => this.onSetBelief(node, state)}
       {...props}
     />
   );
 
   onSelectNodes = (nodes) => {
-    this.props.dispatch(
-      changeNetworkProperty('selectedNodes', nodes)
-    );
+    this.props.dispatch(changeNetworkProperty('selectedNodes', nodes));
   };
 
   handleKeyup = (e) => {
     const key = e.keyCode || e.which;
     const { network } = this.props;
-    
-    if (key === 8 && network.selectedNodes.length > 0 && document.activeElement.tagName === "BODY") {
+
+    if (key === 8 && network.selectedNodes.length > 0 && document.activeElement.tagName === 'BODY') {
       network.selectedNodes.map((nodeId) => {
         this.props.dispatch(removeNode(nodeId));
       });
@@ -155,7 +151,7 @@ class NetworkBN extends Component {
   };
 
   onCancelConnection = () => {
-    
+
   };
 
   onSetBelief = (node, state) => {
@@ -166,13 +162,12 @@ class NetworkBN extends Component {
     }
   };
 
-  requestCreateNode = (position, onRequestClose) => {
-    return (
-      <AddNodeModal
-        position={position}
-        onRequestClose={onRequestClose} />
-    );
-  };
+  requestCreateNode = (position, onRequestClose) => (
+    <AddNodeModal
+      position={position}
+      onRequestClose={onRequestClose}
+    />
+  );
 
   changeNodePosition = (id, newX, newY) => {
     this.props.dispatch(changeNodePosition(id, newX, newY));
@@ -205,13 +200,13 @@ class NetworkBN extends Component {
 
   getArrows = () => {
     const { nodes } = this.props;
-    let arrows = [];
+    const arrows = [];
 
-    nodes.forEach(node => {
-      node.parents.forEach(parentId => {
+    nodes.forEach((node) => {
+      node.parents.forEach((parentId) => {
         const parent = nodes.find(x => x.id === parentId);
-        
-        arrows.push({ 
+
+        arrows.push({
           from: parent,
           to: node,
         });
@@ -237,7 +232,7 @@ class NetworkBN extends Component {
           getContextItems={this.getContextItems}
           requestCreateNode={this.requestCreateNode}
           ref={ref => (this.net = ref)}
-          />
+        />
 
         <EditStatesModal
           node={this.state.editingNodeStates}
@@ -268,7 +263,7 @@ const mapStateToProps = (s, ownProps) => {
   if (ownProps.network) {
     state = ownProps;
   }
-  
+
   return {
     network: getNetwork(state),
     nodes: getNodesWithPositions(state),

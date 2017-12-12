@@ -45,17 +45,18 @@ const NodeState = ({
         width={barWidth}
         fill={fillColor}
       />
-      
-      <text x={result >= 0.1 ? (result === 1 ? 97 : 100) : 103} 
-        y={36 + (18 * index)} 
-        height="15" 
-        fontSize="14px" 
+
+      <text
+        x={result >= 0.1 ? (result === 1 ? 97 : 100) : 103}
+        y={36 + (18 * index)}
+        height="15"
+        fontSize="14px"
         alignmentBaseline="rigth"
         stroke="black"
         strokeWidth="1.1"
-        >
-          {`${percent.toFixed(2)} %`}
-        </text>
+      >
+        {`${percent.toFixed(2)} %`}
+      </text>
       <rect
         x="85"
         y={24 + (18 * index)}
@@ -67,9 +68,9 @@ const NodeState = ({
         onDoubleClick={() => onStateDoubleClick(state)}
       >
         <title>{percent.toFixed(2)}%</title>
-      </rect>    
+      </rect>
     </g>
-  )
+  );
 };
 
 NodeState.propTypes = {
@@ -78,7 +79,7 @@ NodeState.propTypes = {
   state: PropTypes.string.isRequired,
   onStateDoubleClick: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
-}
+};
 
 const mapStateToProps = (state, ownProps) => ({
   inferenceEnabled: getInferenceEnabled(state),
