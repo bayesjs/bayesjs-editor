@@ -20,10 +20,10 @@
   },
   "scripts": {
     "start": "node server.js",
-    "build": "webpack -p",
-    "build:prod": "cross-env NODE_ENV=production webpack",
+    "build": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js",
     "clean": "rimraf dist",
-    "deploy": "npm run clean && npm run build && gh-pages -d dist",
+    "deploy": "npm run clean && npm run build:prod && gh-pages -d dist",
     "lint": "eslint .",
     "test": "jest",
     "flow": "flow"
@@ -42,6 +42,7 @@
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "reselect": "^3.0.1",
+    "responsive-loader": "^1.1.0",
     "sugarss": "^1.0.1"
   },
   "devDependencies": {
@@ -83,6 +84,7 @@
     "url-loader": "^0.6.2",
     "uuid": "^3.0.1",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7"
+    "webpack-dev-server": "^2.9.7",
+    "webpack-merge": "^4.1.1"
   }
 }
