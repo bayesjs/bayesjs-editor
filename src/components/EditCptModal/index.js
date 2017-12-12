@@ -281,7 +281,7 @@ class EditCptModal extends Component {
             ))}
             {states.map((state, stateIndex) => (
               <td key={state} style={stateIndex === 0 ? firstStateCellStyle : null}>
-                 <InputCpt
+                <InputCpt
                     id={state}
                     value={row.then[state]}
                     onChange={this.onChange(states, rowIndex)}
