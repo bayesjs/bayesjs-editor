@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
+
 import styles from './styles.css';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 
 const style = {
   overlay: {
@@ -30,12 +32,13 @@ const Modal = ({
     isOpen={isOpen}
     onRequestClose={onRequestClose}
     style={style}
+    contentLabel={title}
   >
     <div className={styles.header}>
       {title}
       <i
         onClick={onRequestClose}
-        className={classNames(['fa', 'fa-times', styles.closeButton])}
+        className={classNames([fontAwesome.fa, fontAwesome.faTimes, styles.closeButton])}
         title="Fechar"
       />
     </div>

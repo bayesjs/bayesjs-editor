@@ -17,6 +17,10 @@ class ContextMenu extends Component {
     window.removeEventListener('mousedown', this.handleWindowMouseDown);
   }
 
+  // setContextItem = (item) => {
+  //   this.contextItem = item;
+  // }
+
   hide = () => {
     this.setState({ position: null });
   };
@@ -26,7 +30,8 @@ class ContextMenu extends Component {
     this.setState({ position: null });
   };
 
-  handleContainerMouseDown = e => {
+  handleContainerMouseDown = (e, contextItem) => {
+    this.contextItem = contextItem;
     // Only right clicks
     if (e.button !== 2) {
       return;
@@ -55,7 +60,7 @@ class ContextMenu extends Component {
     window.addEventListener('mousedown', this.handleWindowMouseDown);
   };
 
-  handleContextMenu = e => {
+  handleContextMenu = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
@@ -65,10 +70,27 @@ class ContextMenu extends Component {
     e.stopPropagation();
 
     if (!item.disabled) {
+      const { contextItem } = this;
+
       this.handleWindowMouseDown();
-      item.onClick();
+      item.onClick(contextItem);
     }
   };
+
+  getItens = (item) => {
+    const { items } = this.props;
+
+    return items.filter(({ visible }) => {
+      if (visible !== undefined) {
+        if (typeof visible === 'boolean') {
+          return visible;
+        } else if (typeof visible === 'function') {
+          return visible(this.contextItem);
+        }
+      }
+      return true;
+    });
+  }
 
   render() {
     const { position } = this.state;
@@ -82,27 +104,31 @@ class ContextMenu extends Component {
       top: position.y,
     };
 
+    this.menuRef = (
+      <ul
+        className={styles.contextMenu}
+        style={style}
+        onContextMenu={this.handleContextMenu}
+      >
+        {this.getItens().map(item => (
+          <li
+            key={item.key}
+            style={item.style || {}}
+            className={classNames({
+              [styles.contextMenuItem]: true,
+              [styles.contextMenuItemDisabled]: item.disabled,
+            })}
+            onMouseDown={e => this.handleMenuItemMouseDown(e, item)}
+          >
+            {item.text}
+          </li>
+        ))}
+      </ul>
+    );
+
     return (
       <RenderIntoBody>
-        <ul
-          className={styles.contextMenu}
-          style={style}
-          ref={ref => (this.menuRef = ref)}
-          onContextMenu={this.handleContextMenu}
-        >
-          {this.props.items.map(item => (
-            <li
-              key={item.key}
-              className={classNames({
-                [styles.contextMenuItem]: true,
-                [styles.contextMenuItemDisabled]: item.disabled,
-              })}
-              onMouseDown={e => this.handleMenuItemMouseDown(e, item)}
-            >
-              {item.text}
-            </li>
-          ))}
-        </ul>
+        {this.menuRef}
       </RenderIntoBody>
     );
   }

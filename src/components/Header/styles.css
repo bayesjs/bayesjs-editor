@@ -38,16 +38,50 @@
   padding: 0;
   list-style: none;
 }
+/*
+.menu-item a {
+  color: #333;
+  text-decoration: none;
+  padding: 0px 20px;
+}*/
 
-.menu-item {
+.menu li {
   user-select: none;
   cursor: pointer;
-  padding: 5px 20px 5px 20px;
-  text-align: center;
+  text-align: left;
   background-color: #fff;
   white-space: nowrap;
 }
 
-.menu-item:hover {
+.menu,
+.sub-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu a {
+  display: block;
+  text-decoration: none;
+  padding: 10px;
+  color: #000;
+}
+
+.menu a:hover {
   background-color: #e5f3fb;
+}
+
+.menu li .sub-menu {
+  display: block;
+  max-height: 200px;
+}
+
+.sub-menu {
+  overflow: hidden;
+  max-height: 0;
+  -webkit-transition: all 0.5s ease-out;
+}
+
+.sub-menu a {
+  padding-left: 25px;
 }

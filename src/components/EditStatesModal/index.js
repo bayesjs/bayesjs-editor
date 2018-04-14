@@ -18,13 +18,13 @@ class EditStatesModal extends Component {
     }
   }
 
-  handleAddState = newState => {
+  handleAddState = (newState) => {
     this.setState({
       states: [...this.state.states, newState],
     });
   };
 
-  handleDeleteState = state => {
+  handleDeleteState = (state) => {
     this.setState({
       states: this.state.states.filter(x => x !== state),
     });
@@ -50,9 +50,11 @@ class EditStatesModal extends Component {
 
   render() {
     const { node, onRequestClose } = this.props;
+    let nodeId = '';
     let children = null;
 
     if (node != null) {
+      nodeId = node.id;
       children = (
         <div className={styles.container}>
           <EditStatesList
@@ -72,7 +74,7 @@ class EditStatesModal extends Component {
 
     return (
       <Modal
-        title="Editar Estados"
+        title={`Editar Estados (${nodeId})`}
         isOpen={node != null}
         onRequestClose={onRequestClose}
       >

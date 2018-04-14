@@ -15,6 +15,18 @@ const initialState = {
 class AddNodeModal extends Component {
   state = initialState;
 
+  componentDidMount() {
+    setTimeout(() => {
+      if (this.inputName) this.inputName.focus();
+    }, 0);
+
+    window.addEventListener('keyup', this.handleKeyup);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.handleKeyup);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.position == null && nextProps.position != null) {
       this.setState(initialState);
@@ -22,41 +34,63 @@ class AddNodeModal extends Component {
     }
   }
 
-  handleNameBlur = e => {
+  handleKeyup = (e) => {
+    const key = e.keyCode || e.which;
+
+    if (key === 13 && this.valid().success) {
+      this.handleAdicionarClick();
+    }
+  }
+
+  handleNameBlur = (e) => {
     this.setState({ name: e.target.value });
   };
 
-  handleAddState = newState => {
+  handleAddState = (newState) => {
     this.setState({
       states: [...this.state.states, newState],
     });
   };
 
-  handleDeleteState = state => {
+  handleDeleteState = (state) => {
     this.setState({
       states: this.state.states.filter(x => x !== state),
     });
   };
 
-  handleAdicionarClick = () => {
+  valid = () => {
     const { name, states } = this.state;
+    let focusName = false;
+    let message;
+
 
     if (name === '') {
-      alert('Preencha o nome da variável corretamente');
-      this.inputName.focus();
+      message = 'Preencha o nome da variável corretamente';
+      focusName = true;
+    } else if (this.props.nodes.some(x => x.id === name)) {
+      message = 'Já existe uma variável com este nome';
+      focusName = true;
+    } else if (states.length === 0) {
+      message = 'Você deve informar pelo menos um estado';
+    }
+
+    return {
+      message,
+      focusName,
+      success: message === undefined,
+    };
+  }
+
+  handleAdicionarClick = () => {
+    const { message, focusName, success } = this.valid();
+
+    if (success === false) {
+      alert(message);
+      if (focusName) this.inputName.focus();
       return;
     }
 
-    if (this.props.nodes.some(x => x.id === name)) {
-      alert('Já existe uma variável com este nome');
-      this.inputName.focus();
-      return;
-    }
-
-    if (states.length === 0) {
-      alert('Você deve informar pelo menos um estado');
-      return;
-    }
+    const { name, states } = this.state;
 
     this.props.dispatch(addNode(name, states, this.props.position));
     this.props.onRequestClose();
@@ -76,7 +110,7 @@ class AddNodeModal extends Component {
               id="name"
               type="text"
               defaultValue={this.state.name}
-              onBlur={this.handleNameBlur}
+              onInput={this.handleNameBlur}
               ref={ref => (this.inputName = ref)}
             />
           </div>

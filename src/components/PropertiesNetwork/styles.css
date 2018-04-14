@@ -1,0 +1,27 @@
+.field-wrapper,
+.checkbox {
+  position: relative;
+  padding: 10px 0px;
+}
+
+.field-wrapper textarea {
+  width: 100%;
+  max-width: 100%;
+  max-height: 150px;
+}
+
+.checkbox label {
+  min-height: 20px;
+  padding-left: 20px;
+  margin-bottom: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.checkbox input[type=checkbox] {
+  width: initial;
+  position: absolute;
+  margin-left: -20px;
+  margin-top: 2px;
+}
+

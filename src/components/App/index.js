@@ -1,24 +1,69 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../Header';
 import Canvas from '../Canvas';
 import PropertiesPanel from '../PropertiesPanel';
 import EditStatesModal from '../EditStatesModal';
 import EditCptModal from '../EditCptModal';
 import styles from './styles.css';
+import { ActionCreators } from 'redux-undo';
+
+import {
+  getNetworkKind,
+} from '../../selectors';
+
+import {
+  NETWORK_KINDS,
+  undo,
+  redo,
+} from '../../actions';
 
 class App extends Component {
   state = {
     key: 1,
-    editingNodeStates: null,
-    editingNodeCpt: null,
+  };
+
+  getCanvas = () => this.canvas.getWrappedInstance();
+
+  componentDidMount() {
+    window.addEventListener('keyup', this.keyupHandler);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.keyupHandler);
+  }
+
+  keyupHandler = (e) => {
+    const key = e.keyCode || e.which;
+
+    if (e.ctrlKey) {
+      if (key === 90) {
+        console.log('UNDO');
+        // this.props.dispatch(ActionCreators.undo());
+      } else if (key === 89) {
+        console.log('REDO');
+        // this.props.dispatch(ActionCreators.redo());
+      }
+    }
   };
 
   handleRequestRedraw = () => {
     setTimeout(() => {
-      this.canvas.getWrappedInstance().calculateArrows();
+      this.getCanvas().calculateArrows();
       this.setState({ key: this.state.key + 1 });
     }, 0);
   };
+
+  getPanel = () => (
+    <PropertiesPanel
+      key={this.state.key}
+      onEditNodeStates={node => this.getCanvas().onEditNodeStates(node)}
+      onEditNodeCpt={node => this.getCanvas().onEditNodeCpt(node)}
+      onStartConnection={subnetwork => this.getCanvas().onStartConnection(subnetwork)}
+      onViewSubnetwork={subnetwork => this.getCanvas().onViewSubnetwork(subnetwork)}
+      onViewLinkages={subnetwork => this.getCanvas().onViewLinkages(subnetwork)}
+    />
+  );
 
   render() {
     return (
@@ -28,31 +73,17 @@ class App extends Component {
         <div className={styles.container}>
           <Canvas
             ref={ref => (this.canvas = ref)}
-            onEditNodeStates={node => this.setState({ editingNodeStates: node })}
-            onEditNodeCpt={node => this.setState({ editingNodeCpt: node })}
           />
-          <PropertiesPanel
-            key={this.state.key}
-            onEditNodeStates={node => this.setState({ editingNodeStates: node })}
-            onEditNodeCpt={node => this.setState({ editingNodeCpt: node })}
-          />
+
+          {this.getPanel()}
         </div>
-
-        <EditStatesModal
-          node={this.state.editingNodeStates}
-          onRequestClose={() => {
-            this.setState({ editingNodeStates: null });
-            this.handleRequestRedraw();
-          }}
-        />
-
-        <EditCptModal
-          node={this.state.editingNodeCpt}
-          onRequestClose={() => this.setState({ editingNodeCpt: null })}
-        />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  networkKind: getNetworkKind(state),
+});
+
+export default connect(mapStateToProps)(App);

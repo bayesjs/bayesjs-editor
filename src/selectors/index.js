@@ -1,25 +1,48 @@
 import { createSelector } from 'reselect';
 import { addNode, infer } from 'bayesjs';
 
+import { NETWORK_KINDS } from '../actions';
+import {
+  combNodesAndBeliefs,
+  combNodesAndPositions,
+  combLinkagesBySubnetwork,
+  combLinkagesByTwoSubnetwork,
+  combSubnetworksById,
+  combNetworkMSBN,
+  combNodesAndBeliefsMSBN,
+  combAllLinkagesBySubnetwork,
+  combSubnetworksColorById,
+} from './combiners';
+
 export const getNetwork = state => state.network;
-export const getNodes = state => state.nodes;
-export const getPositions = state => state.positions;
+export const getNodes = state => state.network.nodes || state.nodes || [];
+export const getPositions = state => state.network.positions || state.positions || [];
 export const getBeliefs = state => state.network.beliefs;
+export const getSubnetworks = state => state.network.subnetworks || [];
+export const getNetworkKind = state => state.network.kind || NETWORK_KINDS.BN;
+export const getPanelVisibility = state => state.network.propertiesPanelVisible;
+export const getLinkages = state => state.network.linkages;
+export const getInferenceEnabled = state => (state.network.inferenceEnabled === undefined ? true : state.network.inferenceEnabled);
 
 export const getStateToSave = createSelector(
   getNetwork,
   getNodes,
   getPositions,
-  (network, nodes, positions) => ({
+  getSubnetworks,
+  (network, nodes, positions, subnetworks) => ({
     version: 2,
     network: {
       ...network,
       selectedNodes: [],
       beliefs: {},
+      subnetworks: subnetworks.map(sub => ({
+        ...sub,
+        beliefs: {},
+      })),
     },
     nodes,
     positions,
-  })
+  }),
 );
 
 export const getSelectedNode = createSelector(
@@ -34,51 +57,75 @@ export const getSelectedNode = createSelector(
   },
 );
 
+export const getSelectedSubnetwork = createSelector(
+  getNetwork,
+  getSubnetworks,
+  (network, subnetworks) => {
+    if (network.selectedNodes.length !== 1) {
+      return null;
+    }
+
+    return subnetworks.find(sub => sub.id === network.selectedNodes[0]);
+  },
+);
+
 export const getNodesWithPositions = createSelector(
   getNodes,
   getPositions,
-  (nodes, positions) => nodes.map(node => ({
-    ...node,
-    position: positions[node.id],
-  })),
+  combNodesAndPositions,
+);
+
+export const getSubnetworksWithPosition = createSelector(
+  getSubnetworks,
+  getPositions,
+  combNodesAndPositions,
 );
 
 export const getInferenceResults = createSelector(
   getNodes,
   getBeliefs,
-  (nodes, beliefs) => {
-    let network = {};
+  getInferenceEnabled,
+  combNodesAndBeliefs,
+);
 
-    const remainingNodes = [...nodes];
+export const getNetworkMSBN = createSelector(
+  getSubnetworks,
+  getLinkages,
+  combNetworkMSBN,
+);
 
-    while (remainingNodes.length > 0) {
-      const nodesToAdd = [];
+export const getInferenceResultsMSBN = createSelector(
+  getSubnetworks,
+  getLinkages,
+  getBeliefs,
+  getInferenceEnabled,
+  combNodesAndBeliefsMSBN,
+);
 
-      for (let i = 0; i < remainingNodes.length; i++) {
-        if (remainingNodes[i].parents.every(p => network.hasOwnProperty(p))) {
-          nodesToAdd.push(remainingNodes.splice(i, 1)[0]);
-        }
-      }
+export const getLinkagesBySubnetwork = createSelector(
+  getLinkages,
+  getSubnetworks,
+  combLinkagesBySubnetwork,
+);
 
-      nodesToAdd.forEach(nodeToAdd => {
-        network = addNode(network, nodeToAdd);
-      });
-    }
+export const getAllLinkagesBySubnetworkWithoutId = createSelector(
+  getLinkages,
+  getSubnetworks,
+  combAllLinkagesBySubnetwork,
+);
 
-    const results = {};
 
-    nodes.forEach(node => {
-      results[node.id] = {};
+export const getLinkagesByTwoSubnetwork = createSelector(
+  getLinkages,
+  combLinkagesByTwoSubnetwork,
+);
 
-      node.states.forEach(state => {
-        results[node.id][state] = infer(
-          network,
-          { [node.id]: state },
-          Object.keys(beliefs).length === 0 ? undefined : beliefs,
-        );
-      });
-    });
+export const getSubnetworksById = createSelector(
+  getSubnetworks,
+  combSubnetworksById,
+);
 
-    return results;
-  }
+export const getSubnetworksColorById = createSelector(
+  getSubnetworks,
+  combSubnetworksColorById,
 );
