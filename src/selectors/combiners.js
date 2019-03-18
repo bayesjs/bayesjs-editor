@@ -1,16 +1,12 @@
 import { addNode, infer } from 'bayesjs';
-import { mergeNetworks, createKey, keyToNetworkAndNode, createMissingLinkages, junctionTreeInSubnetwork } from '../components/NetworkMSBN/helpers';
+import { createKey, createMissingLinkages, mergeNetworks } from '../components/NetworkMSBN/helpers';
 
 const weakMap = new WeakMap();
 
-export const combNodesAndPositions = (nodes, positions) => nodes.map((node) => {
-  const r = {
-    ...node,
-    position: positions[node.id],
-  };
-  // debugger
-  return r;
-});
+export const combNodesAndPositions = (nodes, positions) => nodes.map(node => ({
+  ...node,
+  position: positions[node.id],
+}));
 
 export const combNodesAndBeliefs = (nodes, beliefs, infereceEnabled = true) => {
   console.time('INFER');
@@ -22,7 +18,7 @@ export const combNodesAndBeliefs = (nodes, beliefs, infereceEnabled = true) => {
     const nodesToAdd = [];
 
     for (let i = 0; i < remainingNodes.length; i++) {
-      if (remainingNodes[i].parents.every(p => network.hasOwnProperty(p))) {
+      if (remainingNodes[i].parents.every(p => Object.prototype.hasOwnProperty.call(network, p))) {
         nodesToAdd.push(remainingNodes.splice(i, 1)[0]);
       }
     }
@@ -59,9 +55,6 @@ export const combNodesAndBeliefs = (nodes, beliefs, infereceEnabled = true) => {
 };
 
 const combNetworkMSBN = (subnetworks, linkages) => {
-  const cacheSubnetworks = weakMap.get(subnetworks);
-  const cacheLinks = weakMap.get(linkages);
-
   const links = Object.keys(linkages).map(id => linkages[id]);
   const networks = subnetworks.map(({ id, name, nodes }) => {
     const dictNodes = nodes.reduce((p, node) => {
@@ -93,7 +86,7 @@ export const combNodesAndBeliefsMSBN = (networks, linkages, beliefs, infereceEna
   } else {
     cachedMerge = cachedNetworks;
   }
-  const { network, subnetworks, identifiers } = cachedMerge;
+  const { network, identifiers } = cachedMerge;
   weakMap.set(networks, cachedMerge);
   weakMap.set(linkages, cachedMerge);
   console.timeEnd('MERGE');
@@ -110,44 +103,42 @@ export const combNodesAndBeliefsMSBN = (networks, linkages, beliefs, infereceEna
     result[networkId] = netDict;
   };
 
-  for (const nodeId of Object.keys(network)) {
-    const t = network[nodeId];
-    const aa = identifiers.newToOriginal[nodeId].map(({ networkId }) => networkId);
-    // debugger
-    nodes.push({
-      ...t,
-      network: aa,
-    });
-  }
+  Object.keys(network).forEach((nodeId) => {
+    const node = network[nodeId];
 
-  for (const networkId of Object.keys(beliefs)) {
+    nodes.push({
+      ...node,
+      network: identifiers.newToOriginal[nodeId].map(({ networkId }) => networkId),
+    });
+  });
+
+  Object.keys(beliefs).forEach((networkId) => {
     const netBeliefs = beliefs[networkId];
 
-    for (const nodeId of Object.keys(netBeliefs)) {
+    Object.keys(netBeliefs).forEach((nodeId) => {
       const key = createKey(networkId, nodeId);
       const newNodeId = identifiers.originalToNew[key];
 
       newBeliefs[newNodeId] = netBeliefs[nodeId];
-    }
-  }
+    });
+  });
 
   try {
     const inferResults = combNodesAndBeliefs(nodes, newBeliefs, infereceEnabled);
 
-    for (const newNetworkId of Object.keys(inferResults)) {
-      const result = inferResults[newNetworkId];
-      const networks = identifiers.newToOriginal[newNetworkId];
+    Object.keys(inferResults).forEach((newNetworkId) => {
+      const inferResult = inferResults[newNetworkId];
 
-      for (const original of networks) {
+      identifiers.newToOriginal[newNetworkId].forEach((original) => {
         const { networkId, nodeId } = original;
 
-        addResult(networkId, nodeId, result);
-      }
-    }
+        addResult(networkId, nodeId, inferResult);
+      });
+    });
 
     return result;
   } catch (e) {
-    console.log(e);
+    console.warn(e);
     return {};
   }
 };
@@ -197,7 +188,7 @@ export const combAllLinkagesBySubnetwork = (links, nodes) => {
 
   const groups = {};
 
-  const func = (linkage, subLinkage, id) => {
+  const func = (linkage, subLinkage) => {
     if (groups[subLinkage.networkId]) {
       groups[subLinkage.networkId].push(linkage);
     } else {
@@ -207,12 +198,12 @@ export const combAllLinkagesBySubnetwork = (links, nodes) => {
     }
   };
 
-  for (const linkage of linkages) {
+  linkages.forEach((linkage) => {
     const [l1, l2] = linkage;
 
     func(linkage, l1);
     func(linkage, l2);
-  }
+  });
 
   nodes.forEach((node) => {
     if (groups[node.id] === undefined) {
@@ -228,10 +219,10 @@ export const combLinkagesByTwoSubnetwork = (linkages) => {
   const groups = [];
 
   const findGroupsItem = (l1, l2) => {
-    const temp = groups.find(g => g.networkId1 == l1.networkId && g.networkId2 == l2.networkId);
+    const temp = groups.find(g => g.networkId1 === l1.networkId && g.networkId2 === l2.networkId);
 
     if (temp) return temp;
-    return groups.find(g => g.networkId1 == l2.networkId && g.networkId2 == l1.networkId);
+    return groups.find(g => g.networkId1 === l2.networkId && g.networkId2 === l1.networkId);
   };
 
   ids.forEach((id) => {
