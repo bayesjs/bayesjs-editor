@@ -1,26 +1,24 @@
-import { combineReducers } from 'redux';
+import { v4 } from 'uuid';
+import {
+  CHANGE_NETWORK_PROPERTY,
+  CHANGE_NODE_ID,
+  LOAD_NETWORK,
+  NETWORK_KINDS,
+  NEW_NETWORK,
+  REMOVE_NODE,
+  SET_BELIEF,
+} from '../actions';
+
+import linkagesRed from './linkages';
 import nodesRed from './nodes';
 import positionsRed from './positions';
 import subnetworkRed from './subnetwork';
-import linkagesRed from './linkages';
-import { v4 } from 'uuid';
 
 const ReducerNode = nodesRed;
 const ReducerPosition = positionsRed;
 const ReducerSubNetwork = subnetworkRed;
 const ReducerLinkages = linkagesRed;
 
-import {
-  NEW_NETWORK,
-  LOAD_NETWORK,
-  CHANGE_NETWORK_PROPERTY,
-  REMOVE_NODE,
-  CHANGE_NODE_ID,
-  SET_BELIEF,
-  NETWORK_KINDS,
-  UNDO,
-  REDO,
-} from '../actions';
 
 const initialState = {
   id: '',
@@ -53,7 +51,7 @@ const setBelief = (state, action) => {
   if (subnetworkId) {
     const beliefsSubnet = beliefs[subnetworkId] || {};
     const subnetwork = state.subnetworks
-      .find(s => s.id == subnetworkId);
+      .find(s => s.id === subnetworkId);
 
     beliefs[subnetworkId] = changeBelife(beliefsSubnet, action.payload.state, nodeId);
     subnetwork.beliefs = changeBelife(subnetwork.beliefs, action.payload.state, nodeId);
@@ -86,7 +84,7 @@ export default (state = initialState, action) => {
   const completer = completeReducer(state, action);
 
   switch (action.type) {
-    case NEW_NETWORK:
+    case NEW_NETWORK: {
       const { kind } = action;
 
       return completer({
@@ -94,21 +92,23 @@ export default (state = initialState, action) => {
         id: v4(),
         kind,
       });
-    case LOAD_NETWORK:
-      let { network, nodes, positions } = action.payload.state;
+    }
+    case LOAD_NETWORK: {
+      const { network, nodes, positions } = action.payload.state;
 
       if (network.kind === undefined) network.kind = NETWORK_KINDS.BN;
       if (network.id === undefined) network.id = v4();
 
       if (nodes && positions) {
-        network = {
+        return completer({
           ...network,
           nodes,
           positions,
-        };
+        });
       }
 
       return completer(network);
+    }
     case CHANGE_NETWORK_PROPERTY:
       return completer({
         ...state,
@@ -122,8 +122,8 @@ export default (state = initialState, action) => {
     case CHANGE_NODE_ID:
       return completer({
         ...state,
-        selectedNodes: state.selectedNodes.map(x =>
-          (x === action.payload.id ? action.payload.nextId : x)),
+        selectedNodes: state.selectedNodes
+          .map(x => (x === action.payload.id ? action.payload.nextId : x)),
       });
     case SET_BELIEF:
       return completer({
