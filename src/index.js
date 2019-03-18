@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import Modal from 'react-modal';
 import configureStore from './store/configureStore';
 import { loadState } from './middlewares/persistState';
 import App from './components/App';
-import Modal from 'react-modal';
 
 import 'normalize.css';
 import 'font-awesome/css/font-awesome.css';
