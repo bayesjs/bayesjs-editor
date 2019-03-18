@@ -1,4 +1,7 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
+import { positionPropTypes } from '../../models';
 
 class Arrow extends Component {
   makeControlPoint = (point, n = 50) => {
@@ -36,7 +39,6 @@ class Arrow extends Component {
     } = this.props;
     const style = { cursor: 'pointer' };
     const d = this.makeLine(from, to);
-    const empty = () => {};
 
     return (
       <g>
@@ -66,12 +68,17 @@ class Arrow extends Component {
   }
 }
 
+Arrow.defaultProps = {
+  markEndStyle: '',
+};
+
 Arrow.propTypes = {
-  from: PropTypes.object.isRequired,
-  to: PropTypes.object.isRequired,
+  from: PropTypes.objectOf(positionPropTypes).isRequired,
+  to: PropTypes.objectOf(positionPropTypes).isRequired,
   onMouseDown: PropTypes.func.isRequired,
   markEnd: PropTypes.bool.isRequired,
   markEndStyle: PropTypes.string,
+  title: PropTypes.string.isRequired,
 };
 
 export default Arrow;

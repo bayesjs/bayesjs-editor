@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import styles from './styles.css';
 
 const NodeGeneric = ({
@@ -11,7 +12,6 @@ const NodeGeneric = ({
   rectRef,
   onDoubleClick,
   stroke,
-  title,
   canMove,
   opacity,
   children,
@@ -28,8 +28,8 @@ const NodeGeneric = ({
     <rect
       height={25 + (sumHeight || 0)}
       width="160"
-      fill={stroke || '#ff8'}
-      fillOpacity={opacity || '1'}
+      fill={stroke}
+      fillOpacity={opacity}
       stroke="#333"
       strokeWidth={selected ? 3 : 1}
       ref={rectRef}
@@ -55,6 +55,15 @@ const NodeGeneric = ({
   </g>
 );
 
+NodeGeneric.defaultProps = {
+  children: null,
+  sumHeight: 0,
+  onDoubleClick: () => {},
+  stroke: '#ff8',
+  canMove: false,
+  opacity: '1',
+};
+
 NodeGeneric.propTypes = {
   id: PropTypes.string.isRequired,
   x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
@@ -62,6 +71,12 @@ NodeGeneric.propTypes = {
   selected: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   rectRef: PropTypes.func.isRequired,
+  sumHeight: PropTypes,
+  children: PropTypes.element,
+  onDoubleClick: PropTypes.func,
+  stroke: PropTypes.string,
+  canMove: PropTypes.bool,
+  opacity: PropTypes.string,
 };
 
 export default NodeGeneric;

@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import RenderIntoBody from '../RenderIntoBody';
 import styles from './styles.css';
@@ -16,10 +18,6 @@ class ContextMenu extends Component {
     window.removeEventListener('scroll', this.handleWindowMouseDown);
     window.removeEventListener('mousedown', this.handleWindowMouseDown);
   }
-
-  // setContextItem = (item) => {
-  //   this.contextItem = item;
-  // }
 
   hide = () => {
     this.setState({ position: null });
@@ -77,14 +75,14 @@ class ContextMenu extends Component {
     }
   };
 
-  getItens = (item) => {
+  getItens = () => {
     const { items } = this.props;
 
     return items.filter(({ visible }) => {
       if (visible !== undefined) {
         if (typeof visible === 'boolean') {
           return visible;
-        } else if (typeof visible === 'function') {
+        } if (typeof visible === 'function') {
           return visible(this.contextItem);
         }
       }
@@ -111,7 +109,7 @@ class ContextMenu extends Component {
         onContextMenu={this.handleContextMenu}
       >
         {this.getItens().map(item => (
-          <li
+          <li // eslint-disable-line
             key={item.key}
             style={item.style || {}}
             className={classNames({

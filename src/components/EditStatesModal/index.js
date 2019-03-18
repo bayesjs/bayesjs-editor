@@ -1,10 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeNodeStates } from '../../actions';
+import Button from '../Button';
 import EditStatesList from '../EditStatesList';
 import Modal from '../Modal';
-import Button from '../Button';
+import { changeNodeStates } from '../../actions';
 import styles from './styles.css';
+import { nodePropTypes } from '../../models';
 
 class EditStatesModal extends Component {
   state = {
@@ -12,44 +15,52 @@ class EditStatesModal extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.node == null && nextProps.node != null) {
+    const { node } = this.props;
+
+    if (node == null && nextProps.node != null) {
       this.setState({ states: [...nextProps.node.states] });
       setTimeout(() => this.statesList.focusAddInput(), 0);
     }
   }
 
   handleAddState = (newState) => {
+    const { states } = this.state;
+
     this.setState({
-      states: [...this.state.states, newState],
+      states: [...states, newState],
     });
   };
 
   handleDeleteState = (state) => {
+    const { states } = this.state;
+
     this.setState({
-      states: this.state.states.filter(x => x !== state),
+      states: states.filter(x => x !== state),
     });
   };
 
   handleSaveClick = () => {
-    let states = this.state.states;
+    const { dispatch, node, onRequestClose } = this.props;
+    let { states } = this.state;
 
     if (states.length === 0) {
-      alert('Você deve informar pelo menos um estado');
+      window.alert('Você deve informar pelo menos um estado');
       return;
     }
 
     if (this.statesList.getAddInputText() !== '') {
-      if (confirm('O estado preenchido não foi adicionado na lista. Deseja adicionar?')) {
+      if (window.confirm('O estado preenchido não foi adicionado na lista. Deseja adicionar?')) {
         states = [...states, this.statesList.getAddInputText()];
       }
     }
 
-    this.props.dispatch(changeNodeStates(this.props.node.id, states));
-    this.props.onRequestClose();
+    dispatch(changeNodeStates(node.id, states));
+    onRequestClose();
   };
 
   render() {
     const { node, onRequestClose } = this.props;
+    const { states } = this.state;
     let nodeId = '';
     let children = null;
 
@@ -58,10 +69,10 @@ class EditStatesModal extends Component {
       children = (
         <div className={styles.container}>
           <EditStatesList
-            states={this.state.states}
+            states={states}
             onAddState={this.handleAddState}
             onDeleteState={this.handleDeleteState}
-            ref={ref => (this.statesList = ref)}
+            ref={(ref) => { this.statesList = ref; }}
           />
 
           <div className={styles.buttons}>
@@ -86,7 +97,7 @@ class EditStatesModal extends Component {
 
 EditStatesModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  node: PropTypes.object,
+  node: nodePropTypes.isRequired,
   onRequestClose: PropTypes.func.isRequired,
 };
 

@@ -1,9 +1,11 @@
-import React, { Component, PropTypes } from 'react';
-import { } from '../../actions';
-import Modal from '../Modal';
-import Button from '../Button';
-import styles from './styles.css';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
+import Button from '../Button';
+import Modal from '../Modal';
+import styles from './styles.css';
+import { linkagesPropTypes } from '../../models';
 
 class LinkagesModal extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class LinkagesModal extends Component {
     };
   }
 
-  onDeleteLinkage = (id, index) => (e) => {
+  onDeleteLinkage = (id, index) => () => {
     const { deletedLinkages, linkagesList } = this.state;
 
     this.setState({
@@ -26,7 +28,7 @@ class LinkagesModal extends Component {
         ...deletedLinkages,
         id,
       ],
-      linkagesList: linkagesList.filter((_, i) => i != index),
+      linkagesList: linkagesList.filter((_, i) => i !== index),
     });
   };
 
@@ -54,6 +56,7 @@ class LinkagesModal extends Component {
   };
 
   createTable = (linkagesList) => {
+    const { subnetworksById } = this.props;
     if (linkagesList.length === 0) {
       return (
         <div className={styles.message}>
@@ -74,7 +77,7 @@ class LinkagesModal extends Component {
           </tr>
         </thead>
         <tbody>
-          {linkagesList.sort(this.sort(this.props.subnetworksById)).map(this.getTableRow)}
+          {linkagesList.sort(this.sort(subnetworksById)).map(this.getTableRow)}
         </tbody>
       </table>
     );
@@ -106,13 +109,13 @@ class LinkagesModal extends Component {
     const nodeB2 = node(linkage2, 1);
 
     if (netA1 > netA2) return 1;
-    else if (netA1 < netA2) return -1;
-    else if (netB1 > netB2) return 1;
-    else if (netB1 < netB2) return -1;
-    else if (nodeA1 < nodeA2) return -1;
-    else if (nodeA1 > nodeA2) return 1;
-    else if (nodeB1 < nodeB2) return -1;
-    else if (nodeB1 > nodeB2) return 1;
+    if (netA1 < netA2) return -1;
+    if (netB1 > netB2) return 1;
+    if (netB1 < netB2) return -1;
+    if (nodeA1 < nodeA2) return -1;
+    if (nodeA1 > nodeA2) return 1;
+    if (nodeB1 < nodeB2) return -1;
+    if (nodeB1 > nodeB2) return 1;
 
     return 0;
   }
@@ -145,7 +148,6 @@ class LinkagesModal extends Component {
   };
 
   render() {
-    const { visible } = this.props;
     const { linkagesList } = this.state;
 
     return (
@@ -168,9 +170,9 @@ class LinkagesModal extends Component {
 }
 
 LinkagesModal.propTypes = {
-  linkages: PropTypes.object.isRequired,
+  linkages: linkagesPropTypes.isRequired,
   onRequestClose: PropTypes.func.isRequired,
-  subnetworksById: PropTypes.object.isRequired,
+  subnetworksById: PropTypes.object.isRequired, // eslint-disable-line
 };
 
 export default LinkagesModal;

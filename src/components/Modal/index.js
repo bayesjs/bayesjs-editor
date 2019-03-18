@@ -1,9 +1,9 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
-
-import styles from './styles.css';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
+import styles from './styles.css';
 
 const style = {
   overlay: {
@@ -49,11 +49,15 @@ const Modal = ({
   </ReactModal>
 );
 
+Modal.defaultProps = {
+  children: null,
+};
+
 Modal.propTypes = {
   title: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
-  children: PropTypes.any,
+  children: PropTypes.element,
 };
 
 export default Modal;

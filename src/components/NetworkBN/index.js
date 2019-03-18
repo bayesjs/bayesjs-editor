@@ -1,30 +1,32 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Network, { ContextMenuType } from '../Network';
-import Node from '../Node';
-import Arrow from '../Arrow';
-import AddNodeModal from '../AddNodeModal';
-import EditStatesModal from '../EditStatesModal';
-import EditCptModal from '../EditCptModal';
-
 import {
-  getNetwork,
-  getNodesWithPositions,
-  getInferenceResults,
-} from '../../selectors';
-
-import {
-  removeNode,
   addParent,
-  removeParent,
   changeNetworkProperty,
   changeNodePosition,
+  removeNode,
+  removeParent,
   setBelief,
 } from '../../actions';
+import {
+  getInferenceResults,
+  getNetwork,
+  getNodesWithPositions,
+} from '../../selectors';
+
+import AddNodeModal from '../AddNodeModal';
+import Arrow from '../Arrow';
+import EditCptModal from '../EditCptModal';
+import EditStatesModal from '../EditStatesModal';
+import Node from '../Node';
+import { nodePropTypes, networkPropTypes, inferenceResultsPropTypes } from '../../models';
 
 class NetworkBN extends Component {
   constructor(props) {
     super(props);
+    const { dispatch } = props;
 
     this.state = {
       key: 1,
@@ -69,7 +71,7 @@ class NetworkBN extends Component {
         text: 'Remover variável',
         style: { color: '#C62828' },
         onClick: (contextMenuNode) => {
-          this.props.dispatch(removeNode(contextMenuNode.id));
+          dispatch(removeNode(contextMenuNode.id));
           setTimeout(() => this.calculateArrows(), 0);
         },
       },
@@ -82,7 +84,7 @@ class NetworkBN extends Component {
         style: { color: '#C62828' },
         onClick: (contextMenuArrow) => {
           const { childId, parentId } = contextMenuArrow;
-          this.props.dispatch(removeParent(childId, parentId));
+          dispatch(removeParent(childId, parentId));
           setTimeout(() => this.calculateArrows(), 0);
         },
       },
@@ -115,39 +117,47 @@ class NetworkBN extends Component {
     />
   );
 
-  renderNode = (node, props) => (
-    <Node
-      key={node.id}
-      id={node.id}
-      states={node.states}
-      results={this.props.inferenceResults[node.id]}
-      selected={this.props.network.selectedNodes.some(x => x === node.id)}
-      belief={this.props.network.beliefs[node.id]}
-      x={node.position.x}
-      y={node.position.y}
-      onStateDoubleClick={state => this.onSetBelief(node, state)}
-      {...props}
-    />
-  );
+  renderNode = (node, props) => {
+    const { inferenceResults, network } = this.props;
+
+    return (
+      <Node
+        key={node.id}
+        id={node.id}
+        states={node.states}
+        results={inferenceResults[node.id]}
+        selected={network.selectedNodes.some(x => x === node.id)}
+        belief={network.beliefs[node.id]}
+        x={node.position.x}
+        y={node.position.y}
+        onStateDoubleClick={state => this.onSetBelief(node, state)}
+        {...props}
+      />
+    );
+  }
 
   onSelectNodes = (nodes) => {
-    this.props.dispatch(changeNetworkProperty('selectedNodes', nodes));
+    const { dispatch } = this.props;
+
+    dispatch(changeNetworkProperty('selectedNodes', nodes));
   };
 
   handleKeyup = (e) => {
     const key = e.keyCode || e.which;
-    const { network } = this.props;
-    
-    if ([8, 46].indexOf(key) !== -1 && network.selectedNodes.length > 0 && document.activeElement.tagName === "BODY") {
-      network.selectedNodes.map((nodeId) => {
-        this.props.dispatch(removeNode(nodeId));
+    const { network, dispatch } = this.props;
+
+    if ([8, 46].indexOf(key) !== -1 && network.selectedNodes.length > 0 && document.activeElement.tagName === 'BODY') {
+      network.selectedNodes.forEach((nodeId) => {
+        dispatch(removeNode(nodeId));
       });
       setTimeout(() => this.calculateArrows(), 0);
     }
   }
 
   onAddConnection = (idFrom, idTo) => {
-    this.props.dispatch(addParent(idFrom, idTo));
+    const { dispatch } = this.props;
+
+    dispatch(addParent(idFrom, idTo));
   };
 
   onCancelConnection = () => {
@@ -155,10 +165,12 @@ class NetworkBN extends Component {
   };
 
   onSetBelief = (node, state) => {
-    if (this.props.network.beliefs[node.id] === state) {
-      this.props.dispatch(setBelief(node.id, null));
+    const { dispatch, network } = this.props;
+
+    if (network.beliefs[node.id] === state) {
+      dispatch(setBelief(node.id, null));
     } else {
-      this.props.dispatch(setBelief(node.id, state));
+      dispatch(setBelief(node.id, state));
     }
   };
 
@@ -170,7 +182,9 @@ class NetworkBN extends Component {
   );
 
   changeNodePosition = (id, newX, newY) => {
-    this.props.dispatch(changeNodePosition(id, newX, newY));
+    const { dispatch } = this.props;
+
+    dispatch(changeNodePosition(id, newX, newY));
     setTimeout(this.net.renderArrows, 0);
   };
 
@@ -180,8 +194,10 @@ class NetworkBN extends Component {
 
   handleRequestRedraw = () => {
     setTimeout(() => {
+      const { key } = this.state;
+
       this.calculateArrows();
-      this.setState({ key: this.state.key + 1 });
+      this.setState({ key: key + 1 });
     }, 0);
   };
 
@@ -217,11 +233,14 @@ class NetworkBN extends Component {
   };
 
   render() {
+    const { network, nodes } = this.props;
+    const { editingNodeStates, editingNodeCpt } = this.state;
+
     return (
       <div>
         <Network
-          network={this.props.network}
-          nodes={this.props.nodes}
+          network={network}
+          nodes={nodes}
           arrows={this.getArrows}
           renderNode={this.renderNode}
           renderArrow={this.renderArrow}
@@ -231,11 +250,11 @@ class NetworkBN extends Component {
           changeNodePosition={this.changeNodePosition}
           getContextItems={this.getContextItems}
           requestCreateNode={this.requestCreateNode}
-          ref={ref => (this.net = ref)}
+          ref={(ref) => { this.net = ref; }}
         />
 
         <EditStatesModal
-          node={this.state.editingNodeStates}
+          node={editingNodeStates}
           onRequestClose={() => {
             this.setState({ editingNodeStates: null });
             this.handleRequestRedraw();
@@ -243,7 +262,7 @@ class NetworkBN extends Component {
         />
 
         <EditCptModal
-          node={this.state.editingNodeCpt}
+          node={editingNodeCpt}
           onRequestClose={() => this.setState({ editingNodeCpt: null })}
         />
       </div>
@@ -253,9 +272,9 @@ class NetworkBN extends Component {
 
 NetworkBN.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  network: PropTypes.object.isRequired,
-  nodes: PropTypes.array.isRequired,
-  inferenceResults: PropTypes.object.isRequired,
+  network: networkPropTypes.isRequired,
+  nodes: PropTypes.arrayOf(nodePropTypes).isRequired,
+  inferenceResults: inferenceResultsPropTypes.isRequired,
 };
 
 const mapStateToProps = (s, ownProps) => {
