@@ -1,11 +1,11 @@
 import {
-  NEW_NETWORK,
-  LOAD_NETWORK,
   ADD_NODE,
-  REMOVE_NODE,
+  ADD_SUPER_NODE,
   CHANGE_NODE_ID,
   CHANGE_NODE_POSITION,
-  ADD_SUPER_NODE,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+  REMOVE_NODE,
 } from '../actions';
 
 export default (state = {}, action) => {

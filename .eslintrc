@@ -7,6 +7,17 @@
   "rules": {
     "no-alert": 0,
     "no-loop-func": 0,
-    "no-param-reassign": 0
+    "no-param-reassign": 0,
+    "no-plusplus": "off",
+    "no-continue": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/click-events-have-key-events": "off"
+  },
+  "globals": {
+    "window": "readonly",
+    "localStorage": "readonly",
+    "document": "readonly"
   }
 }

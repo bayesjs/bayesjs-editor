@@ -1,9 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeNodeId, changeNodeDescription } from '../../actions';
-import { getNodes } from '../../selectors';
+import { changeNodeDescription, changeNodeId } from '../../actions';
+
 import Button from '../Button';
+import { getNodes } from '../../selectors';
 import styles from './styles.css';
+import { nodePropTypes } from '../../models';
 
 class PropertiesNode extends Component {
   constructor(props) {
@@ -37,9 +40,10 @@ class PropertiesNode extends Component {
 
   handleNodeNameBlur = (e) => {
     const { node, nodes, dispatch } = this.props;
+    const { inputText } = this.state;
     const input = e.target;
-    const id = node.id;
-    const nextId = this.state.inputText;
+    const { id } = node;
+    const nextId = inputText;
 
     const alreadyExits = nodes
       .filter(x => x.id !== id)
@@ -69,41 +73,46 @@ class PropertiesNode extends Component {
   };
 
   render() {
-    const { node } = this.props;
+    const { node, onEditNodeCpt, onEditNodeStates } = this.props;
+    const { inputText, nodeDescription } = this.state;
 
     return (
       <div>
         <h2>Propriedades da Variável</h2>
 
         <div className={styles.fieldWrapper}>
-          <label htmlFor="name">Nome</label>
-          <input
-            id="name"
-            type="text"
-            value={this.state.inputText}
-            onChange={this.handleOnChange}
-            onBlur={this.handleNodeNameBlur}
-          />
+          <label htmlFor="name">
+          Nome
+            <input
+              id="name"
+              type="text"
+              value={inputText}
+              onChange={this.handleOnChange}
+              onBlur={this.handleNodeNameBlur}
+            />
+          </label>
         </div>
 
         <div className={styles.fieldWrapper}>
-          <label htmlFor="description">Descrição</label>
-          <textarea
-            id="description"
-            value={this.state.nodeDescription}
-            onChange={this.handleOnChange}
-            onBlur={this.handleNodeDescripionBlur}
-          />
+          <label htmlFor="description">
+          Descrição
+            <textarea
+              id="description"
+              value={nodeDescription}
+              onChange={this.handleOnChange}
+              onBlur={this.handleNodeDescripionBlur}
+            />
+          </label>
         </div>
 
         <div className={styles.fieldWrapper}>
-          <Button onClick={() => this.props.onEditNodeStates(node)}>
+          <Button onClick={() => onEditNodeStates(node)}>
             Editar estados
           </Button>
         </div>
 
         <div className={styles.fieldWrapper}>
-          <Button onClick={() => this.props.onEditNodeCpt(node)}>
+          <Button onClick={() => onEditNodeCpt(node)}>
             Editar probabilidades
           </Button>
         </div>
@@ -113,9 +122,11 @@ class PropertiesNode extends Component {
 }
 
 PropertiesNode.propTypes = {
-  node: PropTypes.object.isRequired,
+  node: nodePropTypes.isRequired,
   onEditNodeStates: PropTypes.func.isRequired,
   onEditNodeCpt: PropTypes.func.isRequired,
+  nodes: PropTypes.arrayOf(nodePropTypes).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

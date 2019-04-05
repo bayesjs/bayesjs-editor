@@ -1,24 +1,25 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { changeNetworkProperty, NETWORK_KINDS } from '../../actions';
+import PropTypes from 'prop-types';
+import { NETWORK_KINDS, changeNetworkProperty } from '../../actions';
 import { getNetwork, getNetworkKind } from '../../selectors';
+
 import styles from './styles.css';
+import { networkPropTypes } from '../../models';
 
 class PropertiesNetwork extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleNetworkPropertyBlur = (e) => {
+    const { dispatch } = this.props;
     const { id, value } = e.target;
 
-    this.props.dispatch(changeNetworkProperty(id, value));
+    dispatch(changeNetworkProperty(id, value));
   };
 
   onChangeCheck = (e) => {
+    const { dispatch } = this.props;
     const { id, checked } = e.target;
 
-    this.props.dispatch(changeNetworkProperty(id, checked));
+    dispatch(changeNetworkProperty(id, checked));
   }
 
   handleKeyUp = (e) => {
@@ -30,14 +31,15 @@ class PropertiesNetwork extends Component {
   };
 
   handleNetworkSizeBlur = (e) => {
+    const { dispatch, network } = this.props;
     const input = e.target;
     const name = input.id;
     const value = parseInt(input.value, 10);
 
-    if (isNaN(value)) {
-      input.value = this.props.network[name];
+    if (Number.isNaN(value)) {
+      input.value = network[name];
     } else {
-      this.props.dispatch(changeNetworkProperty(name, value));
+      dispatch(changeNetworkProperty(name, value));
     }
   };
 
@@ -67,49 +69,59 @@ class PropertiesNetwork extends Component {
         <h3>{this.typeNetwork()}</h3>
 
         <div className={styles.fieldWrapper}>
-          <label htmlFor="name">Nome</label>
-          <input
-            id="name"
-            type="text"
-            defaultValue={network.name}
-            onBlur={this.handleNetworkPropertyBlur}
-            onKeyUp={this.handleKeyUp}
-          />
+          <label htmlFor="name">
+          Nome
+            <input
+              id="name"
+              type="text"
+              defaultValue={network.name}
+              onBlur={this.handleNetworkPropertyBlur}
+              onKeyUp={this.handleKeyUp}
+            />
+          </label>
+
         </div>
 
         <div className={styles.fieldWrapper}>
-          <label htmlFor="description">Descrição</label>
-          <textarea
-            id="description"
-            defaultValue={network.description || ''}
-            onBlur={this.handleNetworkPropertyBlur}
-          />
+          <label htmlFor="description">
+          Descrição
+            <textarea
+              id="description"
+              defaultValue={network.description || ''}
+              onBlur={this.handleNetworkPropertyBlur}
+            />
+          </label>
         </div>
 
         <div className={styles.fieldWrapper}>
-          <label htmlFor="height">Altura</label>
-          <input
-            id="height"
-            type="text"
-            defaultValue={network.height}
-            onBlur={this.handleNetworkSizeBlur}
-            onKeyUp={this.handleNetworkSizeBlurKeyup}
-          />
+          <label htmlFor="height">
+          Altura
+            <input
+              id="height"
+              type="text"
+              defaultValue={network.height}
+              onBlur={this.handleNetworkSizeBlur}
+              onKeyUp={this.handleNetworkSizeBlurKeyup}
+            />
+          </label>
+
         </div>
 
         <div className={styles.fieldWrapper}>
-          <label htmlFor="width">Largura</label>
-          <input
-            id="width"
-            type="text"
-            defaultValue={network.width}
-            onBlur={this.handleNetworkSizeBlur}
-            onKeyUp={this.handleNetworkSizeBlurKeyup}
-          />
+          <label htmlFor="width">
+          Largura
+            <input
+              id="width"
+              type="text"
+              defaultValue={network.width}
+              onBlur={this.handleNetworkSizeBlur}
+              onKeyUp={this.handleNetworkSizeBlurKeyup}
+            />
+          </label>
         </div>
 
         <div className={styles.checkbox}>
-          <label>
+          <label htmlFor="inferenceEnabled">
             <input
               id="inferenceEnabled"
               type="checkbox"
@@ -124,22 +136,16 @@ class PropertiesNetwork extends Component {
   }
 }
 
-{ /* <div className={styles.checkbox}>
-          <label>
-            <input
-              id="showPercent"
-              type="checkbox"
-              value={true}
-              onChange={this.onChangeCheck}
-          />
-          Mostar Percentual
-          </label>
-        </div> */ }
+PropertiesNetwork.propTypes = {
+  network: networkPropTypes.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  networkKind: PropTypes.string.isRequired,
+};
+
 
 const mapStateToProps = state => ({
   network: getNetwork(state),
   networkKind: getNetworkKind(state),
 });
-
 
 export default connect(mapStateToProps)(PropertiesNetwork);

@@ -1,15 +1,18 @@
-import { Component, PropTypes } from 'react';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 class RenderIntoBody extends Component {
   componentDidMount() {
+    const { children } = this.props;
     this.container = document.createElement('div');
     document.body.appendChild(this.container);
-    ReactDOM.render(this.props.children, this.container);
+    ReactDOM.render(children, this.container);
   }
 
   componentDidUpdate() {
-    ReactDOM.render(this.props.children, this.container);
+    const { children } = this.props;
+    ReactDOM.render(children, this.container);
   }
 
   componentWillUnmount() {
@@ -23,7 +26,7 @@ class RenderIntoBody extends Component {
 }
 
 RenderIntoBody.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default RenderIntoBody;

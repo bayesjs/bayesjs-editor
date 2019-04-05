@@ -1,7 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 import Button from '../Button';
 import styles from './styles.css';
-import fontAwesome from 'font-awesome/css/font-awesome.css';
+import { statesPropTypes } from '../../models';
 
 class EditStatesList extends Component {
   getAddInputText = () => this.input.value;
@@ -17,18 +20,19 @@ class EditStatesList extends Component {
   };
 
   handleAddClick = () => {
+    const { states, onAddState } = this.props;
     const newState = this.input.value;
 
     if (newState === '') {
       return;
     }
 
-    if (this.props.states.some(x => x === newState)) {
-      alert('Este estado já foi adicionado');
+    if (states.some(x => x === newState)) {
+      window.alert('Este estado já foi adicionado');
       return;
     }
 
-    this.props.onAddState(newState);
+    onAddState(newState);
     this.input.value = '';
   };
 
@@ -55,7 +59,7 @@ class EditStatesList extends Component {
           <input
             type="text"
             onKeyDown={this.handleInputKeyDown}
-            ref={ref => (this.input = ref)}
+            ref={(ref) => { this.input = ref; }}
           />
           <Button
             onClick={this.handleAddClick}
@@ -70,7 +74,7 @@ class EditStatesList extends Component {
 }
 
 EditStatesList.propTypes = {
-  states: PropTypes.array.isRequired,
+  states: statesPropTypes.isRequired,
   onAddState: PropTypes.func.isRequired,
   onDeleteState: PropTypes.func.isRequired,
 };

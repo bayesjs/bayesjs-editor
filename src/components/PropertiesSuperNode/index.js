@@ -1,15 +1,11 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { changeNodeId } from '../../actions';
-import { getNodes } from '../../selectors';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
 import Button from '../Button';
 import styles from './styles.css';
+import { subnetworkPropTypes } from '../../models';
 
 class PropertiesSuperNode extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   getDrescription = (subnetwork) => {
     const { description } = subnetwork;
 
@@ -22,7 +18,9 @@ class PropertiesSuperNode extends Component {
   }
 
   render() {
-    const { subnetwork } = this.props;
+    const {
+      subnetwork, onViewSubnetwork, onViewLinkages, onStartConnection,
+    } = this.props;
 
     return (
       <div>
@@ -31,19 +29,19 @@ class PropertiesSuperNode extends Component {
         {this.getDrescription(subnetwork)}
 
         <div className={styles.fieldWrapper}>
-          <Button onClick={() => this.props.onViewSubnetwork(subnetwork)}>
+          <Button onClick={() => onViewSubnetwork(subnetwork)}>
             Visualizar Rede
           </Button>
         </div>
 
         <div className={styles.fieldWrapper}>
-          <Button onClick={() => this.props.onViewLinkages(subnetwork)}>
+          <Button onClick={() => onViewLinkages(subnetwork)}>
             Visualizar Uniões
           </Button>
         </div>
 
         <div className={styles.fieldWrapper}>
-          <Button onClick={() => this.props.onStartConnection(subnetwork)}>
+          <Button onClick={() => onStartConnection(subnetwork)}>
             Adicionar União
           </Button>
         </div>
@@ -53,7 +51,7 @@ class PropertiesSuperNode extends Component {
 }
 
 PropertiesSuperNode.propTypes = {
-  subnetwork: PropTypes.object.isRequired,
+  subnetwork: subnetworkPropTypes.isRequired,
   onStartConnection: PropTypes.func.isRequired,
   onViewSubnetwork: PropTypes.func.isRequired,
   onViewLinkages: PropTypes.func.isRequired,

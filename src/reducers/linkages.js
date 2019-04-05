@@ -1,8 +1,7 @@
 import {
-  NEW_NETWORK,
-  LOAD_NETWORK,
-  REMOVE_NODE,
   ADD_LINKAGE,
+  LOAD_NETWORK,
+  NEW_NETWORK,
   REMOVE_LINKAGE,
 } from '../actions';
 
@@ -15,15 +14,17 @@ export default (state = {}, action) => {
         ...state,
         [Date.now()]: action.payload.linkage,
       };
-    case REMOVE_LINKAGE:
+    case REMOVE_LINKAGE: {
       const { id } = action.payload;
       const newState = { ...state };
       delete newState[id];
 
       return newState;
-    case LOAD_NETWORK:
+    }
+    case LOAD_NETWORK: {
       const { linkages } = action.payload.state.network;
       return linkages || {};
+    }
     default:
       return state;
   }

@@ -1,23 +1,31 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import { getInferenceEnabled } from '../../selectors';
+
+const getResult = (results, state, belief) => {
+  if (belief !== null) {
+    return belief === state ? 1 : 0;
+  }
+
+  return results[state];
+};
+
+const getTextX = (result) => {
+  if (result === 1) return 97;
+  if (result >= 0.1) return 100;
+
+  return 103;
+};
 
 const NodeState = ({
   belief,
   results,
   state,
   onStateDoubleClick,
-  inferenceEnabled,
   index,
 }) => {
-  let result;
-
-  if (belief != null) {
-    result = belief === state ? 1 : 0;
-  } else {
-    result = results[state];
-  }
-
+  const result = getResult(results, state, belief);
   const percent = 100 * result;
   const barWidth = 70 * result;
   const fillColor = belief != null ? '#EE4040' : '#9f9ff6';
@@ -47,7 +55,7 @@ const NodeState = ({
       />
 
       <text
-        x={result >= 0.1 ? (result === 1 ? 97 : 100) : 103}
+        x={getTextX(result)}
         y={36 + (18 * index)}
         height="15"
         fontSize="14px"
@@ -67,23 +75,29 @@ const NodeState = ({
         strokeWidth="1"
         onDoubleClick={() => onStateDoubleClick(state)}
       >
-        <title>{percent.toFixed(2)}%</title>
+        <title>
+          {percent.toFixed(2)}
+%
+        </title>
       </rect>
     </g>
   );
 };
 
+NodeState.defaultProps = {
+  belief: null,
+};
+
 NodeState.propTypes = {
-  children: PropTypes.object.isRequired,
-  results: PropTypes.object.isRequired,
+  results: PropTypes.objectOf(PropTypes.number).isRequired,
   state: PropTypes.string.isRequired,
   onStateDoubleClick: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
+  belief: PropTypes.string,
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   inferenceEnabled: getInferenceEnabled(state),
 });
 
 export default connect(mapStateToProps)(NodeState);
-// export default NodeState;

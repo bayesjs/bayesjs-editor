@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import NodeGeneric from '../NodeGeneric';
-import NodeState from '../NodeState';
+import { nodePropTypes } from '../../models';
 
 const SuperNode = (props) => {
   const { nodes } = props;
@@ -32,7 +33,7 @@ SuperNode.propTypes = {
   onMouseDown: PropTypes.func.isRequired,
   x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  nodes: PropTypes.array.isRequired,
+  nodes: PropTypes.arrayOf(nodePropTypes).isRequired,
 };
 
 export default SuperNode;

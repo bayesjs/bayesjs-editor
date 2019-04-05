@@ -1,13 +1,17 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { newNetwork, loadNetwork, newMSBNNetwork, NETWORK_KINDS } from '../../actions';
-import { getStateToSave } from '../../selectors';
-import { openFile, saveFile } from '../../utils/file';
-import Button from '../Button';
-import { v4 } from 'uuid';
-import fileDownload from 'react-file-download';
-import styles from './styles.css';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
+import { v4 } from 'uuid';
+import {
+  NETWORK_KINDS, loadNetwork, newNetwork,
+} from '../../actions';
+import { openFile, saveFile } from '../../utils/file';
+
+import Button from '../Button';
+import { getStateToSave } from '../../selectors';
+import styles from './styles.css';
+import { networkPropTypes } from '../../models';
 
 class Header extends Component {
   state = {
@@ -27,43 +31,52 @@ class Header extends Component {
   };
 
   handleToggleMenu = (e) => {
+    const { menuVisible } = this.state;
+
     e.stopPropagation();
-    this.setState({ menuVisible: !this.state.menuVisible });
+    this.setState({ menuVisible: !menuVisible });
   };
 
   handleNewNetworkClick = (e) => {
+    const { onRequestRedraw, dispatch } = this.props;
+
     e.preventDefault();
-    if (confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
-      this.props.dispatch(newNetwork());
-      this.props.onRequestRedraw();
+    if (window.confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
+      dispatch(newNetwork());
+      onRequestRedraw();
     }
   };
 
   handleNewMSBNNetworkClick = (e) => {
+    const { onRequestRedraw, dispatch } = this.props;
+
     e.preventDefault();
-    if (confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
-      this.props.dispatch(newNetwork(NETWORK_KINDS.MSBN));
-      this.props.onRequestRedraw();
+    if (window.confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
+      dispatch(newNetwork(NETWORK_KINDS.MSBN));
+      onRequestRedraw();
     }
   }
 
   handleOpenNetworkClick = (e) => {
+    const { onRequestRedraw, dispatch } = this.props;
+
     e.preventDefault();
     openFile('.json', (json) => {
       try {
         const state = JSON.parse(json);
 
-        this.props.dispatch(loadNetwork(state));
-        this.props.onRequestRedraw();
+        dispatch(loadNetwork(state));
+        onRequestRedraw();
       } catch (ex) {
         console.warn(ex);
-        alert('Arquivo inválido');
+        window.alert('Arquivo inválido');
       }
     });
   };
 
   getNetworkName = () => {
-    const { name } = this.props.stateToSave.network;
+    const { stateToSave } = this.props;
+    const { name } = stateToSave.network;
 
     if (name) {
       let newName = name.trim();
@@ -81,10 +94,10 @@ class Header extends Component {
     const state = {
       ...stateToSave,
       network: {
-        ...stateToSave.network
+        ...stateToSave.network,
       },
       nodes: stateToSave.network.nodes || [],
-      positions: stateToSave.network.positions || {}
+      positions: stateToSave.network.positions || {},
     };
 
     if (!state.network.id) {
@@ -116,6 +129,8 @@ class Header extends Component {
   )
 
   render() {
+    const { menuVisible } = this.state;
+
     return (
       <div className={styles.header}>
         <h1 className={styles.title}>Bayes Editor</h1>
@@ -126,7 +141,7 @@ class Header extends Component {
         >
           <i className={`${fontAwesome.fa} ${fontAwesome.faBars}`} />
         </Button>
-        {this.state.menuVisible && (
+        {menuVisible && (
           <ul className={styles.menu}>
             <li>
               <a href="" onClick={this.handleNewNetworkClick}>Nova Rede</a>
@@ -146,7 +161,7 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  stateToSave: PropTypes.object.isRequired,
+  stateToSave: networkPropTypes.isRequired,
   onRequestRedraw: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
 };

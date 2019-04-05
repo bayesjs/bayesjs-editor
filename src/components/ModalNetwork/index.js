@@ -1,6 +1,7 @@
-import React, { PropTypes, Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
+
 import ReactModal from 'react-modal';
+import PropTypes from 'prop-types';
 
 class ModalNetwork extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class ModalNetwork extends Component {
   }
 
   render() {
+    const { children } = this.props;
     const { visible } = this.state;
 
     return (
@@ -21,11 +23,19 @@ class ModalNetwork extends Component {
         contentLabel="Teste"
       >
 
-        {this.props.children}
+        {children}
 
       </ReactModal>
     );
   }
 }
+
+ModalNetwork.defaultProps = {
+  children: null,
+};
+
+ModalNetwork.propTypes = {
+  children: PropTypes.element,
+};
 
 export default ModalNetwork;

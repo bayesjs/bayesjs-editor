@@ -1,11 +1,14 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeNodeCpt } from '../../actions';
-import Modal from '../Modal';
+import float from 'float';
 import Button from '../Button';
 import InputCpt from '../InputCpt';
+import Modal from '../Modal';
+import { changeNodeCpt } from '../../actions';
 import styles from './styles.css';
-import float from 'float';
+import { nodePropTypes } from '../../models';
 
 class EditCptModal extends Component {
   state = {
@@ -13,7 +16,9 @@ class EditCptModal extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.node == null && nextProps.node != null) {
+    const { node } = this.props;
+
+    if (node == null && nextProps.node != null) {
       const { parents, cpt } = nextProps.node;
       let cptClone;
 
@@ -31,15 +36,16 @@ class EditCptModal extends Component {
   }
 
   handleCptWithoutParentsBlur = (e, state) => {
+    const { cpt } = this.state;
     const input = e.target;
     const value = parseFloat(input.value.replace(',', '.'));
 
-    if (isNaN(value)) {
-      input.value = this.state.cpt[state].toFixed(2);
+    if (Number.isNaN(value)) {
+      input.value = cpt[state].toFixed(2);
     } else {
       this.setState({
         cpt: {
-          ...this.state.cpt,
+          ...cpt,
           [state]: value,
         },
       });
@@ -60,13 +66,14 @@ class EditCptModal extends Component {
   }
 
   handleCptWithParentsBlur = (e, state, index) => {
+    const { cpt } = this.state;
     const input = e.target;
     const value = parseFloat(input.value.replace(',', '.'));
 
-    if (isNaN(value)) {
-      input.value = this.state.cpt[index].then[state];
+    if (Number.isNaN(value)) {
+      input.value = cpt[index].then[state];
     } else {
-      const nextCpt = this.state.cpt.map((row, rowIndex) => {
+      const nextCpt = cpt.map((row, rowIndex) => {
         if (rowIndex !== index) {
           return row;
         }
@@ -85,20 +92,22 @@ class EditCptModal extends Component {
   };
 
   handleSaveWithoutParents = () => {
+    const { dispatch, node, onRequestClose } = this.props;
     const { cpt } = this.state;
     const states = Object.keys(cpt);
     const sum = float.round(states.reduce((acc, x) => acc + cpt[x], 0), 2);
 
     if (sum !== 1) {
-      alert('A soma das probabilidades deve ser igual a 1');
+      window.alert('A soma das probabilidades deve ser igual a 1');
       return;
     }
 
-    this.props.dispatch(changeNodeCpt(this.props.node.id, cpt));
-    this.props.onRequestClose();
+    dispatch(changeNodeCpt(node.id, cpt));
+    onRequestClose();
   };
 
   handleSaveWithParents = () => {
+    const { dispatch, node, onRequestClose } = this.props;
     const { cpt } = this.state;
 
     for (let i = 0; i < cpt.length; i++) {
@@ -106,13 +115,13 @@ class EditCptModal extends Component {
       const sum = float.round(states.reduce((acc, x) => acc + cpt[i].then[x], 0), 2);
 
       if (sum !== 1) {
-        alert('A soma das probabilidades para cada uma das linhas deve ser igual a 1');
+        window.alert('A soma das probabilidades para cada uma das linhas deve ser igual a 1');
         return;
       }
     }
 
-    this.props.dispatch(changeNodeCpt(this.props.node.id, cpt));
-    this.props.onRequestClose();
+    dispatch(changeNodeCpt(node.id, cpt));
+    onRequestClose();
   };
 
   getValidValue = (value) => {
@@ -120,7 +129,7 @@ class EditCptModal extends Component {
 
     if (valueFloat > 1) {
       return 1;
-    } else if (valueFloat < 0) {
+    } if (valueFloat < 0) {
       return 0;
     }
 
@@ -134,31 +143,32 @@ class EditCptModal extends Component {
     return float.round((1 - valueFloat), precicion);
   };
 
-  onChangeWithParents = (currentState, value, valueFloat, twoStates, states, cptIndex) => {
-    const cpts = this.state.cpt;
-    const cpt = cpts[cptIndex];
-    const then = cpt.then;
+  onChangeWithParents = (currentState, _, valueFloat, twoStates, states, cptIndex) => {
+    const { cpt } = this.state;
+    const newCpt = cpt[cptIndex];
+    const { then } = newCpt;
     then[currentState] = valueFloat;
 
     if (twoStates) {
-      const state = states.find(state => state !== currentState);
+      const state = states.find(ste => ste !== currentState);
 
       then[state] = this.getRestFromValue(valueFloat);
     }
 
     this.setState({
-      cpt: cpts,
+      cpt,
     });
   };
 
-  onChangeWithoutParents = (currentState, value, valueFloat, twoStates, states) => {
+  onChangeWithoutParents = (currentState, _, valueFloat, twoStates, states) => {
+    const { cpt } = this.state;
     const newCpt = {
-      ...this.state.cpt,
+      ...cpt,
       [currentState]: valueFloat,
     };
 
     if (twoStates) {
-      const state = states.find(state => state !== currentState);
+      const state = states.find(ste => ste !== currentState);
 
       newCpt[state] = this.getRestFromValue(valueFloat);
     }
@@ -181,10 +191,22 @@ class EditCptModal extends Component {
     };
   };
 
-  renderCptWithoutParents() {
-    const { cpt } = this.state;
-    const states = Object.keys(cpt);
+  sumCptThen = (cpt) => {
+    const keys = Object.keys(cpt);
+    const sum = keys
+      .map(key => cpt[key])
+      .reduce((acc, v) => acc + v);
 
+    return float.round(sum, 2);
+  }
+
+  generateRowKey = ({ when }) => Object.keys(when).reduce((acc, whenKey) => {
+    const key = `${whenKey}:${when[whenKey]}`;
+
+    return acc ? `${acc}-${key}` : key;
+  }, '');
+
+  renderCptWithoutParents() {
     return (
       <table className={styles.cpt}>
         {this.renderHeader()}
@@ -194,14 +216,6 @@ class EditCptModal extends Component {
   }
 
   renderCptWithParents() {
-    const { cpt } = this.state;
-    const parents = Object.keys(cpt[0].when);
-    const states = Object.keys(cpt[0].then);
-
-    const firstStateCellStyle = {
-      borderLeft: 'solid 3px black',
-    };
-
     return (
       <table className={styles.cpt}>
         {this.renderHeader()}
@@ -233,15 +247,6 @@ class EditCptModal extends Component {
       </thead>
     );
   };
-
-  sumCptThen = (cpt) => {
-    const keys = Object.keys(cpt);
-    const sum = keys
-      .map(key => cpt[key])
-      .reduce((acc, v) => acc + v);
-
-    return float.round(sum, 2);
-  }
 
   renderBody = () => {
     const { node } = this.props;
@@ -275,7 +280,7 @@ class EditCptModal extends Component {
     return (
       <tbody>
         {cpt.map((row, rowIndex) => (
-          <tr key={rowIndex}>
+          <tr key={this.generateRowKey(row)}>
             {parents.map(parent => (
               <td key={parent}>{row.when[parent]}</td>
             ))}
@@ -294,24 +299,15 @@ class EditCptModal extends Component {
         ))}
       </tbody>
     );
-    { /* <td key={`${rowIndex}-result`}>
-      {this.sumCptThen(row.then)}
-    </td> */ }
   };
-
-  numberOfProbabilities = (hasParents) => {
-    if (!hasParents) return 1;
-  }
 
   render() {
     const { node, onRequestClose } = this.props;
-    let nProb = 0;
     let nodeId = '';
     let children = null;
 
     if (node != null) {
       const hasParents = node.parents.length > 0;
-      nProb = this.numberOfProbabilities(hasParents);
 
       nodeId = node.id;
       children = (
@@ -344,8 +340,6 @@ class EditCptModal extends Component {
           </div>
         </div>
       );
-    } else {
-      nProb = 0;
     }
 
     return (
@@ -362,7 +356,7 @@ class EditCptModal extends Component {
 
 EditCptModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  node: PropTypes.object,
+  node: nodePropTypes.isRequired,
   onRequestClose: PropTypes.func.isRequired,
 };
 

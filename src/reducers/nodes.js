@@ -1,14 +1,14 @@
 import {
-  NEW_NETWORK,
-  LOAD_NETWORK,
   ADD_NODE,
-  REMOVE_NODE,
   ADD_PARENT,
-  REMOVE_PARENT,
-  CHANGE_NODE_ID,
-  CHANGE_NODE_STATES,
   CHANGE_NODE_CPT,
   CHANGE_NODE_DESCRIPTION,
+  CHANGE_NODE_ID,
+  CHANGE_NODE_STATES,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+  REMOVE_NODE,
+  REMOVE_PARENT,
 } from '../actions';
 
 const arrayEqual = (arr1, arr2) => {
@@ -109,11 +109,9 @@ const changeCptStates = (cpt, nextStates) => {
   const newCpt = { ...cpt };
   const previousStates = Object.keys(newCpt);
 
-  const newStates = nextStates.filter(x =>
-    !previousStates.some(y => y === x));
+  const newStates = nextStates.filter(x => !previousStates.some(y => y === x));
 
-  const deletedStates = previousStates.filter(x =>
-    !nextStates.some(y => y === x));
+  const deletedStates = previousStates.filter(x => !nextStates.some(y => y === x));
 
   newStates.forEach((newState) => {
     newCpt[newState] = 0;
@@ -154,8 +152,7 @@ const changeNodeStates = (node, nextStates) => {
 
 const changeParentId = (node, previousId, nextId) => ({
   ...node,
-  parents: node.parents.map(x =>
-    (x === previousId ? nextId : x)),
+  parents: node.parents.map(x => (x === previousId ? nextId : x)),
   cpt: node.cpt.map((row) => {
     const when = { ...row.when };
 
@@ -246,7 +243,7 @@ const removeParent = (node, parentId, nodes) => {
           then: x.then,
         };
 
-        newParents.forEach(p => (newRow.when[p] = x.when[p]));
+        newParents.forEach((p) => { newRow.when[p] = x.when[p]; });
 
         return newRow;
       });
@@ -267,13 +264,13 @@ const nodeReducer = (node, action) => {
         action.payload.id,
         action.payload.nodes,
       );
-    } else if (action.type === CHANGE_NODE_ID) {
+    } if (action.type === CHANGE_NODE_ID) {
       return changeParentId(
         node,
         action.payload.id,
         action.payload.nextId,
       );
-    } else if (action.type === CHANGE_NODE_STATES) {
+    } if (action.type === CHANGE_NODE_STATES) {
       return changeParentStates(
         node,
         action.payload.id,

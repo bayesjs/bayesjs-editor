@@ -1,11 +1,14 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addNode } from '../../actions';
-import { getNodes } from '../../selectors';
+import Button from '../Button';
 import EditStatesList from '../EditStatesList';
 import Modal from '../Modal';
-import Button from '../Button';
+import { addNode } from '../../actions';
+import { getNodes } from '../../selectors';
 import styles from './styles.css';
+import { nodePropTypes, positionPropTypes } from '../../models';
 
 const initialState = {
   name: '',
@@ -23,15 +26,17 @@ class AddNodeModal extends Component {
     window.addEventListener('keyup', this.handleKeyup);
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('keyup', this.handleKeyup);
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (this.props.position == null && nextProps.position != null) {
+    const { position } = this.props;
+
+    if (position == null && nextProps.position != null) {
       this.setState(initialState);
       setTimeout(() => this.inputName.focus(), 0);
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.handleKeyup);
   }
 
   handleKeyup = (e) => {
@@ -47,19 +52,24 @@ class AddNodeModal extends Component {
   };
 
   handleAddState = (newState) => {
+    const { states } = this.state;
+
     this.setState({
-      states: [...this.state.states, newState],
+      states: [...states, newState],
     });
   };
 
   handleDeleteState = (state) => {
+    const { states } = this.state;
+
     this.setState({
-      states: this.state.states.filter(x => x !== state),
+      states: states.filter(x => x !== state),
     });
   };
 
   valid = () => {
     const { name, states } = this.state;
+    const { nodes } = this.props;
     let focusName = false;
     let message;
 
@@ -67,7 +77,7 @@ class AddNodeModal extends Component {
     if (name === '') {
       message = 'Preencha o nome da variável corretamente';
       focusName = true;
-    } else if (this.props.nodes.some(x => x.id === name)) {
+    } else if (nodes.some(x => x.id === name)) {
       message = 'Já existe uma variável com este nome';
       focusName = true;
     } else if (states.length === 0) {
@@ -82,43 +92,47 @@ class AddNodeModal extends Component {
   }
 
   handleAdicionarClick = () => {
+    const { position, dispatch, onRequestClose } = this.props;
     const { message, focusName, success } = this.valid();
 
     if (success === false) {
-      alert(message);
+      window.alert(message);
       if (focusName) this.inputName.focus();
       return;
     }
 
     const { name, states } = this.state;
 
-    this.props.dispatch(addNode(name, states, this.props.position));
-    this.props.onRequestClose();
+    dispatch(addNode(name, states, position));
+    onRequestClose();
   };
 
   render() {
     const { position, onRequestClose } = this.props;
+    const { states, name } = this.state;
 
     let children = null;
 
     if (position != null) {
       children = (
-        <div className={styles.container}>
+        <form className={styles.container}>
           <div className={styles.fieldWrapper}>
-            <label htmlFor="name">Nome</label>
-            <input
-              id="name"
-              type="text"
-              defaultValue={this.state.name}
-              onInput={this.handleNameBlur}
-              ref={ref => (this.inputName = ref)}
-            />
+            <label htmlFor="name">
+              Nome
+              <input
+                id="name"
+                type="text"
+                defaultValue={name}
+                onInput={this.handleNameBlur}
+                ref={(ref) => { this.inputName = ref; }}
+              />
+            </label>
           </div>
 
           <span>Estados</span>
 
           <EditStatesList
-            states={this.state.states}
+            states={states}
             onAddState={this.handleAddState}
             onDeleteState={this.handleDeleteState}
           />
@@ -131,7 +145,7 @@ class AddNodeModal extends Component {
               Cancelar
             </Button>
           </div>
-        </div>
+        </form>
       );
     }
 
@@ -149,8 +163,8 @@ class AddNodeModal extends Component {
 
 AddNodeModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  nodes: PropTypes.array.isRequired,
-  position: PropTypes.object,
+  nodes: PropTypes.arrayOf(nodePropTypes).isRequired,
+  position: PropTypes.objectOf(positionPropTypes).isRequired,
   onRequestClose: PropTypes.func.isRequired,
 };
 

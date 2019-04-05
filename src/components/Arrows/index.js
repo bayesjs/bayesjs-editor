@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+
+import PropTypes from 'prop-types';
 
 class Arrows extends Component {
   constructor(props) {
@@ -42,7 +44,7 @@ class Arrows extends Component {
     const { arrowsRendered } = this.state;
     const sorted = arrowsRendered.sort((a, b) => {
       if (a.key === uuid) return 1;
-      else if (b.key === uuid) return -1;
+      if (b.key === uuid) return -1;
       return 0;
     });
 
@@ -51,13 +53,13 @@ class Arrows extends Component {
     });
   };
 
-  onMouseOver = index => (e) => {
+  onMouseOver = index => () => {
     this.setState({
       indexFocus: index,
     });
   };
 
-  onMouseLeave = index => (e) => {
+  onMouseLeave = () => () => {
     this.setState({
       indexFocus: null,
     });
@@ -65,7 +67,7 @@ class Arrows extends Component {
 
   getStrokeOpacity = (index, indexFocus) => {
     if (indexFocus != null) {
-      if (index != indexFocus) return 0.2;
+      if (index !== indexFocus) return 0.2;
     }
 
     return 1;
@@ -82,15 +84,16 @@ class Arrows extends Component {
 
   render() {
     const { arrows } = this.props;
-    const { fillOpacity, indexFocus } = this.state;
+    const { indexFocus } = this.state;
 
     return (
       <g>
         {this.renderDefs()}
         {arrows.map((arrow, i) => (
           <g
-            key={i}
+            key={i} // eslint-disable-line
             onMouseOver={this.onMouseOver(i)}
+            onFocus={this.onMouseOver(i)}
             onMouseLeave={this.onMouseLeave(i)}
             strokeOpacity={this.getStrokeOpacity(i, indexFocus)}
             style={{
@@ -106,7 +109,7 @@ class Arrows extends Component {
 }
 
 Arrows.propTypes = {
-  arrows: PropTypes.array.isRequired,
+  arrows: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 export default Arrows;

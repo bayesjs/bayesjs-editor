@@ -7,16 +7,15 @@ export const openFile = (accept, cb) => {
   element.setAttribute('accept', accept);
 
   element.addEventListener('change', (e) => {
-    console.log('change');
     const file = e.target.files[0];
-    const reader = new FileReader();
+    const reader = new window.FileReader();
 
     reader.onloadend = () => {
       cb(reader.result);
     };
 
-    reader.onerror = (e) => {
-      console.warn('Error on open file :', e);
+    reader.onerror = (exception) => {
+      console.error('Error on open file :', exception);
     };
 
     reader.readAsText(file);

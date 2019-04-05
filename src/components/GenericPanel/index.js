@@ -1,18 +1,15 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import classNames from 'classnames';
-import { changeNetworkProperty } from '../../actions';
-import { getPanelVisibility } from '../../selectors';
-import Button from '../Button';
+import React, { Component } from 'react';
 
-import styles from './styles.css';
+import classNames from 'classnames';
+import { connect } from 'react-redux';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
+import PropTypes from 'prop-types';
+import { changeNetworkProperty } from '../../actions';
+import Button from '../Button';
+import { getPanelVisibility } from '../../selectors';
+import styles from './styles.css';
 
 class GenericPanel extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   getArrow = (visible) => {
     const arrowDirection = visible ? fontAwesome.faArrowRight : fontAwesome.faArrowLeft;
 
@@ -55,6 +52,12 @@ class GenericPanel extends Component {
     );
   }
 }
+
+GenericPanel.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  children: PropTypes.element.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({
   visible: getPanelVisibility(state),

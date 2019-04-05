@@ -1,27 +1,34 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import classNames from 'classnames';
 import styles from './styles.css';
 
-const Button = props => (
+const Button = ({
+  className, primary, title, onClick, children,
+}) => (
   <button
     type="button"
-    className={classNames(styles.button, props.className, {
-      [styles.primary]: props.primary,
+    className={classNames(styles.button, className, {
+      [styles.primary]: primary,
     })}
-    style={props.style}
-    title={props.title}
-    onClick={props.onClick}
+    title={title}
+    onClick={onClick}
   >
-    {props.children}
+    {children}
   </button>
 );
+
+Button.defaultProps = {
+  className: '',
+  primary: false,
+  title: '',
+};
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
   className: PropTypes.string,
   primary: PropTypes.bool,
-  style: PropTypes.object,
   title: PropTypes.string,
 };
 
