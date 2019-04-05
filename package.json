@@ -28,6 +28,8 @@
     "lint": "eslint \"src/**/*.js\"",
     "lint:fix": "eslint --fix \"src/**/*.js\"",
     "test": "jest",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
     "flow": "flow"
   },
   "dependencies": {
@@ -66,6 +68,7 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.11.1",
     "css-loader": "^0.28.7",
+    "cypress": "^3.2.0",
     "eslint": "^5.15.2",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
