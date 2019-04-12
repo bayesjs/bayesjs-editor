@@ -19,16 +19,16 @@
     "url": "https://github.com/fhelwanger/bayesjs-editor/issues"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
-    "start:prod": "webpack-dev-server --open --config webpack.prod.js",
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "start:prod": "webpack-dev-server --config webpack.prod.js",
     "build": "webpack --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js",
     "clean": "rimraf dist",
     "deploy": "npm run clean && npm run build:prod && gh-pages -d dist",
-    "lint": "eslint \"src/**/*.js\"",
-    "lint:fix": "eslint --fix \"src/**/*.js\"",
-    "test": "jest --config jest.config.js",
-    "test:e2e": "start-server-and-test start http://localhost:8080 cypress:run",
+    "lint": "eslint \"src/**/*.js\" \"cypress/**/*.js\"",
+    "lint:fix": "eslint --fix \"src/**/*.js\" \"cypress/**/*.js\"",
+    "test:unit": "jest --config jest.config.js",
+    "test:e2e": "start-server-and-test start http-get://localhost:8080 cypress:run",
     "cypress:run": "cypress run",
     "cypress:open": "cypress open",
     "flow": "flow"
