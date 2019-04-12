@@ -4,14 +4,17 @@ import { connect } from 'react-redux';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
 import { v4 } from 'uuid';
 import {
-  NETWORK_KINDS, loadNetwork, newNetwork,
+  NETWORK_KINDS,
+  loadNetwork,
+  newNetwork,
 } from '../../actions';
 import { openFile, saveFile } from '../../utils/file';
 
 import Button from '../Button';
+import { getComponentTestId } from '../../utils/test-utils';
 import { getStateToSave } from '../../selectors';
-import styles from './styles.css';
 import { networkPropTypes } from '../../models';
+import styles from './styles.css';
 
 class Header extends Component {
   state = {
@@ -124,7 +127,14 @@ class Header extends Component {
 
   createLi = (name, handleOnClick, title = '') => (
     <li>
-      <a href="" onClick={handleOnClick} title={title}>{name}</a>
+      <a
+        href=""
+        onClick={handleOnClick}
+        title={title}
+        data-testid={getComponentTestId('Header', 'Item', name)}
+      >
+        {name}
+      </a>
     </li>
   )
 
@@ -138,6 +148,7 @@ class Header extends Component {
           title="Menu"
           className={styles.menuButton}
           onClick={this.handleToggleMenu}
+          name="header"
         >
           <i className={`${fontAwesome.fa} ${fontAwesome.faBars}`} />
         </Button>
@@ -148,10 +159,10 @@ class Header extends Component {
               {this.renderLiNetworkTypes()}
             </li>
             <li>
-              <a href="" onClick={this.handleOpenNetworkClick}>Abrir Rede</a>
+              <a href="" data-testid={getComponentTestId('Header', 'Item', 'OpenNetwork')} onClick={this.handleOpenNetworkClick}>Abrir Rede</a>
             </li>
             <li>
-              <a href="" onClick={this.handleSaveNetworkClick}>Salvar Rede</a>
+              <a href="" data-testid={getComponentTestId('Header', 'Item', 'SaveNetwork')} onClick={this.handleSaveNetworkClick}>Salvar Rede</a>
             </li>
           </ul>
         )}

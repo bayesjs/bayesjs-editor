@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { nodePropTypes, positionPropTypes } from '../../models';
+
 import Button from '../Button';
 import EditStatesList from '../EditStatesList';
 import Modal from '../Modal';
 import { addNode } from '../../actions';
 import { getNodes } from '../../selectors';
 import styles from './styles.css';
-import { nodePropTypes, positionPropTypes } from '../../models';
 
 const initialState = {
   name: '',
@@ -138,10 +138,10 @@ class AddNodeModal extends Component {
           />
 
           <div className={styles.buttons}>
-            <Button primary onClick={this.handleAdicionarClick}>
+            <Button primary onClick={this.handleAdicionarClick} name="add">
               Adicionar
             </Button>
-            <Button onClick={onRequestClose}>
+            <Button onClick={onRequestClose} name="cancel">
               Cancelar
             </Button>
           </div>
@@ -154,6 +154,7 @@ class AddNodeModal extends Component {
         title="Adicionar Variável"
         isOpen={position != null}
         onRequestClose={onRequestClose}
+        name="add-node"
       >
         {children}
       </Modal>
