@@ -18,6 +18,8 @@
   "globals": {
     "window": "readonly",
     "localStorage": "readonly",
-    "document": "readonly"
+    "document": "readonly",
+    "cy": "readonly",
+    "Cypress": "readonly"
   }
 }

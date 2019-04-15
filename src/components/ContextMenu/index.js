@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import RenderIntoBody from '../RenderIntoBody';
+import { getComponentTestId } from '../../utils/test-utils';
 import styles from './styles.css';
 
 class ContextMenu extends Component {
@@ -107,6 +108,7 @@ class ContextMenu extends Component {
         className={styles.contextMenu}
         style={style}
         onContextMenu={this.handleContextMenu}
+        data-testid={getComponentTestId('ContextMenu')}
       >
         {this.getItens().map(item => (
           <li // eslint-disable-line
@@ -117,6 +119,7 @@ class ContextMenu extends Component {
               [styles.contextMenuItemDisabled]: item.disabled,
             })}
             onMouseDown={e => this.handleMenuItemMouseDown(e, item)}
+            data-testid={getComponentTestId('ContextMenu', 'item', item.key)}
           >
             {item.text}
           </li>

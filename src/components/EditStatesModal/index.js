@@ -6,8 +6,8 @@ import Button from '../Button';
 import EditStatesList from '../EditStatesList';
 import Modal from '../Modal';
 import { changeNodeStates } from '../../actions';
-import styles from './styles.css';
 import { nodePropTypes } from '../../models';
+import styles from './styles.css';
 
 class EditStatesModal extends Component {
   state = {
@@ -76,7 +76,7 @@ class EditStatesModal extends Component {
           />
 
           <div className={styles.buttons}>
-            <Button primary onClick={this.handleSaveClick}>Salvar</Button>
+            <Button primary onClick={this.handleSaveClick} name="save">Salvar</Button>
             <Button onClick={onRequestClose}>Cancelar</Button>
           </div>
         </div>

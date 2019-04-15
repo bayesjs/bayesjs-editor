@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
+import { getComponentTestId } from '../../utils/test-utils';
 import { positionPropTypes } from '../../models';
 
 class Arrow extends Component {
@@ -41,7 +42,7 @@ class Arrow extends Component {
     const d = this.makeLine(from, to);
 
     return (
-      <g>
+      <g data-testid={getComponentTestId('Arrow')}>
         <path
           d={d}
           fill="none"

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { getComponentTestId } from '../../utils/test-utils';
 import { getInferenceEnabled } from '../../selectors';
 
 const getResult = (results, state, belief) => {
@@ -31,7 +32,7 @@ const NodeState = ({
   const fillColor = belief != null ? '#EE4040' : '#9f9ff6';
 
   return (
-    <g>
+    <g data-testid={getComponentTestId('NodeState', state)}>
       <foreignObject x="5" y={21 + (18 * index)} height="15" width="75">
         <p
           title={state}

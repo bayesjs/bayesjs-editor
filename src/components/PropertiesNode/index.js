@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { changeNodeDescription, changeNodeId } from '../../actions';
 
 import Button from '../Button';
+import { getComponentTestId } from '../../utils/test-utils';
 import { getNodes } from '../../selectors';
-import styles from './styles.css';
 import { nodePropTypes } from '../../models';
+import styles from './styles.css';
 
 class PropertiesNode extends Component {
   constructor(props) {
@@ -77,7 +78,7 @@ class PropertiesNode extends Component {
     const { inputText, nodeDescription } = this.state;
 
     return (
-      <div>
+      <div data-testid={getComponentTestId('PropertiesNode')}>
         <h2>Propriedades da Variável</h2>
 
         <div className={styles.fieldWrapper}>
@@ -106,13 +107,13 @@ class PropertiesNode extends Component {
         </div>
 
         <div className={styles.fieldWrapper}>
-          <Button onClick={() => onEditNodeStates(node)}>
+          <Button onClick={() => onEditNodeStates(node)} name="editStates">
             Editar estados
           </Button>
         </div>
 
         <div className={styles.fieldWrapper}>
-          <Button onClick={() => onEditNodeCpt(node)}>
+          <Button onClick={() => onEditNodeCpt(node)} name="editProbabilities">
             Editar probabilidades
           </Button>
         </div>

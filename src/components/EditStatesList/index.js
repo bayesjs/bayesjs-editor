@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
 import Button from '../Button';
-import styles from './styles.css';
+import { getComponentTestId } from '../../utils/test-utils';
 import { statesPropTypes } from '../../models';
+import styles from './styles.css';
 
 class EditStatesList extends Component {
   getAddInputText = () => this.input.value;
@@ -40,14 +41,15 @@ class EditStatesList extends Component {
     const { states, onDeleteState } = this.props;
 
     return (
-      <div>
+      <div data-testid={getComponentTestId('EditStatesList')}>
         <ul className={styles.stateList}>
           {states.map(state => (
-            <li key={state}>
+            <li key={state} data-testid={getComponentTestId('EditStatesList', 'Item', state)}>
               <span title={state}>{state}</span>
               <Button
                 onClick={() => onDeleteState(state)}
                 title="Remover Estado"
+                name="removeState"
               >
                 <i className={`${fontAwesome.fa} ${fontAwesome.faTrash}`} />
               </Button>

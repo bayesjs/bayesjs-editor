@@ -3,6 +3,7 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
+import { getComponentTestId } from '../../utils/test-utils';
 import styles from './styles.css';
 
 const style = {
@@ -27,6 +28,7 @@ const Modal = ({
   isOpen,
   onRequestClose,
   children,
+  name,
 }) => (
   <ReactModal
     isOpen={isOpen}
@@ -34,7 +36,7 @@ const Modal = ({
     style={style}
     contentLabel={title}
   >
-    <div className={styles.header}>
+    <div className={styles.header} data-testid={getComponentTestId('ModalHeader', name || title)}>
       {title}
       <i
         onClick={onRequestClose}
@@ -43,7 +45,7 @@ const Modal = ({
       />
     </div>
 
-    <div className={styles.body}>
+    <div className={styles.body} data-testid={getComponentTestId('ModalBody', name || title)}>
       {children}
     </div>
   </ReactModal>
@@ -51,6 +53,7 @@ const Modal = ({
 
 Modal.defaultProps = {
   children: null,
+  name: '',
 };
 
 Modal.propTypes = {
@@ -58,6 +61,7 @@ Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   children: PropTypes.element,
+  name: PropTypes.string,
 };
 
 export default Modal;

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { NETWORK_KINDS, changeNetworkProperty } from '../../actions';
-import { getNetwork, getNetworkKind } from '../../selectors';
 
-import styles from './styles.css';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getNetwork, getNetworkKind } from '../../selectors';
+import { NETWORK_KINDS, changeNetworkProperty } from '../../actions';
+import { getComponentTestId } from '../../utils/test-utils';
 import { networkPropTypes } from '../../models';
+import styles from './styles.css';
 
 class PropertiesNetwork extends Component {
   handleNetworkPropertyBlur = (e) => {
@@ -64,7 +65,7 @@ class PropertiesNetwork extends Component {
     const { network } = this.props;
 
     return (
-      <div>
+      <div data-testid={getComponentTestId('PropertiesNetwork')}>
         <h2>Propriedades da Rede</h2>
         <h3>{this.typeNetwork()}</h3>
 

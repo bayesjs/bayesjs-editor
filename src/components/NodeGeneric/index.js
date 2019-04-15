@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { getComponentTestId } from '../../utils/test-utils';
 import styles from './styles.css';
 
 const NodeGeneric = ({
@@ -24,6 +25,7 @@ const NodeGeneric = ({
     style={{
       cursor: (canMove ? 'nove' : 'pointer'),
     }}
+    data-testid={getComponentTestId('NodeGeneric', id)}
   >
     <rect
       height={25 + (sumHeight || 0)}
@@ -44,6 +46,7 @@ const NodeGeneric = ({
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
         }}
+        data-testid={getComponentTestId('NodeGeneric', 'Title')}
       >
         {id}
       </p>
