@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
+import { getComponentTestId } from 'utils/test-utils';
+import { statesPropTypes } from 'models';
 import Button from '../Button';
-import { getComponentTestId } from '../../utils/test-utils';
-import { statesPropTypes } from '../../models';
 import styles from './styles.css';
 
 class EditStatesList extends Component {

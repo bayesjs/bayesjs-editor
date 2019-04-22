@@ -7,13 +7,13 @@ import {
   NETWORK_KINDS,
   loadNetwork,
   newNetwork,
-} from '../../actions';
-import { openFile, saveFile } from '../../utils/file';
+} from 'actions';
+import { openFile, saveFile } from 'utils/file';
 
+import { getComponentTestId } from 'utils/test-utils';
+import { getStateToSave } from 'selectors';
+import { networkPropTypes } from 'models';
 import Button from '../Button';
-import { getComponentTestId } from '../../utils/test-utils';
-import { getStateToSave } from '../../selectors';
-import { networkPropTypes } from '../../models';
 import styles from './styles.css';
 
 class Header extends Component {

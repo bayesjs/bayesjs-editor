@@ -11,8 +11,7 @@ import {
   removeLinkage,
   removeSuperNode,
   setBelief,
-} from '../../actions';
-import Network, { ContextMenuType } from '../Network';
+} from 'actions';
 import {
   getAllLinkagesBySubnetworkWithoutId,
   getInferenceResults,
@@ -25,7 +24,13 @@ import {
   getSubnetworksById,
   getSubnetworksColorById,
   getSubnetworksWithPosition,
-} from '../../selectors';
+} from 'selectors';
+import { combNodesAndPositions } from 'selectors/combiners';
+import { openFile } from 'utils/file';
+import {
+  networkPropTypes, nodePropTypes, subnetworkPropTypes, linkagesPropTypes,
+} from 'models';
+import Network, { ContextMenuType } from '../Network';
 import { hasCycles, mergeNetworks } from './helpers';
 
 import Arrow from '../Arrow';
@@ -33,11 +38,6 @@ import LinkagesModal from '../LinkagesModal';
 import Modal from '../Modal';
 import SubNetwork from '../SubNetwork';
 import SuperNode from '../SuperNode';
-import { combNodesAndPositions } from '../../selectors/combiners';
-import { openFile } from '../../utils/file';
-import {
-  networkPropTypes, nodePropTypes, subnetworkPropTypes, linkagesPropTypes,
-} from '../../models';
 
 class NetworkMSBN extends Component {
   constructor(props) {

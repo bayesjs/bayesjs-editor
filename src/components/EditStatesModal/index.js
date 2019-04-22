@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { changeNodeStates } from 'actions';
+import { nodePropTypes } from 'models';
 import Button from '../Button';
 import EditStatesList from '../EditStatesList';
 import Modal from '../Modal';
-import { changeNodeStates } from '../../actions';
-import { nodePropTypes } from '../../models';
 import styles from './styles.css';
 
 class EditStatesModal extends Component {

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { statesPropTypes } from 'models';
 import NodeGeneric from '../NodeGeneric';
 import NodeState from '../NodeState';
-import { statesPropTypes } from '../../models';
 
 const Node = (props) => {
   const {

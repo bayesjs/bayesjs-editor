@@ -1,4 +1,4 @@
-import { getComponentTestId } from '../../../src/utils/test-utils';
+import { getComponentTestId } from 'utils/test-utils';
 
 describe('Node Connection', () => {
   it('connect two nodes and then disconnect', () => {

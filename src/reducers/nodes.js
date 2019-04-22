@@ -9,7 +9,7 @@ import {
   NEW_NETWORK,
   REMOVE_NODE,
   REMOVE_PARENT,
-} from '../actions';
+} from 'actions';
 
 const arrayEqual = (arr1, arr2) => {
   if (arr1 === arr2) {

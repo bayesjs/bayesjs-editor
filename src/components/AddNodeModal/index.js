@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { nodePropTypes, positionPropTypes } from '../../models';
+import { nodePropTypes, positionPropTypes } from 'models';
 
+import { addNode } from 'actions';
+import { getNodes } from 'selectors';
 import Button from '../Button';
 import EditStatesList from '../EditStatesList';
 import Modal from '../Modal';
-import { addNode } from '../../actions';
-import { getNodes } from '../../selectors';
 import styles from './styles.css';
 
 const initialState = {

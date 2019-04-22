@@ -6,7 +6,7 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_NODE,
-} from '../actions';
+} from 'actions';
 
 export default (state = {}, action) => {
   switch (action.type) {

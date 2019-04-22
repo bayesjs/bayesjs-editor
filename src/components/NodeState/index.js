@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { getComponentTestId } from '../../utils/test-utils';
-import { getInferenceEnabled } from '../../selectors';
+import { getComponentTestId } from 'utils/test-utils';
+import { getInferenceEnabled } from 'selectors';
 
 const getResult = (results, state, belief) => {
   if (belief !== null) {

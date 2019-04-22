@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { nodePropTypes } from 'models';
 import NodeGeneric from '../NodeGeneric';
-import { nodePropTypes } from '../../models';
 
 const SuperNode = (props) => {
   const { nodes } = props;

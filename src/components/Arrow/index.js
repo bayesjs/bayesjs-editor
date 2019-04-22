@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import { getComponentTestId } from '../../utils/test-utils';
-import { positionPropTypes } from '../../models';
+import { getComponentTestId } from 'utils/test-utils';
+import { positionPropTypes } from 'models';
 
 class Arrow extends Component {
   makeControlPoint = (point, n = 50) => {

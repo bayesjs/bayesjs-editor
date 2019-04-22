@@ -3,7 +3,7 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_SUPER_NODE,
-} from '../actions';
+} from 'actions';
 
 const colorsBuilder = () => {
   let list = [];

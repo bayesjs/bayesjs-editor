@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getNetwork, getNetworkKind } from '../../selectors';
-import { NETWORK_KINDS, changeNetworkProperty } from '../../actions';
-import { getComponentTestId } from '../../utils/test-utils';
-import { networkPropTypes } from '../../models';
+import { getNetwork, getNetworkKind } from 'selectors';
+import { NETWORK_KINDS, changeNetworkProperty } from 'actions';
+import { getComponentTestId } from 'utils/test-utils';
+import { networkPropTypes } from 'models';
 import styles from './styles.css';
 
 class PropertiesNetwork extends Component {

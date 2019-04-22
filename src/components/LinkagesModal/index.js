@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
+import { linkagesPropTypes } from 'models';
 import Button from '../Button';
 import Modal from '../Modal';
 import styles from './styles.css';
-import { linkagesPropTypes } from '../../models';
 
 class LinkagesModal extends Component {
   constructor(props) {

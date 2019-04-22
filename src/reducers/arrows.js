@@ -1,6 +1,6 @@
 import {
   NEW_NETWORK,
-} from '../actions';
+} from 'actions';
 
 export default (state = [], action) => {
   switch (action.type) {

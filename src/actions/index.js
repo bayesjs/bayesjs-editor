@@ -1,4 +1,4 @@
-import { getNodes } from '../selectors';
+import { getNodes } from 'selectors';
 
 export const PERSIST_STATE = 'PERSIST_STATE';
 export const NEW_NETWORK = 'NEW_NETWORK';
