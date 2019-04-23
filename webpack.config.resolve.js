@@ -10,5 +10,6 @@ module.exports = {
     reducers: path.resolve(__dirname, 'src/reducers/'),
     selectors: path.resolve(__dirname, 'src/selectors/'),
     actions: path.resolve(__dirname, 'src/actions/'),
+    decorators: path.resolve(__dirname, 'src/decorators/'),
   },
 };
