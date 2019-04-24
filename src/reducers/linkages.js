@@ -3,7 +3,7 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_LINKAGE,
-} from '../actions';
+} from 'actions';
 
 export default (state = {}, action) => {
   switch (action.type) {

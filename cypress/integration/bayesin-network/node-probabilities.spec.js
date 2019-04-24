@@ -1,4 +1,4 @@
-import { getComponentTestId } from '../../../src/utils/test-utils';
+import { getComponentTestId } from 'utils/test-utils';
 
 describe('Node Probabilities', () => {
   const nodeName = 'Node 1';

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getComponentTestId } from '../../utils/test-utils';
+import { getComponentTestId } from 'utils/test-utils';
 import styles from './styles.css';
 
 const NodeGeneric = ({

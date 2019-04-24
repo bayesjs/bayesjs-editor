@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { networkPropTypes, nodePropTypes } from 'models';
 import Network, { ContextMenuType } from '../Network';
 
 import Arrow from '../Arrow';
 import Node from '../Node';
 import NodeGeneric from '../NodeGeneric';
-import { networkPropTypes, nodePropTypes } from '../../models';
 
 class SubNetwork extends Component {
   constructor(props) {

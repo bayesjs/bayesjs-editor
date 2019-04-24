@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
 import PropTypes from 'prop-types';
-import { changeNetworkProperty } from '../../actions';
+import { changeNetworkProperty } from 'actions';
+import { getPanelVisibility } from 'selectors';
 import Button from '../Button';
-import { getPanelVisibility } from '../../selectors';
 import styles from './styles.css';
 
 class GenericPanel extends Component {

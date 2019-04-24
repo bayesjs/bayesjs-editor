@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import float from 'float';
+import { changeNodeCpt } from 'actions';
+import { nodePropTypes } from 'models';
 import Button from '../Button';
 import InputCpt from '../InputCpt';
 import Modal from '../Modal';
-import { changeNodeCpt } from '../../actions';
 import styles from './styles.css';
-import { nodePropTypes } from '../../models';
 
 class EditCptModal extends Component {
   state = {

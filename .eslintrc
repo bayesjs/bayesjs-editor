@@ -21,5 +21,12 @@
     "document": "readonly",
     "cy": "readonly",
     "Cypress": "readonly"
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.dev.js"
+      }
+    }
   }
 }

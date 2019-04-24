@@ -1,4 +1,4 @@
-import { getComponentTestId } from '../../../src/utils/test-utils';
+import { getComponentTestId } from 'utils/test-utils';
 
 describe('Context Menu', () => {
   describe('When the context is a network', () => {

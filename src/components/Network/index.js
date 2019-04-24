@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { networkPropTypes, nodePropTypes } from 'models';
 import Arrows from '../Arrows';
 import ContextMenu from '../ContextMenu';
 import styles from './styles.css';
-import { networkPropTypes, nodePropTypes } from '../../models';
 
 export const ContextMenuType = {
   NODE: 'CONTEXT_MENU_NODE',

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Network, { ContextMenuType } from '../Network';
 import {
   addParent,
   changeNetworkProperty,
@@ -9,19 +8,20 @@ import {
   removeNode,
   removeParent,
   setBelief,
-} from '../../actions';
+} from 'actions';
 import {
   getInferenceResults,
   getNetwork,
   getNodesWithPositions,
-} from '../../selectors';
+} from 'selectors';
+import { nodePropTypes, networkPropTypes, inferenceResultsPropTypes } from 'models';
+import Network, { ContextMenuType } from '../Network';
 
 import AddNodeModal from '../AddNodeModal';
 import Arrow from '../Arrow';
 import EditCptModal from '../EditCptModal';
 import EditStatesModal from '../EditStatesModal';
 import Node from '../Node';
-import { nodePropTypes, networkPropTypes, inferenceResultsPropTypes } from '../../models';
 
 class NetworkBN extends Component {
   constructor(props) {

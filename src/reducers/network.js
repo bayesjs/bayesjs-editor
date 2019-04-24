@@ -7,7 +7,7 @@ import {
   NEW_NETWORK,
   REMOVE_NODE,
   SET_BELIEF,
-} from '../actions';
+} from 'actions';
 
 import linkagesRed from './linkages';
 import nodesRed from './nodes';

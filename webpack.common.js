@@ -1,8 +1,7 @@
 const path = require('path');
-const webpack = require('webpack');
-const cssnext = require('postcss-cssnext');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const resolve = require('./webpack.config.resolve');
 
 const srcPath = path.join(__dirname, 'src');
 
@@ -12,8 +11,9 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "[name].js"
+    filename: '[name].js',
   },
+  resolve,
   module: {
     loaders: [
       {
@@ -26,18 +26,18 @@ module.exports = {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-            { 
-              loader: 'css-loader', 
-              options: { 
+            {
+              loader: 'css-loader',
+              options: {
                 importLoaders: 1,
                 modules: true,
                 camelCase: 'dashes',
-                localIdentName: '[local]__[path][name]__[hash:base64:5]'
-              }
+                localIdentName: '[local]__[path][name]__[hash:base64:5]',
+              },
             },
-            'postcss-loader'
-          ]
-        })
+            'postcss-loader',
+          ],
+        }),
       },
       {
         test: /\.json$/,
@@ -49,20 +49,19 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              limit: 8192
-            }
-          }
-        ]
+              limit: 8192,
+            },
+          },
+        ],
       },
     ],
   },
   plugins: [
-    // new webpack.NoErrorsPlugin(),
     new ExtractTextPlugin('[name].css'),
     new HtmlWebpackPlugin({
       template: path.join(srcPath, 'index.html'),
       inject: true,
       favicon: path.join(srcPath, 'favicon.ico'),
     }),
-  ]
+  ],
 };

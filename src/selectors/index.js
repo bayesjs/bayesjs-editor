@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { NETWORK_KINDS } from 'actions';
 import {
   combAllLinkagesBySubnetwork,
   combLinkagesBySubnetwork,
@@ -10,7 +11,6 @@ import {
   combSubnetworksColorById,
 } from './combiners';
 
-import { NETWORK_KINDS } from '../actions';
 
 export const getNetwork = state => state.network;
 export const getNodes = state => state.network.nodes || state.nodes || [];

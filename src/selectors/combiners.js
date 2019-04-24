@@ -1,5 +1,5 @@
 import { addNode, infer } from 'bayesjs';
-import { createKey, createMissingLinkages, mergeNetworks } from '../components/NetworkMSBN/helpers';
+import { createKey, createMissingLinkages, mergeNetworks } from 'components/NetworkMSBN/helpers';
 
 const weakMap = new WeakMap();
 

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { getComponentTestId } from 'utils/test-utils';
 import RenderIntoBody from '../RenderIntoBody';
-import { getComponentTestId } from '../../utils/test-utils';
 import styles from './styles.css';
 
 class ContextMenu extends Component {

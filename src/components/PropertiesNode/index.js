@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeNodeDescription, changeNodeId } from '../../actions';
+import { changeNodeDescription, changeNodeId } from 'actions';
 
+import { getComponentTestId } from 'utils/test-utils';
+import { getNodes } from 'selectors';
+import { nodePropTypes } from 'models';
 import Button from '../Button';
-import { getComponentTestId } from '../../utils/test-utils';
-import { getNodes } from '../../selectors';
-import { nodePropTypes } from '../../models';
 import styles from './styles.css';
 
 class PropertiesNode extends Component {
