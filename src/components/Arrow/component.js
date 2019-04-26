@@ -1,36 +1,16 @@
 import React from 'react';
-import {
-  withProps, pure, compose, withHandlers,
-} from 'recompose';
 import { omit } from 'ramda';
+import { noop } from 'lodash';
 
 import PropTypes from 'prop-types';
 import { getComponentTestId } from 'utils/test-utils';
 import { positionPropTypes } from 'models';
-import { makeArrowLine } from 'utils/arrows-positions';
 
 const style = {
   transition: 'stroke-opacity 0.2s',
 };
 const stylePath = { cursor: 'pointer' };
 const omitProps = omit(['markEnd', 'markEndStyle']);
-
-const enhance = compose(
-  pure,
-  withProps(({
-    from,
-    to,
-    markEnd,
-    markEndStyle = 'url(#triangle)',
-  }) => ({
-    pathD: makeArrowLine(from, to),
-    markerEnd: markEnd ? markEndStyle : '',
-  })),
-  withHandlers({
-    onMouseOver: ({ onMouseOver, id }) => () => onMouseOver(id),
-    onMouseLeave: ({ onMouseLeave, id }) => () => onMouseLeave(id),
-  }),
-);
 
 const Arrow = ({
   title,
@@ -52,15 +32,6 @@ const Arrow = ({
     <path
       d={pathD}
       fill="none"
-      stroke="transparent"
-      strokeWidth="15"
-      style={stylePath}
-    >
-      {title}
-    </path>
-    <path
-      d={pathD}
-      fill="none"
       stroke="#333"
       strokeWidth="2"
       markerEnd={markerEnd}
@@ -73,8 +44,8 @@ const Arrow = ({
 
 Arrow.defaultProps = {
   markEndStyle: '',
-  onMouseOver: () => { },
-  onMouseLeave: () => { },
+  onMouseOver: noop,
+  onMouseLeave: noop,
   strokeOpacity: null,
 };
 
@@ -92,4 +63,4 @@ Arrow.propTypes = {
   strokeOpacity: PropTypes.string,
 };
 
-export default enhance(Arrow);
+export default Arrow;
