@@ -6,7 +6,7 @@ import {
   combLinkagesByTwoSubnetwork,
   combNodesAndBeliefs,
   combNodesAndBeliefsMSBN,
-  combNodesAndPositions,
+  combNodesWithPositionsAndSizes,
   combSubnetworksById,
   combSubnetworksColorById,
 } from './combiners';
@@ -71,16 +71,16 @@ export const getSelectedSubnetwork = createSelector(
   },
 );
 
-export const getNodesWithPositions = createSelector(
+export const getNodesWithPositionsAndSizes = createSelector(
   getNodes,
   getPositions,
-  combNodesAndPositions,
+  combNodesWithPositionsAndSizes,
 );
 
-export const getSubnetworksWithPosition = createSelector(
+export const getSubnetworksWithPositionAndSizes = createSelector(
   getSubnetworks,
   getPositions,
-  combNodesAndPositions,
+  combNodesWithPositionsAndSizes,
 );
 
 export const getInferenceResults = createSelector(
