@@ -1,49 +1,35 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { statesPropTypes } from 'models';
-import NodeGeneric from '../NodeGeneric';
+import { nodePosition, nodeSize, statesPropTypes } from 'models';
 import NodeState from '../NodeState';
+import NodeGeneric from '../NodeGeneric';
 
-const Node = (props) => {
-  const {
-    id, states, children, sumHeight,
-  } = props;
-
-  const propsGeneric = {
-    ...props,
-    sumHeight: (18 * states.length) + (sumHeight || 0),
-  };
-
-  const renderState = (state, index) => {
-    const tempProps = {
-      ...props,
-      state,
-      index,
-    };
-
-    return (
-      <NodeState
-        key={`${id}-${state}-${index}`}
-        {...tempProps}
-      />
-    );
-  };
+const renderState = ({ id, ...props }) => (state, index) => {
+  const finalProps = { ...props, state, index };
 
   return (
-    <NodeGeneric
-      {...propsGeneric}
-    >
-      {states.map(renderState)}
-      {children}
-    </NodeGeneric>
+    <NodeState
+      key={`${id}-${state}`}
+      {...finalProps}
+    />
   );
 };
+
+const Node = ({
+  states,
+  children,
+  ...props
+}) => (
+  <NodeGeneric {...props}>
+    {states.map(renderState(props))}
+    {children}
+  </NodeGeneric>
+);
 
 Node.defaultProps = {
   children: null,
   belief: null,
-  rectRef: () => {},
-  sumHeight: 0,
+  rectRef: () => { },
 };
 
 Node.propTypes = {
@@ -56,9 +42,8 @@ Node.propTypes = {
   rectRef: PropTypes.func,
   onMouseDown: PropTypes.func.isRequired,
   onStateDoubleClick: PropTypes.func.isRequired,
-  sumHeight: PropTypes.number,
-  x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  position: nodePosition.isRequired,
+  size: nodeSize.isRequired,
 };
 
 export default Node;

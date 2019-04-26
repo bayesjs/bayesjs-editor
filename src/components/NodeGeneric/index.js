@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { getComponentTestId } from 'utils/test-utils';
 import styles from './styles.css';
+import { nodePosition, nodeSize } from '../../models';
 
 const NodeGeneric = ({
   id,
-  x,
-  y,
-  sumHeight,
+  position,
+  size,
   selected,
   onMouseDown,
   rectRef,
@@ -21,15 +21,15 @@ const NodeGeneric = ({
     className={styles.node}
     onMouseDown={onMouseDown}
     onDoubleClick={onDoubleClick}
-    transform={`translate(${x} ${y})`}
+    transform={`translate(${position.x} ${position.y})`}
     style={{
       cursor: (canMove ? 'nove' : 'pointer'),
     }}
     data-testid={getComponentTestId('NodeGeneric', id)}
   >
     <rect
-      height={25 + (sumHeight || 0)}
-      width="160"
+      height={size.height}
+      width={size.width}
       fill={stroke}
       fillOpacity={opacity}
       stroke="#333"
@@ -60,8 +60,7 @@ const NodeGeneric = ({
 
 NodeGeneric.defaultProps = {
   children: null,
-  sumHeight: 0,
-  onDoubleClick: () => {},
+  onDoubleClick: () => { },
   stroke: '#ff8',
   canMove: false,
   opacity: '1',
@@ -69,12 +68,11 @@ NodeGeneric.defaultProps = {
 
 NodeGeneric.propTypes = {
   id: PropTypes.string.isRequired,
-  x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   selected: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   rectRef: PropTypes.func.isRequired,
-  sumHeight: PropTypes,
+  position: nodePosition.isRequired,
+  size: nodeSize.isRequired,
   children: PropTypes.element,
   onDoubleClick: PropTypes.func,
   stroke: PropTypes.string,

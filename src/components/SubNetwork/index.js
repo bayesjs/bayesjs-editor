@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { networkPropTypes, nodePropTypes } from 'models';
+import { getArrowsPositions } from 'utils/arrows-positions';
+import { getNodeSize } from 'utils/node-size';
 import Network, { ContextMenuType } from '../Network';
 
-import Arrow from '../Arrow';
 import Node from '../Node';
 import NodeGeneric from '../NodeGeneric';
 
@@ -71,16 +72,6 @@ class SubNetwork extends Component {
     this.setState({ selectedNodeId });
   };
 
-  renderArrow = (arrow, props) => (
-    <Arrow
-      key={arrow.key}
-      from={arrow.from}
-      to={arrow.to}
-      markEnd
-      {...props}
-    />
-  );
-
   getLinkedFromNode = ({ id }) => {
     const { linkedNodes } = this.props;
 
@@ -118,9 +109,8 @@ class SubNetwork extends Component {
           y="5"
           id={name}
           selected
-          sumHeight={17}
           stroke={color}
-          onMouseDown={() => {}}
+          onMouseDown={() => { }}
           rectRef={(ref) => { this.connectingNodeRef = ref; }}
           canMove
           opacity="0.3"
@@ -142,15 +132,11 @@ class SubNetwork extends Component {
       );
     }
 
-    const link = this.getLinkedFromNode(node);
-    // const stroke = link ? 'red' : networkColor;s
-    node.link = link;
     let child = null;
-    let sumHeight = 0;
 
-    if (link) {
+    if (node.link) {
       // (18 * states.length) + 25
-      const circles = link.connections.map(({ networkName, color }, i) => (
+      const circles = node.link.connections.map(({ networkName, color }, i) => (
         <circle key={networkName} cx={75 + (20 * i)} cy={(18 * node.states.length) + 45} r="8" fill={color}>
           <title>{`Rede: ${networkName}`}</title>
         </circle>
@@ -163,47 +149,24 @@ class SubNetwork extends Component {
           {circles}
         </g>
       );
-      sumHeight = 35;
     }
 
     return (
       <Node
         key={key}
-        id={node.id}
-        states={node.states}
         results={inferenceResults[node.id]}
         selected={selectedNodeId === node.id}
         belief={network.beliefs[node.id]}
-        x={node.position.x}
-        y={node.position.y}
         onStateDoubleClick={this.onSetBelief(node)}
         stroke={networkColor}
-        sumHeight={sumHeight}
         canMove={false}
         opacity="0.3"
+        {...node}
         {...props}
       >
         {child}
       </Node>
     );
-  };
-
-  getArrows = () => {
-    const { nodes } = this.props;
-    const arrows = [];
-
-    nodes.forEach((node) => {
-      node.parents.forEach((parentId) => {
-        const parent = nodes.find(x => x.id === parentId);
-
-        arrows.push({
-          from: parent,
-          to: node,
-        });
-      });
-    });
-
-    return arrows;
   };
 
   getContextItems = (type) => {
@@ -217,15 +180,25 @@ class SubNetwork extends Component {
 
   getNodes = () => {
     const { connectingNode, nodes } = this.props;
+    const finalNodes = nodes.map((node) => {
+      const link = this.getLinkedFromNode(node);
+      const size = getNodeSize({ ...node, link });
+
+      return {
+        ...node,
+        link,
+        size,
+      };
+    });
 
     if (connectingNode) {
       return [
-        ...nodes,
+        ...finalNodes,
         connectingNode,
       ];
     }
 
-    return nodes;
+    return finalNodes;
   };
 
   renderAddingChildArrow = () => {
@@ -251,7 +224,7 @@ class SubNetwork extends Component {
 
   render() {
     const { network, onClickNode, onDoubleClickNode } = this.props;
-    const empty = () => {};
+    const empty = () => { };
     const modalWidth = window.innerWidth * 0.8;
     const modalHeight = window.innerHeight * 0.8;
     const bigger = (a, b) => (a > b ? a : b);
@@ -271,9 +244,8 @@ class SubNetwork extends Component {
         <Network
           network={newNetwork}
           nodes={this.getNodes()}
-          arrows={this.getArrows}
+          arrows={getArrowsPositions(this.getNodes())}
           renderNode={this.renderNode}
-          renderArrow={this.renderArrow}
           requestCreateNode={empty}
           onAddConnection={empty}
           onCancelConnection={empty}
@@ -294,9 +266,9 @@ class SubNetwork extends Component {
 SubNetwork.defaultProps = {
   linkedNodes: [],
   networkColor: '',
-  onSetBelief: () => {},
-  onDoubleClickNode: () => {},
-  onClickNode: () => {},
+  onSetBelief: () => { },
+  onDoubleClickNode: () => { },
+  onClickNode: () => { },
 };
 
 SubNetwork.propTypes = {

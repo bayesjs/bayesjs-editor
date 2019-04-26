@@ -19,7 +19,6 @@ class Network extends Component {
     const { changeNodePosition, onMouseMove } = this.props;
 
     this.state = {
-      arrows: [],
       addingChildArrow: null,
       contextMenuItems: [],
       movingNodePlaceholder: null,
@@ -30,11 +29,7 @@ class Network extends Component {
     this.rectRefs = {};
     this.movingNode = null;
     this.canChangeNodePostion = typeof changeNodePosition === 'function';
-    this.onMouseMoveProps = typeof onMouseMove === 'function' ? onMouseMove : () => {};
-  }
-
-  componentDidMount() {
-    this.renderArrows();
+    this.onMouseMoveProps = typeof onMouseMove === 'function' ? onMouseMove : () => { };
   }
 
   startConnection = (nodeToAddChildTo) => {
@@ -50,80 +45,7 @@ class Network extends Component {
     }
   };
 
-  calculateArrows = () => {
-    const { arrows } = this.props;
-    if (Object.keys(this.rectRefs).length === 0) return [];
-
-    const getNodeLinksPositions = (node) => {
-      const { height, width } = this.rectRefs[node.id].getBoundingClientRect();
-
-      const top = {
-        x: (node.position.x + width / 2),
-        y: node.position.y,
-        type: 'top',
-      };
-
-      const right = {
-        x: node.position.x + width,
-        y: (node.position.y + height / 2),
-        type: 'right',
-      };
-
-      const bottom = {
-        x: (node.position.x + width / 2),
-        y: node.position.y + height,
-        type: 'bottom',
-      };
-
-      const left = {
-        x: node.position.x,
-        y: (node.position.y + height / 2),
-        type: 'left',
-      };
-
-      return [top, right, bottom, left];
-    };
-
-    const getDistance = (p1, p2) => (
-      Math.sqrt((Math.abs(p2.x - p1.x) ** 2) + (Math.abs(p2.y - p1.y) ** 2))
-    );
-
-    const getNearestPoints = (node1, node2) => {
-      const ps1 = getNodeLinksPositions(node1);
-      const ps2 = getNodeLinksPositions(node2);
-
-      let p1 = ps1[0];
-      let p2 = ps2[0];
-
-      for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 4; j++) {
-          if (getDistance(p1, p2) > getDistance(ps1[i], ps2[j])) {
-            p1 = ps1[i];
-            p2 = ps2[j];
-          }
-        }
-      }
-
-      return { p1, p2 };
-    };
-
-    return arrows().map((arrow, index) => {
-      const { from, to } = arrow;
-      const points = getNearestPoints(from, to);
-
-      return {
-        key: `${from.id}-${to.id}`,
-        from: points.p1,
-        to: points.p2,
-        parentId: from.id,
-        childId: to.id,
-        arrow,
-        index,
-      };
-    });
-  };
-
-  handleArrowMouseDown = (arrow, e) => {
+  handleArrowMouseDown = (e, arrow) => {
     if (e.button === 2) {
       const { getContextItems } = this.props;
       e.stopPropagation();
@@ -152,7 +74,6 @@ class Network extends Component {
       if (nodeToAddChildTo !== null) {
         onAddConnection(node.id, nodeToAddChildTo.id);
         this.setState({ addingChildArrow: null, nodeToAddChildTo: null });
-        setTimeout(() => this.calculateArrows(), 0);
       }
 
       this.movingNode = {
@@ -261,8 +182,6 @@ class Network extends Component {
 
       if (this.canChangeNodePostion) {
         changeNodePosition(id, newX, newY);
-
-        setTimeout(() => this.calculateArrows(), 0);
       } else {
         console.warn('changeNodePosition not defined in the props of Network');
       }
@@ -314,24 +233,6 @@ class Network extends Component {
       </marker>
     </defs>
   );
-
-  renderArrows = () => {
-    const { onClickArrow, nodes, renderArrow } = this.props;
-    const arrowsCalc = this.calculateArrows(nodes);
-    const clickIsFunc = onClickArrow === 'function';
-    const arrows = arrowsCalc.map((a) => {
-      const onMouseDown = e => this.handleArrowMouseDown(a, e);
-      const onClick = (e) => {
-        if (clickIsFunc) {
-          onClickArrow(a, e);
-        }
-      };
-
-      return renderArrow(a, { onMouseDown, onClick });
-    });
-
-    this.setState({ arrows });
-  };
 
   renderNodes = () => {
     const { nodes, renderNode, onDoubleClickNode } = this.props;
@@ -398,8 +299,8 @@ class Network extends Component {
   }
 
   render() {
-    const { network, children } = this.props;
-    const { arrows, contextMenuItems, newNode } = this.state;
+    const { network, children, arrows } = this.props;
+    const { contextMenuItems, newNode } = this.state;
 
     return (
       <div>
@@ -415,7 +316,7 @@ class Network extends Component {
           ref={(ref) => { this.canvas = ref; }}
         >
           <g>
-            <Arrows arrows={arrows} />
+            <Arrows arrows={arrows} onMouseDown={this.handleArrowMouseDown} />
           </g>
           <g>
             {this.renderNodes()}
@@ -444,11 +345,10 @@ class Network extends Component {
 }
 
 Network.defaultProps = {
-  onMouseMove: () => {},
-  onDoubleClickNode: () => {},
-  onClickArrow: () => {},
-  changeNodePosition: () => {},
-  onClickNode: () => {},
+  onMouseMove: () => { },
+  onDoubleClickNode: () => { },
+  changeNodePosition: () => { },
+  onClickNode: () => { },
 };
 
 Network.propTypes = {
@@ -456,7 +356,6 @@ Network.propTypes = {
   children: PropTypes.element.isRequired,
   nodes: PropTypes.objectOf(nodePropTypes).isRequired,
   arrows: PropTypes.func.isRequired,
-  renderArrow: PropTypes.func.isRequired,
   renderNode: PropTypes.func.isRequired,
   requestCreateNode: PropTypes.func.isRequired,
   onAddConnection: PropTypes.func.isRequired,
@@ -465,7 +364,6 @@ Network.propTypes = {
   getContextItems: PropTypes.func.isRequired,
   onMouseMove: PropTypes.func,
   onDoubleClickNode: PropTypes.func,
-  onClickArrow: PropTypes.func,
   changeNodePosition: PropTypes.func,
   onClickNode: PropTypes.func,
 };

@@ -20,7 +20,6 @@ class App extends Component {
     setTimeout(() => {
       const { key } = this.state;
 
-      this.getCanvas().calculateArrows();
       this.setState({ key: key + 1 });
     }, 0);
   };

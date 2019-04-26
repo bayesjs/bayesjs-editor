@@ -28,7 +28,7 @@ const persistState = () => ({
   type: PERSIST_STATE,
 });
 
-export const newNetwork = (kind: string = NETWORK_KINDS.BN) => (dispatch) => {
+export const newNetwork = (kind = NETWORK_KINDS.BN) => (dispatch) => {
   dispatch({
     type: NEW_NETWORK,
     kind,

@@ -12,9 +12,10 @@ import {
 import {
   getInferenceResults,
   getNetwork,
-  getNodesWithPositions,
+  getNodesWithPositionsAndSizes,
 } from 'selectors';
 import { nodePropTypes, networkPropTypes, inferenceResultsPropTypes } from 'models';
+import { getArrowsPositions } from 'utils/arrows-positions';
 import Network, { ContextMenuType } from '../Network';
 
 import AddNodeModal from '../AddNodeModal';
@@ -72,7 +73,6 @@ class NetworkBN extends Component {
         style: { color: '#C62828' },
         onClick: (contextMenuNode) => {
           dispatch(removeNode(contextMenuNode.id));
-          setTimeout(() => this.calculateArrows(), 0);
         },
       },
     ];
@@ -85,7 +85,6 @@ class NetworkBN extends Component {
         onClick: (contextMenuArrow) => {
           const { childId, parentId } = contextMenuArrow;
           dispatch(removeParent(childId, parentId));
-          setTimeout(() => this.calculateArrows(), 0);
         },
       },
     ];
@@ -123,14 +122,11 @@ class NetworkBN extends Component {
     return (
       <Node
         key={node.id}
-        id={node.id}
-        states={node.states}
         results={inferenceResults[node.id]}
         selected={network.selectedNodes.some(x => x === node.id)}
         belief={network.beliefs[node.id]}
-        x={node.position.x}
-        y={node.position.y}
         onStateDoubleClick={state => this.onSetBelief(node, state)}
+        {...node}
         {...props}
       />
     );
@@ -150,7 +146,6 @@ class NetworkBN extends Component {
       network.selectedNodes.forEach((nodeId) => {
         dispatch(removeNode(nodeId));
       });
-      setTimeout(() => this.calculateArrows(), 0);
     }
   }
 
@@ -188,15 +183,10 @@ class NetworkBN extends Component {
     setTimeout(this.net.renderArrows, 0);
   };
 
-  calculateArrows = () => {
-    this.net.renderArrows();
-  };
-
   handleRequestRedraw = () => {
     setTimeout(() => {
       const { key } = this.state;
 
-      this.calculateArrows();
       this.setState({ key: key + 1 });
     }, 0);
   };
@@ -241,7 +231,7 @@ class NetworkBN extends Component {
         <Network
           network={network}
           nodes={nodes}
-          arrows={this.getArrows}
+          arrows={getArrowsPositions(nodes)}
           renderNode={this.renderNode}
           renderArrow={this.renderArrow}
           onAddConnection={this.onAddConnection}
@@ -285,7 +275,7 @@ const mapStateToProps = (s, ownProps) => {
 
   return {
     network: getNetwork(state),
-    nodes: getNodesWithPositions(state),
+    nodes: getNodesWithPositionsAndSizes(state),
     inferenceResults: getInferenceResults(state),
   };
 };

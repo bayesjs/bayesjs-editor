@@ -46,10 +46,6 @@ class Canvas extends Component {
     this.net.getWrappedInstance().onViewLinkages(node);
   };
 
-  calculateArrows = () => {
-    this.net.getWrappedInstance().calculateArrows();
-  };
-
   renderDefs = () => (
     <defs>
       <marker
