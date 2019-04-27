@@ -37,7 +37,6 @@ import {
 import Network, { ContextMenuType } from '../Network';
 import { hasCycles, mergeNetworks } from './helpers';
 
-import Arrow from '../Arrow';
 import LinkagesModal from '../LinkagesModal';
 import Modal from '../Modal';
 import SubNetwork from '../SubNetwork';
@@ -180,21 +179,6 @@ class NetworkMSBN extends Component {
       <title>
         {`${size} ${word} ${info.linkages.reduce(reduceFunc, '')}`}
       </title>
-    );
-  };
-
-  renderArrow = (arrow, props) => {
-    const title = this.getArrowTitle(arrow.arrow);
-
-    return (
-      <Arrow
-        key={arrow.key}
-        from={arrow.from}
-        to={arrow.to}
-        markEnd={false}
-        title={title}
-        {...props}
-      />
     );
   };
 

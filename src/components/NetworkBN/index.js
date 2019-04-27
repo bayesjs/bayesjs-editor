@@ -19,7 +19,6 @@ import { getArrowsPositions } from 'utils/arrows-positions';
 import Network, { ContextMenuType } from '../Network';
 
 import AddNodeModal from '../AddNodeModal';
-import Arrow from '../Arrow';
 import EditCptModal from '../EditCptModal';
 import EditStatesModal from '../EditStatesModal';
 import Node from '../Node';
@@ -106,16 +105,6 @@ class NetworkBN extends Component {
     this.setState({ editingNodeCpt });
   };
 
-  renderArrow = (arrow, props) => (
-    <Arrow
-      key={arrow.key}
-      from={arrow.from}
-      to={arrow.to}
-      markEnd
-      {...props}
-    />
-  );
-
   renderNode = (node, props) => {
     const { inferenceResults, network } = this.props;
 
@@ -180,7 +169,6 @@ class NetworkBN extends Component {
     const { dispatch } = this.props;
 
     dispatch(changeNodePosition(id, newX, newY));
-    setTimeout(this.net.renderArrows, 0);
   };
 
   handleRequestRedraw = () => {
@@ -233,7 +221,6 @@ class NetworkBN extends Component {
           nodes={nodes}
           arrows={getArrowsPositions(nodes)}
           renderNode={this.renderNode}
-          renderArrow={this.renderArrow}
           onAddConnection={this.onAddConnection}
           onCancelConnection={this.onCancelConnection}
           onSelectNodes={this.onSelectNodes}
