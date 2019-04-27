@@ -104,11 +104,10 @@ class NetworkMSBN extends Component {
       {
         key: 'open-arrow-linkages',
         text: 'Visualizar uniões',
-        onClick: ({ arrow }) => {
+        onClick: ({ linkagesIds }) => {
           const { linkages } = this.props;
-          const links = arrow.info.linkagesIds;
           const dict = linkages;
-          const newLinkages = links.reduce((p, id) => {
+          const newLinkages = linkagesIds.reduce((p, id) => {
             p[id] = dict[id];
             return p;
           }, {});
@@ -159,9 +158,8 @@ class NetworkMSBN extends Component {
     dispatch(removeSuperNode(id));
   };
 
-  onRemoveArrow = (arrow) => {
+  onRemoveArrow = ({ linkagesIds }) => {
     const { dispatch } = this.props;
-    const { arrow: { info: { linkagesIds } } } = arrow;
 
     linkagesIds.forEach(linkageId => dispatch(removeLinkage(linkageId)));
   };

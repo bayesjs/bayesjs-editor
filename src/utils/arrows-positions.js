@@ -106,7 +106,8 @@ const findNetworkById = networks => id => networks.find(propEq('id', id));
 export const getArrowsPositionsForMSBN = (networks, linkagesByTwoNode) => {
   const getNetwork = findNetworkById(networks);
 
-  return linkagesByTwoNode.map(({ networkId1, networkId2 }) => {
+  return linkagesByTwoNode.map((linkage) => {
+    const { networkId1, networkId2 } = linkage;
     const from = getNetwork(networkId1);
     const to = getNetwork(networkId2);
     const points = getNearestPoints({ from, to });
@@ -115,6 +116,7 @@ export const getArrowsPositionsForMSBN = (networks, linkagesByTwoNode) => {
       ...points,
       key: `${networkId1}-${networkId2}`,
       markEnd: false,
+      ...linkage,
     };
   });
 };

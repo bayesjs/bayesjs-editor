@@ -17,7 +17,7 @@ const Arrows = ({
   <g>
     <ArrowsDefs />
     {arrows.map(({
-      key, from, to, markEnd, childId, parentId,
+      key, from, to, markEnd, childId, parentId, ...props
     }) => ( // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
       <Arrow
         key={key}
@@ -29,7 +29,9 @@ const Arrows = ({
         from={from}
         to={to}
         markEnd={markEnd}
-        onMouseDown={onMouseDown({ childId, parentId })}
+        onMouseDown={onMouseDown({
+          key, from, to, markEnd, childId, parentId, ...props,
+        })}
       />
     ))}
   </g>

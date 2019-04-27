@@ -155,16 +155,22 @@ describe('Arrows Positions Utils', () => {
       const networks = createNetworksWithPostions(positions);
 
       expect(getArrowsPositionsForMSBN(networks, linkagesByTwoNode)).toEqual([{
+        networkId1: NETWORK_2,
+        networkId2: NETWORK_1,
         from: { type: TYPE_BOTTOM, x: 406, y: 224.5 },
         key: 'NETWORK_2-NETWORK_1',
         markEnd,
         to: { type: TYPE_TOP, x: 394, y: 224.5 },
       }, {
+        networkId1: NETWORK_3,
+        networkId2: NETWORK_1,
         from: { type: TYPE_RIGHT, x: 224, y: 300.5 },
         key: 'NETWORK_3-NETWORK_1',
         markEnd,
         to: { type: TYPE_LEFT, x: 314, y: 304.5 },
       }, {
+        networkId1: NETWORK_4,
+        networkId2: NETWORK_1,
         from: { type: TYPE_LEFT, x: 574, y: 296.5 },
         key: 'NETWORK_4-NETWORK_1',
         markEnd,
