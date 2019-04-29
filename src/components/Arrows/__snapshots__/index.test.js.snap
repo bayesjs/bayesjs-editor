@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Arrows Component matches snapshot 1`] = `
+<g>
+  <ArrowsDefs />
+  <Arrow
+    id="arrow-1"
+    key="arrow-1"
+    markEndStyle="url(#triangle)"
+    onMouseLeave={[Function]}
+    strokeOpacity={1}
+  />
+  <Arrow
+    id="arrow-2"
+    key="arrow-2"
+    markEndStyle="url(#triangle)"
+    onMouseLeave={[Function]}
+    strokeOpacity={1}
+  />
+  <Arrow
+    id="arrow-3"
+    key="arrow-3"
+    markEndStyle="url(#triangle)"
+    onMouseLeave={[Function]}
+    strokeOpacity={1}
+  />
+</g>
+`;

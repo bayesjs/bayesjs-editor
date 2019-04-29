@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { v4 } from 'uuid';
 import {
   NETWORK_KINDS,
   addLinkage,
@@ -12,6 +10,11 @@ import {
   removeSuperNode,
   setBelief,
 } from 'actions';
+import { combNodesWithPositionsAndSizes } from 'selectors/combiners';
+import { connect } from 'react-redux';
+import { getArrowsPositionsForMSBN } from 'utils/arrows-positions';
+import { openFile } from 'utils/file';
+import { v4 } from 'uuid';
 import {
   getAllLinkagesBySubnetworkWithoutId,
   getInferenceResults,
@@ -23,17 +26,17 @@ import {
   getSubnetworks,
   getSubnetworksById,
   getSubnetworksColorById,
-  getSubnetworksWithPosition,
+  getSubnetworksWithPositionAndSizes,
 } from 'selectors';
-import { combNodesAndPositions } from 'selectors/combiners';
-import { openFile } from 'utils/file';
 import {
-  networkPropTypes, nodePropTypes, subnetworkPropTypes, linkagesPropTypes,
+  linkagesPropTypes,
+  networkPropTypes,
+  nodePropTypes,
+  subnetworkPropTypes,
 } from 'models';
 import Network, { ContextMenuType } from '../Network';
 import { hasCycles, mergeNetworks } from './helpers';
 
-import Arrow from '../Arrow';
 import LinkagesModal from '../LinkagesModal';
 import Modal from '../Modal';
 import SubNetwork from '../SubNetwork';
@@ -101,11 +104,10 @@ class NetworkMSBN extends Component {
       {
         key: 'open-arrow-linkages',
         text: 'Visualizar uniões',
-        onClick: ({ arrow }) => {
+        onClick: ({ linkagesIds }) => {
           const { linkages } = this.props;
-          const links = arrow.info.linkagesIds;
           const dict = linkages;
-          const newLinkages = links.reduce((p, id) => {
+          const newLinkages = linkagesIds.reduce((p, id) => {
             p[id] = dict[id];
             return p;
           }, {});
@@ -154,17 +156,12 @@ class NetworkMSBN extends Component {
     linkageIds.forEach(linkageId => dispatch(removeLinkage(linkageId)));
 
     dispatch(removeSuperNode(id));
-
-    setTimeout(this.calculateArrows.bind(this), 0);
   };
 
-  onRemoveArrow = (arrow) => {
+  onRemoveArrow = ({ linkagesIds }) => {
     const { dispatch } = this.props;
-    const { arrow: { info: { linkagesIds } } } = arrow;
 
     linkagesIds.forEach(linkageId => dispatch(removeLinkage(linkageId)));
-
-    setTimeout(this.calculateArrows.bind(this), 0);
   };
 
   getArrowTitle = ({ info }) => {
@@ -183,21 +180,6 @@ class NetworkMSBN extends Component {
     );
   };
 
-  renderArrow = (arrow, props) => {
-    const title = this.getArrowTitle(arrow.arrow);
-
-    return (
-      <Arrow
-        key={arrow.key}
-        from={arrow.from}
-        to={arrow.to}
-        markEnd={false}
-        title={title}
-        {...props}
-      />
-    );
-  };
-
   renderNode = (node, props) => {
     const { linkagesByNode, network } = this.props;
     const id = node.id || node.name;
@@ -210,12 +192,9 @@ class NetworkMSBN extends Component {
         key={id}
         id={node.name}
         selected={network.selectedNodes.some(x => x === node.id)}
-        x={node.position.x}
-        y={node.position.y}
-        nodes={node.nodes}
-        sumHeight={18}
         stroke={node.color}
         opacity="0.3"
+        {...node}
         {...props}
       />
     );
@@ -321,18 +300,12 @@ class NetworkMSBN extends Component {
     const { dispatch } = this.props;
 
     dispatch(changeNodePosition(id, newX, newY));
-    setTimeout(this.calculateArrows.bind(this), 0);
-  };
-
-  calculateArrows = () => {
-    this.net.renderArrows();
   };
 
   handleRequestRedraw = () => {
     setTimeout(() => {
       const { key } = this.state;
 
-      this.calculateArrows();
       this.setState({ key: key + 1 });
     }, 0);
   };
@@ -414,7 +387,6 @@ class NetworkMSBN extends Component {
         window.alert('Essa união irá resultar em uma rede ciclica, ou seja, uma rede circular. Sua ação não será completada.');
       } else {
         dispatch(addLinkage(linkage));
-        setTimeout(this.calculateArrows.bind(this), 0);
       }
 
       this.cancelConnection();
@@ -457,7 +429,6 @@ class NetworkMSBN extends Component {
         window.alert('Essa união irá resultar em uma rede ciclica, ou seja, uma rede circular. Sua ação não será completada.');
       } else {
         dispatch(addLinkage(linkage));
-        setTimeout(this.calculateArrows.bind(this), 0);
       }
 
       this.cancelConnection();
@@ -539,7 +510,7 @@ class NetworkMSBN extends Component {
     const {
       nodes, positions, name, id, color,
     } = subnetwork;
-    const nodesAndPositions = combNodesAndPositions(nodes, positions);
+    const nodesAndPositions = combNodesWithPositionsAndSizes(nodes, positions);
     const linkedNodes = this.getLinkedNodesFromSubnetwork(subnetwork);
     const { inferenceResultsMSBN } = this.props;
     const subBeliefs = inferenceResultsMSBN[id];
@@ -594,23 +565,11 @@ class NetworkMSBN extends Component {
       return this.renderSubNetwork(
         openSubnetwork,
         () => { this.setState({ openSubnetwork: null }); },
-        () => {},
+        () => { },
       );
     }
 
     return null;
-  };
-
-  getArrows = () => {
-    const { nodes, linkagesByTwoNode } = this.props;
-    const groups = linkagesByTwoNode;
-    const get = (networkId => nodes.find(n => n.id === networkId));
-
-    return groups.map(info => ({
-      from: get(info.networkId1),
-      to: get(info.networkId2),
-      info,
-    }));
   };
 
   getLinkagesModal = () => {
@@ -626,7 +585,6 @@ class NetworkMSBN extends Component {
             deleteLinkPlease.forEach(id => dispatch(removeLinkage(id)));
 
             this.setState({ editingLinkages: null });
-            setTimeout(this.calculateArrows.bind(this), 0);
           }}
         />
       );
@@ -664,16 +622,15 @@ class NetworkMSBN extends Component {
   };
 
   render() {
-    const { network, nodes } = this.props;
+    const { network, nodes, linkagesByTwoNode } = this.props;
 
     return (
       <div>
         <Network
           network={network}
           nodes={nodes}
-          arrows={this.getArrows}
+          arrows={getArrowsPositionsForMSBN(nodes, linkagesByTwoNode)}
           renderNode={this.renderNode}
-          renderArrow={this.renderArrow}
           onAddConnection={this.onAddConnection}
           onCancelConnection={this.onCancelConnection}
           onSelectNodes={this.onSelectNodes}
@@ -708,7 +665,7 @@ NetworkMSBN.propTypes = {
 
 const mapStateToProps = state => ({
   network: getNetwork(state),
-  nodes: getSubnetworksWithPosition(state),
+  nodes: getSubnetworksWithPositionAndSizes(state),
   inferenceResults: getInferenceResults(state),
   subnetworks: getSubnetworks(state),
   linkages: getLinkages(state),

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Arrow Component matches snapshot 1`] = `
+<g
+  data-testid="arrow"
+  id="id"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  onMouseLeave={[Function]}
+  onMouseOver={[Function]}
+  strokeOpacity={null}
+  style={
+    Object {
+      "transition": "stroke-opacity 0.2s",
+    }
+  }
+>
+  <path
+    fill="none"
+    markerEnd={true}
+    stroke="#333"
+    strokeWidth="2"
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+  >
+    title
+  </path>
+</g>
+`;

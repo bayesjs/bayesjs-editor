@@ -11,6 +11,7 @@
       "reducers/*": ["./src/reducers/*"],
       "selectors/*": ["./src/selectors/*"],
       "actions/*": ["./src/actions/*"],
+      "decorators/*": ["./src/decorators/*"],
     }
   },
   "exclude": [

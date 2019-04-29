@@ -1,11 +1,13 @@
 import { addNode, infer } from 'bayesjs';
+import { getNodeSize } from 'utils/node-size';
 import { createKey, createMissingLinkages, mergeNetworks } from 'components/NetworkMSBN/helpers';
 
 const weakMap = new WeakMap();
 
-export const combNodesAndPositions = (nodes, positions) => nodes.map(node => ({
+export const combNodesWithPositionsAndSizes = (nodes, positions) => nodes.map(node => ({
   ...node,
   position: positions[node.id],
+  size: getNodeSize(node),
 }));
 
 export const combNodesAndBeliefs = (nodes, beliefs, infereceEnabled = true) => {

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes, { shape } from 'prop-types';
 
 const cptWithoutParents = PropTypes.objectOf(PropTypes.number).isRequired;
 
@@ -54,3 +54,28 @@ export const subnetworkPropTypes = PropTypes.shape({
 });
 
 export const inferenceResultsPropTypes = PropTypes.object;
+
+export const nodePosition = shape({
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+});
+
+export const nodeSize = shape({
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+});
+
+const arrowFromTo = shape({
+  type: PropTypes.string.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+});
+
+export const arrowsPropTypes = PropTypes.arrayOf(shape({
+  key: PropTypes.string.isRequired,
+  from: arrowFromTo.isRequired,
+  to: arrowFromTo.isRequired,
+  markEnd: PropTypes.bool.isRequired,
+  childId: PropTypes.string,
+  parentId: PropTypes.string,
+}));
