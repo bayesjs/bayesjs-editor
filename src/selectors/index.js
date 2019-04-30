@@ -1,22 +1,26 @@
 import { createSelector } from 'reselect';
 import { NETWORK_KINDS } from 'actions';
+import { prop, pipe } from 'ramda';
 import {
   combAllLinkagesBySubnetwork,
   combLinkagesBySubnetwork,
   combLinkagesByTwoSubnetwork,
   combNodesAndBeliefs,
   combNodesAndBeliefsMSBN,
-  combNodesWithPositionsAndSizes,
+  combNodesWithPositions,
+  combNodesWithSizes,
   combSubnetworksById,
   combSubnetworksColorById,
+  combNodesIsSelected,
+  combNetworkMSBNDescription,
 } from './combiners';
-
 
 export const getNetwork = state => state.network;
 export const getNodes = state => state.network.nodes || state.nodes || [];
 export const getPositions = state => state.network.positions || state.positions || [];
 export const getBeliefs = state => state.network.beliefs;
 export const getSubnetworks = state => state.network.subnetworks || [];
+export const getSelectedNodes = pipe(getNetwork, prop('selectedNodes'));
 export const getNetworkKind = state => state.network.kind || NETWORK_KINDS.BN;
 export const getPanelVisibility = state => state.network.propertiesPanelVisible;
 export const getLinkages = state => state.network.linkages;
@@ -74,13 +78,28 @@ export const getSelectedSubnetwork = createSelector(
 export const getNodesWithPositionsAndSizes = createSelector(
   getNodes,
   getPositions,
-  combNodesWithPositionsAndSizes,
+  getSelectedNodes,
+  (nodes, position, selectedNodes) =>
+    combNodesWithSizes(
+      combNodesIsSelected(
+        combNodesWithPositions(nodes, position),
+        selectedNodes,
+      ),
+    ),
 );
 
 export const getSubnetworksWithPositionAndSizes = createSelector(
   getSubnetworks,
   getPositions,
-  combNodesWithPositionsAndSizes,
+  getSelectedNodes,
+  (subnetworks, positions, selectedNodes) => combNodesWithSizes(
+    combNetworkMSBNDescription(
+      combNodesIsSelected(
+        combNodesWithPositions(subnetworks, positions),
+        selectedNodes,
+      ),
+    ),
+  ),
 );
 
 export const getInferenceResults = createSelector(

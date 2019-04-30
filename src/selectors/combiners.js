@@ -1,12 +1,22 @@
 import { addNode, infer } from 'bayesjs';
 import { getNodeSize } from 'utils/node-size';
+import { equals, any, map } from 'ramda';
 import { createKey, createMissingLinkages, mergeNetworks } from 'components/NetworkMSBN/helpers';
 
 const weakMap = new WeakMap();
 
-export const combNodesWithPositionsAndSizes = (nodes, positions) => nodes.map(node => ({
+export const combNodesWithPositions = (nodes, positions) => nodes.map(node => ({
   ...node,
   position: positions[node.id],
+}));
+
+export const combNodesIsSelected = (nodes, selectedNodes) => nodes.map(node => ({
+  ...node,
+  isSelected: any(equals(node.id), selectedNodes),
+}));
+
+export const combNodesWithSizes = map(node => ({
+  ...node,
   size: getNodeSize(node),
 }));
 
@@ -76,6 +86,18 @@ const combNetworkMSBN = (subnetworks, linkages) => {
 
   return mergeNetworks(networks, links);
 };
+
+export const combNetworkMSBNDescription = map((subnetwork) => {
+  const { nodes } = subnetwork;
+  const description = `${nodes.length} nodo${nodes.length === 1 ? '' : 's'}`;
+  const showDescription = true;
+
+  return {
+    ...subnetwork,
+    description,
+    showDescription,
+  };
+});
 
 export const combNodesAndBeliefsMSBN = (networks, linkages, beliefs, infereceEnabled) => {
   console.time('MERGE');
