@@ -12,5 +12,6 @@ module.exports = {
     actions: path.resolve(__dirname, 'src/actions/'),
     decorators: path.resolve(__dirname, 'src/decorators/'),
     constants: path.resolve(__dirname, 'src/constants/'),
+    validations: path.resolve(__dirname, 'src/validations/'),
   },
 };
