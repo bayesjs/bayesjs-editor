@@ -10,5 +10,6 @@ module.exports = {
     '^selectors(.*)$': '<rootDir>/src/selectors$1',
     '^actions(.*)$': '<rootDir>/src/actions$1',
     '^decorators(.*)$': '<rootDir>/src/decorators$1',
+    '^constants(.*)$': '<rootDir>/src/constants$1',
   },
 };
