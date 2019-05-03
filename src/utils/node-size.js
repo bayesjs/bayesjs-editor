@@ -1,42 +1,78 @@
+import { NODE_HEIGHT_SIZES, NODE_WIDTH_SIZE } from 'constants/node';
 import {
-  equals,
-  has,
-  isNil,
+  add,
+  always,
+  ifElse,
   length,
+  multiply,
   pipe,
   prop,
+  sum,
 } from 'ramda';
+import { hasConnections, hasDescription, hasStates } from 'validations/node';
 
-import { NETWORK_KINDS } from '../actions';
-
-const NODE_HEIGHT_SIZES = {
-  HEADER: 25,
-  STATE: 18,
-  MSBN: 18,
-  LINKAGE: 34,
-};
-
-const NODE_WIDTH_SIZE = 160;
-
-const hasStates = has('states');
+const addOne = add(1);
 const getStatesLength = pipe(
   prop('states'),
   length,
 );
-const isNetworwBN = kind => equals(NETWORK_KINDS.BN, kind);
+const sumAll = (...values) => sum(values);
+const alwaysZero = always(0);
 
-const getHeightByStates = node =>
-  hasStates(node) ? NODE_HEIGHT_SIZES.STATE * getStatesLength(node) : 0;
-const isMSBNNode = ({ kind }) => isNetworwBN(kind);
-const hasLinkages = ({ link }) => !isNil(link);
+export const getNodeHeaderHeight = always(NODE_HEIGHT_SIZES.HEADER);
+export const getNodeDescriptionHeight = always(NODE_HEIGHT_SIZES.DESCRIPTION);
+export const getNodeStateHeight = always(NODE_HEIGHT_SIZES.STATE);
+export const getNodeConnectionsHeight = always(NODE_HEIGHT_SIZES.CONNECTIONS);
+
+const getHeightByDescription = ifElse(
+  hasDescription,
+  getNodeDescriptionHeight,
+  alwaysZero,
+);
+
+const getHeightByStates = (node) => {
+  if (hasStates(node)) {
+    const counter = getStatesLength(node);
+
+    return sumAll(
+      NODE_HEIGHT_SIZES.STATE * counter,
+      multiply(NODE_HEIGHT_SIZES.STATE_SPACE_BETWEEN, addOne(counter)),
+    );
+  }
+
+  return 0;
+};
+
+const getHeightByConnections = ifElse(
+  hasConnections,
+  getNodeConnectionsHeight,
+  alwaysZero,
+);
+
+export const getNodeStatesOffset = (node, index) =>
+  sumAll(
+    getHeightByDescription(node),
+    getNodeHeaderHeight(),
+    multiply(NODE_HEIGHT_SIZES.STATE, index),
+    multiply(NODE_HEIGHT_SIZES.STATE_SPACE_BETWEEN, addOne(index)),
+  );
+
+export const getNodeConnectionsOffset = node =>
+  sumAll(
+    getNodeHeaderHeight(node),
+    getHeightByDescription(node),
+    getHeightByStates(node),
+  );
 
 export const getNodeHeight = node =>
-  NODE_HEIGHT_SIZES.HEADER
-  + getHeightByStates(node)
-  + (isMSBNNode(node) ? NODE_HEIGHT_SIZES.MSBN : 0)
-  + (hasLinkages(node) ? NODE_HEIGHT_SIZES.LINKAGE : 0);
+  sumAll(
+    getNodeHeaderHeight(node),
+    getHeightByDescription(node),
+    getHeightByStates(node),
+    getHeightByConnections(node),
+  );
 
-export const getNodeWidth = () => NODE_WIDTH_SIZE;
+export const getNodeWidth = always(NODE_WIDTH_SIZE);
 
 export const getNodeSize = node => ({
   width: getNodeWidth(node),
