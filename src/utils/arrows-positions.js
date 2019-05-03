@@ -1,6 +1,7 @@
 import {
   reduce,
   prop,
+  filter,
   equals,
   propEq,
   minBy,
@@ -16,6 +17,8 @@ const isTypeLeft = equals(TYPE_LEFT);
 const isTypeRight = equals(TYPE_RIGHT);
 const isTypeTop = equals(TYPE_TOP);
 const isTypeBottom = equals(TYPE_BOTTOM);
+
+const filterFromProp = filter(prop('from'));
 
 const getArrows = nodes =>
   nodes.reduce((acc, node) => {
@@ -89,7 +92,7 @@ const getNearestPoints = ({ from, to }) => {
   return omit(['distance'], getMinDistance(allDistances));
 };
 
-export const getArrowsPositions = nodes => getArrows(nodes).map((arrow) => {
+export const getArrowsPositions = nodes => filterFromProp(getArrows(nodes)).map((arrow) => {
   const { from, to } = arrow;
 
   return {
