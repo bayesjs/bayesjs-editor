@@ -3,6 +3,7 @@ module.exports = {
   setupTestFrameworkScriptFile: '<rootDir>/jest.setup.js',
   snapshotSerializers: ['enzyme-to-json/serializer'],
   moduleNameMapper: {
+    '\\.(css|less|scss|sss|styl)$': '<rootDir>/node_modules/jest-css-modules',
     '^components(.*)$': '<rootDir>/src/components$1',
     '^utils(.*)$': '<rootDir>/src/utils$1',
     '^models(.*)$': '<rootDir>/src/models$1',
