@@ -21,7 +21,6 @@ import Network, { ContextMenuType } from '../Network';
 import AddNodeModal from '../AddNodeModal';
 import EditCptModal from '../EditCptModal';
 import EditStatesModal from '../EditStatesModal';
-import Node from '../Node';
 
 class NetworkBN extends Component {
   constructor(props) {
@@ -97,6 +96,18 @@ class NetworkBN extends Component {
     window.removeEventListener('keyup', this.handleKeyup);
   }
 
+  get nodes() {
+    const { inferenceResults, network, nodes } = this.props;
+
+    return nodes.map(node => ({
+      ...node,
+      name: node.id,
+      results: inferenceResults[node.id],
+      belief: network.beliefs[node.id],
+    }));
+  }
+
+
   onEditNodeStates = (editingNodeStates) => {
     this.setState({ editingNodeStates });
   };
@@ -104,22 +115,6 @@ class NetworkBN extends Component {
   onEditNodeCpt = (editingNodeCpt) => {
     this.setState({ editingNodeCpt });
   };
-
-  renderNode = (node, props) => {
-    const { inferenceResults, network } = this.props;
-
-    return (
-      <Node
-        key={node.id}
-        results={inferenceResults[node.id]}
-        selected={network.selectedNodes.some(x => x === node.id)}
-        belief={network.beliefs[node.id]}
-        onStateDoubleClick={state => this.onSetBelief(node, state)}
-        {...node}
-        {...props}
-      />
-    );
-  }
 
   onSelectNodes = (nodes) => {
     const { dispatch } = this.props;
@@ -192,24 +187,6 @@ class NetworkBN extends Component {
     }
   };
 
-  getArrows = () => {
-    const { nodes } = this.props;
-    const arrows = [];
-
-    nodes.forEach((node) => {
-      node.parents.forEach((parentId) => {
-        const parent = nodes.find(x => x.id === parentId);
-
-        arrows.push({
-          from: parent,
-          to: node,
-        });
-      });
-    });
-
-    return arrows;
-  };
-
   render() {
     const { network, nodes } = this.props;
     const { editingNodeStates, editingNodeCpt } = this.state;
@@ -218,9 +195,9 @@ class NetworkBN extends Component {
       <div>
         <Network
           network={network}
-          nodes={nodes}
+          nodes={this.nodes}
           arrows={getArrowsPositions(nodes)}
-          renderNode={this.renderNode}
+          onStateDoubleClick={this.onSetBelief}
           onAddConnection={this.onAddConnection}
           onCancelConnection={this.onCancelConnection}
           onSelectNodes={this.onSelectNodes}

@@ -10,7 +10,7 @@ import {
   removeSuperNode,
   setBelief,
 } from 'actions';
-import { combNodesWithPositionsAndSizes } from 'selectors/combiners';
+import { combNodesWithPositions, combNodesWithSizes } from 'selectors/combiners';
 import { connect } from 'react-redux';
 import { getArrowsPositionsForMSBN } from 'utils/arrows-positions';
 import { openFile } from 'utils/file';
@@ -40,7 +40,6 @@ import { hasCycles, mergeNetworks } from './helpers';
 import LinkagesModal from '../LinkagesModal';
 import Modal from '../Modal';
 import SubNetwork from '../SubNetwork';
-import SuperNode from '../SuperNode';
 
 class NetworkMSBN extends Component {
   constructor(props) {
@@ -132,6 +131,24 @@ class NetworkMSBN extends Component {
     window.removeEventListener('keyup', this.handleKeyup);
   }
 
+  get nodes() {
+    const { linkagesByNode, network, subNetworks } = this.props;
+
+    return subNetworks.map((subNetwork) => {
+      const id = subNetwork.id || subNetwork.name;
+      const linkages = linkagesByNode[subNetwork.id];
+
+      return {
+        ...subNetwork,
+        id,
+        linkageInfo: linkages,
+        selected: network.selectedNodes.some(x => x === subNetwork.id),
+        stroke: subNetwork.color,
+        opacity: '0.3',
+      };
+    });
+  }
+
   onViewSubnetworkLinkages = ({ id }) => {
     const { linkagesByNode } = this.props;
     const links = linkagesByNode[id];
@@ -180,26 +197,6 @@ class NetworkMSBN extends Component {
     );
   };
 
-  renderNode = (node, props) => {
-    const { linkagesByNode, network } = this.props;
-    const id = node.id || node.name;
-    const linkages = linkagesByNode[node.id];
-
-    node.linkageInfo = linkages;
-
-    return (
-      <SuperNode
-        key={id}
-        id={node.name}
-        selected={network.selectedNodes.some(x => x === node.id)}
-        stroke={node.color}
-        opacity="0.3"
-        {...node}
-        {...props}
-      />
-    );
-  };
-
   onSelectNodes = (nodes) => {
     const { dispatch } = this.props;
 
@@ -208,11 +205,11 @@ class NetworkMSBN extends Component {
 
   handleKeyup = (e) => {
     const key = e.keyCode || e.which;
-    const { network, nodes } = this.props;
+    const { network, subNetworks } = this.props;
 
     if ([8, 46].indexOf(key) !== -1 && network.selectedNodes.length > 0 && document.activeElement.tagName === 'BODY') {
       network.selectedNodes.forEach((nodeId) => {
-        const node = nodes.find(({ id }) => id === nodeId);
+        const node = subNetworks.find(({ id }) => id === nodeId);
 
         this.onRemoveNode(node);
       });
@@ -510,7 +507,7 @@ class NetworkMSBN extends Component {
     const {
       nodes, positions, name, id, color,
     } = subnetwork;
-    const nodesAndPositions = combNodesWithPositionsAndSizes(nodes, positions);
+    const nodesAndPositions = combNodesWithSizes(combNodesWithPositions(nodes, positions));
     const linkedNodes = this.getLinkedNodesFromSubnetwork(subnetwork);
     const { inferenceResultsMSBN } = this.props;
     const subBeliefs = inferenceResultsMSBN[id];
@@ -622,14 +619,14 @@ class NetworkMSBN extends Component {
   };
 
   render() {
-    const { network, nodes, linkagesByTwoNode } = this.props;
+    const { network, subNetworks, linkagesByTwoNode } = this.props;
 
     return (
       <div>
         <Network
           network={network}
-          nodes={nodes}
-          arrows={getArrowsPositionsForMSBN(nodes, linkagesByTwoNode)}
+          nodes={this.nodes}
+          arrows={getArrowsPositionsForMSBN(subNetworks, linkagesByTwoNode)}
           renderNode={this.renderNode}
           onAddConnection={this.onAddConnection}
           onCancelConnection={this.onCancelConnection}
@@ -651,7 +648,7 @@ class NetworkMSBN extends Component {
 NetworkMSBN.propTypes = {
   dispatch: PropTypes.func.isRequired,
   network: networkPropTypes.isRequired,
-  nodes: PropTypes.arrayOf(nodePropTypes).isRequired,
+  subNetworks: PropTypes.arrayOf(nodePropTypes).isRequired,
   subnetworks: PropTypes.arrayOf(subnetworkPropTypes).isRequired,
   linkages: linkagesPropTypes.isRequired,
   inferenceResults: PropTypes.object.isRequired, // eslint-disable-line
@@ -665,7 +662,7 @@ NetworkMSBN.propTypes = {
 
 const mapStateToProps = state => ({
   network: getNetwork(state),
-  nodes: getSubnetworksWithPositionAndSizes(state),
+  subNetworks: getSubnetworksWithPositionAndSizes(state),
   inferenceResults: getInferenceResults(state),
   subnetworks: getSubnetworks(state),
   linkages: getLinkages(state),

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodePlaceholder Component matches snapshot 1`] = `
+<rect
+  fill="none"
+  height={100}
+  stroke="#333"
+  strokeDasharray="5,5"
+  strokeWidth="2"
+  width={150}
+  x={0}
+  y={5}
+/>
+`;

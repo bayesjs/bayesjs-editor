@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeConnection Component matches snapshot 1`] = `
+<circle
+  cx={0}
+  cy={0}
+  fill="#ddd"
+  r="8"
+>
+  <title>
+    Rede: name
+  </title>
+</circle>
+`;

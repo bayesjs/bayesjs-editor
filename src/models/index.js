@@ -2,38 +2,38 @@ import PropTypes, { shape } from 'prop-types';
 
 const cptWithoutParents = PropTypes.objectOf(PropTypes.number).isRequired;
 
-const cptWithParentsItem = {
+const cptWithParentsItem = shape({
   when: PropTypes.objectOf(PropTypes.string).isRequired,
   then: PropTypes.objectOf(PropTypes.number).isRequired,
-};
+});
 
 const cptWithParents = PropTypes.arrayOf(cptWithParentsItem);
 
 const beliefsPropTypes = PropTypes.objectOf(PropTypes.string).isRequired;
 
-const linkagePropTypes = {
+const linkagePropTypes = shape({
   networkId: PropTypes.string.isRequired,
   nodeId: PropTypes.string.isRequired,
-};
+});
 export const linkagesPropTypes = PropTypes.objectOf(linkagePropTypes);
 
 export const statesPropTypes = PropTypes.arrayOf(PropTypes.string).isRequired;
 
-export const nodePropTypes = {
+export const nodePropTypes = shape({
   id: PropTypes.string.isRequired,
   states: statesPropTypes,
   parents: PropTypes.arrayOf(PropTypes.string).isRequired,
   cpt: PropTypes.oneOfType([cptWithoutParents, cptWithParents]),
-};
+});
 
-export const positionPropTypes = {
+export const positionPropTypes = shape({
   x: PropTypes.string.isRequired,
   y: PropTypes.string.isRequired,
-};
+});
 
 const positionsPropTypes = PropTypes.objectOf(positionPropTypes);
 
-export const networkPropTypes = {
+export const networkPropTypes = shape({
   beliefs: beliefsPropTypes,
   height: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
@@ -46,7 +46,7 @@ export const networkPropTypes = {
   selectedNodes: PropTypes.arrayOf(PropTypes.string).isRequired,
   subnetworks: PropTypes.arrayOf(subnetworkPropTypes), // eslint-disable-line
   width: PropTypes.number.isRequired,
-};
+});
 
 export const subnetworkPropTypes = PropTypes.shape({
   ...networkPropTypes,
@@ -60,7 +60,7 @@ export const nodePosition = shape({
   y: PropTypes.number.isRequired,
 });
 
-export const nodeSize = shape({
+export const sizePropTypes = shape({
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
 });

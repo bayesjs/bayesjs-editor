@@ -1,12 +1,12 @@
+import Network, { ContextMenuType } from '../Network';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { networkPropTypes, nodePropTypes } from 'models';
+
+import ArrowPlaceholder from '../ArrowPlaceholder';
+import PropTypes from 'prop-types';
 import { getArrowsPositions } from 'utils/arrows-positions';
 import { getNodeSize } from 'utils/node-size';
-import Network, { ContextMenuType } from '../Network';
-
-import Node from '../Node';
-import NodeGeneric from '../NodeGeneric';
+import { propEq } from 'ramda';
 
 class SubNetwork extends Component {
   constructor(props) {
@@ -14,7 +14,6 @@ class SubNetwork extends Component {
     const { connecting, onDoubleClickNode } = props;
 
     this.state = {
-      selectedNodeId: null,
       addingChildArrow: null,
     };
 
@@ -38,39 +37,84 @@ class SubNetwork extends Component {
     ];
   }
 
-  handleMouseMove = (e) => {
+  get nodes() {
+    const {
+      nodes,
+      network,
+      inferenceResults,
+      networkColor,
+    } = this.props;
+
+    const finalNodes = nodes.map((node) => {
+      const key = `${network.name}-${node.id}`;
+      const linkedNode = this.getLinkedFromNode(node);
+      const size = getNodeSize({ ...node, linkedNode });
+
+      return {
+        ...node,
+        name: node.id,
+        key,
+        results: inferenceResults[node.id],
+        belief: network.beliefs[node.id],
+        stroke: networkColor,
+        canMove: false,
+        opacity: '0.3',
+        linkedNode,
+        size,
+      };
+    });
+
+    return [
+      ...finalNodes,
+      ...(this.connectionNodes ? [this.connectionNodes] : []),
+    ];
+  }
+
+  get connectionNodes() {
+    const {
+      connectingNode, network,
+    } = this.props;
+
+    if (connectingNode) {
+      const { network: { name, color } } = connectingNode;
+      const key = `${network.name}-${connectingNode.id}`;
+      const node = {
+        ...connectingNode,
+        name: connectingNode.id,
+        states: [],
+        key: `${key}-view`,
+        position: { x: 5, y: 5 },
+        id: name,
+        stroke: color,
+        canMove: true,
+        opacity: '0.3',
+        description: connectingNode.id,
+        showDescription: true,
+      };
+
+      return {
+        ...node,
+        size: getNodeSize({ ...node }),
+      };
+    }
+
+    return null;
+  }
+
+  get addingChildArrowFrom() {
     const { connectingNode } = this.props;
 
     if (connectingNode) {
-      const canvasRect = this.networkRef.canvas.getBoundingClientRect();
-      const nodeRect = this.connectingNodeRef.getBoundingClientRect();
+      const { size } = this.nodes.find(propEq('id', connectingNode.id));
 
-      const from = {
-        x: nodeRect.left + (nodeRect.width / 2) - canvasRect.left,
-        y: nodeRect.top + (nodeRect.height / 2) - canvasRect.top,
+      return {
+        x: 5 + (size.width / 2),
+        y: 5 + (size.height / 2),
       };
-
-      const to = {
-        x: e.clientX - canvasRect.left,
-        y: e.clientY - canvasRect.top,
-      };
-
-      // Without it, sometimes the mouse is over the adding arrow
-      // It needs to be over the node to be added
-      to.x += from.x < to.x ? -3 : 3;
-      to.y += from.y < to.y ? -3 : 3;
-
-      this.setState({
-        addingChildArrow: { from, to },
-      });
     }
-  };
 
-  onSelectNodes = (nodes) => {
-    const selectedNodeId = nodes.length > 0 ? nodes[0] : null;
-
-    this.setState({ selectedNodeId });
-  };
+    return null;
+  }
 
   getLinkedFromNode = ({ id }) => {
     const { linkedNodes } = this.props;
@@ -84,90 +128,13 @@ class SubNetwork extends Component {
     return p;
   }, '');
 
-  onSetBelief = node => (state) => {
+  onSetBelief = (node, state) => {
     const { connecting, onSetBelief, network } = this.props;
 
     if (!connecting && onSetBelief) {
       onSetBelief(network, node, state);
     }
   }
-
-  renderNode = (node, props) => {
-    const {
-      connectingNode, network, inferenceResults, networkColor,
-    } = this.props;
-    const { selectedNodeId } = this.state;
-    const key = `${network.name}-${node.id}`;
-
-    if (connectingNode === node) {
-      const { network: { name, color } } = connectingNode;
-
-      return (
-        <NodeGeneric
-          key={`${key}-view`}
-          x="5"
-          y="5"
-          id={name}
-          selected
-          stroke={color}
-          onMouseDown={() => { }}
-          rectRef={(ref) => { this.connectingNodeRef = ref; }}
-          canMove
-          opacity="0.3"
-        >
-          <foreignObject x="5" y="21" height="15" width="150">
-            <p
-              title={connectingNode.id}
-              style={{
-                margin: 0,
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {connectingNode.id}
-            </p>
-          </foreignObject>
-        </NodeGeneric>
-      );
-    }
-
-    let child = null;
-
-    if (node.link) {
-      // (18 * states.length) + 25
-      const circles = node.link.connections.map(({ networkName, color }, i) => (
-        <circle key={networkName} cx={75 + (20 * i)} cy={(18 * node.states.length) + 45} r="8" fill={color}>
-          <title>{`Rede: ${networkName}`}</title>
-        </circle>
-      ));
-
-      child = (
-        <g>
-          <text x="5" y={(18 * node.states.length) + 50}>Uniões:</text>
-          <path d={`M0,${(18 * node.states.length) + 30} h160`} stroke="#333" />
-          {circles}
-        </g>
-      );
-    }
-
-    return (
-      <Node
-        key={key}
-        results={inferenceResults[node.id]}
-        selected={selectedNodeId === node.id}
-        belief={network.beliefs[node.id]}
-        onStateDoubleClick={this.onSetBelief(node)}
-        stroke={networkColor}
-        canMove={false}
-        opacity="0.3"
-        {...node}
-        {...props}
-      >
-        {child}
-      </Node>
-    );
-  };
 
   getContextItems = (type) => {
     switch (type) {
@@ -178,48 +145,10 @@ class SubNetwork extends Component {
     }
   }
 
-  getNodes = () => {
-    const { connectingNode, nodes } = this.props;
-    const finalNodes = nodes.map((node) => {
-      const link = this.getLinkedFromNode(node);
-      const size = getNodeSize({ ...node, link });
-
-      return {
-        ...node,
-        link,
-        size,
-      };
-    });
-
-    if (connectingNode) {
-      return [
-        ...finalNodes,
-        connectingNode,
-      ];
-    }
-
-    return finalNodes;
-  };
-
   renderAddingChildArrow = () => {
     const { addingChildArrow } = this.state;
 
-    if (addingChildArrow !== null) {
-      const { from, to } = addingChildArrow;
-
-      return (
-        <path
-          d={`M${from.x},${from.y} ${to.x},${to.y}`}
-          fill="none"
-          stroke="#333"
-          strokeWidth="2"
-          strokeDasharray="5,5"
-          markerEnd="url(#triangle)"
-        />
-      );
-    }
-
-    return null;
+    return addingChildArrow && <ArrowPlaceholder {...addingChildArrow} />;
   }
 
   render() {
@@ -234,7 +163,6 @@ class SubNetwork extends Component {
       width: bigger(modalWidth, network.width + 30) - 20,
     };
 
-
     return (
       <div style={{
         width: modalWidth,
@@ -243,17 +171,16 @@ class SubNetwork extends Component {
       >
         <Network
           network={newNetwork}
-          nodes={this.getNodes()}
-          arrows={getArrowsPositions(this.getNodes())}
-          renderNode={this.renderNode}
+          nodes={this.nodes}
+          arrows={getArrowsPositions(this.nodes)}
+          onStateDoubleClick={this.onSetBelief}
+          addingChildArrowFrom={this.addingChildArrowFrom}
           requestCreateNode={empty}
           onAddConnection={empty}
           onCancelConnection={empty}
-          onSelectNodes={this.onSelectNodes}
           onClickNode={onClickNode}
           onDoubleClickNode={onDoubleClickNode}
           getContextItems={this.getContextItems}
-          onMouseMove={this.handleMouseMove}
           ref={(ref) => { this.networkRef = ref; }}
         >
           {this.renderAddingChildArrow()}

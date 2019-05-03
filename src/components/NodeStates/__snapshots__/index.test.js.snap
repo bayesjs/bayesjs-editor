@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeStates Component matches snapshot 1`] = `
+Array [
+  <NodeState
+    height={20}
+    index={0}
+    key="node-id-state-1"
+    state="state-1"
+    width={160}
+  />,
+  <NodeState
+    height={20}
+    index={1}
+    key="node-id-state-2"
+    state="state-2"
+    width={160}
+  />,
+]
+`;

@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeState Component matches snapshot 1`] = `
+<g
+  data-testid="node-state__state"
+>
+  <SvgText
+    height={20}
+    text="state"
+    width={70}
+    x={5}
+    y={5}
+  />
+  <NodeStateBar
+    belief={null}
+    height={20}
+    results={Object {}}
+    state="state"
+    width={70}
+    x={80}
+    y={5}
+  />
+</g>
+`;

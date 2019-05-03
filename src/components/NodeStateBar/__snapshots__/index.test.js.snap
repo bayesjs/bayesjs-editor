@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeStateBar Component matches snapshot 1`] = `
+<Fragment>
+  <rect
+    fill="#ddd"
+    height={20}
+    width={70}
+    x={80}
+    y={5}
+  />
+  <text
+    alignmentBaseline="rigth"
+    fontSize="14px"
+    height={20}
+    stroke="black"
+    strokeWidth="1.1"
+    x={5}
+    y={0}
+  >
+    50 %
+  </text>
+  <rect
+    fill="transparent"
+    height={20}
+    onDoubleClick={[Function]}
+    stroke="#333"
+    strokeWidth="1"
+    width={70}
+    x={5}
+    y={5}
+  >
+    <title>
+      50 %
+    </title>
+  </rect>
+</Fragment>
+`;

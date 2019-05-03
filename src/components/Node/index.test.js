@@ -1,29 +1,24 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Arrows from './component';
+import Node from './index';
 
 const defaultProps = {
-  arrows: [{
-    key: 'arrow-1',
-  }, {
-    key: 'arrow-2',
-  }, {
-    key: 'arrow-3',
-  }],
-  getStrokeOpacity: () => 1,
-  getMarkEndStyle: () => 'url(#triangle)',
+  id: 'id',
+  states: ['S1', 'S2'],
+  isSelected: false,
   onMouseDown: jest.fn(),
-  onMouseLeave: jest.fn(),
-  keyFocus: '',
+  onStateDoubleClick: jest.fn(),
+  position: { x: 0, y: 0 },
+  size: { width: 160, heigth: 100 },
 };
 
 const shallowComponent = (props = {}) => {
   const compProps = { ...defaultProps, ...props };
 
-  return shallow(<Arrows {...compProps} />);
+  return shallow(<Node {...compProps} />);
 };
 
-describe('Arrows Component', () => {
+describe('Node Component', () => {
   it('matches snapshot', () => {
     const component = shallowComponent();
 
