@@ -4,7 +4,7 @@ describe('Network', () => {
   it('creates a new one', () => {
     cy.newNetwork('bn');
 
-    cy.get(`[data-testid*=${getComponentTestId('NodeGeneric')}]`)
+    cy.get(`[data-testid*=${getComponentTestId('GenericNode')}]`)
       .should('have.length', 0);
   });
 
@@ -75,7 +75,7 @@ describe('Network', () => {
       .findByTestId(getComponentTestId('NodeState', 'Sim'))
       .find('rect')
       .first()
-      .should('have.attr', 'width', '35');
+      .should('have.attr', 'width', '37.5');
 
     cy.getByTestId(getComponentTestId('PropertiesNetwork'))
       .find('#inferenceEnabled')
