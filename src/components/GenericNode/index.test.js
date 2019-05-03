@@ -1,6 +1,6 @@
-import GenericNode from './component';
 import React from 'react';
 import { shallow } from 'enzyme';
+import GenericNode from './component';
 
 const defaultProps = {
   id: 'id',

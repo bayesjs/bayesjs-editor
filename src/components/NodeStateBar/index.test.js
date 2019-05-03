@@ -1,6 +1,6 @@
-import NodeStateBar from './component';
 import React from 'react';
 import { shallow } from 'enzyme';
+import NodeStateBar from './component';
 
 const defaultProps = {
   barWidth: 70,

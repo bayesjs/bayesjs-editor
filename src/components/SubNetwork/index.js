@@ -1,8 +1,8 @@
-import Network, { ContextMenuType } from '../Network';
+import Network, { ContextMenuType } from 'components/Network';
 import React, { Component } from 'react';
 import { networkPropTypes, nodePropTypes } from 'models';
 
-import ArrowPlaceholder from '../ArrowPlaceholder';
+import ArrowPlaceholder from 'components/ArrowPlaceholder';
 import PropTypes from 'prop-types';
 import { getArrowsPositions } from 'utils/arrows-positions';
 import { getNodeSize } from 'utils/node-size';
