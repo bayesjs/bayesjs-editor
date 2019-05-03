@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { getSelectedNode, getSelectedSubnetwork } from 'selectors';
-
 import { nodePropTypes, subnetworkPropTypes } from 'models';
+
+import PropTypes from 'prop-types';
 import GenericPanel from '../GenericPanel';
 import PropertiesNetwork from '../PropertiesNetwork';
 import PropertiesNode from '../PropertiesNode';
 import PropertiesSuperNode from '../PropertiesSuperNode';
+import { connect } from 'react-redux';
 import styles from './styles.css';
 
 class PropertiesPanel extends Component {
@@ -56,13 +56,18 @@ class PropertiesPanel extends Component {
 }
 
 PropertiesPanel.propTypes = {
-  selectedNode: nodePropTypes.isRequired,
+  selectedNode: nodePropTypes,
   onEditNodeStates: PropTypes.func.isRequired,
   onEditNodeCpt: PropTypes.func.isRequired,
   onStartConnection: PropTypes.func.isRequired,
   onViewSubnetwork: PropTypes.func.isRequired,
   onViewLinkages: PropTypes.func.isRequired,
-  selectedSubnetwork: subnetworkPropTypes.isRequired,
+  selectedSubnetwork: subnetworkPropTypes,
+};
+
+PropertiesPanel.defaultProps = {
+  selectedNode: null,
+  selectedSubnetwork: null,
 };
 
 const mapStateToProps = state => ({

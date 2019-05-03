@@ -1,14 +1,20 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { propEq } from 'ramda';
-import { noop } from 'lodash';
+import {
+  arrowPropTypes,
+  networkPropTypes,
+  nodePropTypes,
+  positionPropTypes,
+  subnetworkPropTypes,
+} from 'models';
 
-import { networkPropTypes, nodePropTypes, nodePosition } from 'models';
-import Arrows from '../Arrows';
-import ArrowPlaceholder from '../ArrowPlaceholder';
-import ContextMenu from '../ContextMenu';
-import Nodes from '../Nodes';
-import NodePlaceholder from '../NodePlaceholder';
+import ArrowPlaceholder from 'components/ArrowPlaceholder';
+import Arrows from 'components/Arrows';
+import ContextMenu from 'components/ContextMenu';
+import NodePlaceholder from 'components/NodePlaceholder';
+import Nodes from 'components/Nodes';
+import PropTypes from 'prop-types';
+import { noop } from 'lodash';
+import { propEq } from 'ramda';
 import styles from './styles.css';
 
 export const ContextMenuType = {
@@ -299,13 +305,14 @@ Network.defaultProps = {
   onStateDoubleClick: noop,
   onSelectNodes: noop,
   addingChildArrowFrom: null,
+  children: null,
 };
 
 Network.propTypes = {
   network: networkPropTypes.isRequired,
-  children: PropTypes.element.isRequired,
-  nodes: PropTypes.objectOf(nodePropTypes).isRequired,
-  arrows: PropTypes.func.isRequired,
+  children: PropTypes.element,
+  nodes: PropTypes.arrayOf(PropTypes.oneOfType([nodePropTypes, subnetworkPropTypes])).isRequired,
+  arrows: PropTypes.arrayOf(arrowPropTypes).isRequired,
   requestCreateNode: PropTypes.func.isRequired,
   onAddConnection: PropTypes.func.isRequired,
   onCancelConnection: PropTypes.func.isRequired,
@@ -316,7 +323,7 @@ Network.propTypes = {
   changeNodePosition: PropTypes.func,
   onClickNode: PropTypes.func,
   onStateDoubleClick: PropTypes.func,
-  addingChildArrowFrom: nodePosition,
+  addingChildArrowFrom: positionPropTypes,
 };
 
 export default Network;

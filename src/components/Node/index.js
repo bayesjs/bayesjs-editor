@@ -1,4 +1,4 @@
-import { nodePosition, sizePropTypes, statesPropTypes } from 'models';
+import { positionPropTypes, sizePropTypes, statePropTypes } from 'models';
 
 import GenericNode from 'components/GenericNode';
 import NodeConnections from 'components/NodeConnections';
@@ -16,17 +16,20 @@ const Node = props => (
 Node.defaultProps = {
   belief: null,
   description: null,
+  states: null,
+  results: {},
+  isSelected: false,
 };
 
 Node.propTypes = {
   id: PropTypes.string.isRequired,
-  states: statesPropTypes.isRequired,
-  results: PropTypes.objectOf(PropTypes.number).isRequired,
-  isSelected: PropTypes.bool.isRequired,
+  states: PropTypes.arrayOf(statePropTypes),
+  results: PropTypes.objectOf(PropTypes.number),
+  isSelected: PropTypes.bool,
   belief: PropTypes.string,
   onMouseDown: PropTypes.func.isRequired,
   onStateDoubleClick: PropTypes.func.isRequired,
-  position: nodePosition.isRequired,
+  position: positionPropTypes.isRequired,
   size: sizePropTypes.isRequired,
   description: PropTypes.string,
 };

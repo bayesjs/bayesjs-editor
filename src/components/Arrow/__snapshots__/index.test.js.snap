@@ -8,7 +8,6 @@ exports[`Arrow Component matches snapshot 1`] = `
   onFocus={[Function]}
   onMouseLeave={[Function]}
   onMouseOver={[Function]}
-  strokeOpacity={null}
   style={
     Object {
       "transition": "stroke-opacity 0.2s",

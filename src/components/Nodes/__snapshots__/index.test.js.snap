@@ -5,10 +5,16 @@ Array [
   <Node
     belief={null}
     description={null}
+    isSelected={false}
+    results={Object {}}
+    states={null}
   />,
   <Node
     belief={null}
     description={null}
+    isSelected={false}
+    results={Object {}}
+    states={null}
   />,
 ]
 `;

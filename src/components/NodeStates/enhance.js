@@ -1,14 +1,16 @@
 import {
-  pure,
-  compose,
   branch,
+  compose,
+  pure,
   renderNothing,
   withProps,
 } from 'recompose';
-import { has, not, pipe } from 'ramda';
-import { getNodeStateHeight } from 'utils/node-size';
+import { not, pipe } from 'ramda';
 
-const hasNoStates = pipe(has('states'), not);
+import { getNodeStateHeight } from 'utils/node-size';
+import { hasStates } from 'validations/node';
+
+const hasNoStates = pipe(hasStates, not);
 
 const enhance = compose(
   pure,
