@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Button from '../Button';
+import Button from 'components/Button';
 import PropTypes from 'prop-types';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
 import { getComponentTestId } from 'utils/test-utils';

@@ -3,10 +3,10 @@ import { getSelectedNode, getSelectedSubnetwork } from 'selectors';
 import { nodePropTypes, subnetworkPropTypes } from 'models';
 
 import PropTypes from 'prop-types';
-import GenericPanel from '../GenericPanel';
-import PropertiesNetwork from '../PropertiesNetwork';
-import PropertiesNode from '../PropertiesNode';
-import PropertiesSuperNode from '../PropertiesSuperNode';
+import GenericPanel from 'components/GenericPanel';
+import PropertiesNetwork from 'components/PropertiesNetwork';
+import PropertiesNode from 'components/PropertiesNode';
+import PropertiesSuperNode from 'components/PropertiesSuperNode';
 import { connect } from 'react-redux';
 import styles from './styles.css';
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import Button from '../Button';
-import EditStatesList from '../EditStatesList';
-import Modal from '../Modal';
+import Button from 'components/Button';
+import EditStatesList from 'components/EditStatesList';
+import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
 import { changeNodeStates } from 'actions';
 import { connect } from 'react-redux';

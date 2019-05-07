@@ -1,5 +1,5 @@
-import Arrow from '../Arrow';
-import ArrowsDefs from '../ArrowsDefs';
+import Arrow from 'components/Arrow';
+import ArrowsDefs from 'components/ArrowsDefs';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { arrowPropTypes } from 'models';

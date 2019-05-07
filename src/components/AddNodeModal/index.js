@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { nodePropTypes, positionPropTypes } from 'models';
 
-import Button from '../Button';
-import EditStatesList from '../EditStatesList';
-import Modal from '../Modal';
+import Button from 'components/Button';
+import EditStatesList from 'components/EditStatesList';
+import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
 import { addNode } from 'actions';
 import { connect } from 'react-redux';

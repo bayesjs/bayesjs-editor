@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import Button from '../Button';
-import InputCpt from '../InputCpt';
-import Modal from '../Modal';
+import Button from 'components/Button';
+import InputCpt from 'components/InputCpt';
+import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
 import { changeNodeCpt } from 'actions';
 import { connect } from 'react-redux';
