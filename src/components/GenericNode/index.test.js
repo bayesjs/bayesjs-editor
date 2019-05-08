@@ -19,6 +19,7 @@ const defaultProps = {
   descriptionY: 20,
   descriptionHeight: 20,
   descriptionWidth: 150,
+  showDescription: false,
 };
 
 const shallowComponent = (props = {}) => {

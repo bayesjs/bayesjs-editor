@@ -5,7 +5,12 @@ import Arrow from './component';
 const defaultProps = {
   id: 'id',
   title: 'title',
-  markerEnd: true,
+  markerEnd: '',
+  markEnd: false,
+  from: { x: 0, y: 0 },
+  to: { x: 100, y: 100 },
+  onMouseDown: jest.fn(),
+  pathD: '',
 };
 
 const shallowComponent = (props = {}) => {

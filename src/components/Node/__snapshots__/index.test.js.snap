@@ -17,7 +17,7 @@ exports[`Node Component matches snapshot 1`] = `
   results={Object {}}
   size={
     Object {
-      "heigth": 100,
+      "height": 100,
       "width": 160,
     }
   }
@@ -44,7 +44,7 @@ exports[`Node Component matches snapshot 1`] = `
     results={Object {}}
     size={
       Object {
-        "heigth": 100,
+        "height": 100,
         "width": 160,
       }
     }
@@ -71,7 +71,7 @@ exports[`Node Component matches snapshot 1`] = `
     results={Object {}}
     size={
       Object {
-        "heigth": 100,
+        "height": 100,
         "width": 160,
       }
     }

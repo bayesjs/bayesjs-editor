@@ -5,15 +5,49 @@ Array [
   <Node
     belief={null}
     description={null}
+    id="node-1"
     isSelected={false}
+    key="node-1"
+    onDoubleClick={[Function]}
+    onMouseDown={[Function]}
+    onStateDoubleClick={[Function]}
+    position={
+      Object {
+        "x": 0,
+        "y": 0,
+      }
+    }
     results={Object {}}
+    size={
+      Object {
+        "height": 100,
+        "width": 100,
+      }
+    }
     states={null}
   />,
   <Node
     belief={null}
     description={null}
+    id="node-2"
     isSelected={false}
+    key="node-2"
+    onDoubleClick={[Function]}
+    onMouseDown={[Function]}
+    onStateDoubleClick={[Function]}
+    position={
+      Object {
+        "x": 0,
+        "y": 0,
+      }
+    }
     results={Object {}}
+    size={
+      Object {
+        "height": 100,
+        "width": 100,
+      }
+    }
     states={null}
   />,
 ]
