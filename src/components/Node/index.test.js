@@ -9,7 +9,7 @@ const defaultProps = {
   onMouseDown: jest.fn(),
   onStateDoubleClick: jest.fn(),
   position: { x: 0, y: 0 },
-  size: { width: 160, heigth: 100 },
+  size: { width: 160, height: 100 },
 };
 
 const shallowComponent = (props = {}) => {

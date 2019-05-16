@@ -4,25 +4,73 @@ exports[`Arrows Component matches snapshot 1`] = `
 <g>
   <ArrowsDefs />
   <Arrow
+    from={
+      Object {
+        "type": "bottom",
+        "x": 0,
+        "y": 0,
+      }
+    }
     id="arrow-1"
     key="arrow-1"
+    markEnd={true}
     markEndStyle="url(#triangle)"
     onMouseLeave={[Function]}
+    onMouseOver={[Function]}
     strokeOpacity={1}
+    to={
+      Object {
+        "type": "top",
+        "x": 100,
+        "y": 100,
+      }
+    }
   />
   <Arrow
+    from={
+      Object {
+        "type": "bottom",
+        "x": 0,
+        "y": 0,
+      }
+    }
     id="arrow-2"
     key="arrow-2"
+    markEnd={true}
     markEndStyle="url(#triangle)"
     onMouseLeave={[Function]}
+    onMouseOver={[Function]}
     strokeOpacity={1}
+    to={
+      Object {
+        "type": "top",
+        "x": 100,
+        "y": 100,
+      }
+    }
   />
   <Arrow
+    from={
+      Object {
+        "type": "bottom",
+        "x": 0,
+        "y": 0,
+      }
+    }
     id="arrow-3"
     key="arrow-3"
+    markEnd={true}
     markEndStyle="url(#triangle)"
     onMouseLeave={[Function]}
+    onMouseOver={[Function]}
     strokeOpacity={1}
+    to={
+      Object {
+        "type": "top",
+        "x": 100,
+        "y": 100,
+      }
+    }
   />
 </g>
 `;

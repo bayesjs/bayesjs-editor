@@ -3,21 +3,34 @@
 exports[`Arrow Component matches snapshot 1`] = `
 <g
   data-testid="arrow"
+  from={
+    Object {
+      "x": 0,
+      "y": 0,
+    }
+  }
   id="id"
   onBlur={[Function]}
   onFocus={[Function]}
+  onMouseDown={[Function]}
   onMouseLeave={[Function]}
   onMouseOver={[Function]}
-  strokeOpacity={null}
   style={
     Object {
       "transition": "stroke-opacity 0.2s",
     }
   }
+  to={
+    Object {
+      "x": 100,
+      "y": 100,
+    }
+  }
 >
   <path
+    d=""
     fill="none"
-    markerEnd={true}
+    markerEnd=""
     stroke="#333"
     strokeWidth="2"
     style={

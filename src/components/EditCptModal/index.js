@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
+import Button from 'components/Button';
+import InputCpt from 'components/InputCpt';
+import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
+import { changeNodeCpt } from 'actions';
 import { connect } from 'react-redux';
 import float from 'float';
-import { changeNodeCpt } from 'actions';
 import { nodePropTypes } from 'models';
-import Button from '../Button';
-import InputCpt from '../InputCpt';
-import Modal from '../Modal';
 import styles from './styles.css';
 
 class EditCptModal extends Component {
@@ -356,8 +356,12 @@ class EditCptModal extends Component {
 
 EditCptModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  node: nodePropTypes.isRequired,
+  node: nodePropTypes,
   onRequestClose: PropTypes.func.isRequired,
+};
+
+EditCptModal.defaultProps = {
+  node: null,
 };
 
 export default connect()(EditCptModal);

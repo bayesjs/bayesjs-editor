@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import fontAwesome from 'font-awesome/css/font-awesome.css';
-import { v4 } from 'uuid';
 import {
   NETWORK_KINDS,
   loadNetwork,
   newNetwork,
 } from 'actions';
+import React, { Component } from 'react';
 import { openFile, saveFile } from 'utils/file';
 
+import Button from 'components/Button';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import fontAwesome from 'font-awesome/css/font-awesome.css';
 import { getComponentTestId } from 'utils/test-utils';
 import { getStateToSave } from 'selectors';
-import { networkPropTypes } from 'models';
-import Button from '../Button';
+import { stateToSavePropTypes } from 'models';
+import { v4 } from 'uuid';
 import styles from './styles.css';
 
 class Header extends Component {
@@ -172,7 +172,7 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  stateToSave: networkPropTypes.isRequired,
+  stateToSave: stateToSavePropTypes.isRequired,
   onRequestRedraw: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
 };

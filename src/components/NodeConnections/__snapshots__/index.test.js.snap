@@ -14,16 +14,22 @@ exports[`NodeConnections Component matches snapshot 1`] = `
     y={61}
   />
   <NodeConnection
+    color="#ddd"
     cy={71}
     index={0}
     key="network1"
     name="network1"
+    networkId="id-1"
+    nodeId="node-id-1"
   />
   <NodeConnection
+    color="#ddd"
     cy={71}
     index={1}
     key="network2"
     name="network2"
+    networkId="id-2"
+    nodeId="node-id-2"
   />
 </g>
 `;

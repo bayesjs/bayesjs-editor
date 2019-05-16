@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
+import Button from 'components/Button';
+import EditStatesList from 'components/EditStatesList';
+import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { changeNodeStates } from 'actions';
+import { connect } from 'react-redux';
 import { nodePropTypes } from 'models';
-import Button from '../Button';
-import EditStatesList from '../EditStatesList';
-import Modal from '../Modal';
 import styles from './styles.css';
 
 class EditStatesModal extends Component {
@@ -97,8 +97,12 @@ class EditStatesModal extends Component {
 
 EditStatesModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  node: nodePropTypes.isRequired,
+  node: nodePropTypes,
   onRequestClose: PropTypes.func.isRequired,
+};
+
+EditStatesModal.defaultProps = {
+  node: null,
 };
 
 export default connect()(EditStatesModal);

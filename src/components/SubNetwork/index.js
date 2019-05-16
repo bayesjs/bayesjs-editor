@@ -1,11 +1,17 @@
 import Network, { ContextMenuType } from 'components/Network';
 import React, { Component } from 'react';
-import { networkPropTypes, nodePropTypes } from 'models';
+import {
+  linkedNodePropTypes,
+  networkPropTypes,
+  nodePropTypes,
+  subNetworkInferenceResultsPropTypes,
+} from 'models';
 
 import ArrowPlaceholder from 'components/ArrowPlaceholder';
 import PropTypes from 'prop-types';
 import { getArrowsPositions } from 'utils/arrows-positions';
 import { getNodeSize } from 'utils/node-size';
+import { noop } from 'lodash';
 import { propEq } from 'ramda';
 
 class SubNetwork extends Component {
@@ -153,7 +159,6 @@ class SubNetwork extends Component {
 
   render() {
     const { network, onClickNode, onDoubleClickNode } = this.props;
-    const empty = () => { };
     const modalWidth = window.innerWidth * 0.8;
     const modalHeight = window.innerHeight * 0.8;
     const bigger = (a, b) => (a > b ? a : b);
@@ -175,9 +180,9 @@ class SubNetwork extends Component {
           arrows={getArrowsPositions(this.nodes)}
           onStateDoubleClick={this.onSetBelief}
           addingChildArrowFrom={this.addingChildArrowFrom}
-          requestCreateNode={empty}
-          onAddConnection={empty}
-          onCancelConnection={empty}
+          requestCreateNode={noop}
+          onAddConnection={noop}
+          onCancelConnection={noop}
           onClickNode={onClickNode}
           onDoubleClickNode={onDoubleClickNode}
           getContextItems={this.getContextItems}
@@ -193,19 +198,20 @@ class SubNetwork extends Component {
 SubNetwork.defaultProps = {
   linkedNodes: [],
   networkColor: '',
-  onSetBelief: () => { },
-  onDoubleClickNode: () => { },
-  onClickNode: () => { },
+  onSetBelief: noop,
+  onDoubleClickNode: noop,
+  onClickNode: noop,
+  connectingNode: null,
 };
 
 SubNetwork.propTypes = {
   network: networkPropTypes.isRequired,
   nodes: PropTypes.arrayOf(nodePropTypes).isRequired,
   connecting: PropTypes.bool.isRequired,
-  connectingNode: nodePropTypes.isRequired,
-  inferenceResults: PropTypes.objectOf(PropTypes.number).isRequired,
+  connectingNode: nodePropTypes,
+  inferenceResults: subNetworkInferenceResultsPropTypes.isRequired,
   networkColor: PropTypes.string,
-  linkedNodes: PropTypes.arrayOf(PropTypes.string),
+  linkedNodes: PropTypes.arrayOf(linkedNodePropTypes),
   onSetBelief: PropTypes.func,
   onDoubleClickNode: PropTypes.func,
   onClickNode: PropTypes.func,

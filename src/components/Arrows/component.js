@@ -1,9 +1,8 @@
-import React from 'react';
-
+import Arrow from 'components/Arrow';
+import ArrowsDefs from 'components/ArrowsDefs';
 import PropTypes from 'prop-types';
-import { arrowsPropTypes } from 'models';
-import Arrow from '../Arrow';
-import ArrowsDefs from '../ArrowsDefs';
+import React from 'react';
+import { arrowPropTypes } from 'models';
 
 const Arrows = ({
   arrows,
@@ -38,7 +37,7 @@ const Arrows = ({
 );
 
 Arrows.propTypes = {
-  arrows: arrowsPropTypes.isRequired,
+  arrows: PropTypes.arrayOf(arrowPropTypes).isRequired,
   keyFocus: PropTypes.string,
   onMouseOver: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,

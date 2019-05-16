@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
+import RenderIntoBody from 'components/RenderIntoBody';
 import classNames from 'classnames';
+import { contextMenuItem } from 'models';
 import { getComponentTestId } from 'utils/test-utils';
-import RenderIntoBody from '../RenderIntoBody';
 import styles from './styles.css';
 
 class ContextMenu extends Component {
@@ -136,12 +137,7 @@ class ContextMenu extends Component {
 }
 
 ContextMenu.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    disabled: PropTypes.bool,
-    onClick: PropTypes.func.isRequired,
-  })).isRequired,
+  items: PropTypes.arrayOf(contextMenuItem).isRequired,
 };
 
 export default ContextMenu;

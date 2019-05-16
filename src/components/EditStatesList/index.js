@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
+import Button from 'components/Button';
 import PropTypes from 'prop-types';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
 import { getComponentTestId } from 'utils/test-utils';
-import { statesPropTypes } from 'models';
-import Button from '../Button';
+import { statePropTypes } from 'models';
 import styles from './styles.css';
 
 class EditStatesList extends Component {
@@ -76,7 +76,7 @@ class EditStatesList extends Component {
 }
 
 EditStatesList.propTypes = {
-  states: statesPropTypes.isRequired,
+  states: PropTypes.arrayOf(statePropTypes).isRequired,
   onAddState: PropTypes.func.isRequired,
   onDeleteState: PropTypes.func.isRequired,
 };

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
+import Button from 'components/Button';
+import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
 import { linkagesPropTypes } from 'models';
-import Button from '../Button';
-import Modal from '../Modal';
 import styles from './styles.css';
 
 class LinkagesModal extends Component {
@@ -172,7 +172,7 @@ class LinkagesModal extends Component {
 LinkagesModal.propTypes = {
   linkages: linkagesPropTypes.isRequired,
   onRequestClose: PropTypes.func.isRequired,
-  subnetworksById: PropTypes.object.isRequired, // eslint-disable-line
+  subnetworksById: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default LinkagesModal;

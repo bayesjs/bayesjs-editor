@@ -3,7 +3,17 @@ import { shallow } from 'enzyme';
 import NodeConnections from './component';
 
 const defaultProps = {
-  connections: [{ networkName: 'network1' }, { networkName: 'network2' }],
+  connections: [{
+    networkId: 'id-1',
+    networkName: 'network1',
+    color: '#ddd',
+    nodeId: 'node-id-1',
+  }, {
+    networkId: 'id-2',
+    networkName: 'network2',
+    color: '#ddd',
+    nodeId: 'node-id-2',
+  }],
   dividerY: 61,
   textX: 5,
   textY: 61,

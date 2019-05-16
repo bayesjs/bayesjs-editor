@@ -9,7 +9,11 @@
     "syntax-trailing-function-commas",
     "transform-class-properties",
     "transform-object-rest-spread",
-    "transform-react-remove-prop-types",
     "add-module-exports"
-  ]
+  ],
+  "env": {
+    "production": {
+      "plugins": ["transform-react-remove-prop-types"]
+    }
+  }
 }

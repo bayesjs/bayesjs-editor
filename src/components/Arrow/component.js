@@ -1,9 +1,8 @@
-import React from 'react';
-import { omit } from 'ramda';
-import { noop } from 'lodash';
-
 import PropTypes from 'prop-types';
+import React from 'react';
 import { getComponentTestId } from 'utils/test-utils';
+import { noop } from 'lodash';
+import { omit } from 'ramda';
 import { positionPropTypes } from 'models';
 
 const style = {
@@ -46,21 +45,20 @@ Arrow.defaultProps = {
   markEndStyle: '',
   onMouseOver: noop,
   onMouseLeave: noop,
-  strokeOpacity: null,
+  title: null,
 };
 
 Arrow.propTypes = {
-  from: PropTypes.objectOf(positionPropTypes).isRequired,
-  to: PropTypes.objectOf(positionPropTypes).isRequired,
+  from: positionPropTypes.isRequired,
+  to: positionPropTypes.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   markEnd: PropTypes.bool.isRequired,
   markEndStyle: PropTypes.string,
   markerEnd: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   onMouseOver: PropTypes.func,
   onMouseLeave: PropTypes.func,
   pathD: PropTypes.string.isRequired,
-  strokeOpacity: PropTypes.string,
 };
 
 export default Arrow;

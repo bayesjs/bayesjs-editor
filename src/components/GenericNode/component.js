@@ -1,4 +1,4 @@
-import { nodePosition, sizePropTypes } from 'models';
+import { positionPropTypes, sizePropTypes } from 'models';
 
 import NodeDivider from 'components/NodeDivider';
 import PropTypes from 'prop-types';
@@ -83,9 +83,9 @@ GenericNode.propTypes = {
   id: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
-  position: nodePosition.isRequired,
+  position: positionPropTypes.isRequired,
   size: sizePropTypes.isRequired,
-  children: PropTypes.element,
+  children: PropTypes.node,
   onDoubleClick: PropTypes.func,
   stroke: PropTypes.string,
   // eslint-disable-next-line react/no-unused-prop-types

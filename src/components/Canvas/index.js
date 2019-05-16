@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import AddNodeModal from 'components/AddNodeModal';
 import {
   NETWORK_KINDS,
 } from 'actions';
+import NetworkBN from 'components/NetworkBN';
+import NetworkMSBN from 'components/NetworkMSBN';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   getNetworkKind,
 } from 'selectors';
-import AddNodeModal from '../AddNodeModal';
-import NetworkBN from '../NetworkBN';
-import NetworkMSBN from '../NetworkMSBN';
 import styles from './styles.css';
 
 class Canvas extends Component {
@@ -63,7 +63,7 @@ class Canvas extends Component {
   );
 
   renderNetwork = () => {
-    const { networkKind, onEditNodeCpt, onEditNodeStates } = this.props;
+    const { networkKind } = this.props;
 
     if (networkKind === NETWORK_KINDS.MSBN) {
       return (
@@ -76,8 +76,6 @@ class Canvas extends Component {
     return (
       <NetworkBN
         ref={(ref) => { this.net = ref; }}
-        onEditNodeStates={onEditNodeStates}
-        onEditNodeCpt={onEditNodeCpt}
       />
     );
   };
@@ -102,8 +100,6 @@ class Canvas extends Component {
 
 Canvas.propTypes = {
   networkKind: PropTypes.string.isRequired,
-  onEditNodeStates: PropTypes.func.isRequired,
-  onEditNodeCpt: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

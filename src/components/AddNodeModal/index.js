@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { nodePropTypes, positionPropTypes } from 'models';
 
+import Button from 'components/Button';
+import EditStatesList from 'components/EditStatesList';
+import Modal from 'components/Modal';
+import PropTypes from 'prop-types';
 import { addNode } from 'actions';
+import { connect } from 'react-redux';
 import { getNodes } from 'selectors';
-import Button from '../Button';
-import EditStatesList from '../EditStatesList';
-import Modal from '../Modal';
 import styles from './styles.css';
 
 const initialState = {
@@ -165,8 +165,12 @@ class AddNodeModal extends Component {
 AddNodeModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
   nodes: PropTypes.arrayOf(nodePropTypes).isRequired,
-  position: PropTypes.objectOf(positionPropTypes).isRequired,
+  position: positionPropTypes,
   onRequestClose: PropTypes.func.isRequired,
+};
+
+AddNodeModal.defaultProps = {
+  position: null,
 };
 
 const mapStateToProps = state => ({
