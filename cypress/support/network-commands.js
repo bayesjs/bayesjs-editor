@@ -11,7 +11,7 @@ Cypress.Commands.add('newNetwork', (type = 'bn') => {
 Cypress.Commands.add('getInSvg', selector => cy.get('svg')
   .findByTestId(selector));
 
-Cypress.Commands.add('getNodeByTestId', selector => cy.getInSvg(getComponentTestId('NodeGeneric', selector)));
+Cypress.Commands.add('getNodeByTestId', selector => cy.getInSvg(getComponentTestId('GenericNode', selector)));
 Cypress.Commands.add('getModalByTestId', selector => cy.getByTestId(getComponentTestId('ModalBody', selector)));
 
 Cypress.Commands.add('createNode', (nodeName, options = {}) => {

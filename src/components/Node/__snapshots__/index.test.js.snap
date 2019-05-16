@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Node Component matches snapshot 1`] = `
+<GenericNode
+  belief={null}
+  description={null}
+  id="id"
+  isSelected={false}
+  onMouseDown={[Function]}
+  onStateDoubleClick={[Function]}
+  position={
+    Object {
+      "x": 0,
+      "y": 0,
+    }
+  }
+  size={
+    Object {
+      "heigth": 100,
+      "width": 160,
+    }
+  }
+  states={
+    Array [
+      "S1",
+      "S2",
+    ]
+  }
+>
+  <NodeStates
+    belief={null}
+    description={null}
+    id="id"
+    isSelected={false}
+    onMouseDown={[Function]}
+    onStateDoubleClick={[Function]}
+    position={
+      Object {
+        "x": 0,
+        "y": 0,
+      }
+    }
+    size={
+      Object {
+        "heigth": 100,
+        "width": 160,
+      }
+    }
+    states={
+      Array [
+        "S1",
+        "S2",
+      ]
+    }
+  />
+  <NodeConnections
+    belief={null}
+    description={null}
+    id="id"
+    isSelected={false}
+    onMouseDown={[Function]}
+    onStateDoubleClick={[Function]}
+    position={
+      Object {
+        "x": 0,
+        "y": 0,
+      }
+    }
+    size={
+      Object {
+        "heigth": 100,
+        "width": 160,
+      }
+    }
+    states={
+      Array [
+        "S1",
+        "S2",
+      ]
+    }
+  />
+</GenericNode>
+`;

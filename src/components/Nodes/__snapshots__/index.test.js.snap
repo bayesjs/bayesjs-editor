@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Nodes Component matches snapshot 1`] = `
+Array [
+  <Node
+    belief={null}
+    description={null}
+  />,
+  <Node
+    belief={null}
+    description={null}
+  />,
+]
+`;

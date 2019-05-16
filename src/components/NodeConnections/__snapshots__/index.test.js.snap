@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeConnections Component matches snapshot 1`] = `
+<g>
+  <NodeDivider
+    width={160}
+    y={61}
+  />
+  <SvgText
+    height={20}
+    text="Uniões:"
+    width={51}
+    x={5}
+    y={61}
+  />
+  <NodeConnection
+    cy={71}
+    index={0}
+    key="network1"
+    name="network1"
+  />
+  <NodeConnection
+    cy={71}
+    index={1}
+    key="network2"
+    name="network2"
+  />
+</g>
+`;

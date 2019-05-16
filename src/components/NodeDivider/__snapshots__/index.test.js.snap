@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeDivider Component matches snapshot 1`] = `
+<path
+  d="M0,5 h150"
+  stroke="#333"
+/>
+`;

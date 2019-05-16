@@ -20,9 +20,6 @@ describe('Node', () => {
 
     cy.getNodeByTestId(newName)
       .should('exist');
-    cy.getNodeByTestId(newName)
-      .findByTestId(getComponentTestId('NodeGeneric', 'Title'))
-      .contains(newName);
   });
 
   it('Change description', () => {

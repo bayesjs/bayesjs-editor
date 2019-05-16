@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArrowPlaceholder Component matches snapshot 1`] = `
+<path
+  d="M0,0 100,100"
+  fill="none"
+  markerEnd="url(#triangle)"
+  stroke="#333"
+  strokeDasharray="5,5"
+  strokeWidth="2"
+/>
+`;

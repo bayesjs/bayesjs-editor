@@ -12,6 +12,8 @@
       "selectors/*": ["./src/selectors/*"],
       "actions/*": ["./src/actions/*"],
       "decorators/*": ["./src/decorators/*"],
+      "constants/*": ["./src/constants/*"],
+      "validations/*": ["./src/validations/*"],
     }
   },
   "exclude": [

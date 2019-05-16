@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { propEq } from 'ramda';
+import { noop } from 'lodash';
 
-import { networkPropTypes, nodePropTypes } from 'models';
+import { networkPropTypes, nodePropTypes, nodePosition } from 'models';
 import Arrows from '../Arrows';
+import ArrowPlaceholder from '../ArrowPlaceholder';
 import ContextMenu from '../ContextMenu';
+import Nodes from '../Nodes';
+import NodePlaceholder from '../NodePlaceholder';
 import styles from './styles.css';
 
 export const ContextMenuType = {
@@ -12,8 +17,7 @@ export const ContextMenuType = {
   CANVAS: 'CONTEXT_MENU_CANVAS',
 };
 
-
-class Network extends Component {
+class Network extends PureComponent {
   constructor(props) {
     super(props);
     const { changeNodePosition, onMouseMove } = this.props;
@@ -29,7 +33,7 @@ class Network extends Component {
     this.rectRefs = {};
     this.movingNode = null;
     this.canChangeNodePostion = typeof changeNodePosition === 'function';
-    this.onMouseMoveProps = typeof onMouseMove === 'function' ? onMouseMove : () => { };
+    this.onMouseMoveProps = typeof onMouseMove === 'function' ? onMouseMove : noop;
   }
 
   startConnection = (nodeToAddChildTo) => {
@@ -121,11 +125,12 @@ class Network extends Component {
 
   handleMouseMove = (e) => {
     const { nodeToAddChildTo } = this.state;
+    const { nodes } = this.props;
     this.onMouseMoveProps(e);
 
     if (this.canChangeNodePostion && this.movingNode !== null) {
       const { id, initialPosition, initialMousePosition } = this.movingNode;
-      const nodeRect = this.rectRefs[id].getBoundingClientRect();
+      const { size } = nodes.find(propEq('id', id));
 
       const difX = e.clientX - initialMousePosition.x;
       const difY = e.clientY - initialMousePosition.y;
@@ -133,8 +138,7 @@ class Network extends Component {
       const movingNodePlaceholder = {
         x: initialPosition.x + difX,
         y: initialPosition.y + difY,
-        height: nodeRect.height,
-        width: nodeRect.width,
+        ...size,
       };
 
       this.setState({ movingNodePlaceholder });
@@ -143,15 +147,23 @@ class Network extends Component {
     this.handleNodeToAddChildTo(nodeToAddChildTo, e);
   };
 
-  handleNodeToAddChildTo = (nodeToAddChildTo, e) => {
-    if (nodeToAddChildTo !== null) {
-      const canvasRect = this.canvas.getBoundingClientRect();
-      const nodeRect = this.rectRefs[nodeToAddChildTo.id].getBoundingClientRect();
+  getFrom = (nodes, nodeToAddChildTo, addingChildArrowFrom) => {
+    if (addingChildArrowFrom) return addingChildArrowFrom;
 
-      const from = {
-        x: nodeRect.left + (nodeRect.width / 2) - canvasRect.left,
-        y: nodeRect.top + (nodeRect.height / 2) - canvasRect.top,
-      };
+    const { size, position } = nodes.find(propEq('id', nodeToAddChildTo.id));
+
+    return {
+      x: position.x + (size.width / 2),
+      y: position.y + (size.height / 2),
+    };
+  }
+
+  handleNodeToAddChildTo = (nodeToAddChildTo, e) => {
+    const { nodes, addingChildArrowFrom } = this.props;
+
+    if (nodeToAddChildTo || addingChildArrowFrom) {
+      const canvasRect = this.canvas.getBoundingClientRect();
+      const from = this.getFrom(nodes, nodeToAddChildTo, addingChildArrowFrom);
 
       const to = {
         x: e.clientX - canvasRect.left,
@@ -206,100 +218,27 @@ class Network extends Component {
     }
   };
 
-  renderDefs = () => (
-    <defs>
-      <marker
-        id="triangle"
-        viewBox="0 0 10 10"
-        markerWidth="6"
-        markerHeight="6"
-        refX="8"
-        refY="5"
-        orient="auto"
-      >
-        <path d="M0,0 L10,5 L0,10" fill="#333" />
-      </marker>
-
-      <marker
-        id="triangle-hover"
-        viewBox="0 0 10 10"
-        markerWidth="6"
-        markerHeight="6"
-        refX="8"
-        refY="5"
-        orient="auto"
-      >
-        <path d="M0,0 L10,5 L0,10" fill="#9f9ff6" />
-      </marker>
-    </defs>
-  );
-
-  renderNodes = () => {
-    const { nodes, renderNode, onDoubleClickNode } = this.props;
-    const setRef = nodeId => (nodeRef) => {
-      this.rectRefs[nodeId] = nodeRef;
-    };
-    this.rectRefs = {};
-
-    return nodes.map((node) => {
-      const rectRef = setRef(node.id);
-      const onMouseDown = e => this.handleNodeMouseDown(node, e);
-      const onDoubleClick = (e) => {
-        if (typeof onDoubleClickNode === 'function') {
-          onDoubleClickNode(node, e);
-        }
-      };
-
-      return renderNode(node, { rectRef, onMouseDown, onDoubleClick });
-    });
-  };
-
   renderAddingChildArrow = () => {
     const { addingChildArrow } = this.state;
 
-    if (addingChildArrow !== null) {
-      const { from, to } = addingChildArrow;
-
-      return (
-        <path
-          d={`M${from.x},${from.y} ${to.x},${to.y}`}
-          fill="none"
-          stroke="#333"
-          strokeWidth="2"
-          strokeDasharray="5,5"
-          markerEnd="url(#triangle)"
-        />
-      );
-    }
-    return null;
+    return addingChildArrow && <ArrowPlaceholder {...addingChildArrow} />;
   }
 
   renderMovingNodePlaceholder = () => {
     const { movingNodePlaceholder } = this.state;
 
-    if (movingNodePlaceholder !== null) {
-      const {
-        x, y, height, width,
-      } = movingNodePlaceholder;
-
-      return (
-        <rect
-          x={x}
-          y={y}
-          height={height}
-          width={width}
-          fill="none"
-          stroke="#333"
-          strokeWidth="2"
-          strokeDasharray="5,5"
-        />
-      );
-    }
-    return null;
+    return movingNodePlaceholder && <NodePlaceholder {...movingNodePlaceholder} />;
   }
 
   render() {
-    const { network, children, arrows } = this.props;
+    const {
+      network,
+      children,
+      arrows,
+      nodes,
+      onDoubleClickNode,
+      onStateDoubleClick,
+    } = this.props;
     const { contextMenuItems, newNode } = this.state;
 
     return (
@@ -316,10 +255,18 @@ class Network extends Component {
           ref={(ref) => { this.canvas = ref; }}
         >
           <g>
-            <Arrows arrows={arrows} onMouseDown={this.handleArrowMouseDown} />
+            <Arrows
+              arrows={arrows}
+              onMouseDown={this.handleArrowMouseDown}
+            />
           </g>
           <g>
-            {this.renderNodes()}
+            <Nodes
+              nodes={nodes}
+              onMouseDown={this.handleNodeMouseDown}
+              onDoubleClick={onDoubleClickNode}
+              onStateDoubleClick={onStateDoubleClick}
+            />
           </g>
           <g>
             {this.renderAddingChildArrow()}
@@ -345,10 +292,13 @@ class Network extends Component {
 }
 
 Network.defaultProps = {
-  onMouseMove: () => { },
-  onDoubleClickNode: () => { },
-  changeNodePosition: () => { },
-  onClickNode: () => { },
+  onMouseMove: noop,
+  onDoubleClickNode: noop,
+  changeNodePosition: noop,
+  onClickNode: noop,
+  onStateDoubleClick: noop,
+  onSelectNodes: noop,
+  addingChildArrowFrom: null,
 };
 
 Network.propTypes = {
@@ -356,16 +306,17 @@ Network.propTypes = {
   children: PropTypes.element.isRequired,
   nodes: PropTypes.objectOf(nodePropTypes).isRequired,
   arrows: PropTypes.func.isRequired,
-  renderNode: PropTypes.func.isRequired,
   requestCreateNode: PropTypes.func.isRequired,
   onAddConnection: PropTypes.func.isRequired,
   onCancelConnection: PropTypes.func.isRequired,
-  onSelectNodes: PropTypes.func.isRequired,
+  onSelectNodes: PropTypes.func,
   getContextItems: PropTypes.func.isRequired,
   onMouseMove: PropTypes.func,
   onDoubleClickNode: PropTypes.func,
   changeNodePosition: PropTypes.func,
   onClickNode: PropTypes.func,
+  onStateDoubleClick: PropTypes.func,
+  addingChildArrowFrom: nodePosition,
 };
 
 export default Network;

@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GenericNode Component matches snapshot with description 1`] = `
+<g
+  className="node"
+  data-testid="generic-node__id"
+  onDoubleClick={[Function]}
+  onMouseDown={[Function]}
+  style={Object {}}
+  transform="translate(0 0)"
+>
+  <rect
+    fill="#ff8"
+    fillOpacity="1"
+    height={100}
+    stroke="#333"
+    strokeWidth={1}
+    width={100}
+  />
+  <SvgText
+    height={20}
+    text="name"
+    width={150}
+    x={5}
+    y={0}
+  />
+  <NodeDivider
+    width={100}
+    y={20}
+  />
+  <SvgText
+    height={20}
+    text={null}
+    width={150}
+    x={5}
+    y={20}
+  />
+</g>
+`;
+
+exports[`GenericNode Component matches snapshot without description 1`] = `
+<g
+  className="node"
+  data-testid="generic-node__id"
+  onDoubleClick={[Function]}
+  onMouseDown={[Function]}
+  style={Object {}}
+  transform="translate(0 0)"
+>
+  <rect
+    fill="#ff8"
+    fillOpacity="1"
+    height={100}
+    stroke="#333"
+    strokeWidth={1}
+    width={100}
+  />
+  <SvgText
+    height={20}
+    text="name"
+    width={150}
+    x={5}
+    y={0}
+  />
+  <NodeDivider
+    width={100}
+    y={20}
+  />
+</g>
+`;

@@ -39,12 +39,16 @@ const Arrows = ({
 
 Arrows.propTypes = {
   arrows: arrowsPropTypes.isRequired,
-  keyFocus: PropTypes.string.isRequired,
+  keyFocus: PropTypes.string,
   onMouseOver: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,
   getStrokeOpacity: PropTypes.func.isRequired,
   getMarkEndStyle: PropTypes.func.isRequired,
   onMouseDown: PropTypes.func.isRequired,
+};
+
+Arrows.defaultProps = {
+  keyFocus: null,
 };
 
 export default Arrows;
