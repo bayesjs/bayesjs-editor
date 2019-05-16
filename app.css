@@ -2769,6 +2769,10 @@ template {
 .context-menu-item-disabled__src-components-ContextMenu-styles__2zeZH {
     color: #a5a1a1;
 }
+.node__src-components-GenericNode-styles__2XYuD {
+  cursor: move;
+  user-select: none;
+}
 .canvas__src-components-Network-styles__lcywB {
   border: solid 1px #333;
   background-color: #fcfcfc;
@@ -2819,10 +2823,6 @@ template {
 
 .buttons__src-components-EditStatesModal-styles__2dB91 button {
   margin-right: 10px;
-}
-.node__src-components-NodeGeneric-styles__MVMUJ {
-  cursor: move;
-  user-select: none;
 }
 .buttons__src-components-LinkagesModal-styles__1ScRA button {
   margin-right: 10px;
