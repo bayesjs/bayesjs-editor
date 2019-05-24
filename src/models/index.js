@@ -6,3 +6,4 @@ export * from './state-to-save';
 export * from './context-menu';
 export * from './linkage';
 export * from './inference-result';
+export * from './element';
