@@ -277,7 +277,7 @@ class Network extends PureComponent {
 Network.defaultProps = {
   onMouseMove: noop,
   onDoubleClickNode: noop,
-  changeNodePosition: noop,
+  changeNodePosition: null,
   onClickNode: noop,
   onStateDoubleClick: noop,
   onSelectNodes: noop,
