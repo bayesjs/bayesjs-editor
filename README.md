@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/fhelwanger/bayesjs-editor.svg?branch=master)](https://travis-ci.org/fhelwanger/bayesjs-editor)
+[![Build Status](https://travis-ci.org/bayesjs/bayesjs-editor.svg?branch=master)](https://travis-ci.org/bayesjs/bayesjs-editor)
 
 
 # bayesjs-editor
