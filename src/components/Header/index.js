@@ -1,8 +1,8 @@
 import {
-  NETWORK_KINDS,
   loadNetwork,
   newNetwork,
 } from 'actions';
+import { NETWORK_KINDS } from 'constants/network';
 import React, { Component } from 'react';
 import { openFile, saveFile } from 'utils/file';
 

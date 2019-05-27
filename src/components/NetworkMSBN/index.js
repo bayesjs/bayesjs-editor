@@ -1,5 +1,4 @@
 import {
-  NETWORK_KINDS,
   addLinkage,
   addSuperNode,
   changeNetworkProperty,
@@ -8,6 +7,7 @@ import {
   removeSuperNode,
   setBelief,
 } from 'actions';
+import { NETWORK_KINDS } from 'constants/network';
 import Network, { ContextMenuType } from 'components/Network';
 import React, { Component } from 'react';
 import { combNodesWithPositions, combNodesWithSizes } from 'selectors/combiners';

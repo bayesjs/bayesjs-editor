@@ -1,4 +1,5 @@
 import { getNodes } from 'selectors';
+import { NETWORK_KINDS } from 'constants/network';
 
 export const PERSIST_STATE = 'PERSIST_STATE';
 export const NEW_NETWORK = 'NEW_NETWORK';
@@ -18,11 +19,6 @@ export const CHANGE_NODE_CPT = 'CHANGE_NODE_CPT';
 export const SET_BELIEF = 'SET_BELIEF';
 export const ADD_LINKAGE = 'ADD_LINKAGE';
 export const REMOVE_LINKAGE = 'REMOVE_LINKAGE';
-
-export const NETWORK_KINDS = {
-  BN: 'BN',
-  MSBN: 'MSBN',
-};
 
 const persistState = () => ({
   type: PERSIST_STATE,

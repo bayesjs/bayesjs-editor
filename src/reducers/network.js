@@ -3,11 +3,11 @@ import {
   CHANGE_NETWORK_PROPERTY,
   CHANGE_NODE_ID,
   LOAD_NETWORK,
-  NETWORK_KINDS,
   NEW_NETWORK,
   REMOVE_NODE,
   SET_BELIEF,
 } from 'actions';
+import { NETWORK_KINDS } from 'constants/network';
 
 import linkagesRed from './linkages';
 import nodesRed from './nodes';

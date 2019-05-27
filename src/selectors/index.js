@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { NETWORK_KINDS } from 'actions';
+import { NETWORK_KINDS } from 'constants/network';
 import { prop, pipe } from 'ramda';
 import {
   combAllLinkagesBySubnetwork,

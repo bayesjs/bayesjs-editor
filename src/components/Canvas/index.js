@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
 import AddNodeModal from 'components/AddNodeModal';
-import {
-  NETWORK_KINDS,
-} from 'actions';
+import { NETWORK_KINDS } from 'constants/network';
 import NetworkBN from 'components/NetworkBN';
 import NetworkMSBN from 'components/NetworkMSBN';
 import PropTypes from 'prop-types';
