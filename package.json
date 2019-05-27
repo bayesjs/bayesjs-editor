@@ -33,7 +33,7 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
-    "@cypress/webpack-preprocessor": "^2.0.1",
+    "@cypress/webpack-preprocessor": "^4.0.3",
     "babel-jest": "^24.8.0",
     "bayesjs": "^0.4.0-beta.5",
     "change-case": "^3.1.0",
