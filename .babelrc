@@ -1,15 +1,12 @@
 {
   "presets": [
-    "es2015",
-    "es2016",
-    "react",
-    "flow"
+    "@babel/preset-env",
+    "@babel/preset-react"
   ],
   "plugins": [
     "syntax-trailing-function-commas",
-    "transform-class-properties",
-    "transform-object-rest-spread",
-    "add-module-exports"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread"
   ],
   "env": {
     "production": {
