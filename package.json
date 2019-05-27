@@ -59,7 +59,7 @@
     "redux-thunk": "^2.1.0",
     "redux-undo": "^0.6.1",
     "remove-accents": "^0.4.2",
-    "reselect": "^3.0.1",
+    "reselect": "^4.0.0",
     "responsive-loader": "^1.2.0",
     "sugarss": "^2.0.0",
     "uuid": "^3.3.2",
