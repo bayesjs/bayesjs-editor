@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
 import AddNodeModal from 'components/AddNodeModal';
-import {
-  NETWORK_KINDS,
-} from 'actions';
+import { NETWORK_KINDS } from 'constants/network';
 import NetworkBN from 'components/NetworkBN';
 import NetworkMSBN from 'components/NetworkMSBN';
 import PropTypes from 'prop-types';
@@ -27,23 +25,23 @@ class Canvas extends Component {
   }
 
   onEditNodeStates = (node) => {
-    this.net.getWrappedInstance().onEditNodeStates(node);
+    this.net.onEditNodeStates(node);
   };
 
   onEditNodeCpt = (node) => {
-    this.net.getWrappedInstance().onEditNodeCpt(node);
+    this.net.onEditNodeCpt(node);
   };
 
   onStartConnection = (node) => {
-    this.net.getWrappedInstance().onStartConnection(node);
+    this.net.onStartConnection(node);
   };
 
   onViewSubnetwork = (node) => {
-    this.net.getWrappedInstance().onViewSubnetwork(node);
+    this.net.onViewSubnetwork(node);
   };
 
   onViewLinkages = (node) => {
-    this.net.getWrappedInstance().onViewLinkages(node);
+    this.net.onViewLinkages(node);
   };
 
   renderDefs = () => (
@@ -106,4 +104,4 @@ const mapStateToProps = state => ({
   networkKind: getNetworkKind(state),
 });
 
-export default connect(mapStateToProps, null, null, { withRef: true })(Canvas);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(Canvas);

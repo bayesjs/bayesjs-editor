@@ -15,8 +15,8 @@ exports[`Arrows Component matches snapshot 1`] = `
     key="arrow-1"
     markEnd={true}
     markEndStyle="url(#triangle)"
-    onMouseLeave={[Function]}
-    onMouseOver={[Function]}
+    onMouseLeave={[MockFunction]}
+    onMouseOver={[MockFunction]}
     strokeOpacity={1}
     to={
       Object {
@@ -38,8 +38,8 @@ exports[`Arrows Component matches snapshot 1`] = `
     key="arrow-2"
     markEnd={true}
     markEndStyle="url(#triangle)"
-    onMouseLeave={[Function]}
-    onMouseOver={[Function]}
+    onMouseLeave={[MockFunction]}
+    onMouseOver={[MockFunction]}
     strokeOpacity={1}
     to={
       Object {
@@ -61,8 +61,8 @@ exports[`Arrows Component matches snapshot 1`] = `
     key="arrow-3"
     markEnd={true}
     markEndStyle="url(#triangle)"
-    onMouseLeave={[Function]}
-    onMouseOver={[Function]}
+    onMouseLeave={[MockFunction]}
+    onMouseOver={[MockFunction]}
     strokeOpacity={1}
     to={
       Object {

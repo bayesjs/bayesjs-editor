@@ -15,7 +15,7 @@ module.exports = {
   },
   resolve,
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -38,10 +38,6 @@ module.exports = {
             'postcss-loader',
           ],
         }),
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader',
       },
       {
         test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?v=.+)?$/,
