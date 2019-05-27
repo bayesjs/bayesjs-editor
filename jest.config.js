@@ -1,6 +1,6 @@
 module.exports = {
   testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
-  setupTestFrameworkScriptFile: '<rootDir>/jest.setup.js',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   snapshotSerializers: ['enzyme-to-json/serializer'],
   moduleNameMapper: {
     '\\.(css|less|scss|sss|styl)$': '<rootDir>/node_modules/jest-css-modules',

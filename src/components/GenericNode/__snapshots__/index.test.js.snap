@@ -4,8 +4,8 @@ exports[`GenericNode Component matches snapshot with description 1`] = `
 <g
   className="node"
   data-testid="generic-node__id"
-  onDoubleClick={[Function]}
-  onMouseDown={[Function]}
+  onDoubleClick={[MockFunction]}
+  onMouseDown={[MockFunction]}
   style={Object {}}
   transform="translate(0 0)"
 >
@@ -42,8 +42,8 @@ exports[`GenericNode Component matches snapshot without description 1`] = `
 <g
   className="node"
   data-testid="generic-node__id"
-  onDoubleClick={[Function]}
-  onMouseDown={[Function]}
+  onDoubleClick={[MockFunction]}
+  onMouseDown={[MockFunction]}
   style={Object {}}
   transform="translate(0 0)"
 >
