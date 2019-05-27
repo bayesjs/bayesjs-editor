@@ -14,7 +14,7 @@ class App extends Component {
     key: 1,
   };
 
-  getCanvas = () => this.canvas.getWrappedInstance();
+  getCanvas = () => this.canvas;
 
   handleRequestRedraw = () => {
     setTimeout(() => {

@@ -671,4 +671,4 @@ const mapStateToProps = state => ({
   allLinkagesBySubnetworkWithoutId: getAllLinkagesBySubnetworkWithoutId(state),
 });
 
-export default connect(mapStateToProps, null, null, { withRef: true })(NetworkMSBN);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(NetworkMSBN);

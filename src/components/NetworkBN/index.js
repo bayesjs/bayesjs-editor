@@ -244,4 +244,4 @@ const mapStateToProps = (s, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, null, null, { withRef: true })(NetworkBN);
+export default connect(mapStateToProps, null, null, { forwardRef: true })(NetworkBN);
