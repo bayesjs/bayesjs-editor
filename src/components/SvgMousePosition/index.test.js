@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import * as throttleDebounce from 'throttle-debounce';
+import * as lodash from 'lodash';
 import SvgMousePosition from './component';
 
 const svg = document.createElement('svg');
@@ -26,7 +26,6 @@ describe('SvgMousePosition Component', () => {
 
       beforeEach(() => {
         svg.getBoundingClientRect = jest.fn(() => svgRect);
-        throttleDebounce.throttle = jest.fn((_, func) => func);
         component = shallowComponent({ delay });
         component.instance().componentDidMount();
       });
@@ -40,9 +39,9 @@ describe('SvgMousePosition Component', () => {
       });
 
       it('calls "throttle" function with "delay" prop and "updatePosition" function', () => {
-        expect(throttleDebounce.throttle).toBeCalledWith(
-          delay,
+        expect(lodash.throttle).toBeCalledWith(
           component.instance().updatePosition,
+          delay,
         );
       });
 
@@ -95,7 +94,6 @@ describe('SvgMousePosition Component', () => {
       const map = {};
 
       beforeAll(() => {
-        throttleDebounce.throttle = jest.fn((delay, func) => func);
         svg.addEventListener = jest.fn((event, cb) => {
           map[event] = cb;
         });

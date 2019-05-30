@@ -1,8 +1,7 @@
 import { Component } from 'react';
 import { subtract } from 'ramda';
 import PropTypes from 'prop-types';
-import { noop } from 'lodash';
-import { throttle } from 'throttle-debounce';
+import { noop, throttle } from 'lodash';
 import { elementInstancePropTypes } from 'models';
 
 class SvgMousePosition extends Component {
@@ -17,7 +16,7 @@ class SvgMousePosition extends Component {
     const { svg, delay } = this.props;
 
     this.isComponentMounted = true;
-    this.updatePositionWithThrottle = throttle(delay, this.updatePosition);
+    this.updatePositionWithThrottle = throttle(this.updatePosition, delay);
     this.updateSvgElementRect();
     svg.addEventListener('mousemove', this.updatePositionWithThrottle);
   }
