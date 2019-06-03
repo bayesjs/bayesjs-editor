@@ -34,7 +34,6 @@ class Network extends PureComponent {
       movingNode: null,
       nodeToAddChildTo: null,
       newNode: null,
-      svgRef: null,
     };
 
     this.rectRefs = {};
@@ -49,7 +48,7 @@ class Network extends PureComponent {
   }
 
   handleRef = (svgRef) => {
-    this.setState({ svgRef });
+    this.svgRef = svgRef;
   }
 
   startConnection = (nodeToAddChildTo) => {
@@ -116,7 +115,7 @@ class Network extends PureComponent {
 
   handleMouseDown = (e) => {
     const { onSelectNodes, onCancelConnection, getContextItems } = this.props;
-    const { nodeToAddChildTo, svgRef } = this.state;
+    const { nodeToAddChildTo } = this.state;
 
     // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
     setTimeout(() => {
@@ -129,7 +128,7 @@ class Network extends PureComponent {
     }
 
     if (e.button === 2) {
-      const rect = svgRef.getBoundingClientRect();
+      const rect = this.svgRef.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
@@ -159,10 +158,9 @@ class Network extends PureComponent {
 
   handleNodeToAddChildTo = (nodeToAddChildTo, e) => {
     const { nodes, addingChildArrowFrom } = this.props;
-    const { svgRef } = this.state;
 
     if (nodeToAddChildTo || addingChildArrowFrom) {
-      const canvasRect = svgRef.getBoundingClientRect();
+      const canvasRect = this.svgRef.getBoundingClientRect();
       const from = this.getFrom(nodes, nodeToAddChildTo, addingChildArrowFrom);
 
       const to = {
@@ -198,12 +196,12 @@ class Network extends PureComponent {
   }
 
   renderMovingNodePlaceholder = () => {
-    const { movingNode, svgRef } = this.state;
+    const { movingNode } = this.state;
     const { changeNodePosition } = this.props;
 
     return movingNode && (
       <NodeMovingPlaceholder
-        svg={svgRef}
+        svg={this.svgRef}
         node={movingNode}
         onSetPosition={({ x, y }) => {
           changeNodePosition(movingNode.id, x, y);
