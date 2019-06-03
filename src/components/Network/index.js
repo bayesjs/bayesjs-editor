@@ -189,6 +189,15 @@ class Network extends PureComponent {
     }
   };
 
+  handleSetNodePosition = ({ x, y }) => {
+    const { changeNodePosition } = this.props;
+    const { movingNode } = this.state;
+    const { id } = movingNode;
+
+    changeNodePosition(id, x, y);
+    this.onStopMovingNode();
+  }
+
   renderAddingChildArrow = () => {
     const { addingChildArrow } = this.state;
 
@@ -197,16 +206,12 @@ class Network extends PureComponent {
 
   renderMovingNodePlaceholder = () => {
     const { movingNode } = this.state;
-    const { changeNodePosition } = this.props;
 
     return movingNode && (
       <NodeMovingPlaceholder
         svg={this.svgRef}
         node={movingNode}
-        onSetPosition={({ x, y }) => {
-          changeNodePosition(movingNode.id, x, y);
-          this.onStopMovingNode();
-        }}
+        onSetPosition={this.handleSetNodePosition}
         onCancel={this.onStopMovingNode}
       />
     );
