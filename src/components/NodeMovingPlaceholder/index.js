@@ -26,6 +26,8 @@ class NodeMovingPlaceholder extends Component {
 
     if (this.lastNodePosition) {
       onSetPosition(this.lastNodePosition);
+    } else {
+      this.handleCancel();
     }
   }
 
@@ -41,26 +43,24 @@ class NodeMovingPlaceholder extends Component {
     this.mousePositionInNode = subtractPositions(svgMousePosition, position);
   }
 
-  renderNodePlaceholder = ({ position }) => {
-    const { node: { size } } = this.props;
-    if (!this.mousePositionInNode) return null;
-    const nodePosition = subtractPositions(position, this.mousePositionInNode);
-    this.lastNodePosition = nodePosition;
-
-    return (
-      <NodePlaceholder
-        {...nodePosition}
-        {...size}
-      />
-    );
-  }
-
   render() {
     const { svg } = this.props;
 
     return (
       <SvgMousePosition svg={svg} onFirstMove={this.setMousePositionInNode} delay={25}>
-        {this.renderNodePlaceholder}
+        {({ position }) => {
+          const { node: { size } } = this.props;
+          if (!this.mousePositionInNode) return null;
+          const nodePosition = subtractPositions(position, this.mousePositionInNode);
+          this.lastNodePosition = nodePosition;
+
+          return (
+            <NodePlaceholder
+              {...nodePosition}
+              {...size}
+            />
+          );
+        }}
       </SvgMousePosition>
     );
   }
