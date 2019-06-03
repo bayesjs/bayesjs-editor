@@ -1,38 +1,41 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import SvgMousePosition from 'components/SvgMousePosition';
+import NodePlaceholder from 'components/NodePlaceholder';
 import NodeMovingPlaceholder from './index';
 
 const svg = document.createElement('svg');
-
-const defaultProps = {
-  node: {
-    id: 'node-id',
-    states: [],
-    parents: [],
-    position: { x: 0, y: 0 },
-    size: { width: 160, height: 100 },
-  },
-  svg,
-  onSetPosition: jest.fn(),
-  onCancel: jest.fn(),
-};
-
-const shallowComponent = (props = {}) => {
-  const compProps = { ...defaultProps, ...props };
-
-  return shallow(<NodeMovingPlaceholder {...compProps} />);
-};
+const shallowComponent = (props = {}) => shallow(<NodeMovingPlaceholder {...props} />);
 
 describe('NodeMovingPlaceholder Component', () => {
+  let eventsMap;
+  let defaultProps;
+
+  beforeEach(() => {
+    eventsMap = {};
+    svg.addEventListener = jest.fn((event, cb) => {
+      eventsMap[event] = cb;
+    });
+    svg.removeEventListener = jest.fn();
+
+    defaultProps = {
+      node: {
+        id: 'node-id',
+        states: [],
+        parents: [],
+        position: { x: 0, y: 0 },
+        size: { width: 160, height: 100 },
+      },
+      svg,
+      onSetPosition: jest.fn(),
+      onCancel: jest.fn(),
+    };
+  });
+
   describe('Event Listeners', () => {
     describe('Check bind and unbind events', () => {
-      beforeEach(() => {
-        svg.addEventListener = jest.fn();
-        svg.removeEventListener = jest.fn();
-      });
-
       it('"mouseup" and "mouseleave" events', () => {
-        const component = shallowComponent();
+        const component = shallowComponent(defaultProps);
         const componentInstance = component.instance();
 
         expect(svg.addEventListener.mock.calls).toEqual([
@@ -51,18 +54,11 @@ describe('NodeMovingPlaceholder Component', () => {
     });
 
     describe('When "mouseleave" event is triggered', () => {
-      const map = {};
       const onCancel = jest.fn();
 
-      beforeAll(() => {
-        svg.addEventListener = jest.fn((event, cb) => {
-          map[event] = cb;
-        });
-      });
-
       it('calls "onCancel" prop', () => {
-        shallowComponent({ onCancel });
-        map.mouseleave();
+        shallowComponent({ ...defaultProps, onCancel });
+        eventsMap.mouseleave();
 
         expect(onCancel).toBeCalled();
       });
@@ -82,7 +78,7 @@ describe('NodeMovingPlaceholder Component', () => {
 
       describe('When there is "lastNodePosition" value', () => {
         it('calls "onSetPosition" prop', () => {
-          const component = shallowComponent({ onSetPosition });
+          const component = shallowComponent({ ...defaultProps, onSetPosition });
           component.instance().lastNodePosition = { x: 1, y: 1 };
           map.mouseup();
 
@@ -92,7 +88,7 @@ describe('NodeMovingPlaceholder Component', () => {
 
       describe('When there is no "lastNodePosition" value', () => {
         it('calls "onSetPosition" prop', () => {
-          shallowComponent({ onSetPosition });
+          shallowComponent({ ...defaultProps, onSetPosition });
           map.mouseup();
 
           expect(onSetPosition).not.toBeCalled();
@@ -101,54 +97,38 @@ describe('NodeMovingPlaceholder Component', () => {
     });
   });
 
-  describe('Methods', () => {
+  describe('"SvgMousePosition" render prop', () => {
+    const position = { x: 100, y: 50 };
     let component;
 
     beforeEach(() => {
-      component = shallowComponent();
+      component = shallowComponent(defaultProps);
     });
 
-    describe('setMousePositionInNode', () => {
-      const svgMousePosition = { x: 100, y: 50 };
+    describe('When "onFirstMove" was not called', () => {
+      it('returns null', () => {
+        const wrapper = component.find(SvgMousePosition).renderProp('children')({ position });
 
-      it('set "mousePositionInNode"', () => {
-        const { setMousePositionInNode } = component.instance();
-
-        expect(component.instance().mousePositionInNode).toBe(undefined);
-        setMousePositionInNode(svgMousePosition);
-        expect(component.instance().mousePositionInNode).toEqual(expect.any(Object));
+        expect(wrapper.instance()).toBe(null);
       });
     });
 
-    describe('renderNodePlaceholder', () => {
-      const position = { x: 100, y: 50 };
+    describe('When "onFirstMove" was called', () => {
+      let wrapper;
 
-      describe('When there is no "mousePositionInNode"', () => {
-        it('returns null', () => {
-          const { renderNodePlaceholder } = component.instance();
-
-          expect(renderNodePlaceholder({ position })).toBe(null);
-        });
+      beforeEach(() => {
+        component.find(SvgMousePosition).renderProp('onFirstMove')(position);
+        wrapper = component.find(SvgMousePosition).renderProp('children')({ position });
       });
 
-      describe('When there is "mousePositionInNode"', () => {
-        it('returns a component', () => {
-          const componentInstance = component.instance();
-          const { renderNodePlaceholder } = componentInstance;
-          componentInstance.mousePositionInNode = position;
+      it('returns "NodePlaceholder"', () => {
+        expect(wrapper.type()).toBe(NodePlaceholder);
+      });
 
-          expect(renderNodePlaceholder({ position })).toEqual(expect.any(Object));
-        });
+      it('set "lastNodePosition"', () => {
+        const componentInstance = component.instance();
 
-        it('set "lastNodePosition"', () => {
-          const componentInstance = component.instance();
-          const { renderNodePlaceholder } = componentInstance;
-          componentInstance.mousePositionInNode = position;
-
-          expect(componentInstance.lastNodePosition).toBe(undefined);
-          renderNodePlaceholder({ position });
-          expect(componentInstance.lastNodePosition).toEqual(expect.any(Object));
-        });
+        expect(componentInstance.lastNodePosition).toEqual({ x: 0, y: 0 });
       });
     });
   });
