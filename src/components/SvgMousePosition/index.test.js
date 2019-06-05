@@ -4,20 +4,19 @@ import * as lodash from 'lodash';
 import SvgMousePosition from './component';
 
 const svg = document.createElement('svg');
-
-const defaultProps = {
-  svg,
-  children: jest.fn(() => <div />),
-  onFirstMoveOnce: jest.fn(),
-};
-
-const shallowComponent = (props = {}) => {
-  const compProps = { ...defaultProps, ...props };
-
-  return shallow(<SvgMousePosition {...compProps} />);
-};
+const shallowComponent = (props = {}) => shallow(<SvgMousePosition {...props} />);
 
 describe('SvgMousePosition Component', () => {
+  let defaultProps;
+
+  beforeEach(() => {
+    defaultProps = {
+      svg,
+      children: jest.fn(() => <div />),
+      onFirstMoveOnce: jest.fn(),
+    };
+  });
+
   describe('Lifecycle', () => {
     describe('componentDidMount', () => {
       const delay = 25;
@@ -26,7 +25,7 @@ describe('SvgMousePosition Component', () => {
 
       beforeEach(() => {
         svg.getBoundingClientRect = jest.fn(() => svgRect);
-        component = shallowComponent({ delay });
+        component = shallowComponent({ ...defaultProps, delay });
         component.instance().componentDidMount();
       });
 
@@ -54,7 +53,7 @@ describe('SvgMousePosition Component', () => {
       let component;
 
       beforeEach(() => {
-        component = shallowComponent();
+        component = shallowComponent(defaultProps);
         component.instance().componentWillUnmount();
       });
 
@@ -72,7 +71,7 @@ describe('SvgMousePosition Component', () => {
       });
 
       it('"mousemove" event', () => {
-        const component = shallowComponent();
+        const component = shallowComponent(defaultProps);
         const componentInstance = component.instance();
 
         expect(svg.addEventListener).toBeCalledWith(
@@ -100,7 +99,7 @@ describe('SvgMousePosition Component', () => {
       });
 
       it('calls "updatePosition" method', () => {
-        const component = shallowComponent();
+        const component = shallowComponent(defaultProps);
         const componentInstance = component.instance();
         const spy = jest.spyOn(componentInstance, 'updatePosition');
 
@@ -116,7 +115,7 @@ describe('SvgMousePosition Component', () => {
         let componentInstance;
 
         beforeAll(() => {
-          component = shallowComponent({ onFirstMoveOnce });
+          component = shallowComponent({ ...defaultProps, onFirstMoveOnce });
           componentInstance = component.instance();
         });
 
@@ -136,7 +135,7 @@ describe('SvgMousePosition Component', () => {
 
       describe('When component is not mounted', () => {
         it('does not updates state', () => {
-          const component = shallowComponent();
+          const component = shallowComponent(defaultProps);
           const componentInstance = component.instance();
 
           componentInstance.componentDidMount();
