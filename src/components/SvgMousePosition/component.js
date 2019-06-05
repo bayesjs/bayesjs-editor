@@ -33,8 +33,8 @@ class SvgMousePosition extends Component {
     if (this.isComponentMounted) {
       this.setState(({ svgReact: { top, left } }) => {
         const mousePosition = {
-          x: clientX = left,
-          y: clientY = top,
+          x: clientX - left,
+          y: clientY - top,
         };
         onFirstMoveOnce(mousePosition);
 
