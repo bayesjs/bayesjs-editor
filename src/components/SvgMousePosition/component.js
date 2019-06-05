@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { subtract } from 'ramda';
 import PropTypes from 'prop-types';
 import { noop, throttle } from 'lodash';
 import { elementInstancePropTypes } from 'models';
@@ -34,8 +33,8 @@ class SvgMousePosition extends Component {
     if (this.isComponentMounted) {
       this.setState(({ svgReact: { top, left } }) => {
         const mousePosition = {
-          x: subtract(clientX, left),
-          y: subtract(clientY, top),
+          x: clientX = left,
+          y: clientY = top,
         };
         onFirstMoveOnce(mousePosition);
 
