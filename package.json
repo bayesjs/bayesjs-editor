@@ -30,7 +30,8 @@
     "test:unit": "jest --config jest.config.js",
     "test:e2e": "start-server-and-test start http-get://localhost:8080 cypress:run",
     "cypress:run": "cypress run",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "coveralls": "yarn test:unit -- --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
     "@cypress/webpack-preprocessor": "^4.0.3",
@@ -74,6 +75,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-syntax-trailing-function-commas": "^6.22.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "coveralls": "^3.0.3",
     "css-loader": "^2.1.1",
     "cypress": "^3.2.0",
     "enzyme": "^3.9.0",
