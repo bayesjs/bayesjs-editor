@@ -7,7 +7,6 @@ import { elementInstancePropTypes } from 'models';
 class SvgMousePosition extends Component {
   state = {
     mousePosition: {},
-    // eslint-disable-next-line react/no-unused-state
     svgReact: null,
     hasPosition: false,
   }
