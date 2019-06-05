@@ -1,7 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import * as lodash from 'lodash';
 import SvgMousePosition from './component';
+import enhance from './enhance';
 
 const svg = document.createElement('svg');
 const shallowComponent = (props = {}) => shallow(<SvgMousePosition {...props} />);
@@ -145,6 +146,41 @@ describe('SvgMousePosition Component', () => {
 
           expect(componentInstance.setState).not.toBeCalled();
         });
+      });
+    });
+  });
+
+  describe('enhance', () => {
+    const Component = () => <div />;
+    const EnhancedComponent = enhance(Component);
+
+    it('has "onFirstMove" prop as a "Function"', () => {
+      const wrapper = shallow(<EnhancedComponent />);
+
+      expect(wrapper.prop('onFirstMove')).toEqual(expect.any(Function));
+    });
+
+    describe('"onFirstMoveOnce" prop', () => {
+      let onFirstMove;
+      let wrapper;
+
+      beforeEach(() => {
+        onFirstMove = jest.fn();
+        wrapper = mount(<EnhancedComponent onFirstMove={onFirstMove} />);
+      });
+
+      it('is a "Function"', () => {
+        expect(wrapper.find(Component).prop('onFirstMoveOnce')).toEqual(expect.any(Function));
+      });
+
+      it('calls "onFirstMove" just once', () => {
+        const onFirstMoveOnce = wrapper.find(Component).prop('onFirstMoveOnce');
+
+        onFirstMoveOnce();
+        onFirstMoveOnce();
+        onFirstMoveOnce();
+
+        expect(onFirstMove).toHaveBeenCalledTimes(1);
       });
     });
   });
