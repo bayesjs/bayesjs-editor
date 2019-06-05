@@ -1,5 +1,6 @@
 const lodash = require('lodash');
 
-lodash.throttle = jest.fn(func => func);
-
-module.exports = lodash;
+module.exports = {
+  ...lodash,
+  throttle: jest.fn(fn => fn),
+};
