@@ -1,8 +1,8 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import SvgMousePosition from 'components/SvgMousePosition';
-import NodePlaceholder from 'components/NodePlaceholder';
 import NodeMovingPlaceholder from './index';
+import NodePlaceholder from 'components/NodePlaceholder';
+import React from 'react';
+import SvgMousePosition from 'components/SvgMousePosition';
+import { shallow } from 'enzyme';
 
 const svg = document.createElement('svg');
 const shallowComponent = (props = {}) => shallow(<NodeMovingPlaceholder {...props} />);
@@ -43,13 +43,12 @@ describe('NodeMovingPlaceholder Component', () => {
           ['mouseleave', componentInstance.handleCancel],
         ]);
 
-        return Promise.resolve().then(() => {
-          component.unmount();
-          expect(svg.removeEventListener.mock.calls).toEqual([
-            ['mouseup', componentInstance.handleSetPosition],
-            ['mouseleave', componentInstance.handleCancel],
-          ]);
-        });
+        component.unmount();
+
+        expect(svg.removeEventListener.mock.calls).toEqual([
+          ['mouseup', componentInstance.handleSetPosition],
+          ['mouseleave', componentInstance.handleCancel],
+        ]);
       });
     });
 

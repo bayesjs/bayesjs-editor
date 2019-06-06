@@ -82,13 +82,12 @@ describe('SvgMousePosition Component', () => {
           componentInstance.updatePositionWithThrottle,
         );
 
-        return Promise.resolve().then(() => {
-          component.unmount();
-          expect(svg.removeEventListener).toBeCalledWith(
-            'mousemove',
-            componentInstance.updatePositionWithThrottle,
-          );
-        });
+        component.unmount();
+
+        expect(svg.removeEventListener).toBeCalledWith(
+          'mousemove',
+          componentInstance.updatePositionWithThrottle,
+        );
       });
     });
 
