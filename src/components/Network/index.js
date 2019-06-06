@@ -6,6 +6,7 @@ import {
   positionPropTypes,
   subnetworkPropTypes,
 } from 'models';
+import { isFunction, noop } from 'lodash';
 
 import ArrowPlaceholder from 'components/ArrowPlaceholder';
 import Arrows from 'components/Arrows';
@@ -13,7 +14,6 @@ import ContextMenu from 'components/ContextMenu';
 import NodeMovingPlaceholder from 'components/NodeMovingPlaceholder';
 import Nodes from 'components/Nodes';
 import PropTypes from 'prop-types';
-import { noop, isFunction } from 'lodash';
 import { propEq } from 'ramda';
 import styles from './styles.css';
 

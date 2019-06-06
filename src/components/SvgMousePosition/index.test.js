@@ -1,6 +1,8 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
 import * as lodash from 'lodash';
+
+import { mount, shallow } from 'enzyme';
+
+import React from 'react';
 import SvgMousePosition from './component';
 import enhance from './enhance';
 
