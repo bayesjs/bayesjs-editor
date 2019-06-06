@@ -44,12 +44,11 @@ class NodeMovingPlaceholder extends Component {
   }
 
   render() {
-    const { svg } = this.props;
+    const { svg, node: { size } } = this.props;
 
     return (
       <SvgMousePosition svg={svg} onFirstMove={this.setMousePositionInNode} delay={25}>
         {({ position }) => {
-          const { node: { size } } = this.props;
           if (!this.mousePositionInNode) return null;
           const nodePosition = subtractPositions(position, this.mousePositionInNode);
           this.lastNodePosition = nodePosition;
