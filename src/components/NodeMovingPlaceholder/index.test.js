@@ -1,8 +1,8 @@
-import NodeMovingPlaceholder from './index';
 import NodePlaceholder from 'components/NodePlaceholder';
 import React from 'react';
 import SvgMousePosition from 'components/SvgMousePosition';
 import { shallow } from 'enzyme';
+import NodeMovingPlaceholder from './index';
 
 const svg = document.createElement('svg');
 const shallowComponent = (props = {}) => shallow(<NodeMovingPlaceholder {...props} />);
