@@ -1,4 +1,5 @@
 dist/
+coverage/
 
 # node
 node_modules/
