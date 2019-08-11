@@ -10,8 +10,7 @@ describe('Node Connection', () => {
 
     cy.getByTestId(getComponentTestId('ContextMenu', 'Item', 'AddChild'))
       .click();
-    cy.getNodeByTestId('Node 2')
-      .click();
+    cy.get('svg').trigger('mousemove', { x: 200, y: 1 }).click();
     cy.getByTestId(getComponentTestId('Arrow'))
       .should('have.length', 1)
       .trigger('mousedown', { button: 2 });

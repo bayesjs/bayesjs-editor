@@ -42,11 +42,11 @@ describe('Context Menu', () => {
   describe('When the context is a arrow', () => {
     it('contains 1 option', () => {
       const node1 = 'Node 1';
-      const node2 = 'Node 2';
+      const node2Position = { x: 200, y: 1 };
 
       cy.createNode(node1);
-      cy.createNode(node2, { position: { x: 200 } });
-      cy.connectTwoNodes(node1, node2);
+      cy.createNode('Node 2', { position: node2Position });
+      cy.connectTwoNodes(node1, node2Position);
 
       cy.getByTestId('arrow').trigger('mousedown', { button: 2 });
 
