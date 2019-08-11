@@ -1,8 +1,17 @@
 language: node_js
 node_js:
   - "8.11.4"
+
+addons:
+  apt:
+    packages:
+      - libgconf-2-4
+
 cache:
   yarn: true
+  directories:
+    - ~/.cache
+
 script:
   - yarn run lint
   - yarn run coveralls
