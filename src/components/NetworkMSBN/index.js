@@ -51,12 +51,9 @@ class NetworkMSBN extends Component {
       openSubnetwork: null,
       firstNodeToConnect: null,
       editingLinkages: null,
+      addingChildArrow: null,
     };
 
-    this.onViewSubnetwork = this.onOpenSubnetwork.bind(this);
-    this.onViewLinkages = this.onViewSubnetworkLinkages.bind(this);
-    this.onRemoveNode = this.onRemoveNode.bind(this);
-    this.handleKeyup = this.handleKeyup.bind(this);
     this.connecting = false;
 
     this.canvasContextMenuItems = [
@@ -232,10 +229,6 @@ class NetworkMSBN extends Component {
     }
   };
 
-  onCancelConnection = () => {
-    this.cancelConnection();
-  };
-
   existsSubnetwork = (subnetwork) => {
     const { subNetworks } = this.props;
     const { id, name } = subnetwork;
@@ -278,19 +271,16 @@ class NetworkMSBN extends Component {
 
       if (state.network.kind === NETWORK_KINDS.MSBN) {
         window.alert('Não é possível adicionar uma MSBN!');
-        return;
       } if (this.existsSubnetwork(state.network)) {
         window.alert('Rede já adicionada!');
-        return;
       } if (
         (state.nodes !== undefined && state.nodes.length === 0)
         || (state.network.nodes !== undefined && state.network.nodes.length === 0)
       ) {
         window.alert('Rede sem nodos!');
-        return;
+      } else {
+        dispatch(addSuperNode(state, position));
       }
-
-      dispatch(addSuperNode(state, position));
     });
   };
 
@@ -621,6 +611,7 @@ class NetworkMSBN extends Component {
 
   render() {
     const { network, subNetworks, linkagesByTwoNode } = this.props;
+    const { addingChildArrow } = this.state;
 
     return (
       <div>
@@ -630,13 +621,13 @@ class NetworkMSBN extends Component {
           arrows={getArrowsPositionsForMSBN(subNetworks, linkagesByTwoNode)}
           renderNode={this.renderNode}
           onAddConnection={this.onAddConnection}
-          onCancelConnection={this.onCancelConnection}
           onSelectNodes={this.onSelectNodes}
           changeNodePosition={this.changeNodePosition}
           getContextItems={this.getContextItems}
           requestCreateNode={this.requestCreateNode}
           onDoubleClickNode={this.onDoubleClickNode}
           ref={(ref) => { this.net = ref; }}
+          addingChildArrow={addingChildArrow}
         />
 
         {this.renderSubNetworks()}

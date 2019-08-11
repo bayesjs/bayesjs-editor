@@ -7,7 +7,6 @@ import {
   subNetworkInferenceResultsPropTypes,
 } from 'models';
 
-import ArrowPlaceholder from 'components/ArrowPlaceholder';
 import PropTypes from 'prop-types';
 import { getArrowsPositions } from 'utils/arrows-positions';
 import { getNodeSize } from 'utils/node-size';
@@ -18,10 +17,6 @@ class SubNetwork extends Component {
   constructor(props) {
     super(props);
     const { connecting, onDoubleClickNode } = props;
-
-    this.state = {
-      addingChildArrow: null,
-    };
 
     this.nodeContextMenuItems = [
       {
@@ -78,7 +73,8 @@ class SubNetwork extends Component {
 
   get connectionNodes() {
     const {
-      connectingNode, network,
+      connectingNode,
+      network,
     } = this.props;
 
     if (connectingNode) {
@@ -107,15 +103,15 @@ class SubNetwork extends Component {
     return null;
   }
 
-  get addingChildArrowFrom() {
+  get addingChildArrow() {
     const { connectingNode } = this.props;
 
     if (connectingNode) {
-      const { size } = this.nodes.find(propEq('id', connectingNode.id));
+      const node = this.nodes.find(propEq('id', connectingNode.id));
 
       return {
-        x: 5 + (size.width / 2),
-        y: 5 + (size.height / 2),
+        ...node,
+        position: { x: 5, y: 5 },
       };
     }
 
@@ -151,12 +147,6 @@ class SubNetwork extends Component {
     }
   }
 
-  renderAddingChildArrow = () => {
-    const { addingChildArrow } = this.state;
-
-    return addingChildArrow && <ArrowPlaceholder {...addingChildArrow} />;
-  }
-
   render() {
     const { network, onClickNode, onDoubleClickNode } = this.props;
     const modalWidth = window.innerWidth * 0.8;
@@ -179,17 +169,12 @@ class SubNetwork extends Component {
           nodes={this.nodes}
           arrows={getArrowsPositions(this.nodes)}
           onStateDoubleClick={this.onSetBelief}
-          addingChildArrowFrom={this.addingChildArrowFrom}
-          requestCreateNode={noop}
-          onAddConnection={noop}
-          onCancelConnection={noop}
+          addingChildArrow={this.addingChildArrow}
           onClickNode={onClickNode}
           onDoubleClickNode={onDoubleClickNode}
           getContextItems={this.getContextItems}
           ref={(ref) => { this.networkRef = ref; }}
-        >
-          {this.renderAddingChildArrow()}
-        </Network>
+        />
       </div>
     );
   }
