@@ -3,12 +3,11 @@ import {
   arrowPropTypes,
   networkPropTypes,
   nodePropTypes,
-  positionPropTypes,
   subnetworkPropTypes,
 } from 'models';
 import { isFunction, noop } from 'lodash';
 
-import ArrowPlaceholder from 'components/ArrowPlaceholder';
+import ArrowMovingPlaceholder from 'components/ArrowMovingPlaceholder';
 import Arrows from 'components/Arrows';
 import ContextMenu from 'components/ContextMenu';
 import NodeMovingPlaceholder from 'components/NodeMovingPlaceholder';
@@ -24,22 +23,13 @@ export const ContextMenuType = {
 };
 
 class Network extends PureComponent {
-  constructor(props) {
-    super(props);
-    const { changeNodePosition, onMouseMove } = this.props;
-
-    this.state = {
-      addingChildArrow: null,
-      contextMenuItems: [],
-      movingNode: null,
-      nodeToAddChildTo: null,
-      newNode: null,
-    };
-
-    this.rectRefs = {};
-    this.canChangeNodePostion = typeof changeNodePosition === 'function';
-    this.onMouseMoveProps = typeof onMouseMove === 'function' ? onMouseMove : noop;
-  }
+  state = {
+    contextMenuItems: [],
+    movingNode: null,
+    nodeToAddChildTo: null,
+    newNode: null,
+    svgRef: null,
+  };
 
   get canChangeNodePosition() {
     const { changeNodePosition } = this.props;
@@ -48,7 +38,7 @@ class Network extends PureComponent {
   }
 
   handleRef = (svgRef) => {
-    this.svgRef = svgRef;
+    this.setState({ svgRef });
   }
 
   startConnection = (nodeToAddChildTo) => {
@@ -78,9 +68,10 @@ class Network extends PureComponent {
   handleNodeMouseDown = (node, e) => {
     e.stopPropagation();
     const {
-      onClickNode, onSelectNodes, onAddConnection, getContextItems,
+      onClickNode,
+      onSelectNodes,
+      getContextItems,
     } = this.props;
-    const { nodeToAddChildTo } = this.state;
 
     onSelectNodes([node.id]);
     if (typeof onClickNode === 'function') {
@@ -89,12 +80,6 @@ class Network extends PureComponent {
 
     if (e.button === 0) {
       this.contextMenu.hide();
-
-      if (nodeToAddChildTo !== null) {
-        onAddConnection(node.id, nodeToAddChildTo.id);
-        this.setState({ addingChildArrow: null, nodeToAddChildTo: null });
-      }
-
       this.onStartMovingNode(node);
     } else if (e.button === 2) {
       this.contextMenuNode = node;
@@ -114,21 +99,16 @@ class Network extends PureComponent {
   }
 
   handleMouseDown = (e) => {
-    const { onSelectNodes, onCancelConnection, getContextItems } = this.props;
-    const { nodeToAddChildTo } = this.state;
+    const { onSelectNodes, getContextItems } = this.props;
+    const { svgRef } = this.state;
 
     // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
     setTimeout(() => {
       onSelectNodes([]);
     }, 0);
 
-    if (nodeToAddChildTo !== null) {
-      onCancelConnection();
-      this.setState({ addingChildArrow: null, nodeToAddChildTo: null });
-    }
-
     if (e.button === 2) {
-      const rect = this.svgRef.getBoundingClientRect();
+      const rect = svgRef.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
@@ -138,15 +118,8 @@ class Network extends PureComponent {
     }
   };
 
-  handleMouseMove = (e) => {
-    const { nodeToAddChildTo } = this.state;
-
-    this.onMouseMoveProps(e);
-    this.handleNodeToAddChildTo(nodeToAddChildTo, e);
-  };
-
-  getFrom = (nodes, nodeToAddChildTo, addingChildArrowFrom) => {
-    if (addingChildArrowFrom) return addingChildArrowFrom;
+  getFrom = (nodes, nodeToAddChildTo, addingChildArrow) => {
+    if (addingChildArrow) return addingChildArrow;
 
     const { size, position } = nodes.find(propEq('id', nodeToAddChildTo.id));
 
@@ -156,38 +129,23 @@ class Network extends PureComponent {
     };
   }
 
-  handleNodeToAddChildTo = (nodeToAddChildTo, e) => {
-    const { nodes, addingChildArrowFrom } = this.props;
-
-    if (nodeToAddChildTo || addingChildArrowFrom) {
-      const canvasRect = this.svgRef.getBoundingClientRect();
-      const from = this.getFrom(nodes, nodeToAddChildTo, addingChildArrowFrom);
-
-      const to = {
-        x: e.clientX - canvasRect.left,
-        y: e.clientY - canvasRect.top,
-      };
-
-      // Without it, sometimes the mouse is over the adding arrow
-      // It needs to be over the node to be added
-      to.x += from.x < to.x ? -3 : 3;
-      to.y += from.y < to.y ? -3 : 3;
-
-      this.setState({
-        addingChildArrow: { from, to },
-      });
-    }
-  }
-
-  handleMouseLeave = () => {
-    const { onCancelConnection } = this.props;
+  handleSetAddingChildArrow = connectiongNode => ({ node }) => {
+    const {
+      onAddConnection,
+      onCancelConnection,
+    } = this.props;
     const { nodeToAddChildTo } = this.state;
 
-    if (nodeToAddChildTo !== null) {
-      onCancelConnection();
-      this.setState({ addingChildArrow: null, nodeToAddChildTo: null });
+    if (node) {
+      onAddConnection(node.id, connectiongNode.id);
     }
-  };
+
+    if (nodeToAddChildTo) {
+      this.setState({ nodeToAddChildTo: null });
+    }
+
+    onCancelConnection();
+  }
 
   handleSetNodePosition = ({ x, y }) => {
     const { changeNodePosition } = this.props;
@@ -199,17 +157,26 @@ class Network extends PureComponent {
   }
 
   renderAddingChildArrow = () => {
-    const { addingChildArrow } = this.state;
+    const { nodes, addingChildArrow } = this.props;
+    const { nodeToAddChildTo, svgRef } = this.state;
+    const connectiongNode = nodeToAddChildTo || addingChildArrow;
 
-    return addingChildArrow && <ArrowPlaceholder {...addingChildArrow} />;
+    return connectiongNode && (
+      <ArrowMovingPlaceholder
+        svg={svgRef}
+        node={connectiongNode}
+        nodes={nodes}
+        onSetPosition={this.handleSetAddingChildArrow(connectiongNode)}
+      />
+    );
   }
 
   renderMovingNodePlaceholder = () => {
-    const { movingNode } = this.state;
+    const { movingNode, svgRef } = this.state;
 
     return movingNode && (
       <NodeMovingPlaceholder
-        svg={this.svgRef}
+        svg={svgRef}
         node={movingNode}
         onSetPosition={this.handleSetNodePosition}
         onCancel={this.onStopMovingNode}
@@ -234,8 +201,6 @@ class Network extends PureComponent {
           className={styles.canvas}
           onContextMenu={e => e.preventDefault()}
           onMouseDown={this.handleMouseDown}
-          onMouseMove={this.handleMouseMove}
-          onMouseLeave={this.handleMouseLeave}
           height={network.height}
           width={network.width}
           ref={this.handleRef}
@@ -278,14 +243,16 @@ class Network extends PureComponent {
 }
 
 Network.defaultProps = {
-  onMouseMove: noop,
   onDoubleClickNode: noop,
   changeNodePosition: null,
   onClickNode: noop,
   onStateDoubleClick: noop,
   onSelectNodes: noop,
-  addingChildArrowFrom: null,
+  addingChildArrow: null,
   children: null,
+  onCancelConnection: noop,
+  onAddConnection: noop,
+  requestCreateNode: noop,
 };
 
 Network.propTypes = {
@@ -293,17 +260,16 @@ Network.propTypes = {
   children: PropTypes.element,
   nodes: PropTypes.arrayOf(PropTypes.oneOfType([nodePropTypes, subnetworkPropTypes])).isRequired,
   arrows: PropTypes.arrayOf(arrowPropTypes).isRequired,
-  requestCreateNode: PropTypes.func.isRequired,
-  onAddConnection: PropTypes.func.isRequired,
-  onCancelConnection: PropTypes.func.isRequired,
+  requestCreateNode: PropTypes.func,
+  onAddConnection: PropTypes.func,
+  onCancelConnection: PropTypes.func,
   onSelectNodes: PropTypes.func,
   getContextItems: PropTypes.func.isRequired,
-  onMouseMove: PropTypes.func,
   onDoubleClickNode: PropTypes.func,
   changeNodePosition: PropTypes.func,
   onClickNode: PropTypes.func,
   onStateDoubleClick: PropTypes.func,
-  addingChildArrowFrom: positionPropTypes,
+  addingChildArrow: nodePropTypes,
 };
 
 export default Network;
