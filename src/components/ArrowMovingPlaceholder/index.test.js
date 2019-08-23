@@ -146,7 +146,7 @@ describe('ArrowMovingPlaceholder Component', () => {
         expect(wrapper.type()).toBe(ArrowPlaceholder);
       });
 
-      it('set "lastPosition"', () => {
+      it('sets "lastPosition"', () => {
         const componentInstance = component.instance();
 
         expect(componentInstance.lastPosition).toEqual(position);
