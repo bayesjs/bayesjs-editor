@@ -49,13 +49,20 @@ describe('ArrowMovingPlaceholder Component', () => {
   });
 
   describe('Event Listeners', () => {
-    describe('Check bind and unbind events', () => {
-      it('"mousedown" event', () => {
+    describe('When binding mousedown', () => {
+      it('calls handleSetPosition', () => {
         const component = shallowComponent(defaultProps);
         const componentInstance = component.instance();
 
         expect(svg.addEventListener)
           .toHaveBeenCalledWith('mousedown', componentInstance.handleSetPosition);
+      });
+    });
+
+    describe('When unbinding mousedown', () => {
+      it('calls handleSetPosition', () => {
+        const component = shallowComponent(defaultProps);
+        const componentInstance = component.instance();
 
         component.unmount();
 
