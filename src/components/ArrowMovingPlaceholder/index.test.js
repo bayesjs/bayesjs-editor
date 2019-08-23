@@ -130,7 +130,7 @@ describe('ArrowMovingPlaceholder Component', () => {
       it('returns null', () => {
         const wrapper = component.find(SvgMousePosition).renderProp('children')({ position });
 
-        expect(wrapper.instance()).toBe(null);
+        expect(wrapper.instance()).toBeNull();
       });
     });
 
