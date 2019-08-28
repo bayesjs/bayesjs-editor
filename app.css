@@ -730,7 +730,23 @@ template {
   max-height: 150px;
 }.field-wrapper__src-components-PropertiesSuperNode-styles__-mufA {
   padding: 10px 0px;
-}.generic-panel__src-components-PropertiesPanel-styles__2SBXF {
+}* {
+  box-sizing: border-box;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.app__src-components-App-styles__4Dync {
+  color: #333;
+  font-family: Source Sans Pro;
+  font-size: 16px;
+  height: 100vh;
+}
+
+.container__src-components-App-styles__2pQui {
+  display: flex;
+  height: calc(100vh - 50px);
+}
+.generic-panel__src-components-PropertiesPanel-styles__2SBXF {
   overflow: auto;
 }
 
@@ -784,22 +800,6 @@ template {
   top: 10px;
   right: 10px;
   height: 30px;
-}
-* {
-  box-sizing: border-box;
-  font-family: 'Source Sans Pro', sans-serif;
-}
-
-.app__src-components-App-styles__4Dync {
-  color: #333;
-  font-family: Source Sans Pro;
-  font-size: 16px;
-  height: 100vh;
-}
-
-.container__src-components-App-styles__2pQui {
-  display: flex;
-  height: calc(100vh - 50px);
 }
 /*!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
