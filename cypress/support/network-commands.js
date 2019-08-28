@@ -77,10 +77,10 @@ Cypress.Commands.add('addNodeStates', (nodeName, states) => {
   });
 });
 
-Cypress.Commands.add('connectTwoNodes', (fromNodeName, toNodeName) => {
+Cypress.Commands.add('connectTwoNodes', (fromNodeName, toNodePosition) => {
   cy.getNodeByTestId(fromNodeName).trigger('mousedown', { button: 2 });
 
   cy.getByTestId(getComponentTestId('ContextMenu', 'Item', 'AddChild')).click();
-  cy.getNodeByTestId(toNodeName).click();
+  cy.get('svg').trigger('mousemove', toNodePosition).click();
   cy.getByTestId(getComponentTestId('Arrow')).should('have.length', 1);
 });
