@@ -1,10 +1,8 @@
 import ReactDOM from 'react-dom';
 
-const contextItemsElement = document.getElementById('context-items');
-
 const ContextMenuItems = ({ children }) => ReactDOM.createPortal(
   children,
-  contextItemsElement,
+  document.getElementById('context-items'),
 );
 
 export default ContextMenuItems;

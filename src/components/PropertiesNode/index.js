@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { equals, complement } from 'ramda';
 import { changeNodeDescription, changeNodeId } from 'actions';
 
 import { getComponentTestId } from 'utils/test-utils';
@@ -8,6 +9,8 @@ import { getNodes } from 'selectors';
 import { nodePropTypes } from 'models';
 import Button from '../Button';
 import styles from './styles.css';
+
+const notEquals = complement(equals);
 
 class PropertiesNode extends Component {
   constructor(props) {
@@ -27,6 +30,23 @@ class PropertiesNode extends Component {
       inputText: id,
       nodeDescription: description || '',
     });
+  }
+
+  componentWillUnmount() {
+    this.applyInputChanges();
+  }
+
+  applyInputChanges = () => {
+    const { nodeDescription, inputText } = this.state;
+    const { dispatch, node: { id, description } } = this.props;
+
+    if (notEquals(nodeDescription, description)) {
+      dispatch(changeNodeDescription(id, nodeDescription));
+    }
+
+    if (notEquals(inputText, id)) {
+      dispatch(changeNodeId(id, inputText));
+    }
   }
 
   handleOnChange = (e) => {
