@@ -43,8 +43,8 @@ describe('Node', () => {
   });
 
   it('Deletes a node', () => {
-    cy.getNodeByTestId(nodeName).trigger('mousedown', { button: 2 });
-    cy.getByTestId(getComponentTestId('ContextMenu', 'Item', 'RemoveNode'))
+    cy.getNodeByTestId(nodeName).trigger('contextmenu');
+    cy.getByTestId(getComponentTestId('ContextMenuItems', 'RemoveNode'))
       .click();
 
     cy.getNodeByTestId(nodeName).should('not.exist');

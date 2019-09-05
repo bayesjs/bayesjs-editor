@@ -16,15 +16,14 @@ Cypress.Commands.add('getModalByTestId', selector => cy.getByTestId(getComponent
 
 Cypress.Commands.add('createNode', (nodeName, options = {}) => {
   cy.get('svg')
-    .trigger('mousedown', {
+    .trigger('contextmenu', {
       x: getPosition('x', options),
       y: getPosition('y', options),
-      button: 2,
     });
 
-  cy.getByTestId(getComponentTestId('ContextMenu'))
+  cy.get('.react-contextmenu:visible')
     .should('exist');
-  cy.getByTestId(getComponentTestId('ContextMenu', 'Item', 'AddNode'))
+  cy.getByTestId(getComponentTestId('ContextMenuItems', 'AddNode'))
     .click();
 
   cy.getByTestId(getComponentTestId('EditStatesList', 'Item', 'Sim'))
@@ -78,9 +77,9 @@ Cypress.Commands.add('addNodeStates', (nodeName, states) => {
 });
 
 Cypress.Commands.add('connectTwoNodes', (fromNodeName, toNodePosition) => {
-  cy.getNodeByTestId(fromNodeName).trigger('mousedown', { button: 2 });
+  cy.getNodeByTestId(fromNodeName).trigger('contextmenu');
 
-  cy.getByTestId(getComponentTestId('ContextMenu', 'Item', 'AddChild')).click();
+  cy.getByTestId(getComponentTestId('ContextMenuItems', 'AddChild')).click();
   cy.get('svg').trigger('mousemove', toNodePosition).click();
   cy.getByTestId(getComponentTestId('Arrow')).should('have.length', 1);
 });

@@ -5,7 +5,7 @@ Cypress.Commands.add('visitHome', () => {
 });
 
 Cypress.Commands.add('getByTestId', (selector, options) => {
-  cy.get(`[data-testid='${selector}']`, options);
+  cy.get(`[data-testid='${selector}']:visible`, options);
 });
 
 Cypress.Commands.add('findByTestId', { prevSubject: true }, (subject, selector) => subject.find(`[data-testid=${selector}]`));
