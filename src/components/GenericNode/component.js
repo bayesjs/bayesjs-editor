@@ -34,6 +34,7 @@ const GenericNode = ({
   <g
     className={styles.node}
     onMouseDown={onMouseDown}
+
     onDoubleClick={onDoubleClick}
     transform={`translate(${position.x} ${position.y})`}
     style={style}

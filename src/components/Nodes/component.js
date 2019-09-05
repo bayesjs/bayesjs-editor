@@ -6,6 +6,7 @@ const Nodes = ({
   onMouseDown,
   onDoubleClick,
   onStateDoubleClick,
+  contextItems,
 }) => nodes.map((node) => {
   const props = {
     ...node,
@@ -14,7 +15,7 @@ const Nodes = ({
     onStateDoubleClick: onStateDoubleClick(node),
   };
 
-  return <Node key={node.id} {...props} />;
+  return <Node key={node.id} contextItems={contextItems} {...props} />;
 });
 
 export default Nodes;
