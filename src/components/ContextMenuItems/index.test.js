@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import { ContextMenu } from 'react-contextmenu';
+import { ContextMenu, MenuItem } from 'react-contextmenu';
 import ContextMenuItems from './index';
 
 const defaultProps = {
@@ -32,15 +32,50 @@ const shallowComponent = () =>
   shallow(<ContextMenuItems {...defaultProps} />);
 
 describe('ContextMenuItems Component', () => {
-  it('matches snapshot', () => {
-    const component = shallowComponent();
+  let component;
 
+  beforeEach(() => {
+    component = shallowComponent();
+  });
+
+  it('matches snapshot', () => {
     expect(component).toMatchSnapshot();
   });
 
   it('has id and type as prop id', () => {
-    const component = shallowComponent();
-
     expect(component.find(ContextMenu).prop('id')).toBe(`${defaultProps.id}${defaultProps.type}`);
+  });
+
+
+  describe('Event Listeners', () => {
+    const target = {
+      getBoundingClientRect: () => ({ x: 15, y: 15 }),
+    };
+    const onShowEvent = {
+      detail: {
+        position: { x: 50, y: 20 },
+        data: {
+          target,
+        },
+      },
+    };
+
+    describe('When click in the first item', () => {
+      const { onClick } = defaultProps.items[0];
+      const onClickEvent = {};
+
+      it('triggers onClick with event and mouse position', () => {
+        component.find(ContextMenu).prop('onShow')(onShowEvent);
+        component.find(MenuItem).first().prop('onClick')(onClickEvent);
+
+        expect(onClick).toHaveBeenCalledWith({
+          ...onClickEvent,
+          mousePosition: {
+            x: 35,
+            y: 5,
+          },
+        });
+      });
+    });
   });
 });

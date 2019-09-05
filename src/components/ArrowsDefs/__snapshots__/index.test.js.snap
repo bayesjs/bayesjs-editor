@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArrowsDefs Component matches snapshot 1`] = `
+<defs>
+  <marker
+    id="triangle"
+    markerHeight="6"
+    markerWidth="6"
+    orient="auto"
+    refX="8"
+    refY="5"
+    viewBox="0 0 10 10"
+  >
+    <path
+      d="M0,0 L10,5 L0,10"
+      fill="#333"
+    />
+  </marker>
+  <marker
+    id="#triangle-with-low-opacity"
+    markerHeight="6"
+    markerWidth="6"
+    opacity="0.2"
+    orient="auto"
+    refX="8"
+    refY="5"
+    viewBox="0 0 10 10"
+  >
+    <path
+      d="M0,0 L10,5 L0,10"
+      fill="#333"
+    />
+  </marker>
+</defs>
+`;
