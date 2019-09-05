@@ -13,5 +13,6 @@ module.exports = {
     '^decorators(.*)$': '<rootDir>/src/decorators$1',
     '^constants(.*)$': '<rootDir>/src/constants$1',
     '^validations(.*)$': '<rootDir>/src/validations$1',
+    '^portals(.*)$': '<rootDir>/src/portals$1',
   },
 };

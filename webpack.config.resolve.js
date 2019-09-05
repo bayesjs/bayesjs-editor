@@ -13,5 +13,6 @@ module.exports = {
     decorators: path.resolve(__dirname, 'src/decorators/'),
     constants: path.resolve(__dirname, 'src/constants/'),
     validations: path.resolve(__dirname, 'src/validations/'),
+    portals: path.resolve(__dirname, 'src/portals/'),
   },
 };

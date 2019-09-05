@@ -7,6 +7,7 @@
   list-style: none;
   top: 0;
   left: 0;
+  z-index: 1;
 }
 
 .context-menu-item {
@@ -17,10 +18,15 @@
   white-space: nowrap;
 }
 
+.context-menu-item--disabled {
+  cursor: not-allowed;
+  color: #a5a1a1;
+}
+
 .context-menu-item:hover {
   background-color: #e5f3fb;
 }
 
-.context-menu-item-disabled {
-    color: #a5a1a1;
+.context-menu-item--disabled:hover {
+  background-color: #fff;
 }
