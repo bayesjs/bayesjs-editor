@@ -1,35 +1,33 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import {
   arrowPropTypes,
   networkPropTypes,
   nodePropTypes,
   subnetworkPropTypes,
+  contextMenuItemPropTypes,
 } from 'models';
 import { isFunction, noop } from 'lodash';
-
+import ContextMenuTrigger from 'components/ContextMenuTrigger';
 import ArrowMovingPlaceholder from 'components/ArrowMovingPlaceholder';
 import Arrows from 'components/Arrows';
-import ContextMenu from 'components/ContextMenu';
+import ContextMenuItems from 'components/ContextMenuItems';
 import NodeMovingPlaceholder from 'components/NodeMovingPlaceholder';
 import Nodes from 'components/Nodes';
 import PropTypes from 'prop-types';
 import { propEq } from 'ramda';
+import { v4 } from 'uuid';
+import { CONTEXTMENU_TYPES } from 'constants/contextmenu';
 import styles from './styles.css';
-
-export const ContextMenuType = {
-  NODE: 'CONTEXT_MENU_NODE',
-  ARROW: 'CONTEXT_MENU_ARROW',
-  CANVAS: 'CONTEXT_MENU_CANVAS',
-};
 
 class Network extends PureComponent {
   state = {
-    contextMenuItems: [],
     movingNode: null,
     nodeToAddChildTo: null,
     newNode: null,
     svgRef: null,
   };
+
+  contextMenuId = v4();
 
   get canChangeNodePosition() {
     const { changeNodePosition } = this.props;
@@ -54,38 +52,20 @@ class Network extends PureComponent {
     }
   };
 
-  handleArrowMouseDown = (e, arrow) => {
-    if (e.button === 2) {
-      const { getContextItems } = this.props;
-      e.stopPropagation();
-
-      this.contextMenuArrow = arrow;
-      this.setState({ contextMenuItems: getContextItems(ContextMenuType.ARROW) });
-      this.contextMenu.handleContainerMouseDown(e, arrow);
-    }
-  };
-
   handleNodeMouseDown = (node, e) => {
     e.stopPropagation();
     const {
       onClickNode,
       onSelectNodes,
-      getContextItems,
     } = this.props;
 
     onSelectNodes([node.id]);
+
     if (typeof onClickNode === 'function') {
       onClickNode(node, e);
     }
 
-    if (e.button === 0) {
-      this.contextMenu.hide();
-      this.onStartMovingNode(node);
-    } else if (e.button === 2) {
-      this.contextMenuNode = node;
-      this.setState({ contextMenuItems: getContextItems(ContextMenuType.NODE) });
-      this.contextMenu.handleContainerMouseDown(e, node);
-    }
+    this.onStartMovingNode(node);
   };
 
   onStartMovingNode = (movingNode) => {
@@ -98,25 +78,11 @@ class Network extends PureComponent {
     this.setState({ movingNode: null });
   }
 
-  handleMouseDown = (e) => {
-    const { onSelectNodes, getContextItems } = this.props;
-    const { svgRef } = this.state;
+  handleMouseDown = () => {
+    const { onSelectNodes } = this.props;
 
-    // Use setTimeout to ensure that the blur event of inputs in the properties panel is fired.
-    setTimeout(() => {
-      onSelectNodes([]);
-    }, 0);
-
-    if (e.button === 2) {
-      const rect = svgRef.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      this.contextMenuPosition = { x, y };
-      this.setState({ contextMenuItems: getContextItems(ContextMenuType.CANVAS) });
-      this.contextMenu.handleContainerMouseDown(e, this.contextMenuPosition);
-    }
-  };
+    onSelectNodes([]);
+  }
 
   getFrom = (nodes, nodeToAddChildTo, addingChildArrow) => {
     if (addingChildArrow) return addingChildArrow;
@@ -192,52 +158,65 @@ class Network extends PureComponent {
       nodes,
       onDoubleClickNode,
       onStateDoubleClick,
+      contextXOffset,
+      contextYOffset,
+      networkContextItems,
+      nodeContextItems,
+      arrowContextItems,
     } = this.props;
-    const { contextMenuItems, newNode } = this.state;
+    const { newNode } = this.state;
 
     return (
-      <div>
-        <svg
-          className={styles.canvas}
-          onContextMenu={e => e.preventDefault()}
-          onMouseDown={this.handleMouseDown}
-          height={network.height}
-          width={network.width}
-          ref={this.handleRef}
+      <Fragment>
+        <ContextMenuTrigger
+          id={this.contextMenuId}
+          type={CONTEXTMENU_TYPES.NETWORK}
+          posX={contextXOffset}
+          posY={contextYOffset}
         >
-          <g>
-            <Arrows
-              arrows={arrows}
-              onMouseDown={this.handleArrowMouseDown}
-            />
-          </g>
-          <g>
-            <Nodes
-              nodes={nodes}
-              onMouseDown={this.handleNodeMouseDown}
-              onDoubleClick={onDoubleClickNode}
-              onStateDoubleClick={onStateDoubleClick}
-            />
-          </g>
-          <g>
-            {this.renderAddingChildArrow()}
-          </g>
-          <g>
-            {this.renderMovingNodePlaceholder()}
-          </g>
-          <g>
-            {children}
-          </g>
-        </svg>
+          <svg
+            className={styles.canvas}
+            height={network.height}
+            width={network.width}
+            onMouseDown={this.handleMouseDown}
+            ref={this.handleRef}
+          >
+            <g>
+              <Arrows
+                arrows={arrows}
+                contextItems={arrowContextItems}
+              />
+            </g>
+            <g>
+              <Nodes
+                nodes={nodes}
+                onMouseDown={this.handleNodeMouseDown}
+                onDoubleClick={onDoubleClickNode}
+                onStateDoubleClick={onStateDoubleClick}
+                contextItems={nodeContextItems}
+              />
+            </g>
+            <g>
+              {this.renderAddingChildArrow()}
+            </g>
+            <g>
+              {this.renderMovingNodePlaceholder()}
+            </g>
+            <g>
+              {children}
+            </g>
+          </svg>
 
-        <ContextMenu
-          ref={(ref) => { this.contextMenu = ref; }}
-          items={contextMenuItems}
+          {newNode}
+          {children}
+        </ContextMenuTrigger>
+
+        <ContextMenuItems
+          id={this.contextMenuId}
+          type={CONTEXTMENU_TYPES.NETWORK}
+          items={networkContextItems}
         />
-
-        {newNode}
-        {children}
-      </div>
+      </Fragment>
     );
   }
 }
@@ -253,6 +232,11 @@ Network.defaultProps = {
   onCancelConnection: noop,
   onAddConnection: noop,
   requestCreateNode: noop,
+  arrowContextItems: [],
+  networkContextItems: [],
+  nodeContextItems: [],
+  contextXOffset: 0,
+  contextYOffset: 0,
 };
 
 Network.propTypes = {
@@ -264,12 +248,16 @@ Network.propTypes = {
   onAddConnection: PropTypes.func,
   onCancelConnection: PropTypes.func,
   onSelectNodes: PropTypes.func,
-  getContextItems: PropTypes.func.isRequired,
+  arrowContextItems: PropTypes.arrayOf(contextMenuItemPropTypes),
+  networkContextItems: PropTypes.arrayOf(contextMenuItemPropTypes),
+  nodeContextItems: PropTypes.arrayOf(contextMenuItemPropTypes),
   onDoubleClickNode: PropTypes.func,
   changeNodePosition: PropTypes.func,
   onClickNode: PropTypes.func,
   onStateDoubleClick: PropTypes.func,
   addingChildArrow: nodePropTypes,
+  contextXOffset: PropTypes.number,
+  contextYOffset: PropTypes.number,
 };
 
 export default Network;

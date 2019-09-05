@@ -16,77 +16,18 @@ import {
 } from 'selectors';
 import { nodePropTypes, networkPropTypes, inferenceResultsPropTypes } from 'models';
 import { getArrowsPositions } from 'utils/arrows-positions';
-import Network, { ContextMenuType } from '../Network';
+import Network from '../Network';
 
 import AddNodeModal from '../AddNodeModal';
 import EditCptModal from '../EditCptModal';
 import EditStatesModal from '../EditStatesModal';
 
 class NetworkBN extends Component {
-  constructor(props) {
-    super(props);
-    const { dispatch } = props;
-
-    this.state = {
-      key: 1,
-      editingNodeStates: null,
-      editingNodeCpt: null,
-    };
-
-    this.canvasContextMenuItems = [
-      {
-        key: 'add-node',
-        text: 'Adicionar variável',
-        onClick: (contextMenuPosition) => {
-          this.net.createNode(contextMenuPosition);
-        },
-      },
-    ];
-
-    this.nodeContextMenuItems = [
-      {
-        key: 'add-child',
-        text: 'Adicionar ligação',
-        onClick: (contextMenuNode) => {
-          this.net.startConnection(contextMenuNode);
-        },
-      },
-      {
-        key: 'edit-states',
-        text: 'Editar estados',
-        onClick: (contextMenuNode) => {
-          this.onEditNodeStates(contextMenuNode);
-        },
-      },
-      {
-        key: 'edit-cpt',
-        text: 'Editar probabilidades',
-        onClick: (contextMenuNode) => {
-          this.onEditNodeCpt(contextMenuNode);
-        },
-      },
-      {
-        key: 'remove-node',
-        text: 'Remover variável',
-        style: { color: '#C62828' },
-        onClick: (contextMenuNode) => {
-          dispatch(removeNode(contextMenuNode.id));
-        },
-      },
-    ];
-
-    this.arrowContextMenuItems = [
-      {
-        key: 'remove-link',
-        text: 'Remover ligação',
-        style: { color: '#C62828' },
-        onClick: (contextMenuArrow) => {
-          const { childId, parentId } = contextMenuArrow;
-          dispatch(removeParent(childId, parentId));
-        },
-      },
-    ];
-  }
+  state = {
+    key: 1,
+    editingNodeStates: null,
+    editingNodeCpt: null,
+  };
 
   componentDidMount() {
     window.addEventListener('keyup', this.handleKeyup);
@@ -107,6 +48,69 @@ class NetworkBN extends Component {
     }));
   }
 
+  get arrowContextItems() {
+    const { dispatch } = this.props;
+
+    return [
+      {
+        key: 'remove-link',
+        text: 'Remover ligação',
+        style: { color: '#C62828' },
+        onClick: (_, contextMenuArrow) => {
+          const { childId, parentId } = contextMenuArrow;
+          dispatch(removeParent(childId, parentId));
+        },
+      },
+    ];
+  }
+
+  get networkContextItems() {
+    return [
+      {
+        key: 'add-node',
+        text: 'Adicionar variável',
+        onClick: ({ mousePosition }) => {
+          this.net.createNode(mousePosition);
+        },
+      },
+    ];
+  }
+
+  get nodeContextItems() {
+    const { dispatch } = this.props;
+
+    return [
+      {
+        key: 'add-child',
+        text: 'Adicionar ligação',
+        onClick: (_, contextMenuNode) => {
+          this.net.startConnection(contextMenuNode);
+        },
+      },
+      {
+        key: 'edit-states',
+        text: 'Editar estados',
+        onClick: (_, contextMenuNode) => {
+          this.onEditNodeStates(contextMenuNode);
+        },
+      },
+      {
+        key: 'edit-cpt',
+        text: 'Editar probabilidades',
+        onClick: (_, contextMenuNode) => {
+          this.onEditNodeCpt(contextMenuNode);
+        },
+      },
+      {
+        key: 'remove-node',
+        text: 'Remover variável',
+        style: { color: '#C62828' },
+        onClick: (_, contextMenuNode) => {
+          dispatch(removeNode(contextMenuNode.id));
+        },
+      },
+    ];
+  }
 
   onEditNodeStates = (editingNodeStates) => {
     this.setState({ editingNodeStates });
@@ -174,19 +178,6 @@ class NetworkBN extends Component {
     }, 0);
   };
 
-  getContextItems = (type) => {
-    switch (type) {
-      case ContextMenuType.ARROW:
-        return this.arrowContextMenuItems;
-      case ContextMenuType.NODE:
-        return this.nodeContextMenuItems;
-      case ContextMenuType.CANVAS:
-        return this.canvasContextMenuItems;
-      default:
-        return [];
-    }
-  };
-
   render() {
     const { network, nodes } = this.props;
     const { editingNodeStates, editingNodeCpt } = this.state;
@@ -202,8 +193,10 @@ class NetworkBN extends Component {
           onCancelConnection={this.onCancelConnection}
           onSelectNodes={this.onSelectNodes}
           changeNodePosition={this.changeNodePosition}
-          getContextItems={this.getContextItems}
           requestCreateNode={this.requestCreateNode}
+          arrowContextItems={this.arrowContextItems}
+          networkContextItems={this.networkContextItems}
+          nodeContextItems={this.nodeContextItems}
           ref={(ref) => { this.net = ref; }}
         />
 

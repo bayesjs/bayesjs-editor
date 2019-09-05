@@ -23,18 +23,23 @@ const style = {
   },
 };
 
+const contentStyle = {
+  maxWidth: window.innerWidth * 0.8,
+  maxHeight: window.innerHeight * 0.8,
+};
+
 const Modal = ({
   title,
-  isOpen,
   onRequestClose,
   children,
   name,
+  ...props
 }) => (
   <ReactModal
-    isOpen={isOpen}
     onRequestClose={onRequestClose}
     style={style}
     contentLabel={title}
+    {...props}
   >
     <div className={styles.header} data-testid={getComponentTestId('ModalHeader', name || title)}>
       {title}
@@ -45,7 +50,11 @@ const Modal = ({
       />
     </div>
 
-    <div className={styles.body} data-testid={getComponentTestId('ModalBody', name || title)}>
+    <div
+      className={styles.body}
+      style={contentStyle}
+      data-testid={getComponentTestId('ModalBody', name || title)}
+    >
       {children}
     </div>
   </ReactModal>

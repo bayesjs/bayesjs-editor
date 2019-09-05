@@ -8,7 +8,7 @@ import {
   setBelief,
 } from 'actions';
 import { NETWORK_KINDS } from 'constants/network';
-import Network, { ContextMenuType } from 'components/Network';
+import Network from 'components/Network';
 import React, { Component } from 'react';
 import { combNodesWithPositions, combNodesWithSizes } from 'selectors/combiners';
 import {
@@ -33,7 +33,6 @@ import {
 } from 'models';
 
 import LinkagesModal from 'components/LinkagesModal';
-import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
 import SubNetwork from 'components/SubNetwork';
 import { connect } from 'react-redux';
@@ -43,83 +42,15 @@ import { v4 } from 'uuid';
 import { hasCycles, mergeNetworks } from './helpers';
 
 class NetworkMSBN extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    connectSubnetwork: null,
+    openSubnetwork: null,
+    firstNodeToConnect: null,
+    editingLinkages: null,
+    addingChildArrow: null,
+  };
 
-    this.state = {
-      connectSubnetwork: null,
-      openSubnetwork: null,
-      firstNodeToConnect: null,
-      editingLinkages: null,
-      addingChildArrow: null,
-    };
-
-    this.connecting = false;
-
-    this.canvasContextMenuItems = [
-      {
-        key: 'add-super-node',
-        text: 'Adicionar rede',
-        onClick: (contextMenuPosition) => {
-          this.net.createNode(contextMenuPosition);
-        },
-      },
-    ];
-
-    this.nodeContextMenuItems = [
-      {
-        key: 'view-super-node',
-        text: 'Visualizar rede',
-        onClick: this.onOpenSubnetwork.bind(this),
-      },
-      {
-        key: 'open-super-node-linkages',
-        text: 'Visualizar uniões',
-        visible: ({ id }) => {
-          const { linkagesByNode } = this.props;
-
-          return linkagesByNode[id].length > 0;
-        },
-        onClick: this.onViewSubnetworkLinkages.bind(this),
-      },
-      {
-        key: 'add-connection',
-        text: 'Adicionar união',
-        onClick: (contextMenuNode) => {
-          this.onStartConnection(contextMenuNode);
-        },
-      },
-      {
-        key: 'remove-super-node',
-        text: 'Remover rede',
-        style: { color: '#C62828' },
-        onClick: this.onRemoveNode,
-      },
-    ];
-
-    this.arrowContextMenuItems = [
-      {
-        key: 'open-arrow-linkages',
-        text: 'Visualizar uniões',
-        onClick: ({ linkagesIds }) => {
-          const { linkages } = this.props;
-          const dict = linkages;
-          const newLinkages = linkagesIds.reduce((p, id) => {
-            p[id] = dict[id];
-            return p;
-          }, {});
-
-          this.setState({ editingLinkages: newLinkages });
-        },
-      },
-      {
-        key: 'remove-linkage',
-        text: 'Remover uniões',
-        style: { color: '#C62828' },
-        onClick: this.onRemoveArrow.bind(this),
-      },
-    ];
-  }
+  connecting = false;
 
   componentDidMount() {
     window.addEventListener('keyup', this.handleKeyup);
@@ -147,7 +78,79 @@ class NetworkMSBN extends Component {
     });
   }
 
-  onViewSubnetworkLinkages = ({ id }) => {
+  get arrowContextItems() {
+    return [
+      {
+        key: 'open-arrow-linkages',
+        text: 'Visualizar uniões',
+        onClick: (_, { linkagesIds }) => {
+          const { linkages } = this.props;
+          const dict = linkages;
+          const newLinkages = linkagesIds.reduce((p, id) => {
+            p[id] = dict[id];
+            return p;
+          }, {});
+
+          this.setState({ editingLinkages: newLinkages });
+        },
+      },
+      {
+        key: 'remove-linkage',
+        text: 'Remover uniões',
+        style: { color: '#C62828' },
+        onClick: this.onRemoveArrow,
+      },
+    ];
+  }
+
+  get networkContextItems() {
+    return [
+      {
+        key: 'add-super-node',
+        text: 'Adicionar rede',
+        onClick: ({ mousePosition }) => {
+          this.net.createNode(mousePosition);
+        },
+      },
+    ];
+  }
+
+  get nodeContextItems() {
+    return [
+      {
+        key: 'view-super-node',
+        text: 'Visualizar rede',
+        onClick: this.onOpenSubnetwork,
+      },
+      {
+        key: 'open-super-node-linkages',
+        text: 'Visualizar uniões',
+        disabled: ({ id }) => {
+          const { linkagesByNode } = this.props;
+          const node = linkagesByNode[id];
+
+          return node && node.length === 0;
+        },
+        onClick: this.onViewSubnetworkLinkages,
+      },
+      {
+        key: 'add-connection',
+        text: 'Adicionar união',
+        onClick: (_, contextMenuNode) => {
+          this.onStartConnection(contextMenuNode);
+        },
+      },
+      {
+        key: 'remove-super-node',
+        text: 'Remover rede',
+        style: { color: '#C62828' },
+        onClick: this.onRemoveNode,
+      },
+    ];
+  }
+
+
+  onViewSubnetworkLinkages = (_, { id }) => {
     const { linkagesByNode } = this.props;
     const links = linkagesByNode[id];
     const linkages = links.reduce((p, item) => {
@@ -159,11 +162,11 @@ class NetworkMSBN extends Component {
     this.setState({ editingLinkages: linkages });
   };
 
-  onOpenSubnetwork = (openSubnetwork) => {
+  onOpenSubnetwork = (_, openSubnetwork) => {
     this.setState({ openSubnetwork });
   };
 
-  onRemoveNode = (node) => {
+  onRemoveNode = (_, node) => {
     const { dispatch } = this.props;
     const { id, linkageInfo } = node;
     const linkageIds = linkageInfo.map(x => x.id);
@@ -173,7 +176,7 @@ class NetworkMSBN extends Component {
     dispatch(removeSuperNode(id));
   };
 
-  onRemoveArrow = ({ linkagesIds }) => {
+  onRemoveArrow = (_, { linkagesIds }) => {
     const { dispatch } = this.props;
 
     linkagesIds.forEach(linkageId => dispatch(removeLinkage(linkageId)));
@@ -296,19 +299,6 @@ class NetworkMSBN extends Component {
 
       this.setState({ key: key + 1 });
     }, 0);
-  };
-
-  getContextItems = (type) => {
-    switch (type) {
-      case ContextMenuType.ARROW:
-        return this.arrowContextMenuItems;
-      case ContextMenuType.NODE:
-        return this.nodeContextMenuItems;
-      case ContextMenuType.CANVAS:
-        return this.canvasContextMenuItems;
-      default:
-        return [];
-    }
   };
 
   creatNodeWithParent = (subnetwork, node) => {
@@ -496,7 +486,10 @@ class NetworkMSBN extends Component {
     connectingNode = null,
   ) => {
     const {
-      nodes, positions, name, id, color,
+      nodes,
+      positions,
+      id,
+      color,
     } = subnetwork;
     const nodesAndPositions = combNodesWithSizes(combNodesWithPositions(nodes, positions));
     const linkedNodes = this.getLinkedNodesFromSubnetwork(subnetwork);
@@ -504,26 +497,19 @@ class NetworkMSBN extends Component {
     const subBeliefs = inferenceResultsMSBN[id];
 
     return (
-      <Modal
-        title={`Subrede ${name}`}
+      <SubNetwork
+        network={subnetwork}
+        nodes={nodesAndPositions}
+        linkedNodes={linkedNodes}
+        inferenceResults={subBeliefs}
+        onClickNode={onClickNode}
+        onDoubleClickNode={onDoubleClickNode}
+        connecting={connecting}
+        connectingNode={connectingNode}
+        onSetBelief={this.onSetBelief}
+        networkColor={color}
         onRequestClose={onRequestClose}
-        isOpen={subnetwork !== null}
-      >
-
-        <SubNetwork
-          network={subnetwork}
-          nodes={nodesAndPositions}
-          linkedNodes={linkedNodes}
-          inferenceResults={subBeliefs}
-          onClickNode={onClickNode}
-          onDoubleClickNode={onDoubleClickNode}
-          connecting={connecting}
-          connectingNode={connectingNode}
-          onSetBelief={this.onSetBelief}
-          networkColor={color}
-        />
-
-      </Modal>
+      />
     );
   };
 
@@ -623,11 +609,13 @@ class NetworkMSBN extends Component {
           onAddConnection={this.onAddConnection}
           onSelectNodes={this.onSelectNodes}
           changeNodePosition={this.changeNodePosition}
-          getContextItems={this.getContextItems}
           requestCreateNode={this.requestCreateNode}
           onDoubleClickNode={this.onDoubleClickNode}
           ref={(ref) => { this.net = ref; }}
           addingChildArrow={addingChildArrow}
+          arrowContextItems={this.arrowContextItems}
+          networkContextItems={this.networkContextItems}
+          nodeContextItems={this.nodeContextItems}
         />
 
         {this.renderSubNetworks()}
