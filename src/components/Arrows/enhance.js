@@ -1,8 +1,10 @@
 import {
-  compose, pure, withStateHandlers, withHandlers,
+  compose,
+  pure,
+  withStateHandlers,
+  withHandlers,
 } from 'recompose';
 import { equals, isNil } from 'ramda';
-import { isFunction } from 'lodash';
 
 const isKeyFocused = (key, keyFocus) => isNil(keyFocus) || equals(key, keyFocus);
 
@@ -13,10 +15,10 @@ const enhance = compose(
       keyFocus: initialKeyFocus,
     }),
     {
-      onMouseOver: () => keyFocus => ({
+      setArrowFocus: () => keyFocus => ({
         keyFocus,
       }),
-      onMouseLeave: (_, { initialKeyFocus }) => () => ({
+      resetArrowFocus: (_, { initialKeyFocus }) => () => ({
         keyFocus: initialKeyFocus,
       }),
     },
@@ -27,10 +29,8 @@ const enhance = compose(
       isKeyFocused(key, keyFocused)
         ? 'url(#triangle)'
         : 'url(##triangle-with-low-opacity)',
-    onMouseDown: ({ onMouseDown }) => opts => e =>
-      isFunction(onMouseDown)
-        ? onMouseDown(e, opts)
-        : null,
+    onMouseOver: ({ setArrowFocus }) => (_, arrowKey) => setArrowFocus(arrowKey),
+    onMouseLeave: ({ resetArrowFocus }) => (_, arrowKey) => resetArrowFocus(arrowKey),
   }),
 );
 
