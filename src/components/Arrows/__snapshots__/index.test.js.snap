@@ -4,6 +4,7 @@ exports[`Arrows Component matches snapshot 1`] = `
 <g>
   <ArrowsDefs />
   <Arrow
+    contextItems={Array []}
     from={
       Object {
         "type": "bottom",
@@ -27,6 +28,7 @@ exports[`Arrows Component matches snapshot 1`] = `
     }
   />
   <Arrow
+    contextItems={Array []}
     from={
       Object {
         "type": "bottom",
@@ -50,6 +52,7 @@ exports[`Arrows Component matches snapshot 1`] = `
     }
   />
   <Arrow
+    contextItems={Array []}
     from={
       Object {
         "type": "bottom",
