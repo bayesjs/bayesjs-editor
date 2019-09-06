@@ -20,7 +20,7 @@ const enhance = connectify({
 }, {
   onRemoveNodeConnection: ({ childId, parentId }) => removeParent(childId, parentId),
   onChangeSelectedNodes: nodes => changeNetworkProperty('selectedNodes', nodes),
-  onRemoveNode: nodeId => removeNode(nodeId),
+  onRemoveNode: ({ id }) => removeNode(id),
   onConnectNodes: (idFrom, idTo) => addParent(idFrom, idTo),
   onResetNodeBelief: ({ id }) => setBelief(id, null),
   onSetNodeBelief: ({ id }, state) => setBelief(id, state),
