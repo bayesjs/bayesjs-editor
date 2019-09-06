@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { nodePropTypes, networkPropTypes, inferenceResultsPropTypes } from 'models';
 import { getArrowsPositions } from 'utils/arrows-positions';
+import { isDeleteKey } from 'utils/event';
 import Network from '../Network';
 
 import AddNodeModal from '../AddNodeModal';
@@ -101,11 +102,11 @@ class NetworkBN extends Component {
   };
 
   handleKeyup = (e) => {
-    const key = e.keyCode || e.which;
     const { network, onRemoveNode } = this.props;
 
-    if ([8, 46].indexOf(key) !== -1 && network.selectedNodes.length > 0 && document.activeElement.tagName === 'BODY') {
+    if (isDeleteKey(e) && network.selectedNodes.length > 0 && document.activeElement.tagName === 'BODY') {
       network.selectedNodes.forEach((nodeId) => {
+        console.log(nodeId);
         onRemoveNode(nodeId);
       });
     }

@@ -39,6 +39,7 @@ import { connect } from 'react-redux';
 import { getArrowsPositionsForMSBN } from 'utils/arrows-positions';
 import { openFile } from 'utils/file';
 import { v4 } from 'uuid';
+import { isDeleteKey } from 'utils/event';
 import { hasCycles, mergeNetworks } from './helpers';
 
 class NetworkMSBN extends Component {
@@ -205,10 +206,9 @@ class NetworkMSBN extends Component {
   };
 
   handleKeyup = (e) => {
-    const key = e.keyCode || e.which;
     const { network, subNetworks } = this.props;
 
-    if ([8, 46].indexOf(key) !== -1 && network.selectedNodes.length > 0 && document.activeElement.tagName === 'BODY') {
+    if (isDeleteKey(e) && network.selectedNodes.length > 0 && document.activeElement.tagName === 'BODY') {
       network.selectedNodes.forEach((nodeId) => {
         const node = subNetworks.find(({ id }) => id === nodeId);
 

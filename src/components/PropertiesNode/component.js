@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { equals, complement } from 'ramda';
+import {
+  equals,
+  complement,
+  isEmpty,
+  propEq,
+  any,
+} from 'ramda';
 
 import { getComponentTestId } from 'utils/test-utils';
 import { nodePropTypes } from 'models';
@@ -8,6 +14,7 @@ import Button from '../Button';
 import styles from './styles.css';
 
 const notEquals = complement(equals);
+const isNotEmpty = complement(isEmpty);
 
 class PropertiesNode extends Component {
   constructor(props) {
@@ -42,9 +49,17 @@ class PropertiesNode extends Component {
       onChangeNodeDescription(node, nodeDescription);
     }
 
-    if (notEquals(inputText, id)) {
+    if (notEquals(inputText, id) && this.isValidNodeName(inputText)) {
       onChangeNodeName(node, inputText);
     }
+  }
+
+  isValidNodeName = name => isNotEmpty(name) && !this.hasNodeWithName(name)
+
+  hasNodeWithName = (name) => {
+    const { nodes } = this.props;
+
+    return any(propEq('id', name), nodes);
   }
 
   handleOnChange = (e) => {
@@ -58,20 +73,15 @@ class PropertiesNode extends Component {
   };
 
   handleNodeNameBlur = (e) => {
-    const { node, nodes, onChangeNodeName } = this.props;
+    const { node, onChangeNodeName } = this.props;
     const { inputText } = this.state;
     const input = e.target;
-    const { id } = node;
     const nextId = inputText;
 
-    const alreadyExits = nodes
-      .filter(x => x.id !== id)
-      .some(x => x.id === nextId);
-
-    if (nextId === '' || alreadyExits) {
-      input.value = id;
-    } else {
+    if (this.isValidNodeName(nextId)) {
       onChangeNodeName(node, nextId);
+    } else {
+      input.value = node.id;
     }
   };
 
