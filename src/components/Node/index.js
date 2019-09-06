@@ -9,30 +9,26 @@ import GenericNode from 'components/GenericNode';
 import NodeConnections from 'components/NodeConnections';
 import NodeStates from 'components/NodeStates';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
-import ContextMenuTrigger from 'components/ContextMenuTrigger';
+import React from 'react';
+import ContextMenu from 'components/ContextMenu';
 import { CONTEXTMENU_TYPES } from 'constants/contextmenu';
-import ContextMenuItems from 'components/ContextMenuItems';
 
 const Node = (props) => {
   const { id, contextItems } = props;
 
   return (
-    <Fragment>
-      <ContextMenuTrigger renderTag="g" id={id} type={CONTEXTMENU_TYPES.NODE}>
-        <GenericNode {...props}>
-          <NodeStates {...props} />
-          <NodeConnections {...props} />
-        </GenericNode>
-      </ContextMenuTrigger>
-
-      <ContextMenuItems
-        id={id}
-        type={CONTEXTMENU_TYPES.NODE}
-        items={contextItems}
-        data={props}
-      />
-    </Fragment>
+    <ContextMenu
+      renderTag="g"
+      id={id}
+      type={CONTEXTMENU_TYPES.NODE}
+      items={contextItems}
+      data={props}
+    >
+      <GenericNode {...props}>
+        <NodeStates {...props} />
+        <NodeConnections {...props} />
+      </GenericNode>
+    </ContextMenu>
   );
 };
 

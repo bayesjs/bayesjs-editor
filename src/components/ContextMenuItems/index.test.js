@@ -42,11 +42,6 @@ describe('ContextMenuItems Component', () => {
     expect(component).toMatchSnapshot();
   });
 
-  it('has id and type as prop id', () => {
-    expect(component.find(ContextMenu).prop('id')).toBe(`${defaultProps.id}${defaultProps.type}`);
-  });
-
-
   describe('Event Listeners', () => {
     const target = {
       getBoundingClientRect: () => ({ x: 15, y: 15 }),

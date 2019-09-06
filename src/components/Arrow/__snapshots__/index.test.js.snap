@@ -1,82 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Arrow Component matches snapshot 1`] = `
-<Fragment>
-  <ContextMenuTrigger
-    id="id"
-    renderTag="g"
-    type="CONTEXTMENU-TYPES-ARROW"
-  >
-    <g
-      data-testid="arrow"
-      from={
-        Object {
-          "x": 0,
-          "y": 0,
-        }
-      }
-      id="id"
-      markerEnd=""
-      onBlur={[Function]}
-      onFocus={[Function]}
-      onMouseDown={[MockFunction]}
-      onMouseLeave={[Function]}
-      onMouseOver={[Function]}
-      style={
-        Object {
-          "transition": "stroke-opacity 0.2s",
-        }
-      }
-      title="title"
-      to={
-        Object {
-          "x": 100,
-          "y": 100,
-        }
-      }
-    >
-      <path
-        d=""
-        fill="none"
-        markerEnd=""
-        stroke="#333"
-        strokeWidth="2"
-        style={
-          Object {
-            "cursor": "pointer",
-          }
-        }
-      >
-        title
-      </path>
-    </g>
-  </ContextMenuTrigger>
-  <ContextMenuItems
-    data={
+<ContextMenu
+  data={
+    Object {
+      "contextItems": Array [],
+      "from": Object {
+        "x": 0,
+        "y": 0,
+      },
+      "id": "id",
+      "markEnd": false,
+      "markEndStyle": "",
+      "markerEnd": "",
+      "onMouseDown": [MockFunction],
+      "onMouseLeave": [Function],
+      "onMouseOver": [Function],
+      "pathD": "",
+      "title": "title",
+      "to": Object {
+        "x": 100,
+        "y": 100,
+      },
+    }
+  }
+  id="id"
+  items={Array []}
+  renderTag="g"
+  type="CONTEXTMENU-TYPES-ARROW"
+>
+  <g
+    data-testid="arrow"
+    onMouseLeave={[Function]}
+    onMouseOver={[Function]}
+    style={
       Object {
-        "contextItems": Array [],
-        "from": Object {
-          "x": 0,
-          "y": 0,
-        },
-        "id": "id",
-        "markEnd": false,
-        "markEndStyle": "",
-        "markerEnd": "",
-        "onMouseDown": [MockFunction],
-        "onMouseLeave": [Function],
-        "onMouseOver": [Function],
-        "pathD": "",
-        "title": "title",
-        "to": Object {
-          "x": 100,
-          "y": 100,
-        },
+        "transition": "stroke-opacity 0.2s",
       }
     }
-    id="id"
-    items={Array []}
-    type="CONTEXTMENU-TYPES-ARROW"
-  />
-</Fragment>
+  >
+    <path
+      d=""
+      fill="none"
+      markerEnd=""
+      stroke="#333"
+      strokeWidth="2"
+      style={
+        Object {
+          "cursor": "pointer",
+        }
+      }
+    />
+  </g>
+</ContextMenu>
 `;

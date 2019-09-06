@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import {
   arrowPropTypes,
   networkPropTypes,
@@ -7,10 +7,9 @@ import {
   contextMenuItemPropTypes,
 } from 'models';
 import { isFunction, noop } from 'lodash';
-import ContextMenuTrigger from 'components/ContextMenuTrigger';
 import ArrowMovingPlaceholder from 'components/ArrowMovingPlaceholder';
 import Arrows from 'components/Arrows';
-import ContextMenuItems from 'components/ContextMenuItems';
+import ContextMenu from 'components/ContextMenu';
 import NodeMovingPlaceholder from 'components/NodeMovingPlaceholder';
 import Nodes from 'components/Nodes';
 import PropTypes from 'prop-types';
@@ -167,56 +166,49 @@ class Network extends PureComponent {
     const { newNode } = this.state;
 
     return (
-      <Fragment>
-        <ContextMenuTrigger
-          id={this.contextMenuId}
-          type={CONTEXTMENU_TYPES.NETWORK}
-          posX={contextXOffset}
-          posY={contextYOffset}
+      <ContextMenu
+        id={this.contextMenuId}
+        type={CONTEXTMENU_TYPES.NETWORK}
+        posX={contextXOffset}
+        posY={contextYOffset}
+        items={networkContextItems}
+      >
+        <svg
+          className={styles.canvas}
+          height={network.height}
+          width={network.width}
+          onMouseDown={this.handleMouseDown}
+          ref={this.handleRef}
         >
-          <svg
-            className={styles.canvas}
-            height={network.height}
-            width={network.width}
-            onMouseDown={this.handleMouseDown}
-            ref={this.handleRef}
-          >
-            <g>
-              <Arrows
-                arrows={arrows}
-                contextItems={arrowContextItems}
-              />
-            </g>
-            <g>
-              <Nodes
-                nodes={nodes}
-                onMouseDown={this.handleNodeMouseDown}
-                onDoubleClick={onDoubleClickNode}
-                onStateDoubleClick={onStateDoubleClick}
-                contextItems={nodeContextItems}
-              />
-            </g>
-            <g>
-              {this.renderAddingChildArrow()}
-            </g>
-            <g>
-              {this.renderMovingNodePlaceholder()}
-            </g>
-            <g>
-              {children}
-            </g>
-          </svg>
+          <g>
+            <Arrows
+              arrows={arrows}
+              contextItems={arrowContextItems}
+            />
+          </g>
+          <g>
+            <Nodes
+              nodes={nodes}
+              onMouseDown={this.handleNodeMouseDown}
+              onDoubleClick={onDoubleClickNode}
+              onStateDoubleClick={onStateDoubleClick}
+              contextItems={nodeContextItems}
+            />
+          </g>
+          <g>
+            {this.renderAddingChildArrow()}
+          </g>
+          <g>
+            {this.renderMovingNodePlaceholder()}
+          </g>
+          <g>
+            {children}
+          </g>
+        </svg>
 
-          {newNode}
-          {children}
-        </ContextMenuTrigger>
-
-        <ContextMenuItems
-          id={this.contextMenuId}
-          type={CONTEXTMENU_TYPES.NETWORK}
-          items={networkContextItems}
-        />
-      </Fragment>
+        {newNode}
+        {children}
+      </ContextMenu>
     );
   }
 }

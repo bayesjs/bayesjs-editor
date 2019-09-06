@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { getComponentTestId } from 'utils/test-utils';
 import { noop } from 'lodash';
 import { pick } from 'ramda';
 import { positionPropTypes, contextMenuItemPropTypes } from 'models';
-import ContextMenuTrigger from 'components/ContextMenuTrigger';
 import { CONTEXTMENU_TYPES } from 'constants/contextmenu';
-import ContextMenuItems from 'components/ContextMenuItems';
+import ContextMenu from 'components/ContextMenu';
 
 const style = {
   transition: 'stroke-opacity 0.2s',
@@ -27,31 +26,28 @@ const Arrow = (props) => {
   } = props;
 
   return (
-    <Fragment>
-      <ContextMenuTrigger renderTag="g" id={id} type={CONTEXTMENU_TYPES.ARROW}>
-        <g
-          style={style}
-          data-testid={getComponentTestId('Arrow')}
-          {...pickProps(props)}
-        >
-          <path
-            d={pathD}
-            fill="none"
-            stroke="#333"
-            strokeWidth="2"
-            markerEnd={markerEnd}
-            style={stylePath}
-          />
-        </g>
-      </ContextMenuTrigger>
-
-      <ContextMenuItems
-        id={id}
-        type={CONTEXTMENU_TYPES.ARROW}
-        items={contextItems}
-        data={props}
-      />
-    </Fragment>
+    <ContextMenu
+      renderTag="g"
+      id={id}
+      type={CONTEXTMENU_TYPES.ARROW}
+      items={contextItems}
+      data={props}
+    >
+      <g
+        style={style}
+        data-testid={getComponentTestId('Arrow')}
+        {...pickProps(props)}
+      >
+        <path
+          d={pathD}
+          fill="none"
+          stroke="#333"
+          strokeWidth="2"
+          markerEnd={markerEnd}
+          style={stylePath}
+        />
+      </g>
+    </ContextMenu>
   );
 };
 

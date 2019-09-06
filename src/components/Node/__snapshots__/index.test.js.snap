@@ -1,13 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Node Component matches snapshot 1`] = `
-<Fragment>
-  <ContextMenuTrigger
+<ContextMenu
+  data={
+    Object {
+      "belief": null,
+      "contextItems": Array [],
+      "description": null,
+      "id": "id",
+      "isSelected": false,
+      "onMouseDown": [MockFunction],
+      "onStateDoubleClick": [MockFunction],
+      "position": Object {
+        "x": 0,
+        "y": 0,
+      },
+      "results": Object {},
+      "size": Object {
+        "height": 100,
+        "width": 160,
+      },
+      "states": Array [
+        "S1",
+        "S2",
+      ],
+    }
+  }
+  id="id"
+  items={Array []}
+  renderTag="g"
+  type="CONTEXTMENU-TYPES-NODE"
+>
+  <GenericNode
+    belief={null}
+    contextItems={Array []}
+    description={null}
     id="id"
-    renderTag="g"
-    type="CONTEXTMENU-TYPES-NODE"
+    isSelected={false}
+    onMouseDown={[MockFunction]}
+    onStateDoubleClick={[MockFunction]}
+    position={
+      Object {
+        "x": 0,
+        "y": 0,
+      }
+    }
+    results={Object {}}
+    size={
+      Object {
+        "height": 100,
+        "width": 160,
+      }
+    }
+    states={
+      Array [
+        "S1",
+        "S2",
+      ]
+    }
   >
-    <GenericNode
+    <NodeStates
       belief={null}
       contextItems={Array []}
       description={null}
@@ -34,93 +86,35 @@ exports[`Node Component matches snapshot 1`] = `
           "S2",
         ]
       }
-    >
-      <NodeStates
-        belief={null}
-        contextItems={Array []}
-        description={null}
-        id="id"
-        isSelected={false}
-        onMouseDown={[MockFunction]}
-        onStateDoubleClick={[MockFunction]}
-        position={
-          Object {
-            "x": 0,
-            "y": 0,
-          }
-        }
-        results={Object {}}
-        size={
-          Object {
-            "height": 100,
-            "width": 160,
-          }
-        }
-        states={
-          Array [
-            "S1",
-            "S2",
-          ]
-        }
-      />
-      <NodeConnections
-        belief={null}
-        contextItems={Array []}
-        description={null}
-        id="id"
-        isSelected={false}
-        onMouseDown={[MockFunction]}
-        onStateDoubleClick={[MockFunction]}
-        position={
-          Object {
-            "x": 0,
-            "y": 0,
-          }
-        }
-        results={Object {}}
-        size={
-          Object {
-            "height": 100,
-            "width": 160,
-          }
-        }
-        states={
-          Array [
-            "S1",
-            "S2",
-          ]
-        }
-      />
-    </GenericNode>
-  </ContextMenuTrigger>
-  <ContextMenuItems
-    data={
-      Object {
-        "belief": null,
-        "contextItems": Array [],
-        "description": null,
-        "id": "id",
-        "isSelected": false,
-        "onMouseDown": [MockFunction],
-        "onStateDoubleClick": [MockFunction],
-        "position": Object {
+    />
+    <NodeConnections
+      belief={null}
+      contextItems={Array []}
+      description={null}
+      id="id"
+      isSelected={false}
+      onMouseDown={[MockFunction]}
+      onStateDoubleClick={[MockFunction]}
+      position={
+        Object {
           "x": 0,
           "y": 0,
-        },
-        "results": Object {},
-        "size": Object {
+        }
+      }
+      results={Object {}}
+      size={
+        Object {
           "height": 100,
           "width": 160,
-        },
-        "states": Array [
+        }
+      }
+      states={
+        Array [
           "S1",
           "S2",
-        ],
+        ]
       }
-    }
-    id="id"
-    items={Array []}
-    type="CONTEXTMENU-TYPES-NODE"
-  />
-</Fragment>
+    />
+  </GenericNode>
+</ContextMenu>
 `;

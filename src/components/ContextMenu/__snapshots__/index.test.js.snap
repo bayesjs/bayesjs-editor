@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContextMenu Component matches snapshot 1`] = `
+<Fragment>
+  <ContextMenuTrigger
+    attributes={Object {}}
+    collect={[Function]}
+    disable={false}
+    disableIfShiftIsPressed={false}
+    holdToDisplay={1000}
+    id="idtype"
+    posX={0}
+    posY={0}
+    renderTag="div"
+  >
+    <div />
+  </ContextMenuTrigger>
+  <ContextMenuItems
+    data={null}
+    id="idtype"
+    items={
+      Array [
+        Object {
+          "disabled": [Function],
+          "key": "1",
+          "onClick": [MockFunction],
+          "text": "Item 1",
+        },
+        Object {
+          "disabled": true,
+          "key": "2",
+          "onClick": [MockFunction],
+          "text": "Item 2",
+        },
+        Object {
+          "key": "3",
+          "onClick": [MockFunction],
+          "text": "Item 3",
+        },
+      ]
+    }
+  />
+</Fragment>
+`;

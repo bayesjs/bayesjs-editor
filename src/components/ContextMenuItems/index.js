@@ -8,7 +8,6 @@ import {
   isNil,
   is,
   join,
-  concat,
 } from 'ramda';
 import { contextMenuItemPropTypes } from 'models';
 import { subtractPositions } from 'utils/position';
@@ -44,7 +43,6 @@ const getItemClasses = isDisabled =>
 
 const ContextMenuItems = ({
   id,
-  type,
   items,
   data,
 }) => {
@@ -54,7 +52,7 @@ const ContextMenuItems = ({
     <ContextMenuItemsPortal>
       <ContextMenu
         className={styles.contextMenu}
-        id={concat(id, type)}
+        id={id}
         onShow={onShowHandler(setMousePosition)}
       >
         {items.map(({
@@ -89,7 +87,6 @@ const ContextMenuItems = ({
 
 ContextMenuItems.propTypes = {
   id: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(contextMenuItemPropTypes).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   data: PropTypes.any,
