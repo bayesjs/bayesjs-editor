@@ -60,6 +60,9 @@ const ContextMenuItems = ({
           const classNames = [
             styles.contextMenuItem,
             ...(isDisabled ? [styles.contextMenuItemDisabled] : []),
+          ].join(' ');
+            styles.contextMenuItem,
+            ...(isDisabled ? [styles.contextMenuItemDisabled] : []),
           ];
 
           return (
@@ -70,7 +73,12 @@ const ContextMenuItems = ({
               disabled={isDisabled}
             >
               <div
-                className={classNames.join(' ')}
+                className={classNames}
+                style={style}
+                data-testid={getComponentTestId('ContextMenuItems', key)}
+                children={text}
+             />
+                className={classNames}
                 style={style}
                 data-testid={getComponentTestId('ContextMenuItems', key)}
               >

@@ -54,6 +54,11 @@ const Modal = ({
       className={styles.body}
       style={contentStyle}
       data-testid={getComponentTestId('ModalBody', name || title)}
+      children={children}
+    />
+      className={styles.body}
+      style={contentStyle}
+      data-testid={getComponentTestId('ModalBody', name || title)}
     >
       {children}
     </div>
