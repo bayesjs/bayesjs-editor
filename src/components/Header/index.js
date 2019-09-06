@@ -41,27 +41,25 @@ class Header extends Component {
   };
 
   handleNewNetworkClick = (e) => {
-    const { onRequestRedraw, dispatch } = this.props;
+    const { dispatch } = this.props;
 
     e.preventDefault();
     if (window.confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
       dispatch(newNetwork());
-      onRequestRedraw();
     }
   };
 
   handleNewMSBNNetworkClick = (e) => {
-    const { onRequestRedraw, dispatch } = this.props;
+    const { dispatch } = this.props;
 
     e.preventDefault();
     if (window.confirm('Os dados da rede atual serão perdidos. Deseja continuar?')) {
       dispatch(newNetwork(NETWORK_KINDS.MSBN));
-      onRequestRedraw();
     }
   }
 
   handleOpenNetworkClick = (e) => {
-    const { onRequestRedraw, dispatch } = this.props;
+    const { dispatch } = this.props;
 
     e.preventDefault();
     openFile('.json', (json) => {
@@ -69,7 +67,6 @@ class Header extends Component {
         const state = JSON.parse(json);
 
         dispatch(loadNetwork(state));
-        onRequestRedraw();
       } catch (ex) {
         console.warn(ex);
         window.alert('Arquivo inválido');
@@ -173,7 +170,6 @@ class Header extends Component {
 
 Header.propTypes = {
   stateToSave: stateToSavePropTypes.isRequired,
-  onRequestRedraw: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 

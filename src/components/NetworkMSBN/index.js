@@ -293,14 +293,6 @@ class NetworkMSBN extends Component {
     dispatch(changeNodePosition(id, newX, newY));
   };
 
-  handleRequestRedraw = () => {
-    setTimeout(() => {
-      const { key } = this.state;
-
-      this.setState({ key: key + 1 });
-    }, 0);
-  };
-
   creatNodeWithParent = (subnetwork, node) => {
     const { id, name, color } = subnetwork;
     return {

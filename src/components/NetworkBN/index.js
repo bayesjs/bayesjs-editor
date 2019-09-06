@@ -24,7 +24,6 @@ import EditStatesModal from '../EditStatesModal';
 
 class NetworkBN extends Component {
   state = {
-    key: 1,
     editingNodeStates: null,
     editingNodeCpt: null,
   };
@@ -170,14 +169,6 @@ class NetworkBN extends Component {
     dispatch(changeNodePosition(id, newX, newY));
   };
 
-  handleRequestRedraw = () => {
-    setTimeout(() => {
-      const { key } = this.state;
-
-      this.setState({ key: key + 1 });
-    }, 0);
-  };
-
   render() {
     const { network, nodes } = this.props;
     const { editingNodeStates, editingNodeCpt } = this.state;
@@ -204,7 +195,6 @@ class NetworkBN extends Component {
           node={editingNodeStates}
           onRequestClose={() => {
             this.setState({ editingNodeStates: null });
-            this.handleRequestRedraw();
           }}
         />
 
