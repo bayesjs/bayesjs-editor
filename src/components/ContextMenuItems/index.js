@@ -7,6 +7,7 @@ import {
   complement,
   isNil,
   is,
+  join,
   concat,
 } from 'ramda';
 import { contextMenuItemPropTypes } from 'models';
@@ -35,6 +36,12 @@ const isItemDisabled = ({ disabled }, data) => {
   return false;
 };
 
+const getItemClasses = isDisabled =>
+  join(' ', [
+    styles.contextMenuItem,
+    ...(isDisabled ? [styles.contextMenuItemDisabled] : []),
+  ]);
+
 const ContextMenuItems = ({
   id,
   type,
@@ -57,13 +64,7 @@ const ContextMenuItems = ({
           ...itemProps
         }) => {
           const isDisabled = isItemDisabled(itemProps, data);
-          const classNames = [
-            styles.contextMenuItem,
-            ...(isDisabled ? [styles.contextMenuItemDisabled] : []),
-          ].join(' ');
-            styles.contextMenuItem,
-            ...(isDisabled ? [styles.contextMenuItemDisabled] : []),
-          ];
+          const classNames = getItemClasses(isDisabled);
 
           return (
             <MenuItem
@@ -77,13 +78,7 @@ const ContextMenuItems = ({
                 style={style}
                 data-testid={getComponentTestId('ContextMenuItems', key)}
                 children={text}
-             />
-                className={classNames}
-                style={style}
-                data-testid={getComponentTestId('ContextMenuItems', key)}
-              >
-                {text}
-              </div>
+              />
             </MenuItem>
           );
         })}
