@@ -105,9 +105,8 @@ class NetworkBN extends Component {
     const { network, onRemoveNode } = this.props;
 
     if (isDeleteKey(e) && network.selectedNodes.length > 0 && document.activeElement.tagName === 'BODY') {
-      network.selectedNodes.forEach((nodeId) => {
-        console.log(nodeId);
-        onRemoveNode(nodeId);
+      network.selectedNodes.forEach((id) => {
+        onRemoveNode({ id });
       });
     }
   }
