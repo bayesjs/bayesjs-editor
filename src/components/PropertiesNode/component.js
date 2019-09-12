@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   equals,
@@ -10,6 +10,8 @@ import {
   pipe,
   not,
   map,
+  defaultTo,
+  prop,
 } from 'ramda';
 
 import { getComponentTestId } from 'utils/test-utils';
@@ -19,6 +21,7 @@ import Button from '../Button';
 import styles from './styles.css';
 
 const isNotEmpty = complement(isEmpty);
+const getNodeDescription = pipe(prop('description'), defaultTo(''));
 const pathTargetValue = path(['target', 'value']);
 const onEnterKeyUp = func => event => isEnterKey(event) && func();
 
@@ -36,7 +39,8 @@ const PropertiesNode = ({
   nodes,
   node,
 }) => {
-  const { id, description: nodeDescription } = node;
+  const { id } = node;
+  const nodeDescription = getNodeDescription(node);
   const [name, setName] = useState(id);
   const [description, setDescription] = useState(nodeDescription);
   const hasNoChanges = equals(id, name) && equals(nodeDescription, description);
@@ -45,6 +49,11 @@ const PropertiesNode = ({
   const onSaveAll = () => executeFunctions(onSaveNodedescription, onSaveNodeName);
   const onEditStates = () => onEditNodeStates(node);
   const onEditCpt = () => onEditNodeCpt(node);
+
+  useEffect(() => {
+    setName(id);
+    setDescription(nodeDescription);
+  }, [node]);
 
   return (
     <div data-testid={getComponentTestId('PropertiesNode')}>
@@ -87,7 +96,7 @@ const PropertiesNode = ({
       </div>
 
       <div className={styles.fieldWrapper}>
-        <Button className={styles.button} onClick={onSaveAll} name="saveAll" disabled={hasNoChanges}>
+        <Button className={styles.button} onClick={onSaveAll} name="save" disabled={hasNoChanges}>
           Salvar alterações
         </Button>
       </div>

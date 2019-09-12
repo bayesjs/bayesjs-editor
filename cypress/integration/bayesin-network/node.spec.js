@@ -32,6 +32,9 @@ describe('Node', () => {
       .clear()
       .type(`${newDescription}`);
 
+    cy.getByTestId(getComponentTestId('Button', 'save'))
+      .click();
+
     cy.get('svg')
       .click();
     cy.getNodeByTestId(nodeName)
