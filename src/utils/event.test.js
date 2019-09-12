@@ -1,4 +1,4 @@
-import { isDeleteKey } from './event';
+import { isDeleteKey, isEnterKey } from './event';
 
 const createKeyboarEvent = (props = {}) =>
   new global.KeyboardEvent('keyup', props);
@@ -48,6 +48,38 @@ describe('Event Utils', () => {
         const event = createKeyboarEvent();
 
         expect(isDeleteKey(event)).toBeFalsy();
+      });
+    });
+  });
+
+  describe('isEnterKey', () => {
+    describe('When "enter" event is triggered', () => {
+      const code = 13;
+
+      it('returns truthy (keyCode)', () => {
+        const event = createKeyboarEvent({ keyCode: code });
+
+        expect(isEnterKey(event)).toBeTruthy();
+      });
+
+      it('returns truthy (which)', () => {
+        const event = createKeyboarEvent({ which: code });
+
+        expect(isEnterKey(event)).toBeTruthy();
+      });
+    });
+
+    describe('When another event is triggered', () => {
+      it('returns falsy (keyCode)', () => {
+        const event = createKeyboarEvent();
+
+        expect(isEnterKey(event)).toBeFalsy();
+      });
+
+      it('returns falsy (which)', () => {
+        const event = createKeyboarEvent();
+
+        expect(isEnterKey(event)).toBeFalsy();
       });
     });
   });

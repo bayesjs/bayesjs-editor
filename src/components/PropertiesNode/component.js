@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   equals,
@@ -6,148 +6,94 @@ import {
   isEmpty,
   propEq,
   any,
+  path,
+  pipe,
+  not,
+  map,
 } from 'ramda';
 
 import { getComponentTestId } from 'utils/test-utils';
 import { nodePropTypes } from 'models';
+import { isEnterKey } from 'utils/event';
 import Button from '../Button';
 import styles from './styles.css';
 
-const notEquals = complement(equals);
 const isNotEmpty = complement(isEmpty);
+const pathTargetValue = path(['target', 'value']);
+const onEnterKeyUp = func => event => isEnterKey(event) && func();
 
-class PropertiesNode extends Component {
-  constructor(props) {
-    super(props);
-    const { node } = props;
+const hasNodeWithName = (nodes, name) => any(propEq('id', name), nodes);
+const isValidNodeName = (nodes, name) => isNotEmpty(name) && not(hasNodeWithName(nodes, name));
 
-    this.state = {
-      inputText: node.id,
-      nodeDescription: node.description || '',
-    };
-  }
+const onChangeHandler = setValue => pipe(pathTargetValue, setValue);
+const executeFunctions = (...functions) => map(func => func(), functions);
 
-  componentWillReceiveProps(nextProps) {
-    const { id, description } = nextProps.node;
+const PropertiesNode = ({
+  onEditNodeStates,
+  onEditNodeCpt,
+  onChangeNodeName,
+  onChangeNodeDescription,
+  nodes,
+  node,
+}) => {
+  const { id, description: nodeDescription } = node;
+  const [name, setName] = useState(id);
+  const [description, setDescription] = useState(nodeDescription);
+  const hasNoChanges = equals(id, name) && equals(nodeDescription, description);
+  const onSaveNodeName = () => isValidNodeName(nodes, name) && onChangeNodeName(node, name);
+  const onSaveNodedescription = () => onChangeNodeDescription(node, description);
+  const onSaveAll = () => executeFunctions(onSaveNodedescription, onSaveNodeName);
+  const onEditStates = () => onEditNodeStates(node);
+  const onEditCpt = () => onEditNodeCpt(node);
 
-    this.setState({
-      inputText: id,
-      nodeDescription: description || '',
-    });
-  }
+  return (
+    <div data-testid={getComponentTestId('PropertiesNode')}>
+      <h2>Propriedades da Variável</h2>
 
-  componentWillUnmount() {
-    this.applyInputChanges();
-  }
-
-  applyInputChanges = () => {
-    const { nodeDescription, inputText } = this.state;
-    const { node, onChangeNodeDescription, onChangeNodeName } = this.props;
-    const { id, description } = node;
-
-    if (notEquals(nodeDescription, description)) {
-      onChangeNodeDescription(node, nodeDescription);
-    }
-
-    if (notEquals(inputText, id) && this.isValidNodeName(inputText)) {
-      onChangeNodeName(node, inputText);
-    }
-  }
-
-  isValidNodeName = name => isNotEmpty(name) && !this.hasNodeWithName(name)
-
-  hasNodeWithName = (name) => {
-    const { nodes } = this.props;
-
-    return any(propEq('id', name), nodes);
-  }
-
-  handleOnChange = (e) => {
-    const { value, id } = e.target;
-
-    if (id === 'description') {
-      this.setState({ nodeDescription: value });
-    } else if (id === 'name') {
-      this.setState({ inputText: value });
-    }
-  };
-
-  handleNodeNameBlur = (e) => {
-    const { node, onChangeNodeName } = this.props;
-    const { inputText } = this.state;
-    const input = e.target;
-    const nextId = inputText;
-
-    if (this.isValidNodeName(nextId)) {
-      onChangeNodeName(node, nextId);
-    } else {
-      input.value = node.id;
-    }
-  };
-
-  handleNodeDescripionBlur = (e) => {
-    const { node, onChangeNodeDescription } = this.props;
-    const { value } = e.target;
-
-    onChangeNodeDescription(node, value);
-  };
-
-  handleKeyUpDescription = (e) => {
-    const key = e.keyCode || e.which;
-
-    if (key === 13) {
-      this.handleNodeDescripionBlur(e);
-    }
-  };
-
-  render() {
-    const { node, onEditNodeCpt, onEditNodeStates } = this.props;
-    const { inputText, nodeDescription } = this.state;
-
-    return (
-      <div data-testid={getComponentTestId('PropertiesNode')}>
-        <h2>Propriedades da Variável</h2>
-
-        <div className={styles.fieldWrapper}>
-          <label htmlFor="name">
+      <div className={styles.fieldWrapper}>
+        <label htmlFor="name">
           Nome
-            <input
-              id="name"
-              type="text"
-              value={inputText}
-              onChange={this.handleOnChange}
-              onBlur={this.handleNodeNameBlur}
-            />
-          </label>
-        </div>
-
-        <div className={styles.fieldWrapper}>
-          <label htmlFor="description">
-          Descrição
-            <textarea
-              id="description"
-              value={nodeDescription}
-              onChange={this.handleOnChange}
-              onBlur={this.handleNodeDescripionBlur}
-            />
-          </label>
-        </div>
-
-        <div className={styles.fieldWrapper}>
-          <Button onClick={() => onEditNodeStates(node)} name="editStates">
-            Editar estados
-          </Button>
-        </div>
-
-        <div className={styles.fieldWrapper}>
-          <Button onClick={() => onEditNodeCpt(node)} name="editProbabilities">
-            Editar probabilidades
-          </Button>
-        </div>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={onChangeHandler(setName)}
+            onKeyUp={onEnterKeyUp(onSaveNodeName)}
+          />
+        </label>
       </div>
-    );
-  }
-}
+
+      <div className={styles.fieldWrapper}>
+        <label htmlFor="description">
+          Descrição
+          <textarea
+            id="description"
+            value={description}
+            onChange={onChangeHandler(setDescription)}
+          />
+        </label>
+      </div>
+
+      <div className={styles.fieldWrapper}>
+        <Button className={styles.button} onClick={onEditStates} name="editStates">
+          Editar estados
+        </Button>
+      </div>
+
+      <div className={styles.fieldWrapper}>
+        <Button className={styles.button} onClick={onEditCpt} name="editProbabilities">
+          Editar probabilidades
+        </Button>
+      </div>
+
+      <div className={styles.fieldWrapper}>
+        <Button className={styles.button} onClick={onSaveAll} name="saveAll" disabled={hasNoChanges}>
+          Salvar alterações
+        </Button>
+      </div>
+    </div>
+  );
+};
 
 PropertiesNode.propTypes = {
   node: nodePropTypes.isRequired,
