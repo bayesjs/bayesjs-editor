@@ -65,8 +65,8 @@ class NetworkMSBN extends Component {
     const { linkagesByNode, network, subNetworks } = this.props;
 
     return subNetworks.map((subNetwork) => {
-      const id = subNetwork.id || subNetwork.name;
-      const linkages = linkagesByNode[subNetwork.id];
+      const { id } = subNetwork;
+      const linkages = linkagesByNode[id];
 
       return {
         ...subNetwork,
