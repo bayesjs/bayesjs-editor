@@ -1,0 +1,30 @@
+$border-color: #333;
+
+.tables-container {
+  display: flex;
+
+  table {
+    width: 100%;
+    border-collapse:collapse;
+    border:1px solid $border-color;
+
+    th {
+      text-align: left;
+    }
+
+    th,
+    td {
+      height: 32px;
+      border:1px solid $border-color;
+      padding: 5px;
+    }
+  }
+}
+
+.buttons-container {
+  margin-top: 10px;
+
+  button {
+    margin-right: 10px;
+  }
+}
