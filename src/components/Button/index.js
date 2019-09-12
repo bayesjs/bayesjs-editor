@@ -2,22 +2,27 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { getComponentTestId } from 'utils/test-utils';
-import styles from './styles.css';
+import styles from './styles.scss';
 
 const Button = ({
-  className, primary, title, onClick, name, children,
+  className,
+  primary,
+  name,
+  title,
+  disabled,
+  ...props
 }) => (
   <button
     type="button"
     className={classNames(styles.button, className, {
-      [styles.primary]: primary,
+      [styles.buttonPrimary]: primary,
+      [styles.buttonDisabled]: disabled,
     })}
     title={title}
-    onClick={onClick}
+    disabled={disabled}
     data-testid={getComponentTestId('Button', name || title)}
-  >
-    {children}
-  </button>
+    {...props}
+  />
 );
 
 Button.defaultProps = {
@@ -25,6 +30,7 @@ Button.defaultProps = {
   primary: false,
   title: '',
   name: '',
+  disabled: false,
 };
 
 Button.propTypes = {
@@ -34,6 +40,7 @@ Button.propTypes = {
   primary: PropTypes.bool,
   title: PropTypes.string,
   name: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default Button;
