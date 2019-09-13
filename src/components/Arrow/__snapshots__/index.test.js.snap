@@ -1,45 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Arrow Component matches snapshot 1`] = `
-<g
-  data-testid="arrow"
-  from={
+<ContextMenu
+  data={
     Object {
-      "x": 0,
-      "y": 0,
+      "contextItems": Array [],
+      "from": Object {
+        "x": 0,
+        "y": 0,
+      },
+      "id": "id",
+      "markEnd": false,
+      "markEndStyle": "",
+      "markerEnd": "",
+      "onMouseDown": [MockFunction],
+      "onMouseLeave": [Function],
+      "onMouseOver": [Function],
+      "pathD": "",
+      "title": "title",
+      "to": Object {
+        "x": 100,
+        "y": 100,
+      },
     }
   }
   id="id"
-  onBlur={[Function]}
-  onFocus={[Function]}
-  onMouseDown={[MockFunction]}
-  onMouseLeave={[Function]}
-  onMouseOver={[Function]}
-  style={
-    Object {
-      "transition": "stroke-opacity 0.2s",
-    }
-  }
-  to={
-    Object {
-      "x": 100,
-      "y": 100,
-    }
-  }
+  items={Array []}
+  renderTag="g"
+  type="CONTEXTMENU-TYPES-ARROW"
 >
-  <path
-    d=""
-    fill="none"
-    markerEnd=""
-    stroke="#333"
-    strokeWidth="2"
+  <g
+    data-testid="arrow"
+    onMouseLeave={[Function]}
+    onMouseOver={[Function]}
     style={
       Object {
-        "cursor": "pointer",
+        "transition": "stroke-opacity 0.2s",
       }
     }
   >
-    title
-  </path>
-</g>
+    <path
+      d=""
+      fill="none"
+      markerEnd=""
+      stroke="#333"
+      strokeWidth="2"
+      style={
+        Object {
+          "cursor": "pointer",
+        }
+      }
+    />
+  </g>
+</ContextMenu>
 `;

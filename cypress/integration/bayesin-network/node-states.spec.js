@@ -9,8 +9,8 @@ describe('Node States', () => {
 
   it('opens edit states by right click', () => {
     cy.getNodeByTestId(nodeName)
-      .trigger('mousedown', { button: 2 });
-    cy.getByTestId(getComponentTestId('ContextMenu', 'Item', 'EditStates'))
+      .trigger('contextmenu');
+    cy.getByTestId(getComponentTestId('ContextMenuItems', 'EditStates'))
       .click();
 
     cy.getByTestId(getComponentTestId('ModalBody', 'EditarEstados', nodeName))

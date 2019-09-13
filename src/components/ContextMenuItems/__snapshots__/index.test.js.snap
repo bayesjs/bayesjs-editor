@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContextMenuItems Component matches snapshot 1`] = `
+<ContextMenuItems>
+  <ContextMenu
+    className="contextMenu"
+    data={Object {}}
+    hideOnLeave={false}
+    id="id"
+    onHide={[Function]}
+    onMouseLeave={[Function]}
+    onShow={[Function]}
+    rtl={false}
+    style={Object {}}
+  >
+    <MenuItem
+      attributes={Object {}}
+      data={null}
+      disabled={false}
+      divider={false}
+      key="1"
+      onClick={[Function]}
+      onMouseLeave={[Function]}
+      onMouseMove={[Function]}
+      preventClose={false}
+      selected={false}
+    >
+      <div
+        className="contextMenuItem"
+        data-testid="context-menu-items__1"
+      >
+        Item 1
+      </div>
+    </MenuItem>
+    <MenuItem
+      attributes={Object {}}
+      data={null}
+      disabled={true}
+      divider={false}
+      key="2"
+      onClick={[Function]}
+      onMouseLeave={[Function]}
+      onMouseMove={[Function]}
+      preventClose={false}
+      selected={false}
+    >
+      <div
+        className="contextMenuItem contextMenuItemDisabled"
+        data-testid="context-menu-items__2"
+      >
+        Item 2
+      </div>
+    </MenuItem>
+    <MenuItem
+      attributes={Object {}}
+      data={null}
+      disabled={false}
+      divider={false}
+      key="3"
+      onClick={[Function]}
+      onMouseLeave={[Function]}
+      onMouseMove={[Function]}
+      preventClose={false}
+      selected={false}
+    >
+      <div
+        className="contextMenuItem"
+        data-testid="context-menu-items__3"
+      >
+        Item 3
+      </div>
+    </MenuItem>
+  </ContextMenu>
+</ContextMenuItems>
+`;

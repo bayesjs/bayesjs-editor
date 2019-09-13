@@ -2,7 +2,7 @@ import Arrow from 'components/Arrow';
 import ArrowsDefs from 'components/ArrowsDefs';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { arrowPropTypes } from 'models';
+import { arrowPropTypes, contextMenuItemPropTypes } from 'models';
 
 const Arrows = ({
   arrows,
@@ -11,13 +11,11 @@ const Arrows = ({
   onMouseLeave,
   getStrokeOpacity,
   getMarkEndStyle,
-  onMouseDown,
+  contextItems,
 }) => (
   <g>
     <ArrowsDefs />
-    {arrows.map(({
-      key, from, to, markEnd, childId, parentId, ...props
-    }) => ( // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
+    {arrows.map(({ key, ...arrowProps }) => (
       <Arrow
         key={key}
         id={key}
@@ -25,12 +23,8 @@ const Arrows = ({
         onMouseLeave={onMouseLeave}
         strokeOpacity={getStrokeOpacity(key, keyFocus)}
         markEndStyle={getMarkEndStyle(key, keyFocus)}
-        from={from}
-        to={to}
-        markEnd={markEnd}
-        onMouseDown={onMouseDown({
-          key, from, to, markEnd, childId, parentId, ...props,
-        })}
+        contextItems={contextItems}
+        {...arrowProps}
       />
     ))}
   </g>
@@ -43,11 +37,12 @@ Arrows.propTypes = {
   onMouseLeave: PropTypes.func.isRequired,
   getStrokeOpacity: PropTypes.func.isRequired,
   getMarkEndStyle: PropTypes.func.isRequired,
-  onMouseDown: PropTypes.func.isRequired,
+  contextItems: PropTypes.arrayOf(contextMenuItemPropTypes),
 };
 
 Arrows.defaultProps = {
   keyFocus: null,
+  contextItems: [],
 };
 
 export default Arrows;

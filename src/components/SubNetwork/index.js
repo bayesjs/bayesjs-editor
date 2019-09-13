@@ -1,41 +1,24 @@
-import Network, { ContextMenuType } from 'components/Network';
+import Network from 'components/Network';
 import React, { Component } from 'react';
+import Modal from 'components/Modal';
 import {
   linkedNodePropTypes,
   networkPropTypes,
   nodePropTypes,
   subNetworkInferenceResultsPropTypes,
 } from 'models';
+import { propEq } from 'ramda';
 
 import PropTypes from 'prop-types';
 import { getArrowsPositions } from 'utils/arrows-positions';
 import { getNodeSize } from 'utils/node-size';
 import { noop } from 'lodash';
-import { propEq } from 'ramda';
+
 
 class SubNetwork extends Component {
-  constructor(props) {
-    super(props);
-    const { connecting, onDoubleClickNode } = props;
-
-    this.nodeContextMenuItems = [
-      {
-        key: 'connect-node',
-        text: 'Unir',
-        visible: connecting,
-        onClick: (contextMenuNode) => {
-          onDoubleClickNode(contextMenuNode);
-        },
-      },
-      {
-        key: 'linkages-node',
-        text: 'Ver Uniões',
-        visible: ({ link }) => link,
-        onClick: () => {
-          window.alert('Nao implementado');
-        },
-      },
-    ];
+  state = {
+    modalXOffset: 0,
+    modalYOffset: 0,
   }
 
   get nodes() {
@@ -118,6 +101,34 @@ class SubNetwork extends Component {
     return null;
   }
 
+  get nodeContextItems() {
+    const { connecting, onDoubleClickNode } = this.props;
+
+    return [
+      {
+        key: 'connect-node',
+        text: 'Unir',
+        disabled: !connecting,
+        onClick: (_, contextMenuNode) => {
+          onDoubleClickNode(contextMenuNode);
+        },
+      },
+      {
+        key: 'linkages-node',
+        text: 'Ver Uniões',
+        disabled: ({ link }) => link,
+        onClick: () => {
+          window.alert('Nao implementado');
+        },
+      },
+    ];
+  }
+
+  get title() {
+    const { network: { name } } = this.props;
+    return `Subrede ${name}`;
+  }
+
   getLinkedFromNode = ({ id }) => {
     const { linkedNodes } = this.props;
 
@@ -138,44 +149,47 @@ class SubNetwork extends Component {
     }
   }
 
-  getContextItems = (type) => {
-    switch (type) {
-      case ContextMenuType.NODE:
-        return this.nodeContextMenuItems;
-      default:
-        return [];
+  handleContentRef = (element) => {
+    if (element) {
+      const { offsetWidth, offsetHeight } = element;
+
+      this.setState({
+        modalXOffset: (window.innerWidth - offsetWidth) / 2,
+        modalYOffset: (window.innerHeight - offsetHeight) / 2,
+      });
     }
   }
 
   render() {
-    const { network, onClickNode, onDoubleClickNode } = this.props;
-    const modalWidth = window.innerWidth * 0.8;
-    const modalHeight = window.innerHeight * 0.8;
-    const bigger = (a, b) => (a > b ? a : b);
-    const newNetwork = {
-      ...network,
-      height: bigger(modalHeight, network.height + 30) - 20,
-      width: bigger(modalWidth, network.width + 30) - 20,
-    };
+    const { modalXOffset, modalYOffset } = this.state;
+    const {
+      network,
+      onClickNode,
+      onDoubleClickNode,
+      onRequestClose,
+    } = this.props;
 
     return (
-      <div style={{
-        width: modalWidth,
-        height: modalHeight,
-      }}
+      <Modal
+        title={this.title}
+        onRequestClose={onRequestClose}
+        isOpen={network !== null}
+        contentRef={this.handleContentRef}
       >
         <Network
-          network={newNetwork}
+          network={network}
           nodes={this.nodes}
           arrows={getArrowsPositions(this.nodes)}
           onStateDoubleClick={this.onSetBelief}
           addingChildArrow={this.addingChildArrow}
           onClickNode={onClickNode}
           onDoubleClickNode={onDoubleClickNode}
-          getContextItems={this.getContextItems}
+          nodeContextItems={this.nodeContextItems}
+          contextXOffset={modalXOffset}
+          contextYOffset={modalYOffset}
           ref={(ref) => { this.networkRef = ref; }}
         />
-      </div>
+      </Modal>
     );
   }
 }
@@ -187,6 +201,7 @@ SubNetwork.defaultProps = {
   onDoubleClickNode: noop,
   onClickNode: noop,
   connectingNode: null,
+  onRequestClose: noop,
 };
 
 SubNetwork.propTypes = {
@@ -200,6 +215,7 @@ SubNetwork.propTypes = {
   onSetBelief: PropTypes.func,
   onDoubleClickNode: PropTypes.func,
   onClickNode: PropTypes.func,
+  onRequestClose: PropTypes.func,
 };
 
 export default SubNetwork;

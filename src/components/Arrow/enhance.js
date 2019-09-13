@@ -16,8 +16,8 @@ const enhance = compose(
     markerEnd: markEnd ? markEndStyle : '',
   })),
   withHandlers({
-    onMouseOver: ({ onMouseOver, id }) => () => onMouseOver(id),
-    onMouseLeave: ({ onMouseLeave, id }) => () => onMouseLeave(id),
+    onMouseOver: ({ onMouseOver, id }) => event => onMouseOver(event, id),
+    onMouseLeave: ({ onMouseLeave, id }) => event => onMouseLeave(event, id),
   }),
 );
 

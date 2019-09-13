@@ -22,7 +22,7 @@ module.exports = {
         include: srcPath,
       },
       {
-        test: /\.css$/,
+        test: /\.s?css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
@@ -36,6 +36,7 @@ module.exports = {
               },
             },
             'postcss-loader',
+            'sass-loader',
           ],
         }),
       },

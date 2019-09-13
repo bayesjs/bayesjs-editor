@@ -1,143 +1,46 @@
-import React, { Component } from 'react';
-
+import React, { Fragment } from 'react';
+import ContextMenuItems from 'components/ContextMenuItems';
 import PropTypes from 'prop-types';
-import RenderIntoBody from 'components/RenderIntoBody';
-import classNames from 'classnames';
-import { contextMenuItem } from 'models';
-import { getComponentTestId } from 'utils/test-utils';
-import styles from './styles.css';
+import { concat } from 'ramda';
+import { ContextMenuTrigger } from 'react-contextmenu';
+import { contextMenuItemPropTypes } from 'models/';
 
-class ContextMenu extends Component {
-  state = {
-    position: null,
-  };
+const ContextMenu = ({
+  id,
+  type,
+  items,
+  data,
+  ...props
+}) => {
+  const contextMenuId = concat(id, type);
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleWindowMouseDown);
-  }
+  return (
+    <Fragment>
+      <ContextMenuTrigger
+        id={contextMenuId}
+        {...props}
+      />
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleWindowMouseDown);
-    window.removeEventListener('mousedown', this.handleWindowMouseDown);
-  }
-
-  hide = () => {
-    this.setState({ position: null });
-  };
-
-  handleWindowMouseDown = () => {
-    window.removeEventListener('mousedown', this.handleWindowMouseDown);
-    this.setState({ position: null });
-  };
-
-  handleContainerMouseDown = (e, contextItem) => {
-    this.contextItem = contextItem;
-    // Only right clicks
-    if (e.button !== 2) {
-      return;
-    }
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    const position = { x: e.clientX, y: e.clientY };
-
-    this.setState({ position }, () => {
-      const newPosition = { ...position };
-      const leftOverflow = (position.x + this.menuRef.offsetWidth) - document.body.clientWidth;
-
-      if (leftOverflow > 0) {
-        newPosition.x -= leftOverflow;
-      }
-
-      if (position.y + this.menuRef.offsetHeight > window.innerHeight) {
-        newPosition.y -= this.menuRef.offsetHeight;
-      }
-
-      this.setState({ position: newPosition });
-    });
-
-    window.addEventListener('mousedown', this.handleWindowMouseDown);
-  };
-
-  handleContextMenu = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  handleMenuItemMouseDown = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!item.disabled) {
-      const { contextItem } = this;
-
-      this.handleWindowMouseDown();
-      item.onClick(contextItem);
-    }
-  };
-
-  getItens = () => {
-    const { items } = this.props;
-
-    return items.filter(({ visible }) => {
-      if (visible !== undefined) {
-        if (typeof visible === 'boolean') {
-          return visible;
-        } if (typeof visible === 'function') {
-          return visible(this.contextItem);
-        }
-      }
-      return true;
-    });
-  }
-
-  render() {
-    const { position } = this.state;
-
-    if (position === null) {
-      return null;
-    }
-
-    const style = {
-      left: position.x,
-      top: position.y,
-    };
-
-    this.menuRef = (
-      <ul
-        className={styles.contextMenu}
-        style={style}
-        onContextMenu={this.handleContextMenu}
-        data-testid={getComponentTestId('ContextMenu')}
-      >
-        {this.getItens().map(item => (
-          <li // eslint-disable-line
-            key={item.key}
-            style={item.style || {}}
-            className={classNames({
-              [styles.contextMenuItem]: true,
-              [styles.contextMenuItemDisabled]: item.disabled,
-            })}
-            onMouseDown={e => this.handleMenuItemMouseDown(e, item)}
-            data-testid={getComponentTestId('ContextMenu', 'item', item.key)}
-          >
-            {item.text}
-          </li>
-        ))}
-      </ul>
-    );
-
-    return (
-      <RenderIntoBody>
-        {this.menuRef}
-      </RenderIntoBody>
-    );
-  }
-}
+      <ContextMenuItems
+        id={contextMenuId}
+        items={items}
+        data={data}
+      />
+    </Fragment>
+  );
+};
 
 ContextMenu.propTypes = {
-  items: PropTypes.arrayOf(contextMenuItem).isRequired,
+  id: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(contextMenuItemPropTypes),
+  // eslint-disable-next-line react/forbid-prop-types
+  data: PropTypes.any,
+};
+
+ContextMenu.defaultProps = {
+  items: [],
+  data: null,
 };
 
 export default ContextMenu;

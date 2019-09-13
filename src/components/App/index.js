@@ -10,39 +10,22 @@ import PropertiesPanel from '../PropertiesPanel';
 import styles from './styles.css';
 
 class App extends Component {
-  state = {
-    key: 1,
-  };
-
   getCanvas = () => this.canvas;
 
-  handleRequestRedraw = () => {
-    setTimeout(() => {
-      const { key } = this.state;
-
-      this.setState({ key: key + 1 });
-    }, 0);
-  };
-
-  getPanel = () => {
-    const { key } = this.state;
-
-    return (
-      <PropertiesPanel
-        key={key}
-        onEditNodeStates={node => this.getCanvas().onEditNodeStates(node)}
-        onEditNodeCpt={node => this.getCanvas().onEditNodeCpt(node)}
-        onStartConnection={subnetwork => this.getCanvas().onStartConnection(subnetwork)}
-        onViewSubnetwork={subnetwork => this.getCanvas().onViewSubnetwork(subnetwork)}
-        onViewLinkages={subnetwork => this.getCanvas().onViewLinkages(subnetwork)}
-      />
-    );
-  }
+  getPanel = () => (
+    <PropertiesPanel
+      onEditNodeStates={node => this.getCanvas().onEditNodeStates(node)}
+      onEditNodeCpt={node => this.getCanvas().onEditNodeCpt(node)}
+      onStartConnection={subnetwork => this.getCanvas().onStartConnection(subnetwork)}
+      onViewSubnetwork={subnetwork => this.getCanvas().onViewSubnetwork(subnetwork)}
+      onViewLinkages={subnetwork => this.getCanvas().onViewLinkages(subnetwork)}
+    />
+  );
 
   render() {
     return (
       <div className={styles.app}>
-        <Header onRequestRedraw={this.handleRequestRedraw} />
+        <Header />
 
         <div className={styles.container}>
           <Canvas

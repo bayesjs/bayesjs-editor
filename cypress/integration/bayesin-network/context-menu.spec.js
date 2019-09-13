@@ -1,16 +1,15 @@
-import { getComponentTestId } from 'utils/test-utils';
-
 describe('Context Menu', () => {
   describe('When the context is a network', () => {
     it('contains 1 option', () => {
-      cy.get('svg').trigger('mousedown', { button: 2 });
+      cy.get('svg').trigger('contextmenu');
 
-      cy.getByTestId(getComponentTestId('ContextMenu'))
+
+      cy.get('.react-contextmenu:visible')
         .as('menu')
-        .find('li')
+        .find('.react-contextmenu-item')
         .should('have.length', 1);
       cy.get('@menu')
-        .find('li')
+        .find('.react-contextmenu-item')
         .first()
         .should('have.contain', 'Adicionar variável');
     });
@@ -27,13 +26,13 @@ describe('Context Menu', () => {
       const nodeName = 'Node 1';
 
       cy.createNode(nodeName);
-      cy.getNodeByTestId(nodeName).trigger('mousedown', { button: 2 });
+      cy.getNodeByTestId(nodeName).trigger('contextmenu');
 
-      cy.getByTestId(getComponentTestId('ContextMenu'))
+      cy.get('.react-contextmenu:visible')
         .as('menu')
-        .find('li')
+        .find('.react-contextmenu-item')
         .should('have.length', 4);
-      cy.get('@menu').find('li').each(($el, index) => {
+      cy.get('@menu').find('.react-contextmenu-item').each(($el, index) => {
         cy.wrap($el).should('have.contain', optionsNames[index]);
       });
     });
@@ -48,14 +47,14 @@ describe('Context Menu', () => {
       cy.createNode('Node 2', { position: node2Position });
       cy.connectTwoNodes(node1, node2Position);
 
-      cy.getByTestId('arrow').trigger('mousedown', { button: 2 });
+      cy.getByTestId('arrow').trigger('contextmenu');
 
-      cy.getByTestId(getComponentTestId('ContextMenu'))
+      cy.get('.react-contextmenu:visible')
         .as('menu')
-        .find('li')
+        .find('.react-contextmenu-item')
         .should('have.length', 1);
       cy.get('@menu')
-        .find('li')
+        .find('.react-contextmenu-item')
         .first()
         .should('have.contain', 'Remover ligação');
     });

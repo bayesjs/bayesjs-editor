@@ -8,8 +8,8 @@ describe('Node Probabilities', () => {
   });
 
   it('opens edit states by right click', () => {
-    cy.getNodeByTestId(nodeName).trigger('mousedown', { button: 2 });
-    cy.getByTestId(getComponentTestId('ContextMenu', 'Item', 'EditCpt')).click();
+    cy.getNodeByTestId(nodeName).trigger('contextmenu');
+    cy.getByTestId(getComponentTestId('ContextMenuItems', 'EditCpt')).click();
 
     cy.getByTestId(getComponentTestId('ModalBody', 'EditarTabelaDeProbabilidades', 'Node', 1))
       .should('exist');
