@@ -111,10 +111,6 @@ class NetworkBN extends Component {
     }
   }
 
-  onCancelConnection = () => {
-
-  };
-
   onSetBelief = (node, state) => {
     const { onResetNodeBelief, onSetNodeBelief, network } = this.props;
 
@@ -150,7 +146,6 @@ class NetworkBN extends Component {
           arrows={getArrowsPositions(nodes)}
           onStateDoubleClick={this.onSetBelief}
           onAddConnection={onConnectNodes}
-          onCancelConnection={this.onCancelConnection}
           onSelectNodes={onChangeSelectedNodes}
           changeNodePosition={onChangeNodePosition}
           requestCreateNode={this.requestCreateNode}
