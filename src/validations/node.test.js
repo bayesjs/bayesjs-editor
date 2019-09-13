@@ -3,7 +3,6 @@ import {
   hasDescription,
   hasStates,
   isNodeCptValid,
-  updateCptValue,
 } from './node';
 
 describe('Node Validations', () => {
