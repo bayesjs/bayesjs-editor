@@ -6,7 +6,7 @@ import { isDeleteKey } from 'utils/event';
 import Network from '../Network';
 
 import AddNodeModal from '../AddNodeModal';
-import EditCptModal from '../EditCptModal';
+import EditNodeCptModal from '../EditNodeCptModal';
 import EditStatesModal from '../EditStatesModal';
 
 class NetworkBN extends Component {
@@ -167,7 +167,7 @@ class NetworkBN extends Component {
           }}
         />
 
-        <EditCptModal
+        <EditNodeCptModal
           node={editingNodeCpt}
           onRequestClose={() => this.setState({ editingNodeCpt: null })}
         />

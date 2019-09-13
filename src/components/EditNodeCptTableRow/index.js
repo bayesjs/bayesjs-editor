@@ -42,7 +42,7 @@ const onChangeHandler = ({ states, cptObject, onChange }) => ({ target: { id } }
   onChange(updateCpt(cptObject, updateCptValues));
 };
 
-const EditCptTableRow = ({ cptObject, onKeyUp, ...props }) => {
+const EditNodeCptTableRow = ({ cptObject, onKeyUp, ...props }) => {
   const states = useMemo(() => keys(cptObject), [cptObject]);
   const isValid = useMemo(() => isNodeCptValid(cptObject), [cptObject]);
 
@@ -62,15 +62,15 @@ const EditCptTableRow = ({ cptObject, onKeyUp, ...props }) => {
   );
 };
 
-EditCptTableRow.propTypes = {
+EditNodeCptTableRow.propTypes = {
   cptObject: PropTypes.oneOfType([cptWithoutParentsPropTypes]).isRequired,
   onKeyUp: PropTypes.func,
   onChange: PropTypes.func,
 };
 
-EditCptTableRow.defaultProps = {
+EditNodeCptTableRow.defaultProps = {
   onKeyUp: noop,
   onChange: noop,
 };
 
-export default EditCptTableRow;
+export default EditNodeCptTableRow;

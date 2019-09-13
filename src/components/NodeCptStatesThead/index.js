@@ -2,7 +2,7 @@ import React from 'react';
 import { statePropTypes } from 'models';
 import PropTypes from 'prop-types';
 
-const CptStatesThead = ({ states }) => (
+const NodeCptStatesThead = ({ states }) => (
   <thead>
     <tr>
       {states.map(state => (
@@ -12,8 +12,8 @@ const CptStatesThead = ({ states }) => (
   </thead>
 );
 
-CptStatesThead.propTypes = {
+NodeCptStatesThead.propTypes = {
   states: PropTypes.arrayOf(statePropTypes).isRequired,
 };
 
-export default CptStatesThead;
+export default NodeCptStatesThead;

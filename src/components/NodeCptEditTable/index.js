@@ -1,5 +1,5 @@
 import React from 'react';
-import EditCptTableRow from 'components/EditCptTableRow';
+import EditNodeCptTableRow from 'components/EditNodeCptTableRow';
 import {
   set,
   toString,
@@ -9,7 +9,7 @@ import {
 } from 'ramda';
 import PropTypes from 'prop-types';
 import { statePropTypes, cptWithoutParentsPropTypes, cptWithParentsPropTypes } from 'models';
-import CptStatesThead from 'components/CptStatesThead';
+import NodeCptStatesThead from 'components/NodeCptStatesThead';
 
 const isNotNil = complement(isNil);
 
@@ -23,7 +23,7 @@ const updateCptValue = (currentCpt, newCpt, cptIndex) => {
 const onHandleChange = (cpt, onChange, cptIndex) => newCpt =>
   onChange(updateCptValue(cpt, newCpt, cptIndex));
 
-const CptEditTable = ({
+const NodeCptEditTable = ({
   hasParents,
   cpt,
   states,
@@ -31,19 +31,19 @@ const CptEditTable = ({
   onKeyUp,
 }) => (
   <table>
-    <CptStatesThead states={states} />
+    <NodeCptStatesThead states={states} />
     <tbody>
       {
         hasParents
           ? cpt.map(({ when, then }, cptIndex) => (
-            <EditCptTableRow
+            <EditNodeCptTableRow
               key={toString(when)}
               cptObject={then}
               onChange={onHandleChange(cpt, onChange, cptIndex)}
               onKeyUp={onKeyUp}
             />
           )) : (
-            <EditCptTableRow
+            <EditNodeCptTableRow
               cptObject={cpt}
               onChange={onHandleChange(cpt, onChange)}
               onKeyUp={onKeyUp}
@@ -54,7 +54,7 @@ const CptEditTable = ({
   </table>
 );
 
-CptEditTable.propTypes = {
+NodeCptEditTable.propTypes = {
   hasParents: PropTypes.bool.isRequired,
   cpt: PropTypes.oneOfType([cptWithoutParentsPropTypes, cptWithParentsPropTypes]).isRequired,
   states: PropTypes.arrayOf(statePropTypes).isRequired,
@@ -62,4 +62,4 @@ CptEditTable.propTypes = {
   onKeyUp: PropTypes.func.isRequired,
 };
 
-export default CptEditTable;
+export default NodeCptEditTable;

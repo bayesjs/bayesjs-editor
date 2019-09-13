@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import { nodePropTypes } from 'models';
 import { isEnterKey } from 'utils/event';
 import { isNodeCptValid } from 'validations/node';
-import CptParentStatesTable from 'components/CptParentStatesTable';
-import CptEditTable from 'components/CptEditTable';
+import NodeCptParentStatesTable from 'components/NodeCptParentStatesTable';
+import NodeCptEditTable from 'components/NodeCptEditTable';
 import styles from './styles.scss';
 
 const handleCptKeyUpCreator = handleSave => (e) => {
@@ -25,7 +25,7 @@ const handleSaveCreator = (cpt, onChangeNodeCpt, onRequestClose) => {
   }
 };
 
-const EditCptModal = ({
+const EditNodeCptModal = ({
   node,
   hasParents,
   onRequestClose,
@@ -47,8 +47,8 @@ const EditCptModal = ({
     >
       <div>
         <div className={styles.tablesContainer}>
-          {hasParents && <CptParentStatesTable node={node} />}
-          <CptEditTable
+          {hasParents && <NodeCptParentStatesTable node={node} />}
+          <NodeCptEditTable
             cpt={cpt}
             hasParents={hasParents}
             states={states}
@@ -71,15 +71,15 @@ const EditCptModal = ({
   );
 };
 
-EditCptModal.propTypes = {
+EditNodeCptModal.propTypes = {
   node: nodePropTypes,
   onChangeNodeCpt: PropTypes.func.isRequired,
   onRequestClose: PropTypes.func.isRequired,
   hasParents: PropTypes.bool.isRequired,
 };
 
-EditCptModal.defaultProps = {
+EditNodeCptModal.defaultProps = {
   node: null,
 };
 
-export default EditCptModal;
+export default EditNodeCptModal;

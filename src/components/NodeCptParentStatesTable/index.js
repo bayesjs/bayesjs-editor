@@ -1,11 +1,11 @@
 import React from 'react';
 import { toString } from 'ramda';
 import { nodePropTypes } from 'models';
-import CptStatesThead from 'components/CptStatesThead';
+import NodeCptStatesThead from 'components/NodeCptStatesThead';
 
-const CptParentStatesTable = ({ node: { parents, cpt } }) => (
+const NodeCptParentStatesTable = ({ node: { parents, cpt } }) => (
   <table>
-    <CptStatesThead states={parents} />
+    <NodeCptStatesThead states={parents} />
     <tbody>
       {cpt.map(({ when }) => (
         <tr key={toString(when)}>
@@ -18,8 +18,8 @@ const CptParentStatesTable = ({ node: { parents, cpt } }) => (
   </table>
 );
 
-CptParentStatesTable.propTypes = {
+NodeCptParentStatesTable.propTypes = {
   node: nodePropTypes.isRequired,
 };
 
-export default CptParentStatesTable;
+export default NodeCptParentStatesTable;
