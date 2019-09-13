@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   equals,
   complement,
   isEmpty,
   propEq,
-  any,
   path,
   pipe,
-  not,
-  map,
   defaultTo,
   prop,
+  both,
+  not,
+  none,
 } from 'ramda';
 
 import { getComponentTestId } from 'utils/test-utils';
@@ -21,15 +21,15 @@ import Button from '../Button';
 import styles from './styles.css';
 
 const isNotEmpty = complement(isEmpty);
+const isNotEquals = complement(equals);
 const getNodeDescription = pipe(prop('description'), defaultTo(''));
 const pathTargetValue = path(['target', 'value']);
 const onEnterKeyUp = func => event => isEnterKey(event) && func();
 
-const hasNodeWithName = (nodes, name) => any(propEq('id', name), nodes);
-const isValidNodeName = (nodes, name) => isNotEmpty(name) && not(hasNodeWithName(nodes, name));
+const hasNoNodeWithThisName = (name, nodes) => none(propEq('id', name), nodes);
+const isValidNodeName = both(isNotEmpty, hasNoNodeWithThisName);
 
 const onChangeHandler = setValue => pipe(pathTargetValue, setValue);
-const executeFunctions = (...functions) => map(func => func(), functions);
 
 const PropertiesNode = ({
   onEditNodeStates,
@@ -43,12 +43,23 @@ const PropertiesNode = ({
   const nodeDescription = getNodeDescription(node);
   const [name, setName] = useState(id);
   const [description, setDescription] = useState(nodeDescription);
-  const hasNoChanges = equals(id, name) && equals(nodeDescription, description);
-  const onSaveNodeName = () => isValidNodeName(nodes, name) && onChangeNodeName(node, name);
-  const onSaveNodedescription = () => onChangeNodeDescription(node, description);
-  const onSaveAll = () => executeFunctions(onSaveNodedescription, onSaveNodeName);
-  const onEditStates = () => onEditNodeStates(node);
-  const onEditCpt = () => onEditNodeCpt(node);
+  const isNodeIdChanged = isNotEquals(id, name);
+  const isNodeDescriptionChanged = isNotEquals(nodeDescription, description);
+  const hasNoChanges = not(isNodeIdChanged) && not(isNodeDescriptionChanged);
+  const onSaveNodeName = useCallback(
+    () => isValidNodeName(name, nodes) && onChangeNodeName(node, name),
+    [name, node, nodes],
+  );
+  const onSaveNodedescription = useCallback(
+    () => onChangeNodeDescription(node, description),
+    [node, description],
+  );
+  const onEditStates = useCallback(() => onEditNodeStates(node), [node]);
+  const onEditCpt = useCallback(() => onEditNodeCpt(node), [node]);
+  const onSaveAll = useCallback(() => {
+    if (isNodeDescriptionChanged) onSaveNodedescription();
+    if (isNodeIdChanged) onSaveNodeName();
+  }, [name, description, node, nodes]);
 
   useEffect(() => {
     setName(id);
