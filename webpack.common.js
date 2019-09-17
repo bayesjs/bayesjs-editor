@@ -29,7 +29,6 @@ module.exports = {
             {
               loader: 'css-loader',
               options: {
-                importLoaders: 1,
                 modules: true,
                 camelCase: 'dashes',
                 localIdentName: '[local]__[path][name]__[hash:base64:5]',
