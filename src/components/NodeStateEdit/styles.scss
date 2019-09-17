@@ -1,0 +1,10 @@
+.node-state-edit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0px;
+
+  &__button {
+    height: 26px;
+  }
+}
