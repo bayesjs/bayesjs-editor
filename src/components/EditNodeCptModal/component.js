@@ -1,13 +1,13 @@
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Button from 'components/Button';
 import Modal from 'components/Modal';
-import PropTypes from 'prop-types';
-import { nodePropTypes } from 'models';
+import NodeCptEditTable from 'components/NodeCptEditTable';
+import NodeCptParentStatesTable from 'components/NodeCptParentStatesTable';
 import { isEnterKey } from 'utils/event';
 import { isNodeCptValid } from 'validations/node';
-import NodeCptParentStatesTable from 'components/NodeCptParentStatesTable';
-import NodeCptEditTable from 'components/NodeCptEditTable';
+import { nodePropTypes } from 'models';
 import styles from './styles.scss';
 
 const handleCptKeyUpCreator = handleSave => (e) => {
@@ -16,7 +16,7 @@ const handleCptKeyUpCreator = handleSave => (e) => {
   }
 };
 
-const handleSaveCreator = (cpt, onSave, onAlert) => {
+const handleSaveCreator = (cpt, onSave, onAlert) => () => {
   if (isNodeCptValid(cpt)) {
     onSave(cpt);
   } else {
@@ -33,10 +33,7 @@ const EditNodeCptModal = ({
 }) => {
   const { id, states } = node;
   const [cpt, setCpt] = useState(node.cpt);
-  const handleSave = useCallback(
-    () => handleSaveCreator(cpt, onSave, onAlert),
-    [cpt],
-  );
+  const handleSave = useCallback(handleSaveCreator(cpt, onSave, onAlert), [cpt]);
   const handleCptKeyUp = handleCptKeyUpCreator(handleSave);
 
   return (
@@ -45,28 +42,26 @@ const EditNodeCptModal = ({
       onRequestClose={onCancel}
       isOpen
     >
-      <Fragment>
-        <div className={styles.tablesContainer}>
-          {hasParents && <NodeCptParentStatesTable node={node} />}
-          <NodeCptEditTable
-            cpt={cpt}
-            hasParents={hasParents}
-            states={states}
-            onChange={setCpt}
-            onKeyUp={handleCptKeyUp}
-          />
-        </div>
+      <div className={styles.tablesContainer}>
+        {hasParents && <NodeCptParentStatesTable node={node} />}
+        <NodeCptEditTable
+          cpt={cpt}
+          hasParents={hasParents}
+          states={states}
+          onChange={setCpt}
+          onKeyUp={handleCptKeyUp}
+        />
+      </div>
 
-        <div className={styles.buttonsContainer}>
-          <Button onClick={handleSave} primary>
-            Salvar
-          </Button>
+      <div className={styles.buttonsContainer}>
+        <Button onClick={handleSave} primary>
+          Salvar
+        </Button>
 
-          <Button onClick={onCancel}>
-            Cancelar
-          </Button>
-        </div>
-      </Fragment>
+        <Button onClick={onCancel}>
+          Cancelar
+        </Button>
+      </div>
     </Modal>
   );
 };
