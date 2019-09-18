@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditNodeCptTableRow Component When is invalid matches snapshot 1`] = `
+<tr
+  class="invalidRow"
+>
+  <td>
+    <input
+      class="inputCpt"
+      data-testid="input-cpt__true"
+      max="1"
+      min="0"
+      step="0.01"
+      type="number"
+      value="0.5"
+    />
+  </td>
+  <td>
+    <input
+      class="inputCpt"
+      data-testid="input-cpt__false"
+      max="1"
+      min="0"
+      step="0.01"
+      type="number"
+      value="0.5"
+    />
+  </td>
+</tr>
+`;
+
+exports[`EditNodeCptTableRow Component When is valid matches snapshot 1`] = `
+<tr
+  class=""
+>
+  <td>
+    <input
+      class="inputCpt"
+      data-testid="input-cpt__true"
+      max="1"
+      min="0"
+      step="0.01"
+      type="number"
+      value="0.5"
+    />
+  </td>
+  <td>
+    <input
+      class="inputCpt"
+      data-testid="input-cpt__false"
+      max="1"
+      min="0"
+      step="0.01"
+      type="number"
+      value="0.5"
+    />
+  </td>
+</tr>
+`;

@@ -28,13 +28,18 @@ const getOtherState = (states, currentState) => find(notEquals(currentState), st
 const updateCpt = (cptObject, updateCptValues) =>
   reduce((acc, values) => updateCptValue(acc, ...values), cptObject, updateCptValues);
 
-const onChangeHandler = ({ states, cptObject, onChange }) => ({ target: { id } }, value) => {
+const onChangeHandler = ({
+  state,
+  states,
+  cptObject,
+  onChange,
+}) => (value) => {
   const hasTwoStates = isLengthEqualsTwo(states);
   const updateCptValues = [
-    [value, id],
+    [value, state],
     ...(
       hasTwoStates
-        ? [[getRestFromValue(value), getOtherState(states, id)]]
+        ? [[getRestFromValue(value), getOtherState(states, state)]]
         : []
     ),
   ];
@@ -53,7 +58,12 @@ const EditNodeCptTableRow = ({ cptObject, onKeyUp, ...props }) => {
           <InputCpt
             id={state}
             value={cptObject[state]}
-            onChange={onChangeHandler({ states, cptObject, ...props })}
+            onChange={onChangeHandler({
+              state,
+              states,
+              cptObject,
+              ...props,
+            })}
             onKeyUp={onKeyUp}
           />
         </td>

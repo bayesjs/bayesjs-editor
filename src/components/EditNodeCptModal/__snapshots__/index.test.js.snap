@@ -1,0 +1,325 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditNodeCptModal Component When node has no parents matches snapshot 1`] = `
+<div
+  class="ReactModalPortal"
+>
+  <div
+    class="ReactModal__Overlay ReactModal__Overlay--after-open"
+    style="position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background-color: rgba(50, 50, 50, 0.75);"
+  >
+    <div
+      aria-label="Editar Tabela de Probabilidades (Node 1)"
+      class="ReactModal__Content ReactModal__Content--after-open"
+      role="dialog"
+      style="position: absolute; top: 50%; left: 50%; border: 1px solid #333; background: rgb(255, 255, 255); overflow: auto; border-radius: 0; outline: none; padding: 0px; transform: translate(-50%, -50%); margin: 0px;"
+      tabindex="-1"
+    >
+      <div
+        class="header"
+        data-testid="modal-header__editar-tabela-de-probabilidades-node-1"
+      >
+        Editar Tabela de Probabilidades (Node 1)
+        <i
+          class="fa faTimes closeButton"
+          title="Fechar"
+        />
+      </div>
+      <div
+        class="body"
+        data-testid="modal-body__editar-tabela-de-probabilidades-node-1"
+        style="max-width: 819.2px; max-height: 614.4000000000001px;"
+      >
+        <div
+          class="tablesContainer"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  True
+                </th>
+                <th>
+                  False
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class=""
+              >
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__true"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__false"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="buttonsContainer"
+        >
+          <button
+            class="button buttonPrimary"
+            data-testid="button"
+            title=""
+            type="button"
+          >
+            Salvar
+          </button>
+          <button
+            class="button"
+            data-testid="button"
+            title=""
+            type="button"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EditNodeCptModal Component When node has parents matches snapshot 1`] = `
+<div
+  class="ReactModalPortal"
+>
+  <div
+    class="ReactModal__Overlay ReactModal__Overlay--after-open"
+    style="position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background-color: rgba(50, 50, 50, 0.75);"
+  >
+    <div
+      aria-label="Editar Tabela de Probabilidades (Node 3)"
+      class="ReactModal__Content ReactModal__Content--after-open"
+      role="dialog"
+      style="position: absolute; top: 50%; left: 50%; border: 1px solid #333; background: rgb(255, 255, 255); overflow: auto; border-radius: 0; outline: none; padding: 0px; transform: translate(-50%, -50%); margin: 0px;"
+      tabindex="-1"
+    >
+      <div
+        class="header"
+        data-testid="modal-header__editar-tabela-de-probabilidades-node-3"
+      >
+        Editar Tabela de Probabilidades (Node 3)
+        <i
+          class="fa faTimes closeButton"
+          title="Fechar"
+        />
+      </div>
+      <div
+        class="body"
+        data-testid="modal-body__editar-tabela-de-probabilidades-node-3"
+        style="max-width: 819.2px; max-height: 614.4000000000001px;"
+      >
+        <div
+          class="tablesContainer"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Node 2
+                </th>
+                <th>
+                  Node 1
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  True
+                </td>
+                <td>
+                  True
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  False
+                </td>
+                <td>
+                  True
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  True
+                </td>
+                <td>
+                  False
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  False
+                </td>
+                <td>
+                  False
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  True
+                </th>
+                <th>
+                  False
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class=""
+              >
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__true"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__false"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+              </tr>
+              <tr
+                class=""
+              >
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__true"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__false"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+              </tr>
+              <tr
+                class=""
+              >
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__true"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__false"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+              </tr>
+              <tr
+                class=""
+              >
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__true"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="inputCpt"
+                    data-testid="input-cpt__false"
+                    max="1"
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value="0.5"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="buttonsContainer"
+        >
+          <button
+            class="button buttonPrimary"
+            data-testid="button"
+            title=""
+            type="button"
+          >
+            Salvar
+          </button>
+          <button
+            class="button"
+            data-testid="button"
+            title=""
+            type="button"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeCptStatesThead Component matches snapshot 1`] = `
+<thead>
+  <tr>
+    <th>
+      State 1
+    </th>
+    <th>
+      State 2
+    </th>
+    <th>
+      State 3
+    </th>
+  </tr>
+</thead>
+`;

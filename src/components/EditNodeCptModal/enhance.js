@@ -5,6 +5,7 @@ import {
   compose,
   renderNothing,
   withProps,
+  withHandlers,
 } from 'recompose';
 import {
   isNil,
@@ -25,6 +26,14 @@ const enhance = compose(
   withProps(({ node: { parents } }) => ({
     hasParents: isNotEmpty(parents),
   })),
+  withHandlers({
+    onSave: ({ onChangeNodeCpt, onRequestClose }) => (cpt) => {
+      onChangeNodeCpt(cpt);
+      onRequestClose();
+    },
+    onCancel: ({ onRequestClose }) => onRequestClose,
+    onAlert: () => window.alert,
+  }),
 );
 
 export default enhance;

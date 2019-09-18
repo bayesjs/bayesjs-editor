@@ -15,8 +15,12 @@ $border-color: #333;
     th,
     td {
       height: 32px;
-      border: 1px solid $border-color;
+      max-width: 250px;
       padding: 5px;
+      border: 1px solid $border-color;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }

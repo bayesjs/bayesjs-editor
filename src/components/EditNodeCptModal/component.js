@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 
 import Button from 'components/Button';
 import Modal from 'components/Modal';
@@ -16,25 +16,25 @@ const handleCptKeyUpCreator = handleSave => (e) => {
   }
 };
 
-const handleSaveCreator = (cpt, onChangeNodeCpt, onRequestClose) => {
+const handleSaveCreator = (cpt, onSave, onAlert) => {
   if (isNodeCptValid(cpt)) {
-    onChangeNodeCpt(cpt);
-    onRequestClose();
+    onSave(cpt);
   } else {
-    window.alert('A soma das probabilidades para cada uma das linhas deve ser igual a 1');
+    onAlert('A soma das probabilidades para cada uma das linhas deve ser igual a 1');
   }
 };
 
 const EditNodeCptModal = ({
   node,
   hasParents,
-  onRequestClose,
-  onChangeNodeCpt,
+  onSave,
+  onCancel,
+  onAlert,
 }) => {
   const { id, states } = node;
   const [cpt, setCpt] = useState(node.cpt);
   const handleSave = useCallback(
-    () => handleSaveCreator(cpt, onChangeNodeCpt, onRequestClose),
+    () => handleSaveCreator(cpt, onSave, onAlert),
     [cpt],
   );
   const handleCptKeyUp = handleCptKeyUpCreator(handleSave);
@@ -42,10 +42,10 @@ const EditNodeCptModal = ({
   return (
     <Modal
       title={`Editar Tabela de Probabilidades (${id})`}
-      onRequestClose={onRequestClose}
+      onRequestClose={onCancel}
       isOpen
     >
-      <div>
+      <Fragment>
         <div className={styles.tablesContainer}>
           {hasParents && <NodeCptParentStatesTable node={node} />}
           <NodeCptEditTable
@@ -62,19 +62,20 @@ const EditNodeCptModal = ({
             Salvar
           </Button>
 
-          <Button onClick={onRequestClose}>
+          <Button onClick={onCancel}>
             Cancelar
           </Button>
         </div>
-      </div>
+      </Fragment>
     </Modal>
   );
 };
 
 EditNodeCptModal.propTypes = {
   node: nodePropTypes,
-  onChangeNodeCpt: PropTypes.func.isRequired,
-  onRequestClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onAlert: PropTypes.func.isRequired,
   hasParents: PropTypes.bool.isRequired,
 };
 
