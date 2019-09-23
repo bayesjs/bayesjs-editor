@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeCptParentStatesTable Component matches snapshot 1`] = `
+<table>
+  <thead>
+    <tr>
+      <th>
+        Node 2
+      </th>
+      <th>
+        Node 1
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        True
+      </td>
+      <td>
+        True
+      </td>
+    </tr>
+    <tr>
+      <td>
+        False
+      </td>
+      <td>
+        True
+      </td>
+    </tr>
+    <tr>
+      <td>
+        True
+      </td>
+      <td>
+        False
+      </td>
+    </tr>
+    <tr>
+      <td>
+        False
+      </td>
+      <td>
+        False
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;

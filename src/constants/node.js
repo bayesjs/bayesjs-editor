@@ -8,3 +8,4 @@ export const NODE_HEIGHT_SIZES = {
 
 export const NODE_WIDTH_SIZE = 160;
 export const NODE_PADDING = 5;
+export const NODE_CPT_PRECISION = 8;

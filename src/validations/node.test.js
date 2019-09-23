@@ -2,6 +2,7 @@ import {
   hasConnections,
   hasDescription,
   hasStates,
+  isNodeCptValid,
 } from './node';
 
 describe('Node Validations', () => {
@@ -34,6 +35,7 @@ describe('Node Validations', () => {
       });
     });
   });
+
   describe('hasDescription', () => {
     const description = 'description';
     const showDescription = true;
@@ -93,6 +95,88 @@ describe('Node Validations', () => {
 
       it('when has not "states" prop', () => {
         expect(hasStates({ })).toBeFalsy();
+      });
+    });
+  });
+
+  describe('isNodeCptValid', () => {
+    describe('When cpt is a object', () => {
+      describe('and sum is equals to one', () => {
+        const cpt = {
+          T: 0.5,
+          F: 0.5,
+        };
+
+        it('returns truthy', () => {
+          expect(isNodeCptValid(cpt)).toBeTruthy();
+        });
+      });
+
+      describe('and sum is not equals to one', () => {
+        const cpt = {
+          T: 0.5,
+          F: 0.49,
+        };
+
+        it('returns falsy', () => {
+          expect(isNodeCptValid(cpt)).toBeFalsy();
+        });
+      });
+    });
+
+    describe('When cpt is an array', () => {
+      describe('and sum of each "then" is equals to one', () => {
+        const cpt = [
+          {
+            when: {
+              Node_father: 'T',
+            },
+            then: {
+              T: 0.5,
+              F: 0.5,
+            },
+          },
+          {
+            when: {
+              Node_father: 'F',
+            },
+            then: {
+              T: 0.5,
+              F: 0.5,
+            },
+          },
+        ];
+
+        it('returns truthy', () => {
+          expect(isNodeCptValid(cpt)).toBeTruthy();
+        });
+      });
+
+      describe('and sum of one "then" is not equals to one', () => {
+        const cpt = [
+          {
+            when: {
+              Node_father: 'T',
+            },
+            then: {
+              T: 0.5,
+              F: 0.5,
+            },
+          },
+          {
+            when: {
+              Node_father: 'F',
+            },
+            then: {
+              T: 0.5,
+              F: 0.49,
+            },
+          },
+        ];
+
+        it('returns falsy', () => {
+          expect(isNodeCptValid(cpt)).toBeFalsy();
+        });
       });
     });
   });

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputCpt Component matches snapshot 1`] = `
+<input
+  class="inputCpt"
+  data-testid="input-cpt__id"
+  max="1"
+  min="0"
+  step="0.01"
+  type="number"
+  value="0"
+/>
+`;
