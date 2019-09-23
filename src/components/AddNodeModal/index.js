@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { nodePropTypes, positionPropTypes } from 'models';
 
 import Button from 'components/Button';
-import EditStatesList from 'components/EditStatesList';
 import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
 import { addNode } from 'actions';
 import { connect } from 'react-redux';
 import { getNodes } from 'selectors';
+import NodeStatesEditList from 'components/NodeStatesEditList';
+import NodeAddState from 'components/NodeAddState';
 import styles from './styles.css';
 
 const initialState = {
@@ -59,7 +60,7 @@ class AddNodeModal extends Component {
     });
   };
 
-  handleDeleteState = (state) => {
+  handleDeleteState = ({ state }) => {
     const { states } = this.state;
 
     this.setState({
@@ -131,11 +132,8 @@ class AddNodeModal extends Component {
 
           <span>Estados</span>
 
-          <EditStatesList
-            states={states}
-            onAddState={this.handleAddState}
-            onDeleteState={this.handleDeleteState}
-          />
+          <NodeStatesEditList states={states} onDeleteState={this.handleDeleteState} />
+          <NodeAddState onAddState={this.handleAddState} />
 
           <div className={styles.buttons}>
             <Button primary onClick={this.handleAdicionarClick} name="add">
