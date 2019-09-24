@@ -26,9 +26,9 @@ Cypress.Commands.add('createNode', (nodeName, options = {}) => {
   cy.getByTestId(getComponentTestId('ContextMenuItems', 'AddNode'))
     .click();
 
-  cy.getByTestId(getComponentTestId('EditStatesList', 'Item', 'Sim'))
+  cy.getByTestId(getComponentTestId('NodeStateEdit', 'Sim'))
     .should('exist');
-  cy.getByTestId(getComponentTestId('EditStatesList', 'Item', 'Nao'))
+  cy.getByTestId(getComponentTestId('NodeStateEdit', 'Nao'))
     .should('exist');
 
   cy.getModalByTestId('AddNode')
@@ -47,7 +47,7 @@ Cypress.Commands.add('createNode', (nodeName, options = {}) => {
 
 Cypress.Commands.add('removeNodeStates', (nodeName, states) => {
   states.forEach((state) => {
-    cy.getInSvg(getComponentTestId('EditStatesList', 'Item', state))
+    cy.getInSvg(getComponentTestId('NodeStateEdit', state))
       .findByTestId(getComponentTestId('Button', 'RemoveState'))
       .should('exist')
       .click();
@@ -65,7 +65,7 @@ Cypress.Commands.add('addNodeStates', (nodeName, states) => {
     cy.getModalByTestId('AddNode')
       .findByTestId(getComponentTestId('EditStatesList', 'input'))
       .type(`${state}{enter}`);
-    cy.getInSvg(getComponentTestId('EditStatesList', 'Item', state))
+    cy.getInSvg(getComponentTestId('NodeStateEdit', state))
       .should('exist');
   });
 

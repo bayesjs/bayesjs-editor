@@ -35,21 +35,21 @@ describe('Node States', () => {
 
     cy.getByTestId(getComponentTestId('ModalBody', 'EditarEstados', nodeName))
       .should('exist')
-      .find(`[data-testid*=${getComponentTestId('EditStatesList', 'Item')}]`)
+      .find(`[data-testid*=${getComponentTestId('NodeStateEdit')}]`)
       .should('have.length', 2);
 
-    cy.getByTestId(getComponentTestId('EditStatesList', 'Item', 'Sim'))
+    cy.getByTestId(getComponentTestId('NodeStateEdit', 'Sim'))
       .findByTestId(getComponentTestId('Button', 'RemoveState'))
       .should('exist')
       .click();
-    cy.getByTestId(getComponentTestId('EditStatesList', 'Item', 'Nao'))
+    cy.getByTestId(getComponentTestId('NodeStateEdit', 'Nao'))
       .findByTestId(getComponentTestId('Button', 'RemoveState'))
       .should('exist')
       .click();
 
     cy.getByTestId(getComponentTestId('ModalBody', 'EditarEstados', nodeName))
       .should('exist')
-      .find(`[data-testid*=${getComponentTestId('EditStatesList', 'Item')}]`)
+      .find(`[data-testid*=${getComponentTestId('NodeStateEdit')}]`)
       .should('have.length', 0);
   });
 
@@ -65,7 +65,7 @@ describe('Node States', () => {
       .find('input')
       .type(`${state}{enter}`);
 
-    cy.getByTestId(getComponentTestId('EditStatesList', 'Item', state))
+    cy.getByTestId(getComponentTestId('NodeStateEdit', state))
       .should('exist');
 
     cy.getByTestId(getComponentTestId('ModalBody', 'EditarEstados', nodeName))
@@ -83,11 +83,11 @@ describe('Node States', () => {
     cy.getNodeByTestId(nodeName).click();
     cy.getByTestId(getComponentTestId('Button', 'EditStates')).click();
 
-    cy.getByTestId(getComponentTestId('EditStatesList', 'Item', 'Sim'))
+    cy.getByTestId(getComponentTestId('NodeStateEdit', 'Sim'))
       .findByTestId(getComponentTestId('Button', 'RemoveState'))
       .should('exist')
       .click();
-    cy.getByTestId(getComponentTestId('EditStatesList', 'Item', 'Nao'))
+    cy.getByTestId(getComponentTestId('NodeStateEdit', 'Nao'))
       .findByTestId(getComponentTestId('Button', 'RemoveState'))
       .should('exist')
       .click();
@@ -98,7 +98,7 @@ describe('Node States', () => {
         .find('input')
         .type(`${state}{enter}`);
 
-      cy.getByTestId(getComponentTestId('EditStatesList', 'Item', state))
+      cy.getByTestId(getComponentTestId('NodeStateEdit', state))
         .should('exist');
     });
 
