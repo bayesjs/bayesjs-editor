@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditNodeStatesModal Component matches snapshot 1`] = `
+<div
+  class="ReactModalPortal"
+>
+  <div
+    class="ReactModal__Overlay ReactModal__Overlay--after-open"
+    style="position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; background-color: rgba(50, 50, 50, 0.75);"
+  >
+    <div
+      aria-label="Editar Estados (node 1)"
+      class="ReactModal__Content ReactModal__Content--after-open"
+      role="dialog"
+      style="position: absolute; top: 50%; left: 50%; border: 1px solid #333; background: rgb(255, 255, 255); overflow: auto; border-radius: 0; outline: none; padding: 0px; transform: translate(-50%, -50%); margin: 0px;"
+      tabindex="-1"
+    >
+      <div
+        class="header"
+        data-testid="modal-header__editar-estados-node-1"
+      >
+        Editar Estados (node 1)
+        <i
+          class="fa faTimes closeButton"
+          title="Fechar"
+        />
+      </div>
+      <div
+        class="body"
+        data-testid="modal-body__editar-estados-node-1"
+        style="max-width: 819.2px; max-height: 614.4000000000001px;"
+      >
+        <div
+          class=""
+        >
+          <ul
+            class=""
+          >
+            <li
+              class=""
+              data-testid="node-state-edit__true"
+            >
+              <span
+                title="True"
+              >
+                True
+              </span>
+              <button
+                class="__button"
+                data-testid="button__remove-state"
+                title="Remover Estado"
+                type="button"
+              >
+                <i
+                  class="fa fa-trash"
+                />
+              </button>
+            </li>
+            <li
+              class=""
+              data-testid="node-state-edit__false"
+            >
+              <span
+                title="False"
+              >
+                False
+              </span>
+              <button
+                class="__button"
+                data-testid="button__remove-state"
+                title="Remover Estado"
+                type="button"
+              >
+                <i
+                  class="fa fa-trash"
+                />
+              </button>
+            </li>
+          </ul>
+          <div
+            class=""
+          >
+            <input
+              class="__input"
+              placeholder="Novo estado"
+              type="text"
+              value=""
+            />
+            <button
+              class="__button"
+              data-testid="button__adicionar-estado"
+              title="Adicionar Estado"
+              type="button"
+            >
+              <i
+                class="fa fa-plus"
+              />
+            </button>
+          </div>
+          <div>
+            <button
+              class="__save-button --primary"
+              data-testid="button__save"
+              title=""
+              type="button"
+            >
+              Salvar
+            </button>
+            <button
+              class=""
+              data-testid="button"
+              title=""
+              type="button"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

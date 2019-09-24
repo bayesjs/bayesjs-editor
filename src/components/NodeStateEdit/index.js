@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Button from 'components/Button';
 import Icon from 'components/Icon';
-import PropTypes from 'prop-types';
 import { bem } from 'utils/styles';
+import { getComponentTestId } from 'utils/test-utils';
 import styles from './styles.scss';
 
 const componentClassName = bem(styles);
@@ -12,7 +13,7 @@ const NodeStateEdit = ({ state, index, onDeleteState }) => {
   const onClick = () => onDeleteState({ state, index });
 
   return (
-    <li className={componentClassName}>
+    <li className={componentClassName} data-testid={getComponentTestId('NodeStateEdit', state)}>
       <span title={state}>{state}</span>
       <Button
         className={componentClassName.element('button').toString()}

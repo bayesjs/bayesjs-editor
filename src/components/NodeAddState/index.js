@@ -30,6 +30,7 @@ const NodeAddState = ({ onAddState }) => {
       <input
         className={componentClassName.element('input').toString()}
         type="text"
+        placeholder="Novo estado"
         value={state}
         onChange={onChange}
         onKeyUp={onKeyUp}

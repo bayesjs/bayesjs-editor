@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeAddState Component matches snapshot 1`] = `
+<div
+  class=""
+>
+  <input
+    class="__input"
+    placeholder="Novo estado"
+    type="text"
+    value=""
+  />
+  <button
+    class="__button"
+    data-testid="button__adicionar-estado"
+    title="Adicionar Estado"
+    type="button"
+  >
+    <i
+      class="fa fa-plus"
+    />
+  </button>
+</div>
+`;
