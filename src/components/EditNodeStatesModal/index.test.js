@@ -85,7 +85,7 @@ describe('EditNodeStatesModal Component', () => {
       });
 
       it('calls onSave function', () => {
-        expect(defaultProps.onSave).toBeCalledWith(['True', 'False']);
+        expect(defaultProps.onSave).toBeCalledWith(defaultProps.node.id, ['True', 'False']);
       });
     });
 
