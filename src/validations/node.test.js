@@ -110,6 +110,16 @@ describe('Node Validations', () => {
         it('returns truthy', () => {
           expect(isNodeCptValid(cpt)).toBeTruthy();
         });
+
+        describe('and contains floating point in the sum', () => {
+          it('returns truthy', () => {
+            expect(isNodeCptValid({
+              State1: 0.6,
+              State2: 0.3,
+              State3: 0.1,
+            })).toBeTruthy();
+          });
+        });
       });
 
       describe('and sum is not equals to one', () => {

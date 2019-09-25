@@ -11,6 +11,8 @@ import {
   equals,
   all,
 } from 'ramda';
+import float from 'float';
+import { NODE_CPT_PRECISION } from 'constants/node';
 
 const isArray = is(Array);
 const isObject = is(Object);
@@ -36,7 +38,9 @@ export const hasStates = allPass([
 export const hasDescription = ({ showDescription, description }) =>
   Boolean(showDescription && description);
 
-const isSumValuesEqualsOne = pipe(sumValues, equalsOne);
+const formatFloatValue = value => float.round(value, NODE_CPT_PRECISION);
+
+const isSumValuesEqualsOne = pipe(sumValues, formatFloatValue, equalsOne);
 const isAllThenSumValuesEqualsOne = all(pipe(propThen, isSumValuesEqualsOne));
 
 export const isNodeCptValid = (cpt) => {
