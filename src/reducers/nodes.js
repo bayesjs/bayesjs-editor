@@ -1,16 +1,16 @@
+import { path } from 'ramda';
 import {
   ADD_NODE,
   ADD_PARENT,
   CHANGE_NODE_DESCRIPTION,
   CHANGE_NODE_ID,
-  CHANGE_NODE_STATES,
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_NODE,
   REMOVE_PARENT,
 } from 'actions';
 import { SAVE_EDITING_NODE_CPT } from 'constants/editing-node-cpt';
-import { path } from 'ramda';
+import { SAVE_EDITING_NODE_STATES } from 'constants/editing-node-states';
 
 const pathPayloadCpt = path(['payload', 'cpt']);
 
@@ -273,7 +273,7 @@ const nodeReducer = (node, action) => {
         action.payload.id,
         action.payload.nextId,
       );
-    } if (action.type === CHANGE_NODE_STATES) {
+    } if (action.type === SAVE_EDITING_NODE_STATES) {
       return changeParentStates(
         node,
         action.payload.id,
@@ -292,7 +292,7 @@ const nodeReducer = (node, action) => {
       return addParent(node, action.payload.parentId, action.payload.nodes);
     case REMOVE_PARENT:
       return removeParent(node, action.payload.parentId, action.payload.nodes);
-    case CHANGE_NODE_STATES:
+    case SAVE_EDITING_NODE_STATES:
       return changeNodeStates(node, action.payload.states);
     case CHANGE_NODE_ID:
       return {
@@ -347,8 +347,8 @@ export default (state = [], action) => {
     case ADD_PARENT:
     case REMOVE_PARENT:
     case CHANGE_NODE_ID:
-    case CHANGE_NODE_STATES:
     case SAVE_EDITING_NODE_CPT:
+    case SAVE_EDITING_NODE_STATES:
     case CHANGE_NODE_DESCRIPTION:
       return state.map(node => nodeReducer(node, action));
     default:
