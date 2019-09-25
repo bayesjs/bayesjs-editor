@@ -15,7 +15,6 @@ class App extends Component {
   getPanel = () => (
     <PropertiesPanel
       onEditNodeStates={node => this.getCanvas().onEditNodeStates(node)}
-      onEditNodeCpt={node => this.getCanvas().onEditNodeCpt(node)}
       onStartConnection={subnetwork => this.getCanvas().onStartConnection(subnetwork)}
       onViewSubnetwork={subnetwork => this.getCanvas().onViewSubnetwork(subnetwork)}
       onViewLinkages={subnetwork => this.getCanvas().onViewLinkages(subnetwork)}
