@@ -14,7 +14,6 @@ class PropertiesPanel extends Component {
   renderContent = () => {
     const {
       selectedNode,
-      onEditNodeStates,
       onStartConnection,
       selectedSubnetwork,
       onViewSubnetwork,
@@ -25,7 +24,6 @@ class PropertiesPanel extends Component {
       return (
         <PropertiesNode
           node={selectedNode}
-          onEditNodeStates={onEditNodeStates}
         />
       );
     } if (selectedSubnetwork) {
@@ -55,7 +53,6 @@ class PropertiesPanel extends Component {
 
 PropertiesPanel.propTypes = {
   selectedNode: nodePropTypes,
-  onEditNodeStates: PropTypes.func.isRequired,
   onStartConnection: PropTypes.func.isRequired,
   onViewSubnetwork: PropTypes.func.isRequired,
   onViewLinkages: PropTypes.func.isRequired,

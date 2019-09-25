@@ -1,4 +1,3 @@
-import { changeNodeStates } from 'actions';
 import {
   compose,
   branch,
@@ -11,20 +10,23 @@ import {
   prop,
 } from 'ramda';
 import { connectify } from 'decorators';
+import { getEditingNodeStates } from 'selectors/editing-node-states';
+import { onCancelEditingNodeStates, onSaveEditingNodeStates } from 'actions/editing-node-states';
+import { getNodes } from 'selectors';
 
 const hasNotNode = pipe(prop('node'), isNil);
 
 const enhance = compose(
+  connectify({
+    node: getEditingNodeStates,
+    nodes: getNodes,
+  }, {
+    onSaveNodeStates: onSaveEditingNodeStates,
+    onCancel: onCancelEditingNodeStates,
+  }),
   branch(hasNotNode, renderNothing),
-  connectify(null, ({ node: { id } }) => ({
-    onChangeNodeStates: states => changeNodeStates(id, states),
-  })),
   withHandlers({
-    onSave: ({ onChangeNodeStates, onRequestClose }) => (states) => {
-      onChangeNodeStates(states);
-      onRequestClose();
-    },
-    onCancel: ({ onRequestClose }) => onRequestClose,
+    onSave: ({ onSaveNodeStates, nodes }) => (id, states) => onSaveNodeStates(id, states, nodes),
     onAlert: () => window.alert,
   }),
 );
