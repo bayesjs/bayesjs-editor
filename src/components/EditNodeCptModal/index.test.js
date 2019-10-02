@@ -68,7 +68,7 @@ describe('EditNodeCptModal Component', () => {
         });
 
         it('calls onSave fucntion', () => {
-          expect(props.onSave).toHaveBeenCalledWith(props.node.cpt);
+          expect(props.onSave).toHaveBeenCalledWith(props.node.id, props.node.cpt);
         });
       });
 
@@ -108,7 +108,7 @@ describe('EditNodeCptModal Component', () => {
         });
 
         it('calls onSave function with cpt', () => {
-          expect(props.onSave).toHaveBeenCalledWith(props.node.cpt);
+          expect(props.onSave).toHaveBeenCalledWith(props.node.id, props.node.cpt);
         });
       });
 
@@ -225,7 +225,7 @@ describe('EditNodeCptModal Component', () => {
         });
 
         it('calls onSave fucntion', () => {
-          expect(props.onSave).toHaveBeenCalledWith(props.node.cpt);
+          expect(props.onSave).toHaveBeenCalledWith(props.node.id, props.node.cpt);
         });
       });
 
@@ -265,7 +265,7 @@ describe('EditNodeCptModal Component', () => {
         });
 
         it('calls onSave function with cpt', () => {
-          expect(props.onSave).toHaveBeenCalledWith(props.node.cpt);
+          expect(props.onSave).toHaveBeenCalledWith(props.node.id, props.node.cpt);
         });
       });
 
