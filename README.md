@@ -5,14 +5,9 @@
 
 An editor for Bayesian Networks built in React that uses Bayes' theorem.
 
-# What is Bayes' Theorem
+# What is [Bayes' Theorem](https://en.wikipedia.org/wiki/Bayes%27_theorem)
 
-In probability theory and statistics, Bayes’ theorem describes the probability of an event, based on prior knowledge of conditions that might be related to the event. For example, if cancer is related to age, then, using Bayes’ theorem, a person's age can be used to more accurately assess the probability that they have cancer than can be done without knowledge of the person’s age.
-
-- [https://en.wikipedia.org/wiki/Bayes%27_theorem](https://en.wikipedia.org/wiki/Bayes%27_theorem)
-- [https://en.wikipedia.org/wiki/Probability_theory](https://en.wikipedia.org/wiki/Probability_theory)
-- [https://en.wikipedia.org/wiki/Statistics](https://en.wikipedia.org/wiki/Statistics)
-
+In [probability theory](https://en.wikipedia.org/wiki/Probability_theory) and [statistics](https://en.wikipedia.org/wiki/Statistics), Bayes’ theorem describes the probability of an event, based on prior knowledge of conditions that might be related to the event. For example, if cancer is related to age, then, using Bayes’ theorem, a person's age can be used to more accurately assess the probability that they have cancer than can be done without knowledge of the person’s age.
 
 ## How to setup
 
