@@ -8,7 +8,7 @@ import reducer from './editing-node-cpt';
 describe('EditingNodeCpt Reducers', () => {
   describe('DEFAULT', () => {
     it('returns null', () => {
-      expect(reducer(undefined, {})).toBe(null);
+      expect(reducer(undefined, {})).toBeNull();
     });
   });
 
@@ -45,7 +45,7 @@ describe('EditingNodeCpt Reducers', () => {
             type: CANCEL_EDITING_NODE_CPT,
           },
         ),
-      ).toBe(null);
+      ).toBeNull();
     });
   });
 
@@ -58,7 +58,7 @@ describe('EditingNodeCpt Reducers', () => {
             type: SAVE_EDITING_NODE_CPT,
           },
         ),
-      ).toBe(null);
+      ).toBeNull();
     });
   });
 });
