@@ -105,4 +105,3 @@ describe('EditNodeStatesModal Component', () => {
     });
   });
 });
-
