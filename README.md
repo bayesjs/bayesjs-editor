@@ -15,11 +15,11 @@ In [probability theory](https://en.wikipedia.org/wiki/Probability_theory) and [s
 
 Bayes' Theorem is Mathematically stated as the following equation:
 
-**P(A | B) = (P(B | A).P(A)) / P(B)**
+![Bayes' theorem formula](https://wikimedia.org/api/rest_v1/media/math/render/svg/87c061fe1c7430a5201eef3fa50f9d00eac78810)
 
 where A and B are events and P(B)!= 0
 
-* P(A | B) is a conditional probability(https://en.wikipedia.org/wiki/Conditional_probability): the likelihood of event A occurring given that B is true.
+* P(A | B) is a [conditional probability](https://en.wikipedia.org/wiki/Conditional_probability): the likelihood of event A occurring given that B is true.
 * P(B | A) is also a conditional probability: the likelihood of event B occurring given that A is true.
 * P(A) and P(B) are the probabilities of observing A and B independently of each other; this is known as the [marginal probability](https://en.wikipedia.org/wiki/Marginal_distribution).
 
