@@ -2,7 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { getComponentTestId } from 'utils/test-utils';
+import { bem } from 'utils/styles';
 import styles from './styles.scss';
+
+const componentClassName = bem(styles);
 
 const Button = ({
   className,
@@ -14,10 +17,10 @@ const Button = ({
 }) => (
   <button
     type="button"
-    className={classNames(styles.button, className, {
-      [styles.buttonPrimary]: primary,
-      [styles.buttonDisabled]: disabled,
-    })}
+    className={classNames(className, componentClassName.modifiers({
+      primary,
+      disabled,
+    }).toString())}
     title={title}
     disabled={disabled}
     data-testid={getComponentTestId('Button', name || title)}

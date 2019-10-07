@@ -14,6 +14,7 @@ describe('NodeCptParentStatesTable Component', () => {
   let component;
   const defaultProps = {
     node: {
+      id: 'Node 3',
       parents: [
         'Node 2',
         'Node 1',

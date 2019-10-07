@@ -1,0 +1,14 @@
+.node-add-state {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0px;
+
+  &__input {
+    flex-grow: 1;
+  }
+
+  &__button {
+    margin-left: 10px;
+  }
+}

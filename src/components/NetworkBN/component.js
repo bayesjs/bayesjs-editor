@@ -7,7 +7,7 @@ import Network from '../Network';
 
 import AddNodeModal from '../AddNodeModal';
 import EditNodeCptModal from '../EditNodeCptModal';
-import EditStatesModal from '../EditStatesModal';
+import EditNodeStatesModal from '../EditNodeStatesModal';
 
 class NetworkBN extends Component {
   state = {
@@ -155,7 +155,7 @@ class NetworkBN extends Component {
           ref={(ref) => { this.net = ref; }}
         />
 
-        <EditStatesModal
+        <EditNodeStatesModal
           node={editingNodeStates}
           onRequestClose={() => {
             this.setState({ editingNodeStates: null });

@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NodeStatesEditList Component matches snapshot 1`] = `
+<ul
+  class=""
+>
+  <li
+    class=""
+    data-testid="node-state-edit__state-1"
+  >
+    <span
+      title="State 1"
+    >
+      State 1
+    </span>
+    <button
+      class="__button"
+      data-testid="button__remove-state"
+      title="Remover Estado"
+      type="button"
+    >
+      <i
+        class="fa fa-trash"
+      />
+    </button>
+  </li>
+  <li
+    class=""
+    data-testid="node-state-edit__state-2"
+  >
+    <span
+      title="State 2"
+    >
+      State 2
+    </span>
+    <button
+      class="__button"
+      data-testid="button__remove-state"
+      title="Remover Estado"
+      type="button"
+    >
+      <i
+        class="fa fa-trash"
+      />
+    </button>
+  </li>
+  <li
+    class=""
+    data-testid="node-state-edit__state-3"
+  >
+    <span
+      title="State 3"
+    >
+      State 3
+    </span>
+    <button
+      class="__button"
+      data-testid="button__remove-state"
+      title="Remover Estado"
+      type="button"
+    >
+      <i
+        class="fa fa-trash"
+      />
+    </button>
+  </li>
+</ul>
+`;

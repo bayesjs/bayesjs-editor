@@ -78,7 +78,7 @@ exports[`EditNodeCptModal Component When node has no parents matches snapshot 1`
           class="buttonsContainer"
         >
           <button
-            class="button buttonPrimary"
+            class="--primary"
             data-testid="button"
             title=""
             type="button"
@@ -86,7 +86,7 @@ exports[`EditNodeCptModal Component When node has no parents matches snapshot 1`
             Salvar
           </button>
           <button
-            class="button"
+            class=""
             data-testid="button"
             title=""
             type="button"
@@ -302,7 +302,7 @@ exports[`EditNodeCptModal Component When node has parents matches snapshot 1`] =
           class="buttonsContainer"
         >
           <button
-            class="button buttonPrimary"
+            class="--primary"
             data-testid="button"
             title=""
             type="button"
@@ -310,7 +310,7 @@ exports[`EditNodeCptModal Component When node has parents matches snapshot 1`] =
             Salvar
           </button>
           <button
-            class="button"
+            class=""
             data-testid="button"
             title=""
             type="button"
