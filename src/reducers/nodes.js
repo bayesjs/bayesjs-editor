@@ -1,7 +1,6 @@
 import {
   ADD_NODE,
   ADD_PARENT,
-  CHANGE_NODE_CPT,
   CHANGE_NODE_DESCRIPTION,
   CHANGE_NODE_ID,
   CHANGE_NODE_STATES,
@@ -10,6 +9,10 @@ import {
   REMOVE_NODE,
   REMOVE_PARENT,
 } from 'actions';
+import { SAVE_EDITING_NODE_CPT } from 'constants/editing-node-cpt';
+import { path } from 'ramda';
+
+const pathPayloadCpt = path(['payload', 'cpt']);
 
 const arrayEqual = (arr1, arr2) => {
   if (arr1 === arr2) {
@@ -296,10 +299,10 @@ const nodeReducer = (node, action) => {
         ...node,
         id: action.payload.nextId,
       };
-    case CHANGE_NODE_CPT:
+    case SAVE_EDITING_NODE_CPT:
       return {
         ...node,
-        cpt: action.payload.cpt,
+        cpt: pathPayloadCpt(action),
       };
     case CHANGE_NODE_DESCRIPTION:
       return {
@@ -345,7 +348,7 @@ export default (state = [], action) => {
     case REMOVE_PARENT:
     case CHANGE_NODE_ID:
     case CHANGE_NODE_STATES:
-    case CHANGE_NODE_CPT:
+    case SAVE_EDITING_NODE_CPT:
     case CHANGE_NODE_DESCRIPTION:
       return state.map(node => nodeReducer(node, action));
     default:

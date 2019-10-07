@@ -15,7 +15,6 @@ class PropertiesPanel extends Component {
     const {
       selectedNode,
       onEditNodeStates,
-      onEditNodeCpt,
       onStartConnection,
       selectedSubnetwork,
       onViewSubnetwork,
@@ -27,7 +26,6 @@ class PropertiesPanel extends Component {
         <PropertiesNode
           node={selectedNode}
           onEditNodeStates={onEditNodeStates}
-          onEditNodeCpt={onEditNodeCpt}
         />
       );
     } if (selectedSubnetwork) {
@@ -58,7 +56,6 @@ class PropertiesPanel extends Component {
 PropertiesPanel.propTypes = {
   selectedNode: nodePropTypes,
   onEditNodeStates: PropTypes.func.isRequired,
-  onEditNodeCpt: PropTypes.func.isRequired,
   onStartConnection: PropTypes.func.isRequired,
   onViewSubnetwork: PropTypes.func.isRequired,
   onViewLinkages: PropTypes.func.isRequired,

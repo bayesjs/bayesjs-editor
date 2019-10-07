@@ -15,7 +15,6 @@ export const CHANGE_NODE_ID = 'CHANGE_NODE_ID';
 export const CHANGE_NODE_DESCRIPTION = 'CHANGE_NODE_DESCRIPTION';
 export const CHANGE_NODE_POSITION = 'CHANGE_NODE_POSITION';
 export const CHANGE_NODE_STATES = 'CHANGE_NODE_STATES';
-export const CHANGE_NODE_CPT = 'CHANGE_NODE_CPT';
 export const SET_BELIEF = 'SET_BELIEF';
 export const ADD_LINKAGE = 'ADD_LINKAGE';
 export const REMOVE_LINKAGE = 'REMOVE_LINKAGE';
@@ -117,15 +116,6 @@ export const changeNodeStates = (id, states) => (dispatch, getState) => {
   dispatch({
     type: CHANGE_NODE_STATES,
     payload: { id, states, nodes: getNodes(getState()) },
-  });
-
-  dispatch(persistState());
-};
-
-export const changeNodeCpt = (id, cpt) => (dispatch) => {
-  dispatch({
-    type: CHANGE_NODE_CPT,
-    payload: { id, cpt },
   });
 
   dispatch(persistState());

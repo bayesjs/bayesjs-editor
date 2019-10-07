@@ -16,9 +16,9 @@ const handleCptKeyUpCreator = handleSave => (e) => {
   }
 };
 
-const handleSaveCreator = (cpt, onSave, onAlert) => () => {
+const handleSaveCreator = (id, cpt, onSave, onAlert) => () => {
   if (isNodeCptValid(cpt)) {
-    onSave(cpt);
+    onSave(id, cpt);
   } else {
     onAlert('A soma das probabilidades para cada uma das linhas deve ser igual a 1');
   }
@@ -33,7 +33,7 @@ const EditNodeCptModal = ({
 }) => {
   const { id, states } = node;
   const [cpt, setCpt] = useState(node.cpt);
-  const handleSave = useCallback(handleSaveCreator(cpt, onSave, onAlert), [cpt]);
+  const handleSave = useCallback(handleSaveCreator(id, cpt, onSave, onAlert), [id, cpt]);
   const handleCptKeyUp = handleCptKeyUpCreator(handleSave);
 
   return (

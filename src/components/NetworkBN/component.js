@@ -12,7 +12,6 @@ import EditNodeStatesModal from '../EditNodeStatesModal';
 class NetworkBN extends Component {
   state = {
     editingNodeStates: null,
-    editingNodeCpt: null,
   };
 
   componentDidMount() {
@@ -60,7 +59,7 @@ class NetworkBN extends Component {
   }
 
   get nodeContextItems() {
-    const { onRemoveNode } = this.props;
+    const { onRemoveNode, onEditNodeCpt } = this.props;
 
     return [
       {
@@ -81,7 +80,7 @@ class NetworkBN extends Component {
         key: 'edit-cpt',
         text: 'Editar probabilidades',
         onClick: (_, contextMenuNode) => {
-          this.onEditNodeCpt(contextMenuNode);
+          onEditNodeCpt(contextMenuNode);
         },
       },
       {
@@ -95,10 +94,6 @@ class NetworkBN extends Component {
 
   onEditNodeStates = (editingNodeStates) => {
     this.setState({ editingNodeStates });
-  };
-
-  onEditNodeCpt = (editingNodeCpt) => {
-    this.setState({ editingNodeCpt });
   };
 
   handleKeyup = (e) => {
@@ -136,7 +131,7 @@ class NetworkBN extends Component {
       onChangeNodePosition,
       onChangeSelectedNodes,
     } = this.props;
-    const { editingNodeStates, editingNodeCpt } = this.state;
+    const { editingNodeStates } = this.state;
 
     return (
       <div>
@@ -162,10 +157,7 @@ class NetworkBN extends Component {
           }}
         />
 
-        <EditNodeCptModal
-          node={editingNodeCpt}
-          onRequestClose={() => this.setState({ editingNodeCpt: null })}
-        />
+        <EditNodeCptModal />
       </div>
     );
   }
@@ -182,6 +174,7 @@ NetworkBN.propTypes = {
   onResetNodeBelief: PropTypes.func.isRequired,
   onSetNodeBelief: PropTypes.func.isRequired,
   onChangeNodePosition: PropTypes.func.isRequired,
+  onEditNodeCpt: PropTypes.func.isRequired,
 };
 
 export default NetworkBN;

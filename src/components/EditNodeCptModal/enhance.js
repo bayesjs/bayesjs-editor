@@ -1,4 +1,3 @@
-import { changeNodeCpt } from 'actions';
 import { connectify } from 'decorators';
 import {
   branch,
@@ -14,24 +13,24 @@ import {
   isEmpty,
   complement,
 } from 'ramda';
+import { getEditingNodeCpt } from 'selectors/editing-node-cpt';
+import { onCancelEditingNodeCpt, onSaveEditingNodeCpt } from 'actions/editing-node-cpt';
 
 const hasNotNode = pipe(prop('node'), isNil);
 const isNotEmpty = complement(isEmpty);
 
 const enhance = compose(
+  connectify({
+    node: getEditingNodeCpt,
+  }, {
+    onSave: onSaveEditingNodeCpt,
+    onCancel: onCancelEditingNodeCpt,
+  }),
   branch(hasNotNode, renderNothing),
-  connectify(null, ({ node: { id } }) => ({
-    onChangeNodeCpt: cpt => changeNodeCpt(id, cpt),
-  })),
   withProps(({ node: { parents } }) => ({
     hasParents: isNotEmpty(parents),
   })),
   withHandlers({
-    onSave: ({ onChangeNodeCpt, onRequestClose }) => (cpt) => {
-      onChangeNodeCpt(cpt);
-      onRequestClose();
-    },
-    onCancel: ({ onRequestClose }) => onRequestClose,
     onAlert: () => window.alert,
   }),
 );
