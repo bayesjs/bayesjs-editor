@@ -106,16 +106,3 @@ describe('EditNodeStatesModal Component', () => {
   });
 });
 
-// beforeEach(() => {
-//   const { getByTitle } = component;
-//   const removeButton = getByTitle('Remover Estado');
-
-//   fireEvent.click(removeButton);
-// });
-
-// it('calls onDeleteState function', () => {
-//   expect(defaultProps.onDeleteState).toBeCalledWith({
-//     state: defaultProps.state,
-//     index: defaultProps.index,
-//   });
-// });
