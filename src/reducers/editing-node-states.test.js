@@ -8,7 +8,7 @@ import reducer from './editing-node-states';
 describe('EditingNodeStates Reducers', () => {
   describe('DEFAULT', () => {
     it('returns null', () => {
-      expect(reducer(undefined, {})).toBe(null);
+      expect(reducer(undefined, {})).toBeNull();
     });
   });
 
@@ -45,7 +45,7 @@ describe('EditingNodeStates Reducers', () => {
             type: CANCEL_EDITING_NODE_STATES,
           },
         ),
-      ).toBe(null);
+      ).toBeNull();
     });
   });
 
@@ -58,7 +58,7 @@ describe('EditingNodeStates Reducers', () => {
             type: SAVE_EDITING_NODE_STATES,
           },
         ),
-      ).toBe(null);
+      ).toBeNull();
     });
   });
 });
