@@ -37,11 +37,11 @@ const onAddStateHandler = (states, setStates, onAlert) => (state) => {
   return isValid;
 };
 
-const onSaveHandler = thunkify((states, onSave, onAlert) => {
+const onSaveHandler = thunkify(({ id }, states, onSave, onAlert) => {
   const isValid = isNotEmpty(states);
 
   if (isValid) {
-    onSave(states);
+    onSave(id, states);
   } else {
     onAlert('Você deve informar pelo menos um estado.');
   }
@@ -60,8 +60,8 @@ const EditNodeStatesModal = ({
     [states, setStates, onAlert],
   );
   const onHandleSave = useCallback(
-    onSaveHandler(states, onSave, onAlert),
-    [states, onSave, onAlert],
+    onSaveHandler(node, states, onSave, onAlert),
+    [node, states, onSave, onAlert],
   );
 
   return (

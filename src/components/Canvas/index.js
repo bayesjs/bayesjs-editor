@@ -24,10 +24,6 @@ class Canvas extends Component {
     this.nodeToAddChildTo = null;
   }
 
-  onEditNodeStates = (node) => {
-    this.net.onEditNodeStates(node);
-  };
-
   onStartConnection = (node) => {
     this.net.onStartConnection(node);
   };

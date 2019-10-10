@@ -13,6 +13,7 @@ import {
 } from 'selectors';
 import { connectify } from 'decorators';
 import { onEditingNodeCpt } from 'actions/editing-node-cpt';
+import { onEditingNodeStates } from 'actions/editing-node-states';
 
 const enhance = connectify({
   network: getNetwork,
@@ -27,6 +28,7 @@ const enhance = connectify({
   onSetNodeBelief: ({ id }, state) => setBelief(id, state),
   onChangeNodePosition: (nodeId, x, y) => changeNodePosition(nodeId, x, y),
   onEditNodeCpt: node => onEditingNodeCpt(node),
+  onEditNodeStates: onEditingNodeStates,
 }, null, { forwardRef: true });
 
 export default enhance;
