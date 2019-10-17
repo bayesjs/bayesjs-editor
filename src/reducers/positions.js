@@ -7,44 +7,46 @@ import {
   NEW_NETWORK,
   REMOVE_NODE,
 } from 'actions';
+import {
+  assoc,
+  path,
+  prop,
+  pipe,
+  dissoc,
+  over,
+  lens,
+  identity,
+  pick,
+} from 'ramda';
+
+const propPayload = prop('payload');
+const pathPayloadId = pipe(propPayload, prop('id'));
+const pathPayloadNextId = pipe(propPayload, prop('nextId'));
+const pathPayloadPosition = pipe(propPayload, prop('position'));
+const pathPayloadStatePositions = path(['payload', 'state', 'positions']);
+const getPayloadPosition = pipe(propPayload, pick(['x', 'y']));
+
+const renamePropKey = (oldName, newName, obj) =>
+  pipe(
+    over(lens(prop(oldName), assoc(newName)), identity),
+    dissoc(oldName),
+  )(obj);
 
 export default (state = {}, action) => {
   switch (action.type) {
     case NEW_NETWORK:
       return {};
     case LOAD_NETWORK:
-      return action.payload.state.positions;
+      return pathPayloadStatePositions(action);
     case ADD_NODE:
     case ADD_SUPER_NODE:
-      return {
-        ...state,
-        [action.payload.id]: action.payload.position,
-      };
+      return assoc(pathPayloadId(action), pathPayloadPosition(action), state);
     case REMOVE_NODE:
-    {
-      const newState = { ...state };
-      delete newState[action.payload.id];
-      return newState;
-    }
+      return dissoc(pathPayloadId(action), state);
     case CHANGE_NODE_ID:
-    {
-      const newState = { ...state };
-      delete newState[action.payload.id];
-      newState[action.payload.nextId] = state[action.payload.id];
-      return newState;
-    }
+      return renamePropKey(pathPayloadId(action), pathPayloadNextId(action), state);
     case CHANGE_NODE_POSITION:
-    {
-      const newPosition = {
-        x: action.payload.x,
-        y: action.payload.y,
-      };
-
-      return {
-        ...state,
-        [action.payload.id]: newPosition,
-      };
-    }
+      return assoc(pathPayloadId(action), getPayloadPosition(action), state);
     default:
       return state;
   }
