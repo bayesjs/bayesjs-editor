@@ -3,7 +3,7 @@ import {
 } from 'actions';
 import reducer from './arrows';
 
-describe('EditingNodeCpt Reducers', () => {
+describe('Arrows Reducers', () => {
   describe('DEFAULT', () => {
     it('returns an empty array', () => {
       expect(reducer(undefined, {})).toEqual([]);
