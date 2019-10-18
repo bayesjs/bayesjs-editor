@@ -9,13 +9,13 @@ import reducer from './linkages';
 
 describe('Linkages Reducer', () => {
   describe('DEFAULT', () => {
-    it('returns a empty object', () => {
+    it('returns an empty object', () => {
       expect(reducer(undefined, {})).toEqual({});
     });
   });
 
   describe('NEW_NETWORK', () => {
-    it('returns a empty object', () => {
+    it('returns an empty object', () => {
       expect(reducer(undefined, { type: NEW_NETWORK })).toEqual({});
     });
   });
@@ -84,7 +84,7 @@ describe('Linkages Reducer', () => {
         },
       };
 
-      it('returns empty object', () => {
+      it('returns an empty object', () => {
         expect(reducer(undefined, action)).toEqual({});
       });
     });
