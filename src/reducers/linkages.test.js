@@ -9,50 +9,55 @@ import reducer from './linkages';
 
 describe('Linkages Reducer', () => {
   describe('DEFAULT', () => {
-    it('Should return a empty object', () => {
+    it('returns a empty object', () => {
       expect(reducer(undefined, {})).toEqual({});
     });
   });
 
   describe('NEW_NETWORK', () => {
-    it('Should return a empty object', () => {
+    it('returns a empty object', () => {
       expect(reducer(undefined, { type: NEW_NETWORK })).toEqual({});
     });
   });
+
   describe('ADD_LINKAGE', () => {
-    it('Should add a linkage to state', () => {
-      const now = 1530518207007;
+    const now = 1530518207007; // current time
+    beforeEach(() => {
       jest
         .spyOn(global.Date, 'now')
         .mockImplementationOnce(() => new Date(now).valueOf());
-      const action = {
-        type: ADD_LINKAGE,
-        payload: { linkage: 'linkage' },
-      };
-      expect(reducer(undefined, action)).toEqual({ [now]: 'linkage' });
+    });
+
+    it('adds a linkage to state', () => {
+      expect(
+        reducer(undefined, {
+          type: ADD_LINKAGE,
+          payload: { linkage: 'linkage' },
+        }),
+      ).toEqual({ [now]: 'linkage' });
     });
   });
+
   describe('REMOVE_LINKAGE', () => {
-    it('Should remove a linkage of state', () => {
-      const now = 1530518207007;
+    const now = 1530518207007; // current time
+    beforeEach(() => {
       jest
         .spyOn(global.Date, 'now')
         .mockImplementationOnce(() => new Date(now).valueOf());
-      const addAction = {
-        type: ADD_LINKAGE,
-        payload: { linkage: 'linkage' },
-      };
-      const removeAction = {
-        type: REMOVE_LINKAGE,
-        payload: { id: now },
-      };
-      expect(reducer(undefined, addAction)).toEqual({ [now]: 'linkage' });
-      expect(reducer(undefined, removeAction)).toEqual({});
+    });
+
+    it('removes a linkage of state', () => {
+      expect(
+        reducer(
+          { [now]: 'linkage 1', 1530000000000: 'linkage 2' },
+          { type: REMOVE_LINKAGE, payload: { id: now } },
+        ),
+      ).toEqual({ 1530000000000: 'linkage 2' });
     });
   });
 
   describe('LOAD_NETWORK', () => {
-    it('Should return linkages', () => {
+    describe('When network has linkages', () => {
       const action = {
         type: LOAD_NETWORK,
         payload: {
@@ -65,17 +70,23 @@ describe('Linkages Reducer', () => {
           },
         },
       };
-      expect(reducer(undefined, action)).toEqual({ test: 'test' });
+
+      it('returns linkages', () => {
+        expect(reducer(undefined, action)).toEqual({ test: 'test' });
+      });
     });
 
-    it('Should return a empty object', () => {
+    describe('When network is empty', () => {
       const action = {
         type: LOAD_NETWORK,
         payload: {
           state: { network: {} },
         },
       };
-      expect(reducer(undefined, action)).toEqual({});
+
+      it('returns empty object', () => {
+        expect(reducer(undefined, action)).toEqual({});
+      });
     });
   });
 });
