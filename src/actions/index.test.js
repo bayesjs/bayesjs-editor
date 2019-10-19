@@ -1,7 +1,14 @@
 import { NETWORK_KINDS } from '../constants/network';
 import {
-  NEW_NETWORK, LOAD_NETWORK, CHANGE_NETWORK_PROPERTY, ADD_NODE, REMOVE_NODE, ADD_SUPER_NODE } from './index';
-import { newNetwork, loadNetwork, changeNetworkProperty } from './index';
+  NEW_NETWORK,
+  LOAD_NETWORK,
+  CHANGE_NETWORK_PROPERTY,
+  ADD_NODE,
+  newNetwork,
+  loadNetwork,
+  changeNetworkProperty,
+  addNode,
+} from './index';
 
 describe('index file tests', () => {
   it('newNetwork ', () => {
@@ -28,6 +35,15 @@ describe('index file tests', () => {
     expect(changeNetworkProperty).toBeInstanceOf(Function);
     changeNetworkProperty(params, (ret) => {
       expect(ret.type).toEqual(CHANGE_NETWORK_PROPERTY);
+      expect(ret.payload).toEqual(params);
+    });
+  });
+
+  it('addNode', () => {
+    const params = { id: 123, states: { a: 'a', b: 'b' }, position: 1 };
+    expect(addNode).toBeInstanceOf(Function);
+    addNode(params, (ret) => {
+      expect(ret.type).toEqual(ADD_NODE);
       expect(ret.payload).toEqual(params);
     });
   });
