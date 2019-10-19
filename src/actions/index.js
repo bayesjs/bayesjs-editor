@@ -18,7 +18,7 @@ export const SET_BELIEF = 'SET_BELIEF';
 export const ADD_LINKAGE = 'ADD_LINKAGE';
 export const REMOVE_LINKAGE = 'REMOVE_LINKAGE';
 
-const persistState = () => ({
+export const persistState = () => ({
   type: PERSIST_STATE,
 });
 
