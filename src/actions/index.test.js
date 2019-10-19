@@ -1,50 +1,92 @@
-import { NETWORK_KINDS } from '../constants/network';
+import { NETWORK_KINDS } from 'constants/network';
 import {
-  NEW_NETWORK,
-  LOAD_NETWORK,
-  CHANGE_NETWORK_PROPERTY,
-  ADD_NODE,
+  persistState,
   newNetwork,
   loadNetwork,
-  changeNetworkProperty,
-  addNode,
+  PERSIST_STATE,
+  NEW_NETWORK,
+  LOAD_NETWORK,
 } from './index';
 
-describe('index file tests', () => {
-  it('newNetwork ', () => {
-    expect(newNetwork).toBeInstanceOf(Function);
-    newNetwork((ret) => {
-      expect(ret.type).toEqual(NEW_NETWORK);
-      expect(ret.kind).toEqual(NETWORK_KINDS.BN);
+const persistStateAction = {
+  type: PERSIST_STATE,
+};
+
+describe('Actions', () => {
+  let dispatch;
+
+  beforeAll(() => {
+    dispatch = jest.fn();
+  });
+
+  beforeEach(() => {
+    dispatch.mockClear();
+  });
+
+  describe('persistState', () => {
+    let actionResult;
+
+    beforeEach(() => {
+      actionResult = persistState();
+    });
+
+    it('calls dispatch with type PERSIST_STATE', () => {
+      expect(actionResult).toEqual(persistStateAction);
     });
   });
 
-  it('loadNetwork', () => {
-    const state = { value: '1' };
-    expect(loadNetwork).toBeInstanceOf(Function);
-    loadNetwork(state, (ret) => {
-      expect(ret.type).toEqual(LOAD_NETWORK);
-      expect(ret.payload).toEqual({
-        value: '1',
+  describe('newNetwork', () => {
+    describe('When passing no kind parameter', () => {
+      beforeEach(() => {
+        newNetwork()(dispatch);
+      });
+
+      it('calls dispatch with type NEW_NETWORK and kind BN', () => {
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: NEW_NETWORK,
+          kind: NETWORK_KINDS.BN,
+        });
+      });
+
+      it('calls dispatch persist action', () => {
+        expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+      });
+    });
+
+    describe('When passing with kind parameter as MSBN', () => {
+      beforeEach(() => {
+        newNetwork(NETWORK_KINDS.MSBN)(dispatch);
+      });
+
+      it('calls dispatch with type NEW_NETWORK and kind BN', () => {
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: NEW_NETWORK,
+          kind: NETWORK_KINDS.MSBN,
+        });
+      });
+
+      it('calls dispatch persist action', () => {
+        expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
       });
     });
   });
 
-  it('changeNetworkProperty', () => {
-    const params = { name: 'test', value: 'test' };
-    expect(changeNetworkProperty).toBeInstanceOf(Function);
-    changeNetworkProperty(params, (ret) => {
-      expect(ret.type).toEqual(CHANGE_NETWORK_PROPERTY);
-      expect(ret.payload).toEqual(params);
-    });
-  });
+  describe('loadNetwork', () => {
+    const state = { key: 'value' };
 
-  it('addNode', () => {
-    const params = { id: 123, states: { a: 'a', b: 'b' }, position: 1 };
-    expect(addNode).toBeInstanceOf(Function);
-    addNode(params, (ret) => {
-      expect(ret.type).toEqual(ADD_NODE);
-      expect(ret.payload).toEqual(params);
+    beforeEach(() => {
+      loadNetwork(state)(dispatch);
+    });
+
+    it('calls dispatch with type LOAD_NETWORK and payload with state', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: LOAD_NETWORK,
+        payload: { state },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
     });
   });
 });
