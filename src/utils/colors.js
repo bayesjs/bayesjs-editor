@@ -1,3 +1,5 @@
+import { sort, isEmpty } from 'ramda';
+
 export const COLORS = [
   '#D84315',
   '#BF360C',
@@ -23,14 +25,16 @@ export const COLORS = [
   '#C2185B',
 ];
 
-const shuffle = array => array.slice().sort(() => Math.random() - 0.5);
+const shuffle = sort(() => Math.random() - 0.5);
 
-export const getRandomColor = (() => {
+const createRandomColorBuilder = () => {
   let list = [];
   return () => {
-    if (!list.length) {
+    if (isEmpty(list)) {
       list = shuffle(COLORS);
     }
     return list.shift();
   };
-})();
+};
+
+export const getRandomColor = createRandomColorBuilder();
