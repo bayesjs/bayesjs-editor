@@ -11,7 +11,6 @@ import {
   addNode,
   addLinkage,
   addSuperNode,
-  removeNode,
   removeSuperNode,
   removeLinkage,
   PERSIST_STATE,
@@ -25,7 +24,6 @@ import {
   ADD_NODE,
   ADD_LINKAGE,
   ADD_SUPER_NODE,
-  REMOVE_NODE,
   REMOVE_SUPER_NODE,
   REMOVE_LINKAGE,
 } from './index';
@@ -224,7 +222,7 @@ describe('Actions', () => {
       addNode(id, states, position)(dispatch);
     });
 
-    it('calls dispatch with type ADD_NODE and payload with payload', () => {
+    it('calls dispatch with type ADD_NODE and payload', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: ADD_NODE,
         payload: { id, states, position },
@@ -236,34 +234,12 @@ describe('Actions', () => {
     });
   });
 
-  describe('removeNode', () => {
-    const id = 42;
-    const nodes = [];
-    const getState = () => nodes;
-
-    beforeEach(() => {
-      removeNode(id)(dispatch, getState);
-    });
-
-    it('calls dispatch with type REMOVE_NODE and payload with payload', () => {
-      expect(dispatch).toHaveBeenNthCalledWith(1, {
-        type: REMOVE_NODE,
-        payload: { id, nodes },
-      });
-    });
-
-    it('calls dispatch persist action', () => {
-      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
-    });
-  });
-
-
   describe('addSuperNode', () => {
     const id = 42;
     const name = 'name';
     const position = 42;
 
-    describe('state with network id', () => {
+    describe('When the network has id', () => {
       const state = {
         network: { id },
       };
@@ -272,7 +248,7 @@ describe('Actions', () => {
         addSuperNode(state, position)(dispatch);
       });
 
-      it('calls dispatch with type ADD_SUPER_NODE and payload with payload', () => {
+      it('calls dispatch with type ADD_SUPER_NODE and payload with network id', () => {
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ADD_SUPER_NODE,
           payload: { id, state, position },
@@ -284,7 +260,7 @@ describe('Actions', () => {
       });
     });
 
-    describe('state with network name', () => {
+    describe('When the network has not id', () => {
       const state = {
         network: { name },
       };
@@ -293,7 +269,7 @@ describe('Actions', () => {
         addSuperNode(state, position)(dispatch);
       });
 
-      it('calls dispatch with type ADD_SUPER_NODE and payload with payload', () => {
+      it('calls dispatch with type ADD_SUPER_NODE and payload with network name as id', () => {
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ADD_SUPER_NODE,
           payload: { id: name, state, position },
@@ -313,7 +289,7 @@ describe('Actions', () => {
       removeSuperNode(id)(dispatch);
     });
 
-    it('calls dispatch with type REMOVE_SUPER_NODE and payload with payload', () => {
+    it('calls dispatch with type REMOVE_SUPER_NODE and payload', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: REMOVE_SUPER_NODE,
         payload: { id },
@@ -352,7 +328,7 @@ describe('Actions', () => {
       removeLinkage(id)(dispatch);
     });
 
-    it('calls dispatch with type REMOVE_LINKAGE and payload with payload', () => {
+    it('calls dispatch with type REMOVE_LINKAGE and payload', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: REMOVE_LINKAGE,
         payload: { id },
