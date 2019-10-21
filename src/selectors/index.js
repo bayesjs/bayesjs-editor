@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
 import { NETWORK_KINDS } from 'constants/network';
-import { prop, path, pathOr } from 'ramda';
+import {
+  either, prop, propOr, path, pathOr
+} from 'ramda';
 import {
   combAllLinkagesBySubnetwork,
   combLinkagesBySubnetwork,
@@ -16,8 +18,8 @@ import {
 } from './combiners';
 
 export const getNetwork = prop('network');
-export const getNodes = state => state.network.nodes || state.nodes || [];
-export const getPositions = state => state.network.positions || state.positions || [];
+export const getNodes = either(path(['network', 'nodes']), propOr([], 'nodes'));
+export const getPositions = either(path(['network', 'positions']), propOr([], 'positions'));
 export const getBeliefs = path(['network', 'beliefs']);
 export const getSelectedNodes = path(['network', 'selectedNodes']);
 export const getSubnetworks = pathOr([], ['network', 'subnetworks']);

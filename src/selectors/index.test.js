@@ -1,6 +1,8 @@
 import { NETWORK_KINDS } from 'constants/network';
 import {
   getNetwork,
+  getNodes,
+  getPositions,
   getBeliefs,
   getSelectedNodes,
   getSubnetworks,
@@ -18,6 +20,49 @@ describe('Main Selectors', () => {
       expect(getNetwork(store)).toEqual(network);
     });
   });
+
+  describe('getNodes selector', () => {
+    describe('When network has nodes', () => {
+      const nodes = [1, 2, 3];
+      const network = { nodes };
+      const store = { network };
+
+      it('gets nodes', () => {
+        expect(getNodes(store)).toEqual(nodes);
+      });
+    });
+
+    describe('When network has no nodes', () => {
+      const network = { };
+      const store = { network };
+
+      it('gets nodes', () => {
+        expect(getNodes(store)).toEqual([]);
+      });
+    });
+  });
+
+  describe('getPositions selector', () => {
+    describe('When network has positions', () => {
+      const positions = [1, 2, 3];
+      const network = { positions };
+      const store = { network };
+
+      it('gets positions', () => {
+        expect(getPositions(store)).toEqual(positions);
+      });
+    });
+
+    describe('When network has no positions', () => {
+      const network = { };
+      const store = { network };
+
+      it('gets positions', () => {
+        expect(getPositions(store)).toEqual([]);
+      });
+    });
+  });
+
 
   describe('getBeliefs selector', () => {
     const beliefs = [42];
@@ -38,11 +83,23 @@ describe('Main Selectors', () => {
   });
 
   describe('getSubnetworks selector', () => {
-    const subnetworks = [1, 2, 3];
-    const network = { subnetworks };
-    const store = { network };
-    it('gets subnetworks', () => {
-      expect(getSubnetworks(store)).toEqual(subnetworks);
+    describe('When network has subnetworks', () => {
+      const subnetworks = [1, 2, 3];
+      const network = { subnetworks };
+      const store = { network };
+
+      it('gets subnetworks', () => {
+        expect(getSubnetworks(store)).toEqual(subnetworks);
+      });
+    });
+
+    describe('When network has no subnetworks', () => {
+      const network = { };
+      const store = { network };
+
+      it('gets subnetworks', () => {
+        expect(getSubnetworks(store)).toEqual([]);
+      });
     });
   });
 
@@ -61,7 +118,7 @@ describe('Main Selectors', () => {
   });
 
   describe('getPanelVisibility selector', () => {
-    const propertiesPanelVisible = 42;
+    const propertiesPanelVisible = true;
     const network = { propertiesPanelVisible };
     const store = { network };
     it('gets panel visibility', () => {
