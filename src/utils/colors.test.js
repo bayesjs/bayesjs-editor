@@ -1,27 +1,37 @@
 import { times } from 'ramda';
-import { COLORS, getRandomColor } from './colors';
+import shuffle from 'shuffle-array';
+import { getRandomColor } from './colors';
 
 describe('Colors Utils', () => {
   describe('getRandomColor', () => {
-    beforeAll(() => {
-      jest.spyOn(Math, 'random').mockReturnValue(0.5);
+    describe('When getting the first color', () => {
+      it('returns "#D84315"', () => {
+        expect(getRandomColor()).toBe('#D84315');
+      });
+
+      it('calls shuffle method', () => {
+        expect(shuffle).toHaveBeenCalledTimes(1);
+      });
     });
 
-    afterAll(() => {
-      Math.random.mockRestore();
+    describe('When getting the second color', () => {
+      it('returns "#BF360C"', () => {
+        expect(getRandomColor()).toBe('#BF360C');
+      });
+
+      it('does not call shuffle method', () => {
+        expect(shuffle).toHaveBeenCalledTimes(1);
+      });
     });
 
-    it('returns "#388E3C" on the first time', () => {
-      expect(getRandomColor()).toBe('#388E3C');
-    });
+    describe('When getting the 23˚ color', () => {
+      beforeEach(() => {
+        times(getRandomColor, 21);
+      });
 
-    it('returns "#D84315" on the second time', () => {
-      expect(getRandomColor()).toBe('#D84315');
-    });
-
-    it('returns "#388E3C" on the twenty first time', () => {
-      times(getRandomColor, COLORS.length - 2);
-      expect(getRandomColor()).toBe('#388E3C');
+      it('calls shuffle method', () => {
+        expect(shuffle).toHaveBeenCalledTimes(2);
+      });
     });
   });
 });
