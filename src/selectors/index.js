@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { NETWORK_KINDS } from 'constants/network';
-import { prop, pipe } from 'ramda';
+import { prop, path, pathOr } from 'ramda';
 import {
   combAllLinkagesBySubnetwork,
   combLinkagesBySubnetwork,
@@ -15,15 +15,16 @@ import {
   combNetworkMSBNDescription,
 } from './combiners';
 
-export const getNetwork = state => state.network;
+export const getNetwork = prop('network');
 export const getNodes = state => state.network.nodes || state.nodes || [];
 export const getPositions = state => state.network.positions || state.positions || [];
-export const getBeliefs = state => state.network.beliefs;
-export const getSubnetworks = state => state.network.subnetworks || [];
-export const getSelectedNodes = pipe(getNetwork, prop('selectedNodes'));
-export const getNetworkKind = state => state.network.kind || NETWORK_KINDS.BN;
-export const getPanelVisibility = state => state.network.propertiesPanelVisible;
-export const getLinkages = state => state.network.linkages;
+export const getBeliefs = path(['network', 'beliefs']);
+export const getSelectedNodes = path(['network', 'selectedNodes']);
+export const getSubnetworks = pathOr([], ['network', 'subnetworks']);
+export const getNetworkKind = pathOr(NETWORK_KINDS.BN, ['network', 'kind']);
+export const getPanelVisibility = path(['network', 'propertiesPanelVisible']);
+export const getLinkages = path(['network', 'linkages']);
+
 export const getInferenceEnabled = (state) => {
   const { inferenceEnabled } = getNetwork(state);
 
