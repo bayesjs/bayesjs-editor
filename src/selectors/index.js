@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { NETWORK_KINDS } from 'constants/network';
 import {
-  either, prop, propOr, path, pathOr
+  either, prop, propOr, path, pathOr,
 } from 'ramda';
 import {
   combAllLinkagesBySubnetwork,

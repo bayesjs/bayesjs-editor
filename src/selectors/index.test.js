@@ -22,12 +22,21 @@ describe('Main Selectors', () => {
   });
 
   describe('getNodes selector', () => {
+    describe('When state has nodes', () => {
+      const nodes = [1, 2, 3];
+      const store = { nodes };
+
+      it('gets network nodes', () => {
+        expect(getNodes(store)).toEqual(nodes);
+      });
+    });
+
     describe('When network has nodes', () => {
       const nodes = [1, 2, 3];
       const network = { nodes };
       const store = { network };
 
-      it('gets nodes', () => {
+      it('gets network nodes', () => {
         expect(getNodes(store)).toEqual(nodes);
       });
     });
@@ -36,19 +45,28 @@ describe('Main Selectors', () => {
       const network = { };
       const store = { network };
 
-      it('gets nodes', () => {
+      it('returns an empty array', () => {
         expect(getNodes(store)).toEqual([]);
       });
     });
   });
 
   describe('getPositions selector', () => {
+    describe('When state has positions', () => {
+      const positions = [1, 2, 3];
+      const store = { positions };
+
+      it('gets network positions', () => {
+        expect(getPositions(store)).toEqual(positions);
+      });
+    });
+
     describe('When network has positions', () => {
       const positions = [1, 2, 3];
       const network = { positions };
       const store = { network };
 
-      it('gets positions', () => {
+      it('gets network positions', () => {
         expect(getPositions(store)).toEqual(positions);
       });
     });
@@ -57,7 +75,7 @@ describe('Main Selectors', () => {
       const network = { };
       const store = { network };
 
-      it('gets positions', () => {
+      it('returns an empty array', () => {
         expect(getPositions(store)).toEqual([]);
       });
     });
@@ -97,7 +115,7 @@ describe('Main Selectors', () => {
       const network = { };
       const store = { network };
 
-      it('gets subnetworks', () => {
+      it('returns an empty array', () => {
         expect(getSubnetworks(store)).toEqual([]);
       });
     });
