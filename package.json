@@ -61,6 +61,7 @@
     "redux-thunk": "^2.1.0",
     "remove-accents": "^0.4.2",
     "reselect": "^4.0.0",
+    "shuffle-array": "^1.0.1",
     "sugarss": "^2.0.0",
     "uuid": "^3.3.2",
     "webpack": "^4.41.0",
