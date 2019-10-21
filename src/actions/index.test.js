@@ -3,9 +3,29 @@ import {
   persistState,
   newNetwork,
   loadNetwork,
+  setBelief,
+  changeNetworkProperty,
+  changeNodeId,
+  changeNodePosition,
+  changeNodeDescription,
+  addNode,
+  addLinkage,
+  addSuperNode,
+  removeSuperNode,
+  removeLinkage,
   PERSIST_STATE,
   NEW_NETWORK,
   LOAD_NETWORK,
+  SET_BELIEF,
+  CHANGE_NETWORK_PROPERTY,
+  CHANGE_NODE_ID,
+  CHANGE_NODE_POSITION,
+  CHANGE_NODE_DESCRIPTION,
+  ADD_NODE,
+  ADD_LINKAGE,
+  ADD_SUPER_NODE,
+  REMOVE_SUPER_NODE,
+  REMOVE_LINKAGE,
 } from './index';
 
 const persistStateAction = {
@@ -82,6 +102,236 @@ describe('Actions', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: LOAD_NETWORK,
         payload: { state },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('setBelief', () => {
+    const nodeId = 42;
+    const state = { key: 'value' };
+    const subnetworkId = 43;
+
+    beforeEach(() => {
+      setBelief(nodeId, state, subnetworkId)(dispatch);
+    });
+
+    it('calls dispatch with type SET_BELIEF and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: SET_BELIEF,
+        payload: { nodeId, state, subnetworkId },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('changeNetworkProperty', () => {
+    const name = 'name';
+    const value = 'value';
+
+    beforeEach(() => {
+      changeNetworkProperty(name, value)(dispatch);
+    });
+
+    it('calls dispatch with type CHANGE_NETWORK_PROPERTY and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: CHANGE_NETWORK_PROPERTY,
+        payload: { name, value },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('changeNodeId', () => {
+    const id = 42;
+    const nextId = 43;
+
+    beforeEach(() => {
+      changeNodeId(id, nextId)(dispatch);
+    });
+
+    it('calls dispatch with type CHANGE_NODE_ID and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: CHANGE_NODE_ID,
+        payload: { id, nextId },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('changeNodeDescription', () => {
+    const id = 42;
+    const description = 'lorem ipsum';
+
+    beforeEach(() => {
+      changeNodeDescription(id, description)(dispatch);
+    });
+
+    it('calls dispatch with type CHANGE_NODE_DESCRIPTION and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: CHANGE_NODE_DESCRIPTION,
+        payload: { id, description },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('changeNodePosition', () => {
+    const id = 42;
+    const x = 0;
+    const y = 0;
+
+    beforeEach(() => {
+      changeNodePosition(id, x, y)(dispatch);
+    });
+
+    it('calls dispatch with type CHANGE_NODE_POSITION and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: CHANGE_NODE_POSITION,
+        payload: { id, x, y },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+
+  describe('addNode', () => {
+    const id = 42;
+    const states = ['fake-statuses'];
+    const position = 42;
+
+    beforeEach(() => {
+      addNode(id, states, position)(dispatch);
+    });
+
+    it('calls dispatch with type ADD_NODE and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: ADD_NODE,
+        payload: { id, states, position },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('addSuperNode', () => {
+    const id = 42;
+    const name = 'name';
+    const position = 42;
+
+    describe('When the network has id', () => {
+      const state = {
+        network: { id },
+      };
+
+      beforeEach(() => {
+        addSuperNode(state, position)(dispatch);
+      });
+
+      it('calls dispatch with type ADD_SUPER_NODE and payload with network id', () => {
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ADD_SUPER_NODE,
+          payload: { id, state, position },
+        });
+      });
+
+      it('calls dispatch persist action', () => {
+        expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+      });
+    });
+
+    describe('When the network has not id', () => {
+      const state = {
+        network: { name },
+      };
+
+      beforeEach(() => {
+        addSuperNode(state, position)(dispatch);
+      });
+
+      it('calls dispatch with type ADD_SUPER_NODE and payload with network name as id', () => {
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ADD_SUPER_NODE,
+          payload: { id: name, state, position },
+        });
+      });
+
+      it('calls dispatch persist action', () => {
+        expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+      });
+    });
+  });
+
+  describe('removeSuperNode', () => {
+    const id = 42;
+
+    beforeEach(() => {
+      removeSuperNode(id)(dispatch);
+    });
+
+    it('calls dispatch with type REMOVE_SUPER_NODE and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: REMOVE_SUPER_NODE,
+        payload: { id },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('addLinkage', () => {
+    const linkage = { key: 'value' };
+
+    beforeEach(() => {
+      addLinkage(linkage)(dispatch);
+    });
+
+    it('calls dispatch with type ADD_LINKAGE and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: ADD_LINKAGE,
+        payload: { linkage },
+      });
+    });
+
+    it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+
+  describe('removeLinkage', () => {
+    const id = 42;
+
+    beforeEach(() => {
+      removeLinkage(id)(dispatch);
+    });
+
+    it('calls dispatch with type REMOVE_LINKAGE and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: REMOVE_LINKAGE,
+        payload: { id },
       });
     });
 
