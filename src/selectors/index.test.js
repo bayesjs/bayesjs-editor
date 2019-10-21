@@ -36,7 +36,7 @@ describe('Main Selectors', () => {
       const network = { nodes };
       const store = { network };
 
-      it('gets network nodes', () => {
+      it('gets state nodes', () => {
         expect(getNodes(store)).toEqual(nodes);
       });
     });
@@ -56,7 +56,7 @@ describe('Main Selectors', () => {
       const positions = [1, 2, 3];
       const store = { positions };
 
-      it('gets network positions', () => {
+      it('gets state positions', () => {
         expect(getPositions(store)).toEqual(positions);
       });
     });
