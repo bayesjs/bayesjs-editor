@@ -5,26 +5,25 @@ import {
   REMOVE_LINKAGE,
 } from 'actions';
 
+import { dissoc, path, assoc } from 'ramda';
+
+const getLinkagesFromAction = action =>
+  path(['payload', 'state', 'network', 'linkages'], action);
+
 export default (state = {}, action) => {
   switch (action.type) {
     case NEW_NETWORK:
       return {};
-    case ADD_LINKAGE:
-      return {
-        ...state,
-        [Date.now()]: action.payload.linkage,
-      };
+    case ADD_LINKAGE: {
+      const { linkage } = action.payload;
+      return assoc(Date.now(), linkage, state);
+    }
     case REMOVE_LINKAGE: {
       const { id } = action.payload;
-      const newState = { ...state };
-      delete newState[id];
-
-      return newState;
+      return dissoc(id, state);
     }
-    case LOAD_NETWORK: {
-      const { linkages } = action.payload.state.network;
-      return linkages || {};
-    }
+    case LOAD_NETWORK:
+      return getLinkagesFromAction(action) || {};
     default:
       return state;
   }
