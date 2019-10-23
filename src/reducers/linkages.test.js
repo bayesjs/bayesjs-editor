@@ -70,7 +70,6 @@ describe('Linkages Reducer', () => {
           },
         },
       };
-
       it('returns linkages', () => {
         expect(reducer(undefined, action)).toEqual({ test: 'test' });
       });
