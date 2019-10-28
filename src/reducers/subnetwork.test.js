@@ -23,126 +23,136 @@ describe('Subnetwork Reducers', () => {
   });
 
   describe('LOAD_NETWORK', () => {
-    it('returns subnetworks from action payload', () => {
-      const subnetworks = [1, 2, 3];
-      const action = {
-        type: LOAD_NETWORK,
-        payload: {
-          state: {
-            network: { subnetworks },
+    describe('When action has a network with subnetworks', () => {
+      it('returns subnetworks', () => {
+        const subnetworks = [1, 2, 3];
+        const action = {
+          type: LOAD_NETWORK,
+          payload: {
+            state: {
+              network: { subnetworks },
+            },
           },
-        },
-      };
+        };
 
-      expect(reducer(undefined, action)).toEqual(subnetworks);
+        expect(reducer(undefined, action)).toEqual(subnetworks);
+      });
     });
 
-    it('returns empty array if action payload has no subnetwork', () => {
-      const action = {
-        type: LOAD_NETWORK,
-        payload: {
-          state: {
-            network: {},
+    describe('When action has a network without subnetworks', () => {
+      it('returns empty array', () => {
+        const action = {
+          type: LOAD_NETWORK,
+          payload: {
+            state: {
+              network: {},
+            },
           },
-        },
-      };
+        };
 
-      expect(reducer(undefined, action)).toEqual([]);
+        expect(reducer(undefined, action)).toEqual([]);
+      });
     });
   });
 
   describe('ADD_SUPER_NODE', () => {
-    it('returns state with added super node', () => {
-      const state = [
-        { id: 1 },
-      ];
+    const state = [
+      { id: 1 },
+    ];
 
-      const nodes = [1, 2, 3];
-      const positions = [1, 2, 3];
+    describe('When action has a network with nodes and positions', () => {
+      it('adds network, nodes and positions on state', () => {
+        const nodes = [1, 2, 3];
+        const positions = [1, 2, 3];
 
-      const action = {
-        type: ADD_SUPER_NODE,
-        payload: {
-          state: {
-            network: { id: 2 },
-            nodes,
-            positions,
+        const action = {
+          type: ADD_SUPER_NODE,
+          payload: {
+            state: {
+              network: { id: 2 },
+              nodes,
+              positions,
+            },
           },
-        },
-      };
+        };
 
-      expect(reducer(state, action)).toEqual([
-        { id: 1 },
-        {
-          id: 2, nodes, positions, color: '#FFFF00',
-        },
-      ]);
+        expect(reducer(state, action)).toEqual([
+          { id: 1 },
+          {
+            id: 2, nodes, positions, color: '#FFFF00',
+          },
+        ]);
+      });
     });
 
-    it('returns state with added network when payload has network only', () => {
-      const state = [
-        { id: 1 },
-      ];
-
-      const action = {
-        type: ADD_SUPER_NODE,
-        payload: {
-          state: {
-            network: { id: 2 },
+    describe('When action has a network without nodes and positions', () => {
+      it('adss network on state', () => {
+        const action = {
+          type: ADD_SUPER_NODE,
+          payload: {
+            state: {
+              network: { id: 2 },
+            },
           },
-        },
-      };
+        };
 
-      expect(reducer(state, action)).toEqual([
-        { id: 1 },
-        { id: 2 },
-      ]);
+        expect(reducer(state, action)).toEqual([
+          { id: 1 },
+          { id: 2 },
+        ]);
+      });
     });
 
-    it('returns new state when payload has state only', () => {
-      const state = [
-        { id: 1 },
-      ];
+    describe('When action has not network', () => {
+      it('adds undefined on state', () => {
+        const action = {
+          type: ADD_SUPER_NODE,
+          payload: {
+            state: {},
+          },
+        };
 
-      const action = {
-        type: ADD_SUPER_NODE,
-        payload: {
-          state: {},
-        },
-      };
-
-      expect(reducer(state, action)).toEqual([
-        { id: 1 }, undefined,
-      ]);
+        expect(reducer(state, action)).toEqual([
+          { id: 1 }, undefined,
+        ]);
+      });
     });
   });
 
   describe('REMOVE_SUPER_NODE', () => {
-    it('returns subnetworks without specified subnetwork', () => {
-      const state = [
-        { id: 1 },
-      ];
-      const action = {
-        type: REMOVE_SUPER_NODE,
-        payload: {
-          id: 1,
-        },
-      };
+    const state = [
+      { id: 1 },
+      { id: 2 },
+    ];
 
-      expect(reducer(state, action)).toEqual([]);
+    describe('When action has a valid subnetwork id', () => {
+      it('removes subnetwork from state', () => {
+        const action = {
+          type: REMOVE_SUPER_NODE,
+          payload: {
+            id: 1,
+          },
+        };
+
+        expect(reducer(state, action)).toEqual([
+          { id: 2 },
+        ]);
+      });
     });
 
-    it('returns state when payload has specified non-exists subnetwork', () => {
-      const state = [
-        { id: 2 },
-      ];
-      const action = {
-        type: REMOVE_SUPER_NODE,
-        payload: {
-          id: 1,
-        },
-      };
-      expect(reducer(state, action)).toEqual(state);
+    describe('When action has a not valid subnetwork id', () => {
+      it('returns state', () => {
+        const action = {
+          type: REMOVE_SUPER_NODE,
+          payload: {
+            id: 123,
+          },
+        };
+        expect(reducer(state, action)).toEqual([
+          { id: 1 },
+          { id: 2 },
+        ]);
+      });
     });
   });
 });
