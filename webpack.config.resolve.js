@@ -4,6 +4,7 @@ module.exports = {
   modules: ['node_modules', path.resolve(__dirname)],
   extensions: ['.js', '.jsx', '.json', '.scss'],
   alias: {
+    'json-templates': path.resolve(__dirname, '__fixtures__/'),
     components: path.resolve(__dirname, 'src/components/'),
     utils: path.resolve(__dirname, 'src/utils/'),
     models: path.resolve(__dirname, 'src/models/'),
