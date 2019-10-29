@@ -86,7 +86,7 @@ describe('Subnetwork Reducers', () => {
     });
 
     describe('When action has a network without nodes and positions', () => {
-      it('adss network on state', () => {
+      it('adds network on state', () => {
         const action = {
           type: ADD_SUPER_NODE,
           payload: {
