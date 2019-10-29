@@ -40,7 +40,7 @@ describe('Subnetwork Reducers', () => {
     });
 
     describe('When action has a network without subnetworks', () => {
-      it('returns empty array', () => {
+      it('returns an empty array', () => {
         const action = {
           type: LOAD_NETWORK,
           payload: {
