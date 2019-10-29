@@ -40,7 +40,8 @@ import { getArrowsPositionsForMSBN } from 'utils/arrows-positions';
 import { openFile } from 'utils/file';
 import { v4 } from 'uuid';
 import { isDeleteKey } from 'utils/event';
-import { hasCycles, mergeNetworks } from './helpers';
+import { hasCycles } from 'validations/network';
+import { mergeNetworks } from './helpers';
 
 class NetworkMSBN extends Component {
   state = {

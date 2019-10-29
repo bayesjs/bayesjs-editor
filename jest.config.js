@@ -4,6 +4,7 @@ module.exports = {
   snapshotSerializers: ['enzyme-to-json/serializer'],
   moduleNameMapper: {
     '\\.(css|less|scss|sss|styl)$': '<rootDir>/node_modules/jest-css-modules',
+    '^json-templates(.*)$': '<rootDir>/__fixtures__$1',
     '^components(.*)$': '<rootDir>/src/components$1',
     '^utils(.*)$': '<rootDir>/src/utils$1',
     '^models(.*)$': '<rootDir>/src/models$1',

@@ -5,6 +5,7 @@
     "target": "es2016",
     "jsx": "preserve",
     "paths": {
+      "json-templates/*": ["./__fixtures__/*"],
       "components/*": ["./src/components/*"],
       "utils/*": ["./src/utils/*"],
       "models/*": ["./src/models/*"],
