@@ -1,0 +1,104 @@
+{
+  "version": 2,
+  "network": {
+    "name": "Rede Bayesiana",
+    "height": 500,
+    "width": 800,
+    "selectedNodes": [],
+    "beliefs": {},
+    "propertiesPanelVisible": true
+  },
+  "nodes": [
+    {
+      "id": "Node 1",
+      "states": [
+        "True",
+        "False"
+      ],
+      "parents": [],
+      "cpt": {
+        "True": 0.5,
+        "False": 0.5
+      }
+    },
+    {
+      "id": "Node 2",
+      "states": [
+        "True",
+        "False"
+      ],
+      "parents": [],
+      "cpt": {
+        "True": 0.5,
+        "False": 0.5
+      }
+    },
+    {
+      "id": "Node 3",
+      "states": [
+        "True",
+        "False"
+      ],
+      "parents": [
+        "Node 1",
+        "Node 2"
+      ],
+      "cpt": [
+        {
+          "when": {
+            "Node 1": "True",
+            "Node 2": "True"
+          },
+          "then": {
+            "True": 0.5,
+            "False": 0.5
+          }
+        },
+        {
+          "when": {
+            "Node 1": "False",
+            "Node 2": "True"
+          },
+          "then": {
+            "True": 0.5,
+            "False": 0.5
+          }
+        },
+        {
+          "when": {
+            "Node 1": "True",
+            "Node 2": "False"
+          },
+          "then": {
+            "True": 0.5,
+            "False": 0.5
+          }
+        },
+        {
+          "when": {
+            "Node 1": "False",
+            "Node 2": "False"
+          },
+          "then": {
+            "True": 0.5,
+            "False": 0.5
+          }
+        }
+      ]
+    }
+  ],
+  "positions": {
+    "Node 1": {
+      "x": 145,
+      "y": 83
+    },
+    "Node 2": {
+      "x": 459,
+      "y": 84
+    },
+    "Node 3": {
+      "x": 293,
+      "y": 281
+    }
+  }
+}
