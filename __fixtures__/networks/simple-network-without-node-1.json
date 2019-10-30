@@ -1,0 +1,44 @@
+[
+  {
+    "id": "Node 2",
+    "states": [
+      "True",
+      "False"
+    ],
+    "parents": [],
+    "cpt": {
+      "True": 0.5,
+      "False": 0.5
+    }
+  },
+  {
+    "id": "Node 3",
+    "states": [
+      "True",
+      "False"
+    ],
+    "parents": [
+      "Node 2"
+    ],
+    "cpt": [
+      {
+        "when": {
+          "Node 2": "True"
+        },
+        "then": {
+          "True": 0.5,
+          "False": 0.5
+        }
+      },
+      {
+        "when": {
+          "Node 2": "False"
+        },
+        "then": {
+          "True": 0.5,
+          "False": 0.5
+        }
+      }
+    ]
+  }
+]
