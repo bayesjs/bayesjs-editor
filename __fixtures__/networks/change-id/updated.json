@@ -1,0 +1,79 @@
+[
+  {
+    "id": "Node 1",
+    "states": [
+      "True",
+      "False"
+    ],
+    "parents": [],
+    "cpt": {
+      "True": 0.5,
+      "False": 0.5
+    }
+  },
+  {
+    "id": "New ID",
+    "states": [
+      "True",
+      "False"
+    ],
+    "parents": [],
+    "cpt": {
+      "True": 0.5,
+      "False": 0.5
+    }
+  },
+  {
+    "id": "Node 3",
+    "states": [
+      "True",
+      "False"
+    ],
+    "parents": [
+      "New ID",
+      "Node 1"
+    ],
+    "cpt": [
+      {
+        "when": {
+          "New ID": "True",
+          "Node 1": "True"
+        },
+        "then": {
+          "True": 0.5,
+          "False": 0.5
+        }
+      },
+      {
+        "when": {
+          "New ID": "False",
+          "Node 1": "True"
+        },
+        "then": {
+          "True": 0.5,
+          "False": 0.5
+        }
+      },
+      {
+        "when": {
+          "New ID": "True",
+          "Node 1": "False"
+        },
+        "then": {
+          "True": 0.5,
+          "False": 0.5
+        }
+      },
+      {
+        "when": {
+          "New ID": "False",
+          "Node 1": "False"
+        },
+        "then": {
+          "True": 0.5,
+          "False": 0.5
+        }
+      }
+    ]
+  }
+]

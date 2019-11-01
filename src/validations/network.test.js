@@ -1,5 +1,5 @@
-import SimpleNetwork from 'json-templates/networks/simple-network.json';
-import CyclicNetwork from 'json-templates/networks/cyclic-network.json';
+import SimpleNetwork from 'json-templates/networks/simple.json';
+import CyclicNetwork from 'json-templates/networks/cyclic.json';
 import { hasCycles } from './network';
 
 describe('Network Utils', () => {
