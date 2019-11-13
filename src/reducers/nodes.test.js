@@ -1,4 +1,3 @@
-import SimpleNetwork from 'json-templates/networks/simple.json';
 import NetworkChangeStatesInitial from 'json-templates/networks/change-states/initial.json';
 import NetworkChangeNodeStatesWithParents from 'json-templates/networks/change-states/node-with-parents.json';
 import NetworkChangeNodeStatesWithoutParents from 'json-templates/networks/change-states/node-without-parents.json';
