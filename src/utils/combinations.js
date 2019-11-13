@@ -1,30 +1,32 @@
 import {
-  assoc,
-  forEach,
-  head,
-  isEmpty,
-  tail,
+  append,
+  apply,
+  flatten,
+  flip,
+  length,
+  liftN,
+  map,
+  mergeAll,
+  objOf,
+  pipe,
+  reduce,
+  unapply,
 } from 'ramda';
 
-const createCombinations = (onCreateCombination, allNodes, acc = {}) => {
-  if (isEmpty(allNodes)) {
-    onCreateCombination(acc);
-  } else {
-    const { id, states } = head(allNodes);
+const applyAndFlatten = pipe(apply, flatten);
+const liftNFlipped = flip(liftN);
 
-    forEach((state) => {
-      createCombinations(onCreateCombination, tail(allNodes), assoc(id, state, acc));
-    }, states);
-  }
-};
+const createNodeIdAndStatesCombinations = ({ id, states }) => reduce(
+  (acc, state) => append(objOf(id, state), acc),
+  [],
+  states,
+);
+
+const liftCombinationsForArray = pipe(length, liftNFlipped(unapply(mergeAll)));
 
 export const createNodeCombinations = (nodes) => {
-  const combinations = [];
+  const combinations = map(createNodeIdAndStatesCombinations, nodes);
+  const liftCombinations = liftCombinationsForArray(combinations);
 
-  createCombinations(
-    combination => combinations.push(combination),
-    nodes,
-  );
-
-  return combinations;
+  return applyAndFlatten(liftCombinations, combinations);
 };
