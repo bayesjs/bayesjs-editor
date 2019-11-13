@@ -72,27 +72,20 @@ const filterCptWhenByKeys = useWith(evolve, [pipe(pick, objOf('when'))]);
 const mapWhen = useWith(map, [filterCptWhenByKeys, identity]);
 const hasOnlyThisParent = useWith(all, [pipe(propId, equals), propParents]);
 const getValueForEachCpt = useWith(pipe(divide, roundValue), [identity, length]);
-const hasNoParent = useWith(complement(containsParentInNode), [
-  propId,
-  identity,
-]);
-
-const getMissingValueForEachCpt = converge(divide, [
-  pipe(nthArg0, getMissingValueFromCpt),
-  pipe(nthArg0, objectLenght),
-]);
+const hasNoParent = useWith(complement(containsParentInNode), [propId, identity]);
+const getMissingValueForEachCpt = converge(divide, [getMissingValueFromCpt, objectLenght]);
 
 const fixCptFloatingPoint = converge(
   over,
   [
-    pipe(nthArg0, getFirstKey, lensProp),
-    pipe(nthArg0, getMissingValueFromCpt, roundValue, add),
+    pipe(getFirstKey, lensProp),
+    pipe(getMissingValueFromCpt, roundValue, add),
     nthArg0,
   ],
 );
 
 const balanceCptValues = converge(pipe(map, fixCptFloatingPoint), [
-  pipe(nthArg0, getMissingValueForEachCpt, roundValue, add),
+  pipe(getMissingValueForEachCpt, roundValue, add),
   nthArg0,
 ]);
 
@@ -121,8 +114,8 @@ export const updateCptValue = (cpt, value, state, index) => {
 };
 
 export const createCpt = converge(pipe(map, fixCptFloatingPoint), [
-  pipe(nthArg0, getCptValueRounded, always),
-  pipe(nthArg0, invertObj),
+  pipe(getCptValueRounded, always),
+  invertObj,
 ]);
 
 const cptObjectToArray = (nodeParent, node) =>
