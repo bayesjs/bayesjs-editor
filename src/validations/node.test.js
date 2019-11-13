@@ -1,8 +1,10 @@
 import {
+  containsParentInNode,
   hasConnections,
   hasDescription,
   hasStates,
   isNodeCptValid,
+  isNodeWithoutParents,
 } from './node';
 
 describe('Node Validations', () => {
@@ -31,7 +33,7 @@ describe('Node Validations', () => {
       });
 
       it('when has not "linkedNode" prop', () => {
-        expect(hasConnections({ })).toBeFalsy();
+        expect(hasConnections({})).toBeFalsy();
       });
     });
   });
@@ -64,7 +66,7 @@ describe('Node Validations', () => {
       });
 
       it('when has not "description" prop and no "showDescription" prop', () => {
-        expect(hasDescription({ })).toBeFalsy();
+        expect(hasDescription({})).toBeFalsy();
       });
     });
   });
@@ -94,7 +96,7 @@ describe('Node Validations', () => {
       });
 
       it('when has not "states" prop', () => {
-        expect(hasStates({ })).toBeFalsy();
+        expect(hasStates({})).toBeFalsy();
       });
     });
   });
@@ -187,6 +189,66 @@ describe('Node Validations', () => {
         it('returns falsy', () => {
           expect(isNodeCptValid(cpt)).toBeFalsy();
         });
+      });
+    });
+  });
+
+  describe('isNodeWithoutParents', () => {
+    describe('When node has no parents', () => {
+      const node = {
+        parents: [],
+      };
+
+      it('returns truthy', () => {
+        expect(isNodeWithoutParents(node)).toBeTruthy();
+      });
+    });
+
+    describe('When node has parents', () => {
+      const node = {
+        parents: ['True', 'False'],
+      };
+
+      it('returns falsy', () => {
+        expect(isNodeWithoutParents(node)).toBeFalsy();
+      });
+    });
+  });
+
+  describe('containsParentInNode', () => {
+    describe('When node has no parents', () => {
+      const parentId = 'Node 2';
+      const node = {
+        id: 'Node 1',
+        parents: [],
+      };
+
+      it('returns falsy', () => {
+        expect(containsParentInNode(parentId, node)).toBeFalsy();
+      });
+    });
+
+    describe('When parent is not in node parents', () => {
+      const parentId = 'Node 2';
+      const node = {
+        id: 'Node 1',
+        parents: ['Node 3', 'Node 4'],
+      };
+
+      it('returns falsy', () => {
+        expect(containsParentInNode(parentId, node)).toBeFalsy();
+      });
+    });
+
+    describe('When parent is in node parents', () => {
+      const parentId = 'Node 2';
+      const node = {
+        id: 'Node 1',
+        parents: ['Node 2', 'Node 3'],
+      };
+
+      it('returns truthy', () => {
+        expect(containsParentInNode(parentId, node)).toBeTruthy();
       });
     });
   });
