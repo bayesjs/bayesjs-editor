@@ -1,18 +1,21 @@
 import {
-  has,
-  is,
+  all,
   allPass,
-  pipe,
-  prop,
-  not,
-  values,
-  sum,
+  any,
   compose,
   equals,
-  all,
+  has,
+  ifElse,
+  is,
+  isEmpty,
+  not,
+  pipe,
+  prop,
+  sum,
+  useWith,
+  values,
 } from 'ramda';
-import float from 'float';
-import { NODE_CPT_PRECISION } from 'constants/node';
+import { roundValue } from 'utils/math';
 
 const isArray = is(Array);
 const isObject = is(Object);
@@ -30,22 +33,20 @@ export const hasConnections = allPass([
   propIsObject('linkedNode'),
 ]);
 
-export const hasStates = allPass([
-  has('states'),
-  propIsArray('states'),
-]);
+export const hasStates = allPass([has('states'), propIsArray('states')]);
 
 export const hasDescription = ({ showDescription, description }) =>
   Boolean(showDescription && description);
 
-const formatFloatValue = value => float.round(value, NODE_CPT_PRECISION);
-
-const isSumValuesEqualsOne = pipe(sumValues, formatFloatValue, equalsOne);
+const isSumValuesEqualsOne = pipe(sumValues, roundValue, equalsOne);
 const isAllThenSumValuesEqualsOne = all(pipe(propThen, isSumValuesEqualsOne));
 
-export const isNodeCptValid = (cpt) => {
-  if (isArray(cpt)) {
-    return isAllThenSumValuesEqualsOne(cpt);
-  }
-  return isSumValuesEqualsOne(cpt);
-};
+export const isNodeCptValid = ifElse(
+  isArray,
+  isAllThenSumValuesEqualsOne,
+  isSumValuesEqualsOne,
+);
+
+export const isNodeWithoutParents = pipe(prop('parents'), isEmpty);
+
+export const containsParentInNode = useWith(any, [equals, prop('parents')]);

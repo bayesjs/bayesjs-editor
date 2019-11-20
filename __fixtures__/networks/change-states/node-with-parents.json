@@ -40,8 +40,8 @@
           "Node 1": "True"
         },
         "then": {
-          "True": 0.75,
-          "New State": 0.25
+          "True": 0.5,
+          "New State": 0.5
         }
       },
       {
@@ -50,8 +50,8 @@
           "Node 1": "True"
         },
         "then": {
-          "True": 0.75,
-          "New State": 0.25
+          "True": 0.5,
+          "New State": 0.5
         }
       },
       {
@@ -60,8 +60,8 @@
           "Node 1": "False"
         },
         "then": {
-          "True": 0.75,
-          "New State": 0.25
+          "True": 0.5,
+          "New State": 0.5
         }
       },
       {
@@ -70,8 +70,8 @@
           "Node 1": "False"
         },
         "then": {
-          "True": 0.75,
-          "New State": 0.25
+          "True": 0.5,
+          "New State": 0.5
         }
       }
     ]

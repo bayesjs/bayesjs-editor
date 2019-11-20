@@ -1,4 +1,3 @@
-import SimpleNetwork from 'json-templates/networks/simple.json';
 import NetworkChangeStatesInitial from 'json-templates/networks/change-states/initial.json';
 import NetworkChangeNodeStatesWithParents from 'json-templates/networks/change-states/node-with-parents.json';
 import NetworkChangeNodeStatesWithoutParents from 'json-templates/networks/change-states/node-without-parents.json';
@@ -23,7 +22,6 @@ import {
 } from 'actions';
 import { SAVE_EDITING_NODE_CPT } from 'constants/editing-node-cpt';
 import { SAVE_EDITING_NODE_STATES } from 'constants/editing-node-states';
-import { clone } from 'ramda'; // some reducers are mutating the state :'(
 import reducer from './nodes';
 
 describe('Nodes Reducer', () => {
@@ -91,7 +89,7 @@ describe('Nodes Reducer', () => {
     it('removes node an updates cpt and parents from another nodes', () => {
       expect(reducer(NetworkRemoveNodeInitial, {
         type: REMOVE_NODE,
-        payload: { id, nodes: SimpleNetwork },
+        payload: { id },
       })).toEqual(NetworkRemoveNodeUpdated);
     });
   });
@@ -104,7 +102,7 @@ describe('Nodes Reducer', () => {
       it('returns state', () => {
         expect(reducer(NetworkChangeParentsNotConnected, {
           type: ADD_PARENT,
-          payload: { id, parentId, nodes: NetworkChangeParentsNotConnected },
+          payload: { id, parentId },
         })).toEqual(NetworkChangeParentsNotConnected);
       });
     });
@@ -116,7 +114,7 @@ describe('Nodes Reducer', () => {
       it('returns state', () => {
         expect(reducer(NetworkChangeParentsNotConnected, {
           type: ADD_PARENT,
-          payload: { id, parentId, nodes: NetworkChangeParentsNotConnected },
+          payload: { id, parentId },
         })).toEqual(NetworkChangeParentsNotConnected);
       });
     });
@@ -128,7 +126,7 @@ describe('Nodes Reducer', () => {
       it('returns state', () => {
         expect(reducer(NetworkChangeParentsNotConnected, {
           type: ADD_PARENT,
-          payload: { id, parentId, nodes: NetworkChangeParentsNotConnected },
+          payload: { id, parentId },
         })).toEqual(NetworkChangeParentsNotConnected);
       });
     });
@@ -140,7 +138,7 @@ describe('Nodes Reducer', () => {
       it('adds node in parents an updates cpt', () => {
         expect(reducer(NetworkChangeParentsNotConnected, {
           type: ADD_PARENT,
-          payload: { id, parentId, nodes: NetworkChangeParentsNotConnected },
+          payload: { id, parentId },
         })).toEqual(NetworkChangeParentsConnectedWithParents);
       });
     });
@@ -152,33 +150,33 @@ describe('Nodes Reducer', () => {
       it('adds node in parents an updates cpt', () => {
         expect(reducer(NetworkChangeParentsNotConnected, {
           type: ADD_PARENT,
-          payload: { id, parentId, nodes: NetworkChangeParentsNotConnected },
+          payload: { id, parentId },
         })).toEqual(NetworkChangeParentsConnectedWithoutParents);
       });
     });
   });
 
   describe('REMOVE_PARENT', () => {
-    describe('When removing connection with a node with parents', () => {
+    describe('When removing connection from a node with more than one parent', () => {
       const id = 'Node 3';
       const parentId = 'Node 4';
 
       it('removes node in parents an updates cpt', () => {
         expect(reducer(NetworkChangeParentsConnectedWithParents, {
           type: REMOVE_PARENT,
-          payload: { id, parentId, nodes: NetworkChangeParentsConnectedWithParents },
+          payload: { id, parentId },
         })).toEqual(NetworkChangeParentsNotConnected);
       });
     });
 
-    describe('When removing connection with a node without parents', () => {
+    describe('When removing connection from a node with only one parent', () => {
       const id = 'Node 1';
       const parentId = 'Node 4';
 
       it('removes node in parents an updates cpt', () => {
         expect(reducer(NetworkChangeParentsConnectedWithoutParents, {
           type: REMOVE_PARENT,
-          payload: { id, parentId, nodes: NetworkChangeParentsConnectedWithoutParents },
+          payload: { id, parentId },
         })).toEqual(NetworkChangeParentsNotConnected);
       });
     });
@@ -236,7 +234,7 @@ describe('Nodes Reducer', () => {
       it('returns state', () => {
         expect(reducer(NetworkChangeStatesInitial, {
           type: SAVE_EDITING_NODE_STATES,
-          payload: { id, states, nodes: clone(NetworkChangeStatesInitial) },
+          payload: { id, states },
         })).toEqual(NetworkChangeStatesInitial);
       });
     });
@@ -248,7 +246,7 @@ describe('Nodes Reducer', () => {
       it('updates node states and cpt', () => {
         expect(reducer(NetworkChangeStatesInitial, {
           type: SAVE_EDITING_NODE_STATES,
-          payload: { id, states, nodes: clone(NetworkChangeStatesInitial) },
+          payload: { id, states },
         })).toEqual(NetworkChangeNodeStatesWithParents);
       });
     });
@@ -260,7 +258,7 @@ describe('Nodes Reducer', () => {
       it('updates node states and cpt', () => {
         expect(reducer(NetworkChangeStatesInitial, {
           type: SAVE_EDITING_NODE_STATES,
-          payload: { id, states, nodes: clone(NetworkChangeStatesInitial) },
+          payload: { id, states },
         })).toEqual(NetworkChangeNodeStatesWithoutParents);
       });
     });
