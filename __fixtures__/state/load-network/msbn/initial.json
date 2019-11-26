@@ -1,0 +1,259 @@
+{
+  "state": {
+    "version": 2,
+    "network": {
+      "id": "adbc460f-c447-4544-8097-c818374ae82c",
+      "name": "Simple MSBN Network",
+      "height": 500,
+      "width": 800,
+      "selectedNodes": [],
+      "beliefs": {},
+      "propertiesPanelVisible": true,
+      "kind": "MSBN",
+      "nodes": [],
+      "positions": {
+        "2bab2504-4557-4394-a247-72d71d80d03d": {
+          "x": 310,
+          "y": 129
+        },
+        "c801bb3a-33fe-4c97-b9c7-d5aa577388d4": {
+          "x": 304,
+          "y": 294
+        }
+      },
+      "subnetworks": [
+        {
+          "id": "2bab2504-4557-4394-a247-72d71d80d03d",
+          "name": "Simple Network",
+          "height": 500,
+          "width": 800,
+          "selectedNodes": [],
+          "beliefs": {},
+          "propertiesPanelVisible": true,
+          "kind": "BN",
+          "nodes": [
+            {
+              "id": "Node 1",
+              "states": [
+                "True",
+                "False"
+              ],
+              "parents": [],
+              "cpt": {
+                "True": 0.5,
+                "False": 0.5
+              }
+            },
+            {
+              "id": "Node 2",
+              "states": [
+                "True",
+                "False"
+              ],
+              "parents": [],
+              "cpt": {
+                "True": 0.5,
+                "False": 0.5
+              }
+            },
+            {
+              "id": "Node 3",
+              "states": [
+                "True",
+                "False"
+              ],
+              "parents": [
+                "Node 1",
+                "Node 2"
+              ],
+              "cpt": [
+                {
+                  "when": {
+                    "Node 2": "True",
+                    "Node 1": "True"
+                  },
+                  "then": {
+                    "True": 0.5,
+                    "False": 0.5
+                  }
+                },
+                {
+                  "when": {
+                    "Node 2": "False",
+                    "Node 1": "True"
+                  },
+                  "then": {
+                    "True": 0.5,
+                    "False": 0.5
+                  }
+                },
+                {
+                  "when": {
+                    "Node 2": "True",
+                    "Node 1": "False"
+                  },
+                  "then": {
+                    "True": 0.5,
+                    "False": 0.5
+                  }
+                },
+                {
+                  "when": {
+                    "Node 2": "False",
+                    "Node 1": "False"
+                  },
+                  "then": {
+                    "True": 0.5,
+                    "False": 0.5
+                  }
+                }
+              ]
+            }
+          ],
+          "positions": {
+            "Node 1": {
+              "x": 473,
+              "y": 150
+            },
+            "Node 2": {
+              "x": 148,
+              "y": 172
+            },
+            "Node 3": {
+              "x": 335,
+              "y": 315
+            }
+          },
+          "subnetworks": [],
+          "linkages": {},
+          "inferenceEnabled": true,
+          "color": "#558B2F"
+        },
+        {
+          "id": "c801bb3a-33fe-4c97-b9c7-d5aa577388d4",
+          "name": "bayesian network",
+          "height": 500,
+          "width": 600,
+          "selectedNodes": [],
+          "beliefs": {},
+          "propertiesPanelVisible": true,
+          "kind": "BN",
+          "nodes": [
+            {
+              "id": "Node 3",
+              "states": [
+                "True",
+                "False"
+              ],
+              "parents": [],
+              "cpt": {
+                "True": 0.5,
+                "False": 0.5
+              }
+            },
+            {
+              "id": "Node 4",
+              "states": [
+                "True",
+                "False"
+              ],
+              "parents": [
+                "Node 3"
+              ],
+              "cpt": [
+                {
+                  "when": {
+                    "Node 3": "True"
+                  },
+                  "then": {
+                    "True": 0.5,
+                    "False": 0.5
+                  }
+                },
+                {
+                  "when": {
+                    "Node 3": "False"
+                  },
+                  "then": {
+                    "True": 0.5,
+                    "False": 0.5
+                  }
+                }
+              ]
+            },
+            {
+              "id": "Node 5",
+              "states": [
+                "True",
+                "False"
+              ],
+              "parents": [
+                "Node 3"
+              ],
+              "cpt": [
+                {
+                  "when": {
+                    "Node 3": "True"
+                  },
+                  "then": {
+                    "True": 0.5,
+                    "False": 0.5
+                  }
+                },
+                {
+                  "when": {
+                    "Node 3": "False"
+                  },
+                  "then": {
+                    "True": 0.5,
+                    "False": 0.5
+                  }
+                }
+              ]
+            }
+          ],
+          "positions": {
+            "Node 4": {
+              "x": 112,
+              "y": 302.5
+            },
+            "Node 5": {
+              "x": 356,
+              "y": 305.5
+            },
+            "Node 3": {
+              "x": 221,
+              "y": 81.5
+            }
+          },
+          "subnetworks": [],
+          "linkages": {},
+          "color": "#1976D2"
+        }
+      ],
+      "linkages": {
+        "1570627250354": [
+          {
+            "networkId": "2bab2504-4557-4394-a247-72d71d80d03d",
+            "nodeId": "Node 3"
+          },
+          {
+            "networkId": "c801bb3a-33fe-4c97-b9c7-d5aa577388d4",
+            "nodeId": "Node 3"
+          }
+        ]
+      }
+    },
+    "nodes": [],
+    "positions": {
+      "2bab2504-4557-4394-a247-72d71d80d03d": {
+        "x": 310,
+        "y": 129
+      },
+      "c801bb3a-33fe-4c97-b9c7-d5aa577388d4": {
+        "x": 304,
+        "y": 294
+      }
+    }
+  }
+}
