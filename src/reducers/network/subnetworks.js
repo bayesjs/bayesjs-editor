@@ -3,9 +3,20 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_SUPER_NODE,
+  SET_BELIEF,
 } from 'actions';
 
 import { getRandomColor } from 'utils/colors';
+import {
+  map,
+  ifElse,
+  over,
+  lensProp,
+  propEq,
+  identity,
+} from 'ramda';
+import { updateNetworkBelief } from 'utils/network';
+
 
 const formatNetwork = (state) => {
   const { network, positions, nodes } = state;
@@ -39,6 +50,15 @@ export default (state = [], action) => {
       const { subnetworks } = action.payload.state.network;
       return subnetworks || [];
     }
+    case SET_BELIEF:
+      return map(
+        ifElse(
+          propEq('id', action.payload.subnetworkId),
+          over(lensProp('beliefs'), updateNetworkBelief(action.payload.nodeId, action.payload.state)),
+          identity,
+        ),
+        state,
+      );
     default:
       return state;
   }

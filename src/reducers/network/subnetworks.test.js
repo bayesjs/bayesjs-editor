@@ -1,11 +1,19 @@
+import InitialSubnetworksMsbnAddBelief from 'json-templates/subnetworks/add-belief/msbn/initial.json';
+import InitialSubnetworksMsbnChangeBelief from 'json-templates/subnetworks/change-belief/msbn/initial.json';
+import InitialSubnetworksMsbnRemoveBelief from 'json-templates/subnetworks/remove-belief/msbn/initial.json';
+import UpdatedSubnetworksMsbnAddBelief from 'json-templates/subnetworks/add-belief/msbn/updated.json';
+import UpdatedSubnetworksMsbnChangeBelief from 'json-templates/subnetworks/change-belief/msbn/updated.json';
+import UpdatedSubnetworksMsbnRemoveBelief from 'json-templates/subnetworks/remove-belief/msbn/updated.json';
+
 import {
   ADD_SUPER_NODE,
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_SUPER_NODE,
+  SET_BELIEF,
 } from 'actions';
 
-import reducer from './subnetwork';
+import reducer from './subnetworks';
 
 describe('Subnetwork Reducers', () => {
   describe('DEFAULT', () => {
@@ -152,6 +160,56 @@ describe('Subnetwork Reducers', () => {
           { id: 1 },
           { id: 2 },
         ]);
+      });
+    });
+  });
+
+  describe('SET_BELIEF', () => {
+    describe('When adding a new belief', () => {
+      const subnetworkId = '2bab2504-4557-4394-a247-72d71d80d03d';
+
+      it('sets beliefs prop', () => {
+        expect(
+          reducer(
+            InitialSubnetworksMsbnAddBelief,
+            {
+              type: SET_BELIEF,
+              payload: { nodeId: 'Node 1', state: 'True', subnetworkId },
+            },
+          ),
+        ).toEqual(UpdatedSubnetworksMsbnAddBelief);
+      });
+    });
+
+    describe('When changing a belief', () => {
+      const subnetworkId = '2bab2504-4557-4394-a247-72d71d80d03d';
+
+      it('sets beliefs prop', () => {
+        expect(
+          reducer(
+            InitialSubnetworksMsbnChangeBelief,
+            {
+              type: SET_BELIEF,
+              payload: { nodeId: 'Node 1', state: 'False', subnetworkId },
+            },
+          ),
+        ).toEqual(UpdatedSubnetworksMsbnChangeBelief);
+      });
+    });
+
+    describe('When removing a belief', () => {
+      const subnetworkId = '2bab2504-4557-4394-a247-72d71d80d03d';
+
+      it('sets beliefs prop', () => {
+        expect(
+          reducer(
+            InitialSubnetworksMsbnRemoveBelief,
+            {
+              type: SET_BELIEF,
+              payload: { nodeId: 'Node 1', state: null, subnetworkId },
+            },
+          ),
+        ).toEqual(UpdatedSubnetworksMsbnRemoveBelief);
       });
     });
   });
