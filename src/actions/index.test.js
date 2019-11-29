@@ -26,6 +26,12 @@ import {
   ADD_SUPER_NODE,
   REMOVE_SUPER_NODE,
   REMOVE_LINKAGE,
+  removeNode,
+  REMOVE_NODE,
+  addParent,
+  ADD_PARENT,
+  removeParent,
+  REMOVE_PARENT,
 } from './index';
 
 const persistStateAction = {
@@ -336,6 +342,65 @@ describe('Actions', () => {
     });
 
     it('calls dispatch persist action', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('removeNode', () => {
+    const id = 42;
+
+    beforeEach(() => {
+      removeNode(id)(dispatch);
+    });
+
+    it('calls dispatch with type REMOVE_NODE and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: REMOVE_NODE,
+        payload: { id },
+      });
+    });
+
+    it('calls dispatch persist actions', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('addParent', () => {
+    const id = 42;
+    const parentId = 21;
+
+    beforeEach(() => {
+      addParent(id, parentId)(dispatch);
+    });
+
+    it('calls dispatch with type ADD_PARENT and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: ADD_PARENT,
+        payload: { id, parentId },
+      });
+    });
+
+    it('calls dispatch persist actions', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
+    });
+  });
+
+  describe('removeParent', () => {
+    const id = 42;
+    const parentId = 21;
+
+    beforeEach(() => {
+      removeParent(id, parentId)(dispatch);
+    });
+
+    it('calls dispatch with type REMOVE_PARENT and payload', () => {
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: REMOVE_PARENT,
+        payload: { id, parentId },
+      });
+    });
+
+    it('calls dispatch persist actions', () => {
       expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
     });
   });

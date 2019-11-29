@@ -1,4 +1,3 @@
-import { getNodes } from 'selectors';
 import { NETWORK_KINDS } from 'constants/network';
 
 export const PERSIST_STATE = 'PERSIST_STATE';
@@ -57,28 +56,28 @@ export const addNode = (id, states, position) => (dispatch) => {
   dispatch(persistState());
 };
 
-export const removeNode = id => (dispatch, getState) => {
+export const removeNode = id => (dispatch) => {
   dispatch({
     type: REMOVE_NODE,
-    payload: { id, nodes: getNodes(getState()) },
+    payload: { id },
   });
 
   dispatch(persistState());
 };
 
-export const addParent = (id, parentId) => (dispatch, getState) => {
+export const addParent = (id, parentId) => (dispatch) => {
   dispatch({
     type: ADD_PARENT,
-    payload: { id, parentId, nodes: getNodes(getState()) },
+    payload: { id, parentId },
   });
 
   dispatch(persistState());
 };
 
-export const removeParent = (id, parentId) => (dispatch, getState) => {
+export const removeParent = (id, parentId) => (dispatch) => {
   dispatch({
     type: REMOVE_PARENT,
-    payload: { id, parentId, nodes: getNodes(getState()) },
+    payload: { id, parentId },
   });
 
   dispatch(persistState());
