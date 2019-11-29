@@ -56,7 +56,7 @@ export const addNode = (id, states, position) => (dispatch) => {
   dispatch(persistState());
 };
 
-export const removeNode = id => dispatch => {
+export const removeNode = id => (dispatch) => {
   dispatch({
     type: REMOVE_NODE,
     payload: { id },
@@ -65,7 +65,7 @@ export const removeNode = id => dispatch => {
   dispatch(persistState());
 };
 
-export const addParent = (id, parentId) => dispatch => {
+export const addParent = (id, parentId) => (dispatch) => {
   dispatch({
     type: ADD_PARENT,
     payload: { id, parentId },
@@ -74,7 +74,7 @@ export const addParent = (id, parentId) => dispatch => {
   dispatch(persistState());
 };
 
-export const removeParent = (id, parentId) => dispatch => {
+export const removeParent = (id, parentId) => (dispatch) => {
   dispatch({
     type: REMOVE_PARENT,
     payload: { id, parentId },
