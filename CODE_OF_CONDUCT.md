@@ -1,4 +1,4 @@
-# Contributor Covenant Code of Conduct
+# BayesJS Editor Code of Conduct
 
 ## Our Pledge
 
