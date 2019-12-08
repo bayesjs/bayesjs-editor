@@ -1,11 +1,11 @@
 import {
   addParent,
-  changeNetworkProperty,
   changeNodePosition,
   removeNode,
   removeParent,
   setBelief,
 } from 'actions';
+import { onUpdateNetworkSelectedNodes } from 'actions/network';
 import {
   getInferenceResults,
   getNetwork,
@@ -21,7 +21,7 @@ const enhance = connectify({
   inferenceResults: getInferenceResults,
 }, {
   onRemoveNodeConnection: ({ childId, parentId }) => removeParent(childId, parentId),
-  onChangeSelectedNodes: nodes => changeNetworkProperty('selectedNodes', nodes),
+  onChangeSelectedNodes: nodes => onUpdateNetworkSelectedNodes(nodes),
   onRemoveNode: ({ id }) => removeNode(id),
   onConnectNodes: (idFrom, idTo) => addParent(idFrom, idTo),
   onResetNodeBelief: ({ id }) => setBelief(id, null),

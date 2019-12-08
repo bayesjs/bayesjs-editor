@@ -1,19 +1,20 @@
 import {
-  CHANGE_NETWORK_PROPERTY,
+  UPDATE_NETWORK_SELECTED_NODES,
   REMOVE_NODE,
   CHANGE_NODE_ID,
   LOAD_NETWORK,
   NEW_NETWORK,
 } from 'actions';
-import { updateNetworkProperty, updateSelectedNodesId } from 'utils/network';
+import { updateSelectedNodesId } from 'utils/network';
+import { path } from 'ramda';
 
 const defaultValue = [];
-const updateProperty = updateNetworkProperty('selectedNodes');
+const getSelectedNodes = path(['payload', 'selectedNodes']);
 
 export default (state = defaultValue, action) => {
   switch (action.type) {
-    case CHANGE_NETWORK_PROPERTY:
-      return updateProperty(state, action);
+    case UPDATE_NETWORK_SELECTED_NODES:
+      return getSelectedNodes(action);
     case LOAD_NETWORK:
     case NEW_NETWORK:
     case REMOVE_NODE:

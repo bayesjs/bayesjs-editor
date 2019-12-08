@@ -1,4 +1,8 @@
-import { CHANGE_NETWORK_PROPERTY, LOAD_NETWORK, NEW_NETWORK } from 'actions';
+import {
+  UPDATE_NETWORK_DESCRIPTION,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+} from 'actions';
 import reducer from './description';
 
 describe('Network Description Reducer', () => {
@@ -38,33 +42,17 @@ describe('Network Description Reducer', () => {
     });
   });
 
-  describe('CHANGE_NETWORK_PROPERTY', () => {
-    describe('When property name is "description"', () => {
-      it('returns new value', () => {
-        expect(
-          reducer(
-            'old description',
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'description', value: 'new description' },
-            },
-          ),
-        ).toBe('new description');
-      });
-    });
-
-    describe('When property name is not "description"', () => {
-      it('returns current state value', () => {
-        expect(
-          reducer(
-            'old description',
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'other', value: 'new description' },
-            },
-          ),
-        ).toBe('old description');
-      });
+  describe('UPDATE_NETWORK_DESCRIPTION', () => {
+    it('returns new value', () => {
+      expect(
+        reducer(
+          'old description',
+          {
+            type: UPDATE_NETWORK_DESCRIPTION,
+            payload: { description: 'new description' },
+          },
+        ),
+      ).toBe('new description');
     });
   });
 });

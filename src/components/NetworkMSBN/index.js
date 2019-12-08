@@ -1,12 +1,12 @@
 import {
   addLinkage,
   addSuperNode,
-  changeNetworkProperty,
   changeNodePosition,
   removeLinkage,
   removeSuperNode,
   setBelief,
 } from 'actions';
+import { onUpdateNetworkSelectedNodes } from 'actions/network';
 import { NETWORK_KINDS } from 'constants/network';
 import Network from 'components/Network';
 import React, { Component } from 'react';
@@ -203,7 +203,7 @@ class NetworkMSBN extends Component {
   onSelectNodes = (nodes) => {
     const { dispatch } = this.props;
 
-    dispatch(changeNetworkProperty('selectedNodes', nodes));
+    dispatch(onUpdateNetworkSelectedNodes(nodes));
   };
 
   handleKeyup = (e) => {

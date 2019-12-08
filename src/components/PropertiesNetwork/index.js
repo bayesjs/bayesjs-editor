@@ -1,27 +1,41 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {
+  onUpdateNetworkName,
+  onUpdateNetworkDescription,
+  onUpdateNetworkHeight,
+  onUpdateNetworkWidth,
+  onUpdateNetworkInferenceEnabled,
+} from 'actions/network';
 import { getNetwork, getNetworkKind } from 'selectors';
-import { changeNetworkProperty } from 'actions';
+import { connectify } from 'decorators';
 import { NETWORK_KINDS } from 'constants/network';
 import { getComponentTestId } from 'utils/test-utils';
 import { networkPropTypes } from 'models';
+import { upperFirst, camelCase } from 'lodash';
+import { invoker } from 'ramda';
 import styles from './styles.css';
 
 class PropertiesNetwork extends Component {
+  handleNetworkPropertyChange = (property, value) => {
+    const actionName = `onChange${upperFirst(camelCase(property))}`;
+    const method = invoker(1, actionName);
+
+    method(value, this.props);
+  }
+
   handleNetworkPropertyBlur = (e) => {
-    const { dispatch } = this.props;
     const { id, value } = e.target;
 
-    dispatch(changeNetworkProperty(id, value));
+    this.handleNetworkPropertyChange(id, value);
   };
 
   onChangeCheck = (e) => {
-    const { dispatch } = this.props;
-    const { id, checked } = e.target;
+    const { onChangeInferenceEnabled } = this.props;
+    const { checked } = e.target;
 
-    dispatch(changeNetworkProperty(id, checked));
+    onChangeInferenceEnabled(checked);
   }
 
   handleKeyUp = (e) => {
@@ -33,7 +47,7 @@ class PropertiesNetwork extends Component {
   };
 
   handleNetworkSizeBlur = (e) => {
-    const { dispatch, network } = this.props;
+    const { network } = this.props;
     const input = e.target;
     const name = input.id;
     const value = parseInt(input.value, 10);
@@ -41,7 +55,7 @@ class PropertiesNetwork extends Component {
     if (Number.isNaN(value)) {
       input.value = network[name];
     } else {
-      dispatch(changeNetworkProperty(name, value));
+      this.handleNetworkPropertyChange(name, value);
     }
   };
 
@@ -140,14 +154,23 @@ class PropertiesNetwork extends Component {
 
 PropertiesNetwork.propTypes = {
   network: networkPropTypes.isRequired,
-  dispatch: PropTypes.func.isRequired,
   networkKind: PropTypes.string.isRequired,
+  onChangeName: PropTypes.func.isRequired, // eslint-disable-line
+  onChangeDescription: PropTypes.func.isRequired, // eslint-disable-line
+  onChangeHeight: PropTypes.func.isRequired, // eslint-disable-line
+  onChangeWidth: PropTypes.func.isRequired, // eslint-disable-line
+  onChangeInferenceEnabled: PropTypes.func.isRequired,
 };
 
+const enhance = connectify({
+  network: getNetwork,
+  networkKind: getNetworkKind,
+}, () => ({
+  onChangeName: onUpdateNetworkName,
+  onChangeDescription: onUpdateNetworkDescription,
+  onChangeHeight: onUpdateNetworkHeight,
+  onChangeWidth: onUpdateNetworkWidth,
+  onChangeInferenceEnabled: onUpdateNetworkInferenceEnabled,
+}));
 
-const mapStateToProps = state => ({
-  network: getNetwork(state),
-  networkKind: getNetworkKind(state),
-});
-
-export default connect(mapStateToProps)(PropertiesNetwork);
+export default enhance(PropertiesNetwork);

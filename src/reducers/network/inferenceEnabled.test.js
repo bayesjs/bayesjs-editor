@@ -1,4 +1,8 @@
-import { CHANGE_NETWORK_PROPERTY, LOAD_NETWORK, NEW_NETWORK } from 'actions';
+import {
+  UPDATE_NETWORK_INFERENCE_ENABLED,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+} from 'actions';
 import reducer from './inferenceEnabled';
 
 describe('Network InferenceEnabled Reducer', () => {
@@ -38,33 +42,17 @@ describe('Network InferenceEnabled Reducer', () => {
     });
   });
 
-  describe('CHANGE_NETWORK_PROPERTY', () => {
-    describe('When property name is "inferenceEnabled"', () => {
-      it('returns new value', () => {
-        expect(
-          reducer(
-            true,
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'inferenceEnabled', value: false },
-            },
-          ),
-        ).toBeFalsy();
-      });
-    });
-
-    describe('When property name is not "inferenceEnabled"', () => {
-      it('returns current state value', () => {
-        expect(
-          reducer(
-            true,
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'other', value: false },
-            },
-          ),
-        ).toBeTruthy();
-      });
+  describe('UPDATE_NETWORK_INFERENCE_ENABLED', () => {
+    it('returns new value', () => {
+      expect(
+        reducer(
+          false,
+          {
+            type: UPDATE_NETWORK_INFERENCE_ENABLED,
+            payload: { inferenceEnabled: true },
+          },
+        ),
+      ).toBeTruthy();
     });
   });
 });

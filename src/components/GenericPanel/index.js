@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
 import PropTypes from 'prop-types';
-import { changeNetworkProperty } from 'actions';
+import { onUpdateNetworkPropertiesPanelVisible } from 'actions/network';
 import { getPanelVisibility } from 'selectors';
 import Button from '../Button';
 import styles from './styles.css';
@@ -19,8 +19,7 @@ class GenericPanel extends Component {
   };
 
   handleToggleClick = (visible, dispatch) => () => {
-    const action = changeNetworkProperty(
-      'propertiesPanelVisible',
+    const action = onUpdateNetworkPropertiesPanelVisible(
       !visible,
     );
 

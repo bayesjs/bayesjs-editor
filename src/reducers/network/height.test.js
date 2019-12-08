@@ -1,4 +1,8 @@
-import { CHANGE_NETWORK_PROPERTY, LOAD_NETWORK, NEW_NETWORK } from 'actions';
+import {
+  UPDATE_NETWORK_HEIGHT,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+} from 'actions';
 import reducer from './height';
 
 describe('Network Height Reducer', () => {
@@ -38,33 +42,17 @@ describe('Network Height Reducer', () => {
     });
   });
 
-  describe('CHANGE_NETWORK_PROPERTY', () => {
-    describe('When property name is "height"', () => {
-      it('returns new value', () => {
-        expect(
-          reducer(
-            500,
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'height', value: 800 },
-            },
-          ),
-        ).toBe(800);
-      });
-    });
-
-    describe('When property name is not "height"', () => {
-      it('returns current state value', () => {
-        expect(
-          reducer(
-            500,
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'other', value: 800 },
-            },
-          ),
-        ).toBe(500);
-      });
+  describe('UPDATE_NETWORK_HEIGHT', () => {
+    it('returns new value', () => {
+      expect(
+        reducer(
+          500,
+          {
+            type: UPDATE_NETWORK_HEIGHT,
+            payload: { height: 800 },
+          },
+        ),
+      ).toBe(800);
     });
   });
 });

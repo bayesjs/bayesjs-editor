@@ -1,10 +1,13 @@
-import { CHANGE_NETWORK_PROPERTY, LOAD_NETWORK, NEW_NETWORK } from 'actions';
-import { updateNetworkProperty } from 'utils/network';
-import { pathOr } from 'ramda';
+import {
+  UPDATE_NETWORK_WIDTH,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+} from 'actions';
+import { pathOr, path } from 'ramda';
 
 const defaultValue = 800;
 const getNetworkWidth = pathOr(defaultValue, ['payload', 'state', 'network', 'width']);
-const updateProperty = updateNetworkProperty('width');
+const getWidth = path(['payload', 'width']);
 
 export default (state = defaultValue, action) => {
   switch (action.type) {
@@ -12,8 +15,8 @@ export default (state = defaultValue, action) => {
       return getNetworkWidth(action);
     case NEW_NETWORK:
       return defaultValue;
-    case CHANGE_NETWORK_PROPERTY:
-      return updateProperty(state, action);
+    case UPDATE_NETWORK_WIDTH:
+      return getWidth(action);
     default:
       return state;
   }
