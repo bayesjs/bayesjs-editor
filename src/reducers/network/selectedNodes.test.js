@@ -1,5 +1,5 @@
 import {
-  CHANGE_NETWORK_PROPERTY,
+  UPDATE_NETWORK_SELECTED_NODES,
   CHANGE_NODE_ID,
   REMOVE_NODE,
   LOAD_NETWORK,
@@ -47,33 +47,17 @@ describe('Network SelectedNodes Reducer', () => {
     });
   });
 
-  describe('CHANGE_NETWORK_PROPERTY', () => {
-    describe('When property name is "selectedNodes"', () => {
-      it('returns new value', () => {
-        expect(
-          reducer(
-            [],
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'selectedNodes', value: ['Node 1'] },
-            },
-          ),
-        ).toEqual(['Node 1']);
-      });
-    });
-
-    describe('When property name is not "selectedNodes"', () => {
-      it('returns current state value', () => {
-        expect(
-          reducer(
-            [],
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'other', value: ['Node 1'] },
-            },
-          ),
-        ).toEqual([]);
-      });
+  describe('UPDATE_NETWORK_SELECTED_NODES', () => {
+    it('returns new value', () => {
+      expect(
+        reducer(
+          [],
+          {
+            type: UPDATE_NETWORK_SELECTED_NODES,
+            payload: { selectedNodes: ['Node 1'] },
+          },
+        ),
+      ).toEqual(['Node 1']);
     });
   });
 });

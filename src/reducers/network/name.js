@@ -1,10 +1,13 @@
-import { LOAD_NETWORK, NEW_NETWORK, CHANGE_NETWORK_PROPERTY } from 'actions';
-import { updateNetworkProperty } from 'utils/network';
-import { pathOr } from 'ramda';
+import {
+  UPDATE_NETWORK_NAME,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+} from 'actions';
+import { pathOr, path } from 'ramda';
 
 const defaultValue = 'Rede Bayesiana';
 const getNetworkName = pathOr(defaultValue, ['payload', 'state', 'network', 'name']);
-const updateProperty = updateNetworkProperty('name');
+const getName = path(['payload', 'name']);
 
 export default (state = defaultValue, action) => {
   switch (action.type) {
@@ -12,8 +15,8 @@ export default (state = defaultValue, action) => {
       return getNetworkName(action);
     case NEW_NETWORK:
       return defaultValue;
-    case CHANGE_NETWORK_PROPERTY:
-      return updateProperty(state, action);
+    case UPDATE_NETWORK_NAME:
+      return getName(action);
     default:
       return state;
   }

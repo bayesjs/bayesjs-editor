@@ -1,6 +1,5 @@
 import {
   updateNetworkBelief,
-  updateNetworkProperty,
   updateSelectedNodesId,
 } from './network';
 
@@ -35,30 +34,6 @@ describe('Network Utils', () => {
         expect(updateNetworkBelief('Node 2', null, currentBelief)).toEqual({
           'Node 1': 'True',
         });
-      });
-    });
-  });
-
-  describe('updateNetworkProperty', () => {
-    describe('When name matchs with target prop', () => {
-      const payload = {
-        name: 'description',
-        value: 'new value',
-      };
-
-      it('returns new value from payload', () => {
-        expect(updateNetworkProperty('description', 'current value', { payload })).toBe('new value');
-      });
-    });
-
-    describe('When name does not match with target prop', () => {
-      const payload = {
-        name: 'validProp',
-        value: 'new value',
-      };
-
-      it('return current value', () => {
-        expect(updateNetworkProperty('description', 'current value', { payload })).toBe('current value');
       });
     });
   });

@@ -1,4 +1,9 @@
-import { CHANGE_NETWORK_PROPERTY, LOAD_NETWORK, NEW_NETWORK } from 'actions';
+import {
+  UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+} from 'actions';
+
 import reducer from './propertiesPanelVisible';
 
 describe('Network PropertiesPanelVisible Reducer', () => {
@@ -38,33 +43,17 @@ describe('Network PropertiesPanelVisible Reducer', () => {
     });
   });
 
-  describe('CHANGE_NETWORK_PROPERTY', () => {
-    describe('When property name is "propertiesPanelVisible"', () => {
-      it('returns new value', () => {
-        expect(
-          reducer(
-            true,
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'propertiesPanelVisible', value: false },
-            },
-          ),
-        ).toBeFalsy();
-      });
-    });
-
-    describe('When property name is not "propertiesPanelVisible"', () => {
-      it('returns current state value', () => {
-        expect(
-          reducer(
-            true,
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'other', value: false },
-            },
-          ),
-        ).toBeTruthy();
-      });
+  describe('UPDAUPDATE_NETWORK_PROPERTIES_PANEL_VISIBLET', () => {
+    it('returns new value', () => {
+      expect(
+        reducer(
+          true,
+          {
+            type: UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE,
+            payload: { propertiesPanelVisible: false },
+          },
+        ),
+      ).toBeFalsy();
     });
   });
 });

@@ -3,7 +3,13 @@ import { NETWORK_KINDS } from 'constants/network';
 export const PERSIST_STATE = 'PERSIST_STATE';
 export const NEW_NETWORK = 'NEW_NETWORK';
 export const LOAD_NETWORK = 'LOAD_NETWORK';
-export const CHANGE_NETWORK_PROPERTY = 'CHANGE_NETWORK_PROPERTY';
+export const UPDATE_NETWORK_NAME = 'UPDATE_NETWORK_NAME';
+export const UPDATE_NETWORK_DESCRIPTION = 'UPDATE_NETWORK_DESCRIPTION';
+export const UPDATE_NETWORK_WIDTH = 'UPDATE_NETWORK_WIDTH';
+export const UPDATE_NETWORK_HEIGHT = 'UPDATE_NETWORK_HEIGHT';
+export const UPDATE_NETWORK_INFERENCE_ENABLED = 'UPDATE_NETWORK_INFERENCE_ENABLED';
+export const UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE = 'UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE';
+export const UPDATE_NETWORK_SELECTED_NODES = 'UPDATE_NETWORK_SELECTED_NODES';
 export const ADD_NODE = 'ADD_NODE';
 export const REMOVE_NODE = 'REMOVE_NODE';
 export const ADD_SUPER_NODE = 'ADD_SUPER_NODE';
@@ -33,15 +39,6 @@ export const loadNetwork = state => (dispatch) => {
   dispatch({
     type: LOAD_NETWORK,
     payload: { state },
-  });
-
-  dispatch(persistState());
-};
-
-export const changeNetworkProperty = (name, value) => (dispatch) => {
-  dispatch({
-    type: CHANGE_NETWORK_PROPERTY,
-    payload: { name, value },
   });
 
   dispatch(persistState());

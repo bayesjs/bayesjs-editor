@@ -1,4 +1,9 @@
-import { CHANGE_NETWORK_PROPERTY, LOAD_NETWORK, NEW_NETWORK } from 'actions';
+import {
+  UPDATE_NETWORK_WIDTH,
+  LOAD_NETWORK,
+  NEW_NETWORK,
+} from 'actions';
+
 import reducer from './width';
 
 describe('Network Width Reducer', () => {
@@ -38,33 +43,17 @@ describe('Network Width Reducer', () => {
     });
   });
 
-  describe('CHANGE_NETWORK_PROPERTY', () => {
-    describe('When property name is "width"', () => {
-      it('returns new value', () => {
-        expect(
-          reducer(
-            800,
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'width', value: 1000 },
-            },
-          ),
-        ).toBe(1000);
-      });
-    });
-
-    describe('When property name is not "width"', () => {
-      it('returns current state value', () => {
-        expect(
-          reducer(
-            800,
-            {
-              type: CHANGE_NETWORK_PROPERTY,
-              payload: { name: 'other', value: 1000 },
-            },
-          ),
-        ).toBe(800);
-      });
+  describe('UPDATE_NETWORK_WIDTH', () => {
+    it('returns new value', () => {
+      expect(
+        reducer(
+          100,
+          {
+            type: UPDATE_NETWORK_WIDTH,
+            payload: { width: 3000 },
+          },
+        ),
+      ).toBe(3000);
     });
   });
 });

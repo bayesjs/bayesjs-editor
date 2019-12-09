@@ -4,7 +4,6 @@ import {
   newNetwork,
   loadNetwork,
   setBelief,
-  changeNetworkProperty,
   changeNodeId,
   changeNodePosition,
   changeNodeDescription,
@@ -17,7 +16,6 @@ import {
   NEW_NETWORK,
   LOAD_NETWORK,
   SET_BELIEF,
-  CHANGE_NETWORK_PROPERTY,
   CHANGE_NODE_ID,
   CHANGE_NODE_POSITION,
   CHANGE_NODE_DESCRIPTION,
@@ -129,26 +127,6 @@ describe('Actions', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: SET_BELIEF,
         payload: { nodeId, state, subnetworkId },
-      });
-    });
-
-    it('calls dispatch persist action', () => {
-      expect(dispatch).toHaveBeenNthCalledWith(2, persistStateAction);
-    });
-  });
-
-  describe('changeNetworkProperty', () => {
-    const name = 'name';
-    const value = 'value';
-
-    beforeEach(() => {
-      changeNetworkProperty(name, value)(dispatch);
-    });
-
-    it('calls dispatch with type CHANGE_NETWORK_PROPERTY and payload', () => {
-      expect(dispatch).toHaveBeenNthCalledWith(1, {
-        type: CHANGE_NETWORK_PROPERTY,
-        payload: { name, value },
       });
     });
 
