@@ -36,7 +36,7 @@
   "dependencies": {
     "@cypress/webpack-preprocessor": "^4.0.3",
     "babel-jest": "^24.8.0",
-    "bayesjs": "0.4.2",
+    "bayesjs": "0.4.3",
     "change-case": "^3.1.0",
     "classnames": "^2.2.5",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
