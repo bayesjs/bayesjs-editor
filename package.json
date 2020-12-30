@@ -32,7 +32,8 @@
     "cypress:run": "cypress run",
     "cypress:open": "cypress open",
     "coveralls": "yarn test:unit -- --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "commit": "cz"
+    "commit": "cz",
+    "postinstall": "is-ci || husky install"
   },
   "dependencies": {
     "@cypress/webpack-preprocessor": "^4.0.3",
@@ -94,6 +95,8 @@
     "eslint-plugin-react": "^7.12.4",
     "file-loader": "^3.0.1",
     "gh-pages": "^2.0.1",
+    "husky": "^5.0.6",
+    "is-ci": "^2.0.0",
     "jest": "^24.8.0",
     "jest-css-modules": "^2.0.0",
     "json-loader": "^0.5.7",

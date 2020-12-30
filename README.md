@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/bayesjs/bayesjs-editor.svg?branch=master)](https://travis-ci.org/bayesjs/bayesjs-editor)
 [![Coverage Status](https://coveralls.io/repos/github/bayesjs/bayesjs-editor/badge.svg)](https://coveralls.io/github/bayesjs/bayesjs-editor)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 # BayesJs Editor
 
@@ -19,10 +20,9 @@ Bayes' Theorem is Mathematically stated as the following equation:
 
 where A and B are events and P(B)!= 0
 
-* P(A | B) is a [conditional probability](https://en.wikipedia.org/wiki/Conditional_probability): the likelihood of event A occurring given that B is true.
-* P(B | A) is also a conditional probability: the likelihood of event B occurring given that A is true.
-* P(A) and P(B) are the probabilities of observing A and B independently of each other; this is known as the [marginal probability](https://en.wikipedia.org/wiki/Marginal_distribution).
-
+- P(A | B) is a [conditional probability](https://en.wikipedia.org/wiki/Conditional_probability): the likelihood of event A occurring given that B is true.
+- P(B | A) is also a conditional probability: the likelihood of event B occurring given that A is true.
+- P(A) and P(B) are the probabilities of observing A and B independently of each other; this is known as the [marginal probability](https://en.wikipedia.org/wiki/Marginal_distribution).
 
 ## How to setup
 
@@ -35,16 +35,19 @@ yarn // or npm install
 ## How to test
 
 To execute the unit test you can run:
+
 ```
 yarn run test:unit
 ```
 
 And to execute the integration test you can run when the project not running:
+
 ```
 yarn run test:e2e
 ```
 
 or, in case you wanna open the cypress while the project is running, in another terminal run:
+
 ```
 yarn run cypress open
 ```
