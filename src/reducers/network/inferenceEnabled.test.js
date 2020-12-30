@@ -1,8 +1,9 @@
 import {
-  UPDATE_NETWORK_INFERENCE_ENABLED,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
+  UPDATE_NETWORK_INFERENCE_ENABLED,
+} from '@actions';
+
 import reducer from './inferenceEnabled';
 
 describe('Network InferenceEnabled Reducer', () => {

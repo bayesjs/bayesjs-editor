@@ -1,22 +1,23 @@
 import React, { useMemo } from 'react';
-import { NODE_CPT_PRECISION } from 'constants/node';
-import float from 'float';
-import InputCpt from 'components/InputCpt';
-import PropTypes from 'prop-types';
 import {
-  keys,
-  pipe,
-  find,
-  equals,
   complement,
-  reduce,
+  equals,
+  find,
+  keys,
   length,
+  pipe,
+  reduce,
 } from 'ramda';
-import { noop } from 'lodash';
-import { cptWithoutParentsPropTypes } from 'models';
-import { updateCptValue } from 'utils/node-cpt';
-import { isNodeCptValid } from 'validations/node';
+
+import InputCpt from '@components/InputCpt';
+import { NODE_CPT_PRECISION } from '@constants/node';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { cptWithoutParentsPropTypes } from '@models';
+import float from 'float';
+import { isNodeCptValid } from '@validations/node';
+import { noop } from 'lodash';
+import { updateCptValue } from '@utils/node-cpt';
 import styles from './styles.scss';
 
 const isLengthEqualsTwo = pipe(length, equals(2));

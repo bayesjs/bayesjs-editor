@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-
-import PropTypes from 'prop-types';
+import { camelCase, upperFirst } from 'lodash';
+import { getNetwork, getNetworkKind } from '@selectors';
 import {
-  onUpdateNetworkName,
   onUpdateNetworkDescription,
   onUpdateNetworkHeight,
-  onUpdateNetworkWidth,
   onUpdateNetworkInferenceEnabled,
-} from 'actions/network';
-import { getNetwork, getNetworkKind } from 'selectors';
-import { connectify } from 'decorators';
-import { NETWORK_KINDS } from 'constants/network';
-import { getComponentTestId } from 'utils/test-utils';
-import { networkPropTypes } from 'models';
-import { upperFirst, camelCase } from 'lodash';
+  onUpdateNetworkName,
+  onUpdateNetworkWidth,
+} from '@actions/network';
+
+import { NETWORK_KINDS } from '@constants/network';
+import PropTypes from 'prop-types';
+import { connectify } from '@decorators';
+import { getComponentTestId } from '@utils/test-utils';
 import { invoker } from 'ramda';
+import { networkPropTypes } from '@models';
 import styles from './styles.css';
 
 class PropertiesNetwork extends Component {

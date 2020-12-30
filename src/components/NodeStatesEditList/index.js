@@ -1,8 +1,8 @@
-import React from 'react';
-import NodeStateEdit from 'components/NodeStateEdit';
+import NodeStateEdit from '@components/NodeStateEdit';
 import PropTypes from 'prop-types';
-import { statePropTypes } from 'models';
-import { bem } from 'utils/styles';
+import React from 'react';
+import { bem } from '@utils/styles';
+import { statePropTypes } from '@models';
 import styles from './styles.scss';
 
 const componentClassName = bem(styles);

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import PropTypes from 'prop-types';
-import { subnetworkPropTypes } from 'models';
 import Button from '../Button';
+import PropTypes from 'prop-types';
 import styles from './styles.css';
+import { subnetworkPropTypes } from '@models';
 
 class PropertiesSuperNode extends Component {
   getDrescription = (subnetwork) => {

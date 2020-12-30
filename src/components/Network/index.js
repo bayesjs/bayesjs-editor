@@ -1,22 +1,23 @@
 import React, { PureComponent } from 'react';
 import {
   arrowPropTypes,
+  contextMenuItemPropTypes,
   networkPropTypes,
   nodePropTypes,
   subnetworkPropTypes,
-  contextMenuItemPropTypes,
-} from 'models';
+} from '@models';
 import { isFunction, noop } from 'lodash';
-import ArrowMovingPlaceholder from 'components/ArrowMovingPlaceholder';
-import Arrows from 'components/Arrows';
-import ContextMenu from 'components/ContextMenu';
-import NodeMovingPlaceholder from 'components/NodeMovingPlaceholder';
-import Nodes from 'components/Nodes';
+
+import ArrowMovingPlaceholder from '@components/ArrowMovingPlaceholder';
+import Arrows from '@components/Arrows';
+import { CONTEXTMENU_TYPES } from '@constants/contextmenu';
+import ContextMenu from '@components/ContextMenu';
+import NodeMovingPlaceholder from '@components/NodeMovingPlaceholder';
+import Nodes from '@components/Nodes';
 import PropTypes from 'prop-types';
 import { propEq } from 'ramda';
-import { v4 } from 'uuid';
-import { CONTEXTMENU_TYPES } from 'constants/contextmenu';
 import styles from './styles.css';
+import { v4 } from 'uuid';
 
 class Network extends PureComponent {
   state = {

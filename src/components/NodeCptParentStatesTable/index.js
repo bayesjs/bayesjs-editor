@@ -1,7 +1,7 @@
+import NodeCptStatesThead from '@components/NodeCptStatesThead';
 import React from 'react';
+import { nodePropTypes } from '@models';
 import { toString } from 'ramda';
-import { nodePropTypes } from 'models';
-import NodeCptStatesThead from 'components/NodeCptStatesThead';
 
 const NodeCptParentStatesTable = ({ node: { parents, cpt } }) => (
   <table>

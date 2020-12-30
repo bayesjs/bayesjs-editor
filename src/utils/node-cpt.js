@@ -17,12 +17,12 @@ import {
   evolve,
   flatten,
   flip,
+  head,
   identity,
   ifElse,
   includes,
   invertObj,
   is,
-  head,
   keys,
   length,
   lensPath,
@@ -45,7 +45,7 @@ import {
   useWith,
   values,
 } from 'ramda';
-import { containsParentInNode, isNodeWithoutParents } from 'validations/node';
+import { containsParentInNode, isNodeWithoutParents } from '@validations/node';
 
 import { createNodeCombinations } from './combinations';
 import { filterNodeParents } from './node-parents';

@@ -1,5 +1,5 @@
+import Node from '@components/Node';
 import React from 'react';
-import Node from 'components/Node';
 
 const Nodes = ({
   nodes,

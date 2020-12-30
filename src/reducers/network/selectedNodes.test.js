@@ -1,12 +1,12 @@
 import {
-  UPDATE_NETWORK_SELECTED_NODES,
   CHANGE_NODE_ID,
-  REMOVE_NODE,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
-import reducer from './selectedNodes';
+  REMOVE_NODE,
+  UPDATE_NETWORK_SELECTED_NODES,
+} from '@actions';
 
+import reducer from './selectedNodes';
 
 describe('Network SelectedNodes Reducer', () => {
   describe('DEFAULT', () => {

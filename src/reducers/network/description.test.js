@@ -1,8 +1,9 @@
 import {
-  UPDATE_NETWORK_DESCRIPTION,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
+  UPDATE_NETWORK_DESCRIPTION,
+} from '@actions';
+
 import reducer from './description';
 
 describe('Network Description Reducer', () => {

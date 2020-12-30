@@ -1,11 +1,12 @@
+import { contextMenuItemPropTypes, positionPropTypes } from '@models/';
+
+import { CONTEXTMENU_TYPES } from '@constants/contextmenu';
+import ContextMenu from '@components/ContextMenu';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getComponentTestId } from 'utils/test-utils';
+import { getComponentTestId } from '@utils/test-utils';
 import { noop } from 'lodash';
 import { pick } from 'ramda';
-import { positionPropTypes, contextMenuItemPropTypes } from 'models';
-import { CONTEXTMENU_TYPES } from 'constants/contextmenu';
-import ContextMenu from 'components/ContextMenu';
 
 const style = {
   transition: 'stroke-opacity 0.2s',

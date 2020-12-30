@@ -1,4 +1,5 @@
-import { SET_BELIEF, LOAD_NETWORK, NEW_NETWORK } from 'actions';
+import { LOAD_NETWORK, NEW_NETWORK, SET_BELIEF } from '@actions';
+
 import reducer from './beliefs';
 
 describe('Network Beliefs Reducer', () => {

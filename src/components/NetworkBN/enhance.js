@@ -4,16 +4,17 @@ import {
   removeNode,
   removeParent,
   setBelief,
-} from 'actions';
-import { onUpdateNetworkSelectedNodes } from 'actions/network';
+} from '@actions';
 import {
   getInferenceResults,
   getNetwork,
   getNodesWithPositionsAndSizes,
-} from 'selectors';
-import { connectify } from 'decorators';
-import { onEditingNodeCpt } from 'actions/editing-node-cpt';
-import { onEditingNodeStates } from 'actions/editing-node-states';
+} from '@selectors';
+
+import { connectify } from '@decorators';
+import { onEditingNodeCpt } from '@actions/editing-node-cpt';
+import { onEditingNodeStates } from '@actions/editing-node-states';
+import { onUpdateNetworkSelectedNodes } from '@actions/network';
 
 const enhance = connectify({
   network: getNetwork,

@@ -1,6 +1,6 @@
 import {
-  compose,
   branch,
+  compose,
   renderNothing,
   withHandlers,
 } from 'recompose';
@@ -9,10 +9,11 @@ import {
   pipe,
   prop,
 } from 'ramda';
-import { connectify } from 'decorators';
-import { getEditingNodeStates } from 'selectors/editing-node-states';
-import { onCancelEditingNodeStates, onSaveEditingNodeStates } from 'actions/editing-node-states';
-import { getNodes } from 'selectors';
+import { onCancelEditingNodeStates, onSaveEditingNodeStates } from '@actions/editing-node-states';
+
+import { connectify } from '@decorators';
+import { getEditingNodeStates } from '@selectors/editing-node-states';
+import { getNodes } from '@selectors';
 
 const hasNotNode = pipe(prop('node'), isNil);
 

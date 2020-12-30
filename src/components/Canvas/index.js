@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
-import AddNodeModal from 'components/AddNodeModal';
-import { NETWORK_KINDS } from 'constants/network';
-import NetworkBN from 'components/NetworkBN';
-import NetworkMSBN from 'components/NetworkMSBN';
+import AddNodeModal from '@components/AddNodeModal';
+import { NETWORK_KINDS } from '@constants/network';
+import NetworkBN from '@components/NetworkBN';
+import NetworkMSBN from '@components/NetworkMSBN';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   getNetworkKind,
-} from 'selectors';
+} from '@selectors';
 import styles from './styles.css';
 
 class Canvas extends Component {

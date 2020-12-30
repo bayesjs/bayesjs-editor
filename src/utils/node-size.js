@@ -1,4 +1,4 @@
-import { NODE_HEIGHT_SIZES, NODE_WIDTH_SIZE } from 'constants/node';
+import { NODE_HEIGHT_SIZES, NODE_WIDTH_SIZE } from '@constants/node';
 import {
   add,
   always,
@@ -9,7 +9,7 @@ import {
   prop,
   sum,
 } from 'ramda';
-import { hasConnections, hasDescription, hasStates } from 'validations/node';
+import { hasConnections, hasDescription, hasStates } from '@validations/node';
 
 const addOne = add(1);
 const getStatesLength = pipe(

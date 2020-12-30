@@ -1,4 +1,4 @@
-import { getComponentTestId } from 'utils/test-utils';
+import { getComponentTestId } from '@utils/test-utils';
 
 describe('Network', () => {
   it('creates a new one', () => {

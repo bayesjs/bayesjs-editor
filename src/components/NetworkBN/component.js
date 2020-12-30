@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { nodePropTypes, networkPropTypes, inferenceResultsPropTypes } from 'models';
-import { getArrowsPositions } from 'utils/arrows-positions';
-import { isDeleteKey } from 'utils/event';
-import Network from '../Network';
+import { inferenceResultsPropTypes, networkPropTypes, nodePropTypes } from '@models';
 
 import AddNodeModal from '../AddNodeModal';
 import EditNodeCptModal from '../EditNodeCptModal';
 import EditNodeStatesModal from '../EditNodeStatesModal';
+import Network from '../Network';
+import PropTypes from 'prop-types';
+import { getArrowsPositions } from '@utils/arrows-positions';
+import { isDeleteKey } from '@utils/event';
 
 class NetworkBN extends Component {
   componentDidMount() {

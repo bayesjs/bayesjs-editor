@@ -1,17 +1,18 @@
-import React, { useState, useCallback } from 'react';
-import Icon from 'components/Icon';
-import Button from 'components/Button';
-import PropTypes from 'prop-types';
+import React, { useCallback, useState } from 'react';
 import {
-  pipe,
-  path,
+  both,
   complement,
   isEmpty,
+  path,
+  pipe,
   trim,
-  both,
 } from 'ramda';
-import { isEnterKey } from 'utils/event';
-import { bem } from 'utils/styles';
+
+import Button from '@components/Button';
+import Icon from '@components/Icon';
+import PropTypes from 'prop-types';
+import { bem } from '@utils/styles';
+import { isEnterKey } from '@utils/event';
 import styles from './styles.scss';
 
 const componentClassName = bem(styles);

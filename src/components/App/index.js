@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import { connect } from 'react-redux';
-import {
-  getNetworkKind,
-} from 'selectors';
 import Canvas from '../Canvas';
 import Header from '../Header';
 import PropertiesPanel from '../PropertiesPanel';
+import { connect } from 'react-redux';
+import {
+  getNetworkKind,
+} from '@selectors';
 import styles from './styles.css';
 
 class App extends Component {

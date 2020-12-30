@@ -1,8 +1,8 @@
-import ArrowPlaceholder from 'components/ArrowPlaceholder';
-import React from 'react';
-import SvgMousePosition from 'components/SvgMousePosition';
-import { shallow } from 'enzyme';
 import ArrowMovingPlaceholder from './component';
+import ArrowPlaceholder from '@components/ArrowPlaceholder';
+import React from 'react';
+import SvgMousePosition from '@components/SvgMousePosition';
+import { shallow } from 'enzyme';
 
 const svg = document.createElement('svg');
 const shallowComponent = (props = {}) => shallow(<ArrowMovingPlaceholder {...props} />);

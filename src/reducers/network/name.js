@@ -1,9 +1,9 @@
 import {
-  UPDATE_NETWORK_NAME,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
-import { pathOr, path } from 'ramda';
+  UPDATE_NETWORK_NAME,
+} from '@actions';
+import { path, pathOr } from 'ramda';
 
 const defaultValue = 'Rede Bayesiana';
 const getNetworkName = pathOr(defaultValue, ['payload', 'state', 'network', 'name']);

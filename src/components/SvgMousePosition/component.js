@@ -2,7 +2,7 @@ import { noop, throttle } from 'lodash';
 
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { elementInstancePropTypes } from 'models';
+import { elementInstancePropTypes } from '@models';
 
 class SvgMousePosition extends Component {
   state = {

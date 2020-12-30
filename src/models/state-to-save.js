@@ -1,8 +1,8 @@
 import PropTypes, { shape } from 'prop-types';
 
-import { networkPropTypes } from 'models/network';
-import { nodePropTypes } from 'models/node';
-import { positionPropTypes } from 'models/position';
+import { networkPropTypes } from '@models/network';
+import { nodePropTypes } from '@models/node';
+import { positionPropTypes } from '@models/position';
 
 export const stateToSavePropTypes = shape({
   version: PropTypes.number.isRequired,

@@ -1,11 +1,11 @@
 import { addIndex, map } from 'ramda';
-import { networkConnection, sizePropTypes } from 'models';
+import { networkConnection, sizePropTypes } from '@models';
 
-import NodeConnection from 'components/NodeConnection';
-import NodeDivider from 'components/NodeDivider';
+import NodeConnection from '@components/NodeConnection';
+import NodeDivider from '@components/NodeDivider';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SvgText from 'components/SvgText';
+import SvgText from '@components/SvgText';
 
 const mapIndexed = addIndex(map);
 const mapConnectionsCreator = cy => mapIndexed(({ networkName, ...props }, index) => (

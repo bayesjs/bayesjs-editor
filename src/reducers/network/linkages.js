@@ -3,10 +3,13 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_LINKAGE,
-} from 'actions';
-
+} from '@actions';
 import {
-  dissoc, path, assoc, defaultTo, pipe,
+  assoc,
+  defaultTo,
+  dissoc,
+  path,
+  pipe,
 } from 'ramda';
 
 const getLinkagesFromAction = path(['payload', 'state', 'network', 'linkages']);

@@ -1,9 +1,9 @@
 import {
-  UPDATE_NETWORK_HEIGHT,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
-import { pathOr, path } from 'ramda';
+  UPDATE_NETWORK_HEIGHT,
+} from '@actions';
+import { path, pathOr } from 'ramda';
 
 const defaultValue = 500;
 const getNetworkHeight = pathOr(defaultValue, ['payload', 'state', 'network', 'height']);

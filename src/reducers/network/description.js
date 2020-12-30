@@ -2,8 +2,8 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   UPDATE_NETWORK_DESCRIPTION,
-} from 'actions';
-import { pathOr, path } from 'ramda';
+} from '@actions';
+import { path, pathOr } from 'ramda';
 
 const defaultValue = '';
 const getNetworkDescription = pathOr(defaultValue, ['payload', 'state', 'network', 'description']);

@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
-  equals,
+  both,
   complement,
+  defaultTo,
+  equals,
   isEmpty,
-  propEq,
+  none,
+  not,
   path,
   pipe,
-  defaultTo,
   prop,
-  both,
-  not,
-  none,
+  propEq,
 } from 'ramda';
 
-import { getComponentTestId } from 'utils/test-utils';
-import { nodePropTypes } from 'models';
-import { isEnterKey } from 'utils/event';
 import Button from '../Button';
+import PropTypes from 'prop-types';
+import { getComponentTestId } from '@utils/test-utils';
+import { isEnterKey } from '@utils/event';
+import { nodePropTypes } from '@models';
 import styles from './styles.css';
 
 const isNotEmpty = complement(isEmpty);

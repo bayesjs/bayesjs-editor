@@ -3,7 +3,7 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_LINKAGE,
-} from 'actions';
+} from '@actions';
 
 import reducer from './linkages';
 

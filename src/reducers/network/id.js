@@ -1,6 +1,7 @@
+import { LOAD_NETWORK, NEW_NETWORK } from '@actions';
+import { either, path } from 'ramda';
+
 import { v4 } from 'uuid';
-import { NEW_NETWORK, LOAD_NETWORK } from 'actions';
-import { path, either } from 'ramda';
 
 const getNetworkId = either(
   path(['payload', 'state', 'network', 'id']),

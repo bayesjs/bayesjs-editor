@@ -1,8 +1,8 @@
-import { shallow } from 'enzyme';
-import React from 'react';
-import ContextMenuItems from 'components/ContextMenuItems';
-import { ContextMenuTrigger } from 'react-contextmenu';
 import ContextMenu from './index';
+import ContextMenuItems from '@components/ContextMenuItems';
+import { ContextMenuTrigger } from 'react-contextmenu';
+import React from 'react';
+import { shallow } from 'enzyme';
 
 const defaultProps = {
   id: 'id',

@@ -1,19 +1,22 @@
-import InitialSubnetworksMsbnAddBelief from 'json-templates/subnetworks/add-belief/msbn/initial.json';
-import InitialSubnetworksMsbnChangeBelief from 'json-templates/subnetworks/change-belief/msbn/initial.json';
-import InitialSubnetworksMsbnRemoveBelief from 'json-templates/subnetworks/remove-belief/msbn/initial.json';
-import UpdatedSubnetworksMsbnAddBelief from 'json-templates/subnetworks/add-belief/msbn/updated.json';
-import UpdatedSubnetworksMsbnChangeBelief from 'json-templates/subnetworks/change-belief/msbn/updated.json';
-import UpdatedSubnetworksMsbnRemoveBelief from 'json-templates/subnetworks/remove-belief/msbn/updated.json';
-
 import {
   ADD_SUPER_NODE,
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_SUPER_NODE,
   SET_BELIEF,
-} from 'actions';
+} from '@actions';
 
+import InitialSubnetworksMsbnAddBelief from '@json-templates/subnetworks/add-belief/msbn/initial.json';
+import InitialSubnetworksMsbnChangeBelief from '@json-templates/subnetworks/change-belief/msbn/initial.json';
+import InitialSubnetworksMsbnRemoveBelief from '@json-templates/subnetworks/remove-belief/msbn/initial.json';
+import UpdatedSubnetworksMsbnAddBelief from '@json-templates/subnetworks/add-belief/msbn/updated.json';
+import UpdatedSubnetworksMsbnChangeBelief from '@json-templates/subnetworks/change-belief/msbn/updated.json';
+import UpdatedSubnetworksMsbnRemoveBelief from '@json-templates/subnetworks/remove-belief/msbn/updated.json';
 import reducer from './subnetworks';
+
+jest.mock('@utils/colors', () => ({
+  getRandomColor: () => '#FFFF00',
+}));
 
 describe('Subnetwork Reducers', () => {
   describe('DEFAULT', () => {

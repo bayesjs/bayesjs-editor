@@ -1,9 +1,9 @@
 import {
-  UPDATE_NETWORK_WIDTH,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
-import { pathOr, path } from 'ramda';
+  UPDATE_NETWORK_WIDTH,
+} from '@actions';
+import { path, pathOr } from 'ramda';
 
 const defaultValue = 800;
 const getNetworkWidth = pathOr(defaultValue, ['payload', 'state', 'network', 'width']);

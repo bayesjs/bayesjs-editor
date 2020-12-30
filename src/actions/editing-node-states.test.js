@@ -1,8 +1,8 @@
 import {
-  EDITING_NODE_STATES,
   CANCEL_EDITING_NODE_STATES,
+  EDITING_NODE_STATES,
   SAVE_EDITING_NODE_STATES,
-} from 'constants/editing-node-states';
+} from '@constants/editing-node-states';
 import {
   onCancelEditingNodeStates,
   onEditingNodeStates,

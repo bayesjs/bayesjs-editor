@@ -1,10 +1,9 @@
-import React from 'react';
+import Button from '@components/Button';
+import Icon from '@components/Icon';
 import PropTypes from 'prop-types';
-
-import Button from 'components/Button';
-import Icon from 'components/Icon';
-import { bem } from 'utils/styles';
-import { getComponentTestId } from 'utils/test-utils';
+import React from 'react';
+import { bem } from '@utils/styles';
+import { getComponentTestId } from '@utils/test-utils';
 import styles from './styles.scss';
 
 const componentClassName = bem(styles);

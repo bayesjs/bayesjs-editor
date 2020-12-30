@@ -1,3 +1,4 @@
+import React, { Component } from 'react';
 import {
   addLinkage,
   addSuperNode,
@@ -5,12 +6,17 @@ import {
   removeLinkage,
   removeSuperNode,
   setBelief,
-} from 'actions';
-import { onUpdateNetworkSelectedNodes } from 'actions/network';
-import { NETWORK_KINDS } from 'constants/network';
-import Network from 'components/Network';
-import React, { Component } from 'react';
-import { combNodesWithPositions, combNodesWithSizes } from 'selectors/combiners';
+} from '@actions';
+import {
+  allLinkagesBySubnetworkWithoutIdPropTypes,
+  inferenceResultsMSBNPropTypes,
+  linkagesByNodePropTypes,
+  linkagesByTwoNodePropTypes,
+  linkagesPropTypes,
+  networkPropTypes,
+  subnetworkPropTypes,
+} from '@models';
+import { combNodesWithPositions, combNodesWithSizes } from '@selectors/combiners';
 import {
   getAllLinkagesBySubnetworkWithoutId,
   getInferenceResultsMSBN,
@@ -21,27 +27,21 @@ import {
   getSubnetworksById,
   getSubnetworksColorById,
   getSubnetworksWithPositionAndSizes,
-} from 'selectors';
-import {
-  linkagesPropTypes,
-  networkPropTypes,
-  subnetworkPropTypes,
-  linkagesByNodePropTypes,
-  linkagesByTwoNodePropTypes,
-  allLinkagesBySubnetworkWithoutIdPropTypes,
-  inferenceResultsMSBNPropTypes,
-} from 'models';
+} from '@selectors';
 
-import LinkagesModal from 'components/LinkagesModal';
+import LinkagesModal from '@components/LinkagesModal';
+import { NETWORK_KINDS } from '@constants/network';
+import Network from '@components/Network';
 import PropTypes from 'prop-types';
-import SubNetwork from 'components/SubNetwork';
+import SubNetwork from '@components/SubNetwork';
 import { connect } from 'react-redux';
-import { getArrowsPositionsForMSBN } from 'utils/arrows-positions';
-import { openFile } from 'utils/file';
-import { v4 } from 'uuid';
-import { isDeleteKey } from 'utils/event';
-import { hasCycles } from 'validations/network';
+import { getArrowsPositionsForMSBN } from '@utils/arrows-positions';
+import { hasCycles } from '@validations/network';
+import { isDeleteKey } from '@utils/event';
 import { mergeNetworks } from './helpers';
+import { onUpdateNetworkSelectedNodes } from '@actions/network';
+import { openFile } from '@utils/file';
+import { v4 } from 'uuid';
 
 class NetworkMSBN extends Component {
   state = {

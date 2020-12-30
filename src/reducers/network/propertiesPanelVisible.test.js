@@ -1,8 +1,8 @@
 import {
-  UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
+  UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE,
+} from '@actions';
 
 import reducer from './propertiesPanelVisible';
 

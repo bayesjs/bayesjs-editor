@@ -1,17 +1,17 @@
 import {
+  contextMenuItemPropTypes,
   positionPropTypes,
   sizePropTypes,
   statePropTypes,
-  contextMenuItemPropTypes,
-} from 'models';
+} from '@models';
 
-import GenericNode from 'components/GenericNode';
-import NodeConnections from 'components/NodeConnections';
-import NodeStates from 'components/NodeStates';
+import { CONTEXTMENU_TYPES } from '@constants/contextmenu';
+import ContextMenu from '@components/ContextMenu';
+import GenericNode from '@components/GenericNode';
+import NodeConnections from '@components/NodeConnections';
+import NodeStates from '@components/NodeStates';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ContextMenu from 'components/ContextMenu';
-import { CONTEXTMENU_TYPES } from 'constants/contextmenu';
 
 const Node = (props) => {
   const { id, contextItems } = props;

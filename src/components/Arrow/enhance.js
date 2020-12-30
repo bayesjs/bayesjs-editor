@@ -1,8 +1,11 @@
 import {
-  withProps, pure, compose, withHandlers,
+  compose,
+  pure,
+  withHandlers,
+  withProps,
 } from 'recompose';
 
-import { makeArrowLine } from 'utils/arrows-positions';
+import { makeArrowLine } from '@utils/arrows-positions';
 
 const enhance = compose(
   pure,

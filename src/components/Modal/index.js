@@ -3,7 +3,7 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
-import { getComponentTestId } from 'utils/test-utils';
+import { getComponentTestId } from '@utils/test-utils';
 import styles from './styles.css';
 
 const style = {

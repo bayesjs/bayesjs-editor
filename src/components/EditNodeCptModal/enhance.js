@@ -1,20 +1,21 @@
-import { connectify } from 'decorators';
 import {
   branch,
   compose,
   renderNothing,
-  withProps,
   withHandlers,
+  withProps,
 } from 'recompose';
 import {
-  isNil,
-  prop,
-  pipe,
-  isEmpty,
   complement,
+  isEmpty,
+  isNil,
+  pipe,
+  prop,
 } from 'ramda';
-import { getEditingNodeCpt } from 'selectors/editing-node-cpt';
-import { onCancelEditingNodeCpt, onSaveEditingNodeCpt } from 'actions/editing-node-cpt';
+import { onCancelEditingNodeCpt, onSaveEditingNodeCpt } from '@actions/editing-node-cpt';
+
+import { connectify } from '@decorators';
+import { getEditingNodeCpt } from '@selectors/editing-node-cpt';
 
 const hasNotNode = pipe(prop('node'), isNil);
 const isNotEmpty = complement(isEmpty);

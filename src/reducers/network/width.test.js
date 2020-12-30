@@ -1,8 +1,8 @@
 import {
-  UPDATE_NETWORK_WIDTH,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
+  UPDATE_NETWORK_WIDTH,
+} from '@actions';
 
 import reducer from './width';
 

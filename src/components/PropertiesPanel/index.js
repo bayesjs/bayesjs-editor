@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { getSelectedNode, getSelectedSubnetwork } from 'selectors';
-import { nodePropTypes, subnetworkPropTypes } from 'models';
+import { getSelectedNode, getSelectedSubnetwork } from '@selectors';
+import { nodePropTypes, subnetworkPropTypes } from '@models';
 
+import GenericPanel from '@components/GenericPanel';
 import PropTypes from 'prop-types';
-import GenericPanel from 'components/GenericPanel';
-import PropertiesNetwork from 'components/PropertiesNetwork';
-import PropertiesNode from 'components/PropertiesNode';
-import PropertiesSuperNode from 'components/PropertiesSuperNode';
+import PropertiesNetwork from '@components/PropertiesNetwork';
+import PropertiesNode from '@components/PropertiesNode';
+import PropertiesSuperNode from '@components/PropertiesSuperNode';
 import { connect } from 'react-redux';
 import styles from './styles.css';
 
