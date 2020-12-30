@@ -31,7 +31,8 @@
     "test:e2e": "start-server-and-test start http-get://localhost:8080 cypress:run",
     "cypress:run": "cypress run",
     "cypress:open": "cypress open",
-    "coveralls": "yarn test:unit -- --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "coveralls": "yarn test:unit -- --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "commit": "cz"
   },
   "dependencies": {
     "@cypress/webpack-preprocessor": "^4.0.3",
@@ -81,6 +82,7 @@
     "coveralls": "^3.0.3",
     "css-loader": "^2.1.1",
     "cypress": "^3.2.0",
+    "cz-conventional-changelog": "3.3.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "enzyme-to-json": "^3.3.5",
@@ -105,5 +107,10 @@
     "url-loader": "^1.1.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
