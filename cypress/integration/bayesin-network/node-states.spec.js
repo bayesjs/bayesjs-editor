@@ -1,4 +1,4 @@
-import { getComponentTestId } from 'utils/test-utils';
+import { getComponentTestId } from '@utils/test-utils';
 
 describe('Node States', () => {
   const nodeName = 'Node 1';

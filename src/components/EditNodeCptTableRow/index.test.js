@@ -1,7 +1,9 @@
+import * as nodeValidations from '@validations/node';
+
+import { fireEvent, render } from '@testing-library/react';
+
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import * as nodeValidations from 'validations/node';
-import { getComponentTestId } from 'utils/test-utils';
+import { getComponentTestId } from '@utils/test-utils';
 import EditNodeCptTableRow from './index';
 
 const renderComponent = props =>

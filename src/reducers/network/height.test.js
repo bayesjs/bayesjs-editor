@@ -1,8 +1,9 @@
 import {
-  UPDATE_NETWORK_HEIGHT,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
+  UPDATE_NETWORK_HEIGHT,
+} from '@actions';
+
 import reducer from './height';
 
 describe('Network Height Reducer', () => {

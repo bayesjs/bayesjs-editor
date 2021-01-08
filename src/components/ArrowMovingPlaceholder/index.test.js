@@ -1,6 +1,6 @@
-import ArrowPlaceholder from 'components/ArrowPlaceholder';
+import ArrowPlaceholder from '@components/ArrowPlaceholder';
 import React from 'react';
-import SvgMousePosition from 'components/SvgMousePosition';
+import SvgMousePosition from '@components/SvgMousePosition';
 import { shallow } from 'enzyme';
 import ArrowMovingPlaceholder from './component';
 

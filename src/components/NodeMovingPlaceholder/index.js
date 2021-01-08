@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { elementInstancePropTypes, networkPropTypes, nodePropTypes } from 'models';
+import { elementInstancePropTypes, networkPropTypes, nodePropTypes } from '@models';
 
-import NodePlaceholder from 'components/NodePlaceholder';
+import NodePlaceholder from '@components/NodePlaceholder';
 import PropTypes from 'prop-types';
-import SvgMousePosition from 'components/SvgMousePosition';
-import { subtractPositions } from 'utils/position';
+import SvgMousePosition from '@components/SvgMousePosition';
+import { subtractPositions } from '@utils/position';
 
 class NodeMovingPlaceholder extends Component {
   componentDidMount() {

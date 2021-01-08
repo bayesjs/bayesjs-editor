@@ -1,6 +1,6 @@
-import React from 'react';
-import { statePropTypes } from 'models';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { statePropTypes } from '@models';
 
 const NodeCptStatesThead = ({ states }) => (
   <thead>

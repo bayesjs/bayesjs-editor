@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
-import PropTypes from 'prop-types';
-import { onUpdateNetworkPropertiesPanelVisible } from 'actions/network';
-import { getPanelVisibility } from 'selectors';
+import { getPanelVisibility } from '@selectors';
+import { onUpdateNetworkPropertiesPanelVisible } from '@actions/network';
 import Button from '../Button';
 import styles from './styles.css';
 

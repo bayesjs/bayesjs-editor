@@ -1,14 +1,14 @@
-import { NETWORK_KINDS } from 'constants/network';
+import { NETWORK_KINDS } from '@constants/network';
 import {
-  getNetwork,
-  getNodes,
-  getPositions,
   getBeliefs,
+  getLinkages,
+  getNetwork,
+  getNetworkKind,
+  getNodes,
+  getPanelVisibility,
+  getPositions,
   getSelectedNodes,
   getSubnetworks,
-  getNetworkKind,
-  getPanelVisibility,
-  getLinkages,
 } from './index';
 
 

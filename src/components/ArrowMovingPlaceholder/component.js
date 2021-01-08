@@ -1,15 +1,15 @@
-import { inRange, noop } from 'lodash';
-import PropTypes from 'prop-types';
-
-import ArrowPlaceholder from 'components/ArrowPlaceholder';
 import React, { PureComponent } from 'react';
 import {
-  positionPropTypes,
-  nodePropTypes,
-  subnetworkPropTypes,
   elementInstancePropTypes,
-} from 'models';
-import SvgMousePosition from 'components/SvgMousePosition';
+  nodePropTypes,
+  positionPropTypes,
+  subnetworkPropTypes,
+} from '@models';
+import { inRange, noop } from 'lodash';
+
+import ArrowPlaceholder from '@components/ArrowPlaceholder';
+import PropTypes from 'prop-types';
+import SvgMousePosition from '@components/SvgMousePosition';
 
 const isBetweenCreator = value => (min, max) => inRange(value, min, max);
 

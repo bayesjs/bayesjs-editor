@@ -5,11 +5,11 @@ import {
   renderNothing,
   withProps,
 } from 'recompose';
-import { getNodeConnectionsHeight, getNodeConnectionsOffset } from 'utils/node-size';
+import { getNodeConnectionsHeight, getNodeConnectionsOffset } from '@utils/node-size';
 import { not, path, pipe } from 'ramda';
 
-import { NODE_PADDING } from 'constants/node';
-import { hasConnections } from 'validations/node';
+import { NODE_PADDING } from '@constants/node';
+import { hasConnections } from '@validations/node';
 
 const pathConnections = path(['linkedNode', 'connections']);
 const hasNoLinkedNodes = pipe(hasConnections, not);

@@ -1,4 +1,5 @@
-import { LOAD_NETWORK, NEW_NETWORK } from 'actions';
+import { LOAD_NETWORK, NEW_NETWORK } from '@actions';
+
 import reducer from './id';
 
 describe('Network Id Reducer', () => {

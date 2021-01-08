@@ -1,6 +1,6 @@
 import {
   NEW_NETWORK,
-} from 'actions';
+} from '@actions';
 import reducer from './arrows';
 
 describe('Arrows Reducers', () => {

@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import ContextMenuItemsPortal from 'portals/ContextMenuItems';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import {
-  merge,
   complement,
-  isNil,
   is,
+  isNil,
   join,
+  merge,
 } from 'ramda';
-import { contextMenuItemPropTypes } from 'models';
-import { subtractPositions } from 'utils/position';
-import { getComponentTestId } from 'utils/test-utils';
+
+import ContextMenuItemsPortal from '@portals/ContextMenuItems';
+import PropTypes from 'prop-types';
+import { contextMenuItemPropTypes } from '@models';
+import { getComponentTestId } from '@utils/test-utils';
+import { subtractPositions } from '@utils/position';
 import styles from './styles.css';
 
 const isNotNil = complement(isNil);

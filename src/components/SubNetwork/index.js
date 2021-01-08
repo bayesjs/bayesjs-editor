@@ -1,19 +1,18 @@
-import Network from 'components/Network';
 import React, { Component } from 'react';
-import Modal from 'components/Modal';
 import {
   linkedNodePropTypes,
   networkPropTypes,
   nodePropTypes,
   subNetworkInferenceResultsPropTypes,
-} from 'models';
-import { propEq } from 'ramda';
+} from '@models';
 
+import Modal from '@components/Modal';
+import Network from '@components/Network';
 import PropTypes from 'prop-types';
-import { getArrowsPositions } from 'utils/arrows-positions';
-import { getNodeSize } from 'utils/node-size';
+import { getArrowsPositions } from '@utils/arrows-positions';
+import { getNodeSize } from '@utils/node-size';
 import { noop } from 'lodash';
-
+import { propEq } from 'ramda';
 
 class SubNetwork extends Component {
   state = {

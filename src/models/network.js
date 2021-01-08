@@ -1,8 +1,8 @@
 import PropTypes, { shape } from 'prop-types';
 
-import { nodePropTypes } from 'models/node';
-import { positionPropTypes } from 'models/position';
-import { linkagesPropTypes } from 'models/linkage';
+import { linkagesPropTypes } from '@models/linkage';
+import { nodePropTypes } from '@models/node';
+import { positionPropTypes } from '@models/position';
 
 const beliefsPropTypes = PropTypes.objectOf(PropTypes.string);
 const beliefsMSBNPropTypes = PropTypes.objectOf(beliefsPropTypes);

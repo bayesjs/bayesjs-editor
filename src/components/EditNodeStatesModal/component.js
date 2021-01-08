@@ -1,21 +1,21 @@
-import React, { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
-
-import Button from 'components/Button';
-import NodeStatesEditList from 'components/NodeStatesEditList';
-import NodeAddState from 'components/NodeAddState';
-import Modal from 'components/Modal';
-import { nodePropTypes } from 'models';
+import React, { useCallback, useState } from 'react';
 import {
+  append,
+  complement,
+  includes,
+  isEmpty,
   prop,
   remove,
-  append,
-  includes,
-  complement,
-  isEmpty,
   thunkify,
 } from 'ramda';
-import { bem } from 'utils/styles';
+
+import Button from '@components/Button';
+import Modal from '@components/Modal';
+import NodeAddState from '@components/NodeAddState';
+import NodeStatesEditList from '@components/NodeStatesEditList';
+import PropTypes from 'prop-types';
+import { bem } from '@utils/styles';
+import { nodePropTypes } from '@models';
 import styles from './styles.scss';
 
 const componentClassName = bem(styles);

@@ -1,15 +1,16 @@
-import React from 'react';
-import EditNodeCptTableRow from 'components/EditNodeCptTableRow';
 import {
-  set,
-  toString,
   complement,
   isNil,
   lensPath,
+  set,
+  toString,
 } from 'ramda';
+import { cptWithParentsPropTypes, cptWithoutParentsPropTypes, statePropTypes } from '@models';
+
+import EditNodeCptTableRow from '@components/EditNodeCptTableRow';
+import NodeCptStatesThead from '@components/NodeCptStatesThead';
 import PropTypes from 'prop-types';
-import { statePropTypes, cptWithoutParentsPropTypes, cptWithParentsPropTypes } from 'models';
-import NodeCptStatesThead from 'components/NodeCptStatesThead';
+import React from 'react';
 
 const isNotNil = complement(isNil);
 

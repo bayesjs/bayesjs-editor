@@ -7,7 +7,7 @@ import {
   NEW_NETWORK,
   REMOVE_NODE,
   REMOVE_PARENT,
-} from 'actions';
+} from '@actions';
 import {
   T,
   allPass,
@@ -33,7 +33,7 @@ import {
   addNodeParent,
   changeNodeParentName,
   filterNodeParents,
-} from 'utils/node-parents';
+} from '@utils/node-parents';
 import {
   addNodeParentInCpt,
   createCpt,
@@ -41,13 +41,13 @@ import {
   updateNodeParentIdInCpt,
   updateNodeParentStatesInCpt,
   updateStatesInCpt,
-} from 'utils/node-cpt';
-import { findNodeById, removeNodeById } from 'utils/node';
+} from '@utils/node-cpt';
+import { findNodeById, removeNodeById } from '@utils/node';
 
-import { SAVE_EDITING_NODE_CPT } from 'constants/editing-node-cpt';
-import { SAVE_EDITING_NODE_STATES } from 'constants/editing-node-states';
-import { containsParentInNode } from 'validations/node';
-import { hasCycleAddingNodeParent } from 'validations/network';
+import { SAVE_EDITING_NODE_CPT } from '@constants/editing-node-cpt';
+import { SAVE_EDITING_NODE_STATES } from '@constants/editing-node-states';
+import { containsParentInNode } from '@validations/node';
+import { hasCycleAddingNodeParent } from '@validations/network';
 
 const propId = prop('id');
 const propStates = prop('states');

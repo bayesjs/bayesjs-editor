@@ -1,24 +1,22 @@
 import {
   PERSIST_STATE,
-  UPDATE_NETWORK_NAME,
   UPDATE_NETWORK_DESCRIPTION,
-  UPDATE_NETWORK_WIDTH,
   UPDATE_NETWORK_HEIGHT,
   UPDATE_NETWORK_INFERENCE_ENABLED,
+  UPDATE_NETWORK_NAME,
   UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE,
   UPDATE_NETWORK_SELECTED_NODES,
-} from 'actions';
-
+  UPDATE_NETWORK_WIDTH,
+} from '@actions';
 import {
-  onUpdateNetworkName,
   onUpdateNetworkDescription,
-  onUpdateNetworkWidth,
   onUpdateNetworkHeight,
   onUpdateNetworkInferenceEnabled,
+  onUpdateNetworkName,
   onUpdateNetworkPropertiesPanelVisible,
   onUpdateNetworkSelectedNodes,
+  onUpdateNetworkWidth,
 } from './network';
-
 
 const persistStateAction = {
   type: PERSIST_STATE,

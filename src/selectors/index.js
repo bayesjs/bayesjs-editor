@@ -1,20 +1,25 @@
-import { createSelector } from 'reselect';
-import { NETWORK_KINDS } from 'constants/network';
 import {
-  either, prop, propOr, path, pathOr,
+  either,
+  path,
+  pathOr,
+  prop,
+  propOr,
 } from 'ramda';
+
+import { NETWORK_KINDS } from '@constants/network';
+import { createSelector } from 'reselect';
 import {
   combAllLinkagesBySubnetwork,
   combLinkagesBySubnetwork,
   combLinkagesByTwoSubnetwork,
+  combNetworkMSBNDescription,
   combNodesAndBeliefs,
   combNodesAndBeliefsMSBN,
+  combNodesIsSelected,
   combNodesWithPositions,
   combNodesWithSizes,
   combSubnetworksById,
   combSubnetworksColorById,
-  combNodesIsSelected,
-  combNetworkMSBNDescription,
 } from './combiners';
 
 export const getNetwork = prop('network');

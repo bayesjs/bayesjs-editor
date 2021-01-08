@@ -1,5 +1,5 @@
 import React from 'react';
-import { positionPropTypes } from 'models';
+import { positionPropTypes } from '@models';
 
 const ArrowPlaceholder = ({ from, to }) => (
   <path

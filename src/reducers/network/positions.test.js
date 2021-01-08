@@ -6,7 +6,8 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_NODE,
-} from 'actions';
+} from '@actions';
+
 import reducer from './positions';
 
 const positions = {

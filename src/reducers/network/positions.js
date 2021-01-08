@@ -6,17 +6,17 @@ import {
   LOAD_NETWORK,
   NEW_NETWORK,
   REMOVE_NODE,
-} from 'actions';
+} from '@actions';
 import {
   assoc,
-  path,
-  prop,
-  pipe,
   dissoc,
-  over,
-  lens,
   identity,
+  lens,
+  over,
+  path,
   pick,
+  pipe,
+  prop,
 } from 'ramda';
 
 const propPayload = prop('payload');

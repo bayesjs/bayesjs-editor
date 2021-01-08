@@ -1,8 +1,9 @@
 import {
-  EDITING_NODE_CPT,
   CANCEL_EDITING_NODE_CPT,
+  EDITING_NODE_CPT,
   SAVE_EDITING_NODE_CPT,
-} from 'constants/editing-node-cpt';
+} from '@constants/editing-node-cpt';
+
 import reducer from './editing-node-cpt';
 
 describe('EditingNodeCpt Reducers', () => {

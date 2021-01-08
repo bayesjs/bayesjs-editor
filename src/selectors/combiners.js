@@ -1,7 +1,8 @@
 import { addNode, infer } from 'bayesjs';
-import { getNodeSize } from 'utils/node-size';
-import { equals, any, map } from 'ramda';
-import { createKey, createMissingLinkages, mergeNetworks } from 'components/NetworkMSBN/helpers';
+import { any, equals, map } from 'ramda';
+import { createKey, createMissingLinkages, mergeNetworks } from '@components/NetworkMSBN/helpers';
+
+import { getNodeSize } from '@utils/node-size';
 
 const weakMap = new WeakMap();
 

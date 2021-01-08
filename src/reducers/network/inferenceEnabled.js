@@ -1,9 +1,9 @@
 import {
-  UPDATE_NETWORK_INFERENCE_ENABLED,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
-import { pathOr, path } from 'ramda';
+  UPDATE_NETWORK_INFERENCE_ENABLED,
+} from '@actions';
+import { path, pathOr } from 'ramda';
 
 const defaultValue = true;
 const getNetworkInfenceEnabled = pathOr(defaultValue, ['payload', 'state', 'network', 'inferenceEnabled']);

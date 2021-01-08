@@ -1,5 +1,5 @@
-import { NODE_PADDING } from 'constants/node';
-import { getNodeStatesOffset } from 'utils/node-size';
+import { NODE_PADDING } from '@constants/node';
+import { getNodeStatesOffset } from '@utils/node-size';
 import { withProps } from 'recompose';
 
 const enhance = withProps(({ index, width, ...props }) => {

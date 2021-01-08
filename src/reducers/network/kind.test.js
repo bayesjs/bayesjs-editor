@@ -1,5 +1,6 @@
-import { NEW_NETWORK, LOAD_NETWORK } from 'actions';
-import { NETWORK_KINDS } from 'constants/network';
+import { LOAD_NETWORK, NEW_NETWORK } from '@actions';
+
+import { NETWORK_KINDS } from '@constants/network';
 import reducer from './kind';
 
 describe('Network Kind Reducer', () => {

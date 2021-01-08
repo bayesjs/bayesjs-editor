@@ -1,5 +1,5 @@
+import NodeState from '@components/NodeState';
 import React from 'react';
-import NodeState from 'components/NodeState';
 
 const NodeStates = ({
   id,

@@ -1,10 +1,10 @@
-import { positionPropTypes, sizePropTypes } from 'models';
+import { positionPropTypes, sizePropTypes } from '@models';
 
-import NodeDivider from 'components/NodeDivider';
+import NodeDivider from '@components/NodeDivider';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SvgText from 'components/SvgText';
-import { getComponentTestId } from 'utils/test-utils';
+import SvgText from '@components/SvgText';
+import { getComponentTestId } from '@utils/test-utils';
 import { noop } from 'lodash';
 import styles from './styles.css';
 

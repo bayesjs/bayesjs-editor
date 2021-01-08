@@ -7,8 +7,8 @@ import {
 } from 'recompose';
 import { not, pipe } from 'ramda';
 
-import { getNodeStateHeight } from 'utils/node-size';
-import { hasStates } from 'validations/node';
+import { getNodeStateHeight } from '@utils/node-size';
+import { hasStates } from '@validations/node';
 
 const hasNoStates = pipe(hasStates, not);
 

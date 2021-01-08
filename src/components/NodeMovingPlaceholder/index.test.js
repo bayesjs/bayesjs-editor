@@ -1,6 +1,6 @@
-import NodePlaceholder from 'components/NodePlaceholder';
+import NodePlaceholder from '@components/NodePlaceholder';
 import React from 'react';
-import SvgMousePosition from 'components/SvgMousePosition';
+import SvgMousePosition from '@components/SvgMousePosition';
 import { shallow } from 'enzyme';
 import NodeMovingPlaceholder from './index';
 

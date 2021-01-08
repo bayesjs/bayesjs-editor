@@ -1,8 +1,8 @@
-import NodeStateBar from 'components/NodeStateBar';
+import NodeStateBar from '@components/NodeStateBar';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SvgText from 'components/SvgText';
-import { getComponentTestId } from 'utils/test-utils';
+import SvgText from '@components/SvgText';
+import { getComponentTestId } from '@utils/test-utils';
 
 const NodeState = ({
   state,

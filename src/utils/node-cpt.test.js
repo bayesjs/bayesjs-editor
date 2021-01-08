@@ -1,4 +1,4 @@
-import SimpleNetwork from 'json-templates/networks/simple.json';
+import SimpleNetwork from '@json-templates/networks/simple.json';
 import {
   addNodeParentInCpt,
   createCpt,
@@ -8,6 +8,7 @@ import {
   updateNodeParentStatesInCpt,
   updateStatesInCpt,
 } from './node-cpt';
+
 
 describe('Node Cpt Utils', () => {
   describe('updateCptValue', () => {

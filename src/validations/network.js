@@ -15,7 +15,8 @@ import {
   reject,
   useWith,
 } from 'ramda';
-import { findIndexNodeById } from 'utils/node';
+
+import { findIndexNodeById } from '@utils/node';
 import { containsParentInNode } from './node';
 
 const isNotEmpty = complement(isEmpty);

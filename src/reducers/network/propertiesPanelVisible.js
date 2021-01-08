@@ -1,9 +1,9 @@
 import {
-  UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
-import { pathOr, path } from 'ramda';
+  UPDATE_NETWORK_PROPERTIES_PANEL_VISIBLE,
+} from '@actions';
+import { path, pathOr } from 'ramda';
 
 const defaultValue = true;
 const getNetworkPropertiesPanelVisible = pathOr(defaultValue, ['payload', 'state', 'network', 'propertiesPanelVisible']);

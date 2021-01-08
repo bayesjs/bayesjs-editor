@@ -1,7 +1,9 @@
+import * as eventUtils from '@utils/event';
+
+import { fireEvent, render } from '@testing-library/react';
+
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import * as eventUtils from 'utils/event';
-import { getComponentTestId } from 'utils/test-utils';
+import { getComponentTestId } from '@utils/test-utils';
 import NodeAddState from './index';
 
 const renderComponent = props =>

@@ -1,5 +1,6 @@
-import SimpleNetwork from 'json-templates/networks/simple.json';
-import { findNodeById, removeNodeById, findIndexNodeById } from './node';
+import SimpleNetwork from '@json-templates/networks/simple.json';
+import { findIndexNodeById, findNodeById, removeNodeById } from './node';
+
 
 describe('Node Utils', () => {
   describe('findNodeById', () => {

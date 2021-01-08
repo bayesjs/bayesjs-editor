@@ -1,15 +1,3 @@
-import NetworkChangeStatesInitial from 'json-templates/networks/change-states/initial.json';
-import NetworkChangeNodeStatesWithParents from 'json-templates/networks/change-states/node-with-parents.json';
-import NetworkChangeNodeStatesWithoutParents from 'json-templates/networks/change-states/node-without-parents.json';
-import NetworkChangeCptInitial from 'json-templates/networks/change-cpt/initial.json';
-import NetworkChangeNodeCpt from 'json-templates/networks/change-cpt/updated.json';
-import NetworkChangeParentsNotConnected from 'json-templates/networks/change-parents/not-connected.json';
-import NetworkChangeParentsConnectedWithParents from 'json-templates/networks/change-parents/connected-with-parents.json';
-import NetworkChangeParentsConnectedWithoutParents from 'json-templates/networks/change-parents/connected-without-parents.json';
-import NetworkChangeIdInitial from 'json-templates/networks/change-id/initial.json';
-import NetworkChangeIdUpdated from 'json-templates/networks/change-id/updated.json';
-import NetworkRemoveNodeInitial from 'json-templates/networks/remove-node/initial.json';
-import NetworkRemoveNodeUpdated from 'json-templates/networks/remove-node/updated.json';
 import {
   ADD_NODE,
   ADD_PARENT,
@@ -19,9 +7,22 @@ import {
   NEW_NETWORK,
   REMOVE_NODE,
   REMOVE_PARENT,
-} from 'actions';
-import { SAVE_EDITING_NODE_CPT } from 'constants/editing-node-cpt';
-import { SAVE_EDITING_NODE_STATES } from 'constants/editing-node-states';
+} from '@actions';
+
+import NetworkChangeCptInitial from '@json-templates/networks/change-cpt/initial.json';
+import NetworkChangeIdInitial from '@json-templates/networks/change-id/initial.json';
+import NetworkChangeIdUpdated from '@json-templates/networks/change-id/updated.json';
+import NetworkChangeNodeCpt from '@json-templates/networks/change-cpt/updated.json';
+import NetworkChangeNodeStatesWithParents from '@json-templates/networks/change-states/node-with-parents.json';
+import NetworkChangeNodeStatesWithoutParents from '@json-templates/networks/change-states/node-without-parents.json';
+import NetworkChangeParentsConnectedWithParents from '@json-templates/networks/change-parents/connected-with-parents.json';
+import NetworkChangeParentsConnectedWithoutParents from '@json-templates/networks/change-parents/connected-without-parents.json';
+import NetworkChangeParentsNotConnected from '@json-templates/networks/change-parents/not-connected.json';
+import NetworkChangeStatesInitial from '@json-templates/networks/change-states/initial.json';
+import NetworkRemoveNodeInitial from '@json-templates/networks/remove-node/initial.json';
+import NetworkRemoveNodeUpdated from '@json-templates/networks/remove-node/updated.json';
+import { SAVE_EDITING_NODE_CPT } from '@constants/editing-node-cpt';
+import { SAVE_EDITING_NODE_STATES } from '@constants/editing-node-states';
 import reducer from './nodes';
 
 describe('Nodes Reducer', () => {

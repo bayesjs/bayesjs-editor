@@ -1,10 +1,11 @@
+import { clamp, path, pipe } from 'ramda';
+
+import { NODE_CPT_PRECISION } from '@constants/node';
+import PropTypes from 'prop-types';
 import React from 'react';
 import float from 'float';
-import { clamp, path, pipe } from 'ramda';
-import PropTypes from 'prop-types';
+import { getComponentTestId } from '@utils/test-utils';
 import { noop } from 'lodash';
-import { NODE_CPT_PRECISION } from 'constants/node';
-import { getComponentTestId } from 'utils/test-utils';
 import styles from './styles.scss';
 
 const clamp0And1 = clamp(0, 1);

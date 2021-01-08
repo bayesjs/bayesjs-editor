@@ -4,19 +4,18 @@ import {
   NEW_NETWORK,
   REMOVE_SUPER_NODE,
   SET_BELIEF,
-} from 'actions';
-
-import { getRandomColor } from 'utils/colors';
+} from '@actions';
 import {
-  map,
-  ifElse,
-  over,
-  lensProp,
-  propEq,
   identity,
+  ifElse,
+  lensProp,
+  map,
+  over,
+  propEq,
 } from 'ramda';
-import { updateNetworkBelief } from 'utils/network';
 
+import { getRandomColor } from '@utils/colors';
+import { updateNetworkBelief } from '@utils/network';
 
 const formatNetwork = (state) => {
   const { network, positions, nodes } = state;

@@ -1,6 +1,7 @@
+import { fireEvent, render } from '@testing-library/react';
+
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { getComponentTestId } from 'utils/test-utils';
+import { getComponentTestId } from '@utils/test-utils';
 import { head } from 'ramda';
 import NodeCptEditTable from './index';
 

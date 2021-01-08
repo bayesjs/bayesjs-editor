@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { bem } from '@utils/styles';
 import classNames from 'classnames';
-import { getComponentTestId } from 'utils/test-utils';
-import { bem } from 'utils/styles';
+import { getComponentTestId } from '@utils/test-utils';
 import styles from './styles.scss';
 
 const componentClassName = bem(styles);

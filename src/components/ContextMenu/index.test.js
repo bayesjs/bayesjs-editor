@@ -1,7 +1,7 @@
-import { shallow } from 'enzyme';
-import React from 'react';
-import ContextMenuItems from 'components/ContextMenuItems';
+import ContextMenuItems from '@components/ContextMenuItems';
 import { ContextMenuTrigger } from 'react-contextmenu';
+import React from 'react';
+import { shallow } from 'enzyme';
 import ContextMenu from './index';
 
 const defaultProps = {

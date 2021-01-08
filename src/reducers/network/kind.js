@@ -1,6 +1,7 @@
-import { NEW_NETWORK, LOAD_NETWORK } from 'actions';
-import { NETWORK_KINDS } from 'constants/network';
-import { always, path, either } from 'ramda';
+import { LOAD_NETWORK, NEW_NETWORK } from '@actions';
+import { always, either, path } from 'ramda';
+
+import { NETWORK_KINDS } from '@constants/network';
 
 const defaultValue = NETWORK_KINDS.BN;
 const getNetworKind = either(

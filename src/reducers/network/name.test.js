@@ -1,8 +1,8 @@
 import {
-  UPDATE_NETWORK_NAME,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
+  UPDATE_NETWORK_NAME,
+} from '@actions';
 
 import reducer from './name';
 

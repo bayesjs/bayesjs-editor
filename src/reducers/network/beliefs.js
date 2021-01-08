@@ -1,6 +1,7 @@
-import { SET_BELIEF, LOAD_NETWORK, NEW_NETWORK } from 'actions';
-import { over, lensPath } from 'ramda';
-import { updateNetworkBelief } from 'utils/network';
+import { LOAD_NETWORK, NEW_NETWORK, SET_BELIEF } from '@actions';
+import { lensPath, over } from 'ramda';
+
+import { updateNetworkBelief } from '@utils/network';
 
 const defaultValue = {};
 

@@ -1,10 +1,12 @@
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { getComponentTestId } from 'utils/test-utils';
-import { head } from 'ramda';
+import * as eventUtils from '@utils/event';
+import * as nodeValidation from '@validations/node';
+
+import { fireEvent, render } from '@testing-library/react';
+
 import Modal from 'react-modal';
-import * as nodeValidation from 'validations/node';
-import * as eventUtils from 'utils/event';
+import React from 'react';
+import { getComponentTestId } from '@utils/test-utils';
+import { head } from 'ramda';
 import EditNodeCptModal from './component';
 
 const renderComponent = (props) => {

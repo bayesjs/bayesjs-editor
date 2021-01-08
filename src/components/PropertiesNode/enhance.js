@@ -1,9 +1,9 @@
-import { changeNodeDescription, changeNodeId } from 'actions';
+import { changeNodeDescription, changeNodeId } from '@actions';
 
-import { getNodes } from 'selectors';
-import { connectify } from 'decorators';
-import { onEditingNodeCpt } from 'actions/editing-node-cpt';
-import { onEditingNodeStates } from 'actions/editing-node-states';
+import { connectify } from '@decorators';
+import { getNodes } from '@selectors';
+import { onEditingNodeCpt } from '@actions/editing-node-cpt';
+import { onEditingNodeStates } from '@actions/editing-node-states';
 
 const enhance = connectify({
   nodes: getNodes,

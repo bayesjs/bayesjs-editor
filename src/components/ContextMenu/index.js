@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
-import ContextMenuItems from 'components/ContextMenuItems';
+
+import ContextMenuItems from '@components/ContextMenuItems';
+import { ContextMenuTrigger } from 'react-contextmenu';
 import PropTypes from 'prop-types';
 import { concat } from 'ramda';
-import { ContextMenuTrigger } from 'react-contextmenu';
-import { contextMenuItemPropTypes } from 'models/';
+import { contextMenuItemPropTypes } from '@models/';
 
 const ContextMenu = ({
   id,

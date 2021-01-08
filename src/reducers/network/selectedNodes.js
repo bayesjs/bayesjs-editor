@@ -1,12 +1,13 @@
 import {
-  UPDATE_NETWORK_SELECTED_NODES,
-  REMOVE_NODE,
   CHANGE_NODE_ID,
   LOAD_NETWORK,
   NEW_NETWORK,
-} from 'actions';
-import { updateSelectedNodesId } from 'utils/network';
+  REMOVE_NODE,
+  UPDATE_NETWORK_SELECTED_NODES,
+} from '@actions';
+
 import { path } from 'ramda';
+import { updateSelectedNodesId } from '@utils/network';
 
 const defaultValue = [];
 const getSelectedNodes = path(['payload', 'selectedNodes']);

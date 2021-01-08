@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
 
-import Button from 'components/Button';
-import Modal from 'components/Modal';
-import NodeCptEditTable from 'components/NodeCptEditTable';
-import NodeCptParentStatesTable from 'components/NodeCptParentStatesTable';
-import { isEnterKey } from 'utils/event';
-import { isNodeCptValid } from 'validations/node';
-import { nodePropTypes } from 'models';
+import Button from '@components/Button';
+import Modal from '@components/Modal';
+import NodeCptEditTable from '@components/NodeCptEditTable';
+import NodeCptParentStatesTable from '@components/NodeCptParentStatesTable';
+import PropTypes from 'prop-types';
+import { isEnterKey } from '@utils/event';
+import { isNodeCptValid } from '@validations/node';
+import { nodePropTypes } from '@models';
 import styles from './styles.scss';
 
 const handleCptKeyUpCreator = handleSave => (e) => {

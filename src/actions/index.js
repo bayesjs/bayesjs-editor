@@ -1,4 +1,4 @@
-import { NETWORK_KINDS } from 'constants/network';
+import { NETWORK_KINDS } from '@constants/network';
 
 export const PERSIST_STATE = 'PERSIST_STATE';
 export const NEW_NETWORK = 'NEW_NETWORK';

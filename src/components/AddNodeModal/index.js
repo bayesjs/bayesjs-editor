@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { nodePropTypes, positionPropTypes } from 'models';
+import { nodePropTypes, positionPropTypes } from '@models';
 
-import Button from 'components/Button';
-import Modal from 'components/Modal';
+import Button from '@components/Button';
+import Modal from '@components/Modal';
+import NodeAddState from '@components/NodeAddState';
+import NodeStatesEditList from '@components/NodeStatesEditList';
 import PropTypes from 'prop-types';
-import { addNode } from 'actions';
+import { addNode } from '@actions';
 import { connect } from 'react-redux';
-import { getNodes } from 'selectors';
-import NodeStatesEditList from 'components/NodeStatesEditList';
-import NodeAddState from 'components/NodeAddState';
+import { getNodes } from '@selectors';
 import styles from './styles.css';
 
 const initialState = {

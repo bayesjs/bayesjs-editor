@@ -1,7 +1,7 @@
-import { getNodeDescriptionHeight, getNodeHeaderHeight } from 'utils/node-size';
+import { getNodeDescriptionHeight, getNodeHeaderHeight } from '@utils/node-size';
 
-import { NODE_PADDING } from 'constants/node';
-import { hasDescription } from 'validations/node';
+import { NODE_PADDING } from '@constants/node';
+import { hasDescription } from '@validations/node';
 import { withProps } from 'recompose';
 
 const enhance = withProps(({

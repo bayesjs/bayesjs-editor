@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import Button from 'components/Button';
-import Modal from 'components/Modal';
+import Button from '@components/Button';
+import Modal from '@components/Modal';
 import PropTypes from 'prop-types';
 import fontAwesome from 'font-awesome/css/font-awesome.css';
-import { linkagesPropTypes } from 'models';
+import { linkagesPropTypes } from '@models';
 import styles from './styles.css';
 
 class LinkagesModal extends Component {

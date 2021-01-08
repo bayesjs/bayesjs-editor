@@ -1,8 +1,9 @@
-import Arrow from 'components/Arrow';
-import ArrowsDefs from 'components/ArrowsDefs';
+import { arrowPropTypes, contextMenuItemPropTypes } from '@models';
+
+import Arrow from '@components/Arrow';
+import ArrowsDefs from '@components/ArrowsDefs';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { arrowPropTypes, contextMenuItemPropTypes } from 'models';
 
 const Arrows = ({
   arrows,
