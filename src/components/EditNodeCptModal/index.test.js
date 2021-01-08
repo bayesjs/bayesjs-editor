@@ -3,11 +3,11 @@ import * as nodeValidation from '@validations/node';
 
 import { fireEvent, render } from '@testing-library/react';
 
-import EditNodeCptModal from './component';
 import Modal from 'react-modal';
 import React from 'react';
 import { getComponentTestId } from '@utils/test-utils';
 import { head } from 'ramda';
+import EditNodeCptModal from './component';
 
 const renderComponent = (props) => {
   Modal.setAppElement(document.body);

@@ -1,3 +1,4 @@
+import { NETWORK_KINDS } from '@constants/network';
 import {
   ADD_LINKAGE,
   ADD_NODE,
@@ -31,7 +32,6 @@ import {
   setBelief,
 } from './index';
 
-import { NETWORK_KINDS } from '@constants/network';
 
 const persistStateAction = {
   type: PERSIST_STATE,

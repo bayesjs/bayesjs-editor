@@ -1,4 +1,14 @@
 import {
+  either,
+  path,
+  pathOr,
+  prop,
+  propOr,
+} from 'ramda';
+
+import { NETWORK_KINDS } from '@constants/network';
+import { createSelector } from 'reselect';
+import {
   combAllLinkagesBySubnetwork,
   combLinkagesBySubnetwork,
   combLinkagesByTwoSubnetwork,
@@ -11,16 +21,6 @@ import {
   combSubnetworksById,
   combSubnetworksColorById,
 } from './combiners';
-import {
-  either,
-  path,
-  pathOr,
-  prop,
-  propOr,
-} from 'ramda';
-
-import { NETWORK_KINDS } from '@constants/network';
-import { createSelector } from 'reselect';
 
 export const getNetwork = prop('network');
 export const getNodes = either(path(['network', 'nodes']), propOr([], 'nodes'));

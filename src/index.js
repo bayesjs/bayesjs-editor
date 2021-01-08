@@ -5,9 +5,9 @@ import App from '@components/App';
 import Modal from 'react-modal';
 import { Provider } from 'react-redux';
 import React from 'react';
+import { render } from 'react-dom';
 import configureStore from './store/configureStore';
 import { loadState } from './middlewares/persistState';
-import { render } from 'react-dom';
 
 const preloadedState = loadState();
 const store = configureStore(preloadedState);

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
 import Canvas from '../Canvas';
 import Header from '../Header';
 import PropertiesPanel from '../PropertiesPanel';
-import { connect } from 'react-redux';
 import {
   getNetworkKind,
 } from '@selectors';

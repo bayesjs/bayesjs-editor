@@ -2,9 +2,9 @@ import * as eventUtils from '@utils/event';
 
 import { fireEvent, render } from '@testing-library/react';
 
-import NodeAddState from './index';
 import React from 'react';
 import { getComponentTestId } from '@utils/test-utils';
+import NodeAddState from './index';
 
 const renderComponent = props =>
   render(

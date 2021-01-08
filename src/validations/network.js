@@ -16,8 +16,8 @@ import {
   useWith,
 } from 'ramda';
 
-import { containsParentInNode } from './node';
 import { findIndexNodeById } from '@utils/node';
+import { containsParentInNode } from './node';
 
 const isNotEmpty = complement(isEmpty);
 const propId = prop('id');

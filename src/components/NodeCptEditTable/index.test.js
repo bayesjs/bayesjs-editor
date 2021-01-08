@@ -1,9 +1,9 @@
 import { fireEvent, render } from '@testing-library/react';
 
-import NodeCptEditTable from './index';
 import React from 'react';
 import { getComponentTestId } from '@utils/test-utils';
 import { head } from 'ramda';
+import NodeCptEditTable from './index';
 
 const renderComponent = props =>
   render(

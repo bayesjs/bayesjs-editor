@@ -2,9 +2,9 @@ import * as nodeValidations from '@validations/node';
 
 import { fireEvent, render } from '@testing-library/react';
 
-import EditNodeCptTableRow from './index';
 import React from 'react';
 import { getComponentTestId } from '@utils/test-utils';
+import EditNodeCptTableRow from './index';
 
 const renderComponent = props =>
   render(

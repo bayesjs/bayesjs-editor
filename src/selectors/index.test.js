@@ -1,3 +1,4 @@
+import { NETWORK_KINDS } from '@constants/network';
 import {
   getBeliefs,
   getLinkages,
@@ -10,7 +11,6 @@ import {
   getSubnetworks,
 } from './index';
 
-import { NETWORK_KINDS } from '@constants/network';
 
 describe('Main Selectors', () => {
   describe('getNetwork selector', () => {

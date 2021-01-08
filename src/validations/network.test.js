@@ -1,7 +1,7 @@
-import { hasCycleAddingNodeParent, hasCycles } from './network';
 
 import CyclicNetwork from '@json-templates/networks/cyclic.json';
 import SimpleNetwork from '@json-templates/networks/simple.json';
+import { hasCycleAddingNodeParent, hasCycles } from './network';
 
 describe('Network Utils', () => {
   describe('hasCycles', () => {

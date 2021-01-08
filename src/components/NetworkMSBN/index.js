@@ -38,10 +38,10 @@ import { connect } from 'react-redux';
 import { getArrowsPositionsForMSBN } from '@utils/arrows-positions';
 import { hasCycles } from '@validations/network';
 import { isDeleteKey } from '@utils/event';
-import { mergeNetworks } from './helpers';
 import { onUpdateNetworkSelectedNodes } from '@actions/network';
 import { openFile } from '@utils/file';
 import { v4 } from 'uuid';
+import { mergeNetworks } from './helpers';
 
 class NetworkMSBN extends Component {
   state = {

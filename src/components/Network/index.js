@@ -16,8 +16,8 @@ import NodeMovingPlaceholder from '@components/NodeMovingPlaceholder';
 import Nodes from '@components/Nodes';
 import PropTypes from 'prop-types';
 import { propEq } from 'ramda';
-import styles from './styles.css';
 import { v4 } from 'uuid';
+import styles from './styles.css';
 
 class Network extends PureComponent {
   state = {
